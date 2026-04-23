@@ -285,10 +285,10 @@ function Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_ti
         Ja_T_orig = zeros(num_cases+1, 1); Ja_T_opt = zeros(num_cases+1, 1);
         
         for k = 1:num_cases+1
-            Jc_F_orig(k) = J(k*5-4, 1); Jc_F_opt(k) = J(k*5-4, 2);
-            Jc_T_orig(k) = J(k*5-3, 1); Jc_T_opt(k) = J(k*5-3, 2);
-            Ja_F_orig(k) = J(k*5-2, 1); Ja_F_opt(k) = J(k*5-2, 2);
-            Ja_T_orig(k) = J(k*5-1, 1); Ja_T_opt(k) = J(k*5-1, 2);
+            Jc_F_orig(k) = J(k*6-5, 1); Jc_F_opt(k) = J(k*6-5, 2);
+            Jc_T_orig(k) = J(k*6-4, 1); Jc_T_opt(k) = J(k*6-4, 2);
+            Ja_F_orig(k) = J(k*6-3, 1); Ja_F_opt(k) = J(k*6-3, 2);
+            Ja_T_orig(k) = J(k*6-2, 1); Ja_T_opt(k) = J(k*6-2, 2);
         end
         
         if num_faults == 0
@@ -296,8 +296,8 @@ function Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_ti
             Jo_actual_orig = J(5,1); Jo_actual_opt = J(5,2);
         else
             curr_state_idx = faulty_thrusters(1);
-            Jo_actual_orig = J((curr_state_idx*5)+5, 1); 
-            Jo_actual_opt = J((curr_state_idx*5)+5, 2);
+            Jo_actual_orig = J((curr_state_idx*6)+5, 1); 
+            Jo_actual_opt = J((curr_state_idx*6)+5, 2);
         end
         x_label_title = '单台故障推力器编号';
         

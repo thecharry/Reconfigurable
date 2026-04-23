@@ -4,6 +4,57 @@ params = Get_params();
 load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
 % load('Optim_config_data_GlobalFree.mat', 'B_opt', 'r_opt', 'fval');
 
+
+disp('正在计算 原布局 底层指标...');
+[Z_Force_orig, Z_Torque_orig] = get_Z_matrix(params, params.B_all);
+disp('正在计算 优化后布局 底层指标...');
+[Z_Force_opt, Z_Torque_opt] = get_Z_matrix(params, B_opt);
+%% 3. 🌟 关键：拼装全局评价矩阵 (共 26 个方案)
+% 前13行是原布局，后13行是优化布局。放在同一个池子里评价尺度才统一！
+Z_Force_combined  = [Z_Force_orig;  Z_Force_opt];
+Z_Torque_combined = [Z_Torque_orig; Z_Torque_opt];
+
+%% 4. AHP 主观打分与联合综合评价
+G_AHP = [
+    1,    3,    5,    3;   % Jc
+   1/3,   1,    3,    1;   % Ja
+   1/5,  1/3,   1,   1/3;  % Jo
+   1/3,   1,    3,    1    % Jf
+];
+
+[F_Force_combined, ~]   = Comprehensive_Eval(Z_Force_combined, G_AHP);
+[F_Torque_combined, ~] = Comprehensive_Eval(Z_Torque_combined, G_AHP);
+
+%% 5. 拆分得分并进行对比分析
+% 拆分出原布局和优化布局的得分
+F_Force_orig = F_Force_combined(1:13);
+F_Force_opt  = F_Force_combined(14:26);
+
+F_Torque_orig = F_Torque_combined(1:13);
+F_Torque_opt  = F_Torque_combined(14:26);
+
+% --- 打印直观的对比结果 ---
+disp('================================================================');
+disp('   姿态控制(力矩) 综合健康度 Fi 对比 (统一基准下)');
+disp('================================================================');
+disp('状态编号     | 原布局 Fi   | 优化布局 Fi | 性能提升(%)');
+for i = 1:params.Num+1
+    if i == 1
+        state_str = '正常标况';
+    else
+        state_str = sprintf('推力器%02d故障', i-1);
+    end
+    
+    % 计算提升百分比
+    improvement = (F_Torque_opt(i) - F_Torque_orig(i)) / (F_Torque_orig(i) + 1e-6) * 100;
+    
+    fprintf('%-10s | %10.4f | %10.4f | %+8.2f%%\n', ...
+        state_str, F_Torque_orig(i), F_Torque_opt(i), improvement);
+end
+disp('================================================================');
+
+
+
 [J,Matrix_conf_opt] = Evaluation(params, B_opt);
 % B = params.B_all;
 % Matrix_conf = params.Matrix_conf;
@@ -55,7 +106,6 @@ for k = 1:N
             faulty_thrusters = randperm(params.Num, num_faults);
         end
     end
-
     if t >= Next_Control_Time
         % 初始和目标状态获取
         r = Y(1:3);
@@ -79,7 +129,7 @@ for k = 1:N
         int = int + sigma_err * params.T; 
         T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
         % 推力器调用策略
-        Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,faulty_thrusters);
+        Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,faulty_thrusters,params);
         % 更新时间
         Next_Control_Time = Next_Control_Time + params.T;
     end
@@ -108,27 +158,91 @@ toc;
 % 绘图
 Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_time);
 
+% --- 辅助封装函数 (为了主程序干净，把遍历13个状态封装成一个函数) ---
+function [Z_Force, Z_Torque] = get_Z_matrix(params, B_matrix)
+    Jc = zeros(params.Num + 1, 2);
+    Ja = zeros(params.Num + 1, 2);
+    Jo = zeros(params.Num + 1, 1);
+    Jf = zeros(params.Num + 1, 2);
+    
+    for idx = 1:params.Num+1
+        if idx == 1, eval_fault = []; else, eval_fault = idx - 1; end
+        [~, Jc(idx, :), ~, Ja(idx, :), Jo(idx, :), Jf(idx, :)] = Reconfig_eval(params, B_matrix, eval_fault);
+    end
+    Z_Force  = [Jc(:,1), Ja(:,1), Jo, Jf(:,1)];
+    Z_Torque = [Jc(:,2), Ja(:,2), Jo, Jf(:,2)];
+end
+function [F, W, U_ahp, V_entropy] = Comprehensive_Eval(Z, G_AHP)
+    [m, n] = size(Z);
+    
+    % 1. 规范化
+    X = zeros(m, n);
+    for j = 1:n
+        z_max = max(Z(:, j)); z_min = min(Z(:, j));
+        if z_max == z_min
+            X(:, j) = 1; 
+        else
+            X(:, j) = (Z(:, j) - z_min) / (z_max - z_min);
+        end
+    end
+    
+    % 2. AHP 主观权重
+    [V_eig, D_eig] = eig(G_AHP);
+    [~, idx] = max(diag(D_eig));
+    U_ahp = V_eig(:, idx);
+    U_ahp = U_ahp / sum(U_ahp); 
+    
+    % 3. 熵权法 客观权重
+    V_entropy = zeros(n, 1);
+    for j = 1:n
+        r = X(:, j) / sum(X(:, j));
+        r_valid = r(r > 0); 
+        E_j = -(1 / log(m)) * sum(r_valid .* log(r_valid));
+        V_entropy(j) = 1 - E_j; 
+    end
+    V_entropy = V_entropy / sum(V_entropy);
+    
+    % 4. 最小二乘综合权重
+    A = diag(sum(X.^2, 1)); 
+    B = zeros(n, 1);
+    for j = 1:n
+        B(j) = sum(0.5 * (U_ahp(j) + V_entropy(j)) * X(:, j).^2);
+    end
+    e = ones(n, 1); invA = inv(A);
+    W = invA * (B + ((1 - e' * invA * B) / (e' * invA * e)) * e);
+    
+    % 5. TOPSIS 计算综合得分 F
+    x_plus = max(X, [], 1);
+    x_minus = min(X, [], 1);
+    L = zeros(m, 1); D = zeros(m, 1); F = zeros(m, 1);
+    
+    for i = 1:m
+        L(i) = sqrt(sum(W' .* (X(i, :) - x_plus).^2));
+        D(i) = sqrt(sum(W' .* (X(i, :) - x_minus).^2));
+        F(i) = D(i) / (L(i) + D(i));
+    end
+end
+
 %% 辅助函数
 function [J,Matrix_conf_opt] = Evaluation(params, B_opt)
-    J = zeros((params.Num+1)*7,2);
+    J = zeros((params.Num+1)*6,2);
     Jc_opt = zeros(params.Num+1, 2);
     Ja_opt = zeros(params.Num+1, 2);
     Jo_opt = zeros(params.Num+1, 1);
-    Jf_opt = zeros(params.Num+1, 2);
+    Jf_opt = zeros(params.Num+1, 1);
     for idx = 1:params.Num+1
         if idx == 1
-            eval_fault = []; % 标况
+            eval_fault = [];% 标况
         else
-            eval_fault = idx - 1; % 单个推力器故障
+            eval_fault = idx - 1;% 单个推力器故障
         end
         [Matrix_conf_opt,Jc_opt(idx, :),~,Ja_opt(idx, :),Jo_opt(idx, :),Jf_opt(idx, :)] = Reconfig_eval(params, B_opt, eval_fault);
-        J((idx-1)*7+1, :) = [params.Jc(idx,1),Jc_opt(idx,1)];
-        J((idx-1)*7+2, :) = [params.Jc(idx,2),Jc_opt(idx,2)];
-        J((idx-1)*7+3, :) = [params.Ja(idx,1),Ja_opt(idx,1)];
-        J((idx-1)*7+4, :) = [params.Ja(idx,2),Ja_opt(idx,2)];
-        J((idx-1)*7+5, :) = [params.Jo(idx),Jo_opt(idx)];
-        J((idx-1)*7+6, :) = [params.Jf(idx,1),Jf_opt(idx,1)];
-        J((idx-1)*7+7, :) = [params.Jf(idx,2),Jf_opt(idx,2)];
+        J((idx-1)*6+1, :) = [params.Jc(idx,1),Jc_opt(idx,1)];
+        J((idx-1)*6+2, :) = [params.Jc(idx,2),Jc_opt(idx,2)];
+        J((idx-1)*6+3, :) = [params.Ja(idx,1),Ja_opt(idx,1)];
+        J((idx-1)*6+4, :) = [params.Ja(idx,2),Ja_opt(idx,2)];
+        J((idx-1)*6+5, :) = [params.Jo(idx),Jo_opt(idx)];
+        J((idx-1)*6+6, :) = [params.Jf(idx),Jf_opt(idx)];
     end
 end
 

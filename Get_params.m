@@ -14,14 +14,14 @@ function params = Get_params()
     params.Jc = zeros(params.Num+1, 2);
     params.Ja = zeros(params.Num+1, 2);
     params.Jo = zeros(params.Num+1, 1);
-    params.Jf = zeros(params.Num+1, 2);
+    params.Jf = zeros(params.Num+1, 1);
     for falut_idx = 1:params.Num+1
         if falut_idx == 1
-            eval_fault = []; % 标况
+            eval_fault = [];
         else
-            eval_fault = falut_idx - 1; % 单个推力器故障
+            eval_fault = falut_idx - 1;
         end
-        [params.Matrix_conf,params.Jc(falut_idx, :),~,params.Ja(falut_idx, :),params.Jo(falut_idx),params.Jf(falut_idx,:)] = Reconfig_eval(params,params.B_all,eval_fault);
+        [params.Matrix_conf,params.Jc(falut_idx, :),~,params.Ja(falut_idx, :),params.Jo(falut_idx),params.Jf(falut_idx)] = Reconfig_eval(params,params.B_all,eval_fault);
     end
 
     %% 推力器布局设置

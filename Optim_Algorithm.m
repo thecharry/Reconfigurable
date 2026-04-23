@@ -92,7 +92,7 @@ function J = Optimal_config(x,params)
         else
             eval_fault = i - 1;
         end
-        [~, Jc_eval, ~, Ja_eval, Jo_eval] = Reconfig_eval(params, B_all, eval_fault);
+        % [~, Jc_eval, ~, Ja_eval, Jo_eval] = Reconfig_eval(params, B_all, eval_fault);
         v_Jc1 = max(0, params.Jc(i,1) - Jc_eval(1));
         v_Jc2 = max(0, params.Jc(i,2) - Jc_eval(2));
         v_Ja1 = max(0, params.Ja(i,1) - Ja_eval(1));
