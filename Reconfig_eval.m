@@ -1,5 +1,5 @@
 %% 可重构评价指标函数
-function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf,F,W] = Reconfig_eval(params, Ball, faulty_thrusters)
+function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, faulty_thrusters)
     Matrix_conf = params.F_max * Ball;
     healthy_idx = setdiff(1:params.Num, faulty_thrusters);% 剔除所有故障推力器
     Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
@@ -18,64 +18,6 @@ function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf,F,W] = Reconfig_eval(params, Ball, f
     Jo = Diagnosability(Matrix_conf_H);
     % 燃料效能指标
     Jf = Efficiency(Matrix_conf, faulty_thrusters, params);
-
-    % % AHP判断矩阵G(Jc最重要，Ja和Jf其次且同等重要，Jo最次)
-    % G_AHP = [1,   3,   5,   3;% Jc
-    %          1/3, 1,   3,   1;% Ja
-    %          1/5, 1/3, 1, 1/3;% Jo
-    %          1/3, 1,   3,  1];% Jf
-    % Z_Force  = [params.Jc(:,1), params.Ja(:,1), params.Jo, params.Jf;Jc_Force(:,1), Ja_Force(:,1), Jo, Jf];% 轨道控制评价矩阵
-    % Z_Torque = [params.Jc(:,2), params.Ja(:,2), params.Jo, params.Jf;Jc_Torque(:,2), Ja_Torque(:,2), Jo, Jf];% 姿态控制评价矩阵
-    % [F_Force, W_Force] = Evaluation(Z_Force, G_AHP);
-    % [F_Torque, W_Torque] = Evaluation(Z_Torque, G_AHP);
-    % F = [F_Force, F_Torque];
-    % W = [W_Force, W_Torque];
-    % 
-    % %% 综合评价函数
-    % function [F, W, U_ahp, V_entropy] = Evaluation(Z, G_AHP)
-    %     [m, n] = size(Z);
-    %     % 规范化
-    %     X = zeros(m, n);
-    %     for j = 1:n
-    %         z_max = max(Z(:, j)); z_min = min(Z(:, j));
-    %         if z_max == z_min
-    %             X(:, j) = 1;
-    %         else
-    %             X(:, j) = (Z(:, j) - z_min) / (z_max - z_min);
-    %         end
-    %     end
-    %     % AHP主观权重
-    %     [V_eig, D_eig] = eig(G_AHP);
-    %     [~, idx] = max(diag(D_eig));
-    %     U_ahp = V_eig(:, idx);
-    %     U_ahp = U_ahp / sum(U_ahp);
-    %     % 熵权法客观权重
-    %     V_entropy = zeros(n, 1);
-    %     for j = 1:n
-    %         r = X(:, j) / sum(X(:, j));
-    %         r_valid = r(r > 0);
-    %         E_j = -(1 / log(m)) * sum(r_valid .* log(r_valid));
-    %         V_entropy(j) = 1 - E_j;
-    %     end
-    %     V_entropy = V_entropy / sum(V_entropy);
-    %     % 最小二乘综合权重
-    %     A = diag(sum(X.^2, 1));
-    %     B = zeros(n, 1);
-    %     for j = 1:n
-    %         B(j) = sum(0.5 * (U_ahp(j) + V_entropy(j)) * X(:, j).^2);
-    %     end
-    %     e = ones(n, 1);
-    %     W = A \ (B + ((1 - e' * inv(A) * B) / (e' * inv(A) * e)) * e);
-    %     % TOPSIS计算综合得分 F
-    %     x_plus = max(X, [], 1);
-    %     x_minus = min(X, [], 1);
-    %     L = zeros(m, 1); D = zeros(m, 1); F = zeros(m, 1);
-    %     for i = 1:m
-    %         L(i) = sqrt(sum(W' .* (X(i, :) - x_plus).^2));
-    %         D(i) = sqrt(sum(W' .* (X(i, :) - x_minus).^2));
-    %         F(i) = D(i) / (L(i) + D(i));
-    %     end
-    % end
     
     %% 基于推力器方向分布的可诊断性指标Jo
     function Jo = Diagnosability(Matrix_sub)
@@ -124,7 +66,7 @@ function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf,F,W] = Reconfig_eval(params, Ball, f
         end
         Ja = min(J_axes);
         
-        %% 寻找轴向上最小顶点
+        % 寻找轴向上最小顶点
         function D_min = Min_steps(Matrix_sub, t)
             N = size(Matrix_sub, 2);
             if N == 0
@@ -166,7 +108,7 @@ function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf,F,W] = Reconfig_eval(params, Ball, f
         avg = total / N;
         Jf = 1 / (1 + avg);
 
-        %% 斐波那契球面均匀采样
+        % 斐波那契球面均匀采样
         function U = FibonacciSphere(N, phase_shift)
             phi_golden = (1 + sqrt(5)) / 2;
             idx = 0:(N - 1);

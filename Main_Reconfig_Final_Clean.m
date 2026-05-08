@@ -1,24 +1,8 @@
-%% Main_Reconfig_Final_Clean.m
-% 可重构推力器布局综合评价 + 闭环仿真对比 + 结果绘图
-% 依赖外部函数/文件：
-%   Get_params.m
-%   Reconfig_eval.m
-%   Thruster_invocation.m
-%   Optim_config_data1.mat
-%   CORA/几何工具箱中的 zonotope/polytope/plot（若绘制包络图）
-
 clear; clc; close all;
 
-%% =========================================================
-% 0. 读取参数与优化布局
-% ==========================================================
 params = Get_params();
 load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
 
-%% =========================================================
-% 1. 布局层底层指标矩阵
-%    指标顺序统一为：[Jc, Ja, Jf, Jo]
-% ==========================================================
 disp('正在计算 原布局 底层指标...');
 [Z_Force_orig, Z_Torque_orig, Z_Total_orig, StateNames] = get_Z_matrix(params, params.B_all);
 
@@ -148,11 +132,6 @@ function sim_cfg = Default_Sim_Config(params)
 end
 
 function [Z_Force, Z_Torque, Z_Total, StateNames] = get_Z_matrix(params, B_matrix)
-% 指标顺序：
-%   Z_Force  = [Jc_F,   Ja_F,   Jf, Jo]
-%   Z_Torque = [Jc_T,   Ja_T,   Jf, Jo]
-%   Z_Total  = [Jc_all, Ja_all, Jf, Jo]
-
     nState = params.Num + 1;
 
     Jc = zeros(nState, 2);
