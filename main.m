@@ -4,16 +4,14 @@ clear; clc; close all;
 params = Get_params();
 load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
 
-% 闭环仿真
-[log_orig, Perf_orig, fault_orig] = ClosedLoop(params, params.B_all, sim);
-[log_opt, Perf_opt, fault_opt] = ClosedLoop(params, B_opt, sim);
+log_orig = closedloop(params, params.B_all);
+log_opt = closedloop(params, B_opt);
 
+Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_time);
 
-
-%% 闭环仿真
-function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
-    % 初始化
-    Matrix_conf = params.F_max * B;
+%% 闭环仿真函数
+function log = closedloop(params, B)
+    % 初始化 
     r0 = [0;15;55];
     rt = [5;25;35];
     v0 = [0; 0; 0];
@@ -23,11 +21,18 @@ function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
     omega0 = [0;0;0];
     Y = [r0; v0; sigma0; omega0];
 
-    Next_Control_Time = 0;
+    next_ctrl = 0;
     T_sim = 2000;% 仿真时间
     dt = 0.005;
     N = floor(T_sim / dt);
+    max_ctrl = ceil(T_sim / params.T) + 10;
     Prop_Final = zeros(params.Num, 1);
+    Matrix_conf = params.F_max * B;
+    faulty_thrusters = [];% 空数组表示推力器无故障
+    % falut_time = rand() * T_sim;
+    falut_time = 0.5*T_sim;
+    fault_trig = false;% 故障标志位
+    num_faults = 1;% 允许的最大同时故障台数
 
     int = [0;0;0];
     Kp_pos = 10;
@@ -36,25 +41,18 @@ function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
     Kd_att = 3200 * eye(3);
     Ki_att = 20 * eye(3);
 
-    faulty_thrusters = [];% 空数组表示推力器无故障
-    % falut_time = rand() * T_sim;
-    falut_time = 0.5*T_sim;
-    fault_trig = false;% 增加标志位，防止故障被重复注入
-    num_faults = 1; % 允许的最大同时故障台数
-
     log.Y_euler = zeros(3, N);
     log.Time = zeros(1, N);
     log.R = zeros(3, N);
     log.V = zeros(3, N);
     log.E = zeros(3, N);
     log.O = zeros(3, N);
-    log.Y = zeros(params.Num, N);
-    log.Pulse_Widths = zeros(params.Num, N);
-    log.Total_Pulse = 0;        % 整个任务累计总喷气时长
-    log.Control_Count = 0;      % 控制更新次数
-    max_ctrl = ceil(T_sim / params.T) + 10;
-    log.Pulse_Command_History = zeros(params.Num, max_ctrl);
+    log.Y = zeros(12, N);
+    log.Pulse_Widths = zeros(params.Num, N);% 
+    log.Pulse_History = zeros(params.Num, max_ctrl);
     log.Control_Time = zeros(1, max_ctrl);
+    log.Total_Pulse = 0;% 整个任务累计总喷气时长
+    log.Control_Count = 0;% 控制更新次数
 
     tic;
     for k = 1:N
@@ -68,7 +66,7 @@ function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
                 faulty_thrusters = 3;
             end
         end
-        if t >= Next_Control_Time
+        if t >= next_ctrl
             % 初始和目标状态获取
             r = Y(1:3);
             v = Y(4:6);
@@ -92,17 +90,15 @@ function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
             Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,faulty_thrusters,params);
-
             % 累计真实总喷气时长
             log.Total_Pulse = log.Total_Pulse + sum(Prop_Final);
             log.Control_Count = log.Control_Count + 1;
-            log.Pulse_Command_History(:, log.Control_Count) = Prop_Final;
+            log.Pulse_History(:, log.Control_Count) = Prop_Final;
             log.Control_Time(log.Control_Count) = t;
-
             % 更新时间
-            Next_Control_Time = Next_Control_Time + params.T;
+            next_ctrl = next_ctrl + params.T;
         end
-        time_in_cycle = t - (Next_Control_Time - params.T);
+        time_in_cycle = t - (next_ctrl - params.T);
         u_applied = params.F_max * (time_in_cycle < Prop_Final);
         % 实际力和力矩
         W_total = B * u_applied;
@@ -112,30 +108,21 @@ function [log, Perf, fault_info] = ClosedLoop(params, B, sim)
         dY = Spacecraft_dynamics(Y, params);
         Y = Y + dY * dt;
         % 数据记录
-        log.Y_euler(1:3,k) = MRPs_to_Euler(Y(7:9,:));
+        log.Y_euler(:,k) = MRPs_to_Euler(Y(7:9,:));
         log.Time(k) = t;
-        log.R(1:3,k) = r_d;
-        log.V(1:3,k) = v_d;
-        log.E(1:3,k) = euler_d;
-        log.O(1:3,k) = omega_d;
-        log.Y(1:12,k) = Y;
+        log.R(:,k) = r_d;
+        log.V(:,k) = v_d;
+        log.E(:,k) = euler_d;
+        log.O(:,k) = omega_d;
+        log.Y(:,k) = Y;
         log.Pulse_Widths(1:12,k) = Prop_Final;
-        % log.Pulse_Widths(1:12,k) = u_applied;
     end
     toc;
-
-    log.Pulse_Command_History = log.Pulse_Command_History(:, 1:log.Control_Count);
+    log.Pulse_History = log.Pulse_History(:, 1:log.Control_Count);
     log.Control_Time = log.Control_Time(1:log.Control_Count);
-
-    Perf = Evaluate_ClosedLoop_Performance(log);
-
-    fault_info.fault_time = fault_time;
-    fault_info.faulty_thrusters = faulty_thrusters;
 end
 
 % 绘图
-Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_time);
-Plot_Jo_FullVector(params, params.B_all, B_opt, faulty_thrusters);
 function Plot_Jo_FullVector(params, B_orig, B_opt, faulty_thrusters)
 % ============================================================
 % Jo可视化：6维控制向量方向 → PCA降维到3D
@@ -200,51 +187,51 @@ function Plot_Vector3D(V, idx, title_str)
     view(35,25);
 end
 
-function Perf = Evaluate_ClosedLoop_Performance(log)
-    % ---------- 总喷气时长 ----------
-    if isfield(log, 'Total_Pulse')
-        Perf.Total_Pulse = log.Total_Pulse;
-    else
-        Perf.Total_Pulse = NaN;
-    end
+% function Perf = Evaluate_ClosedLoop_Performance(log)
+%     % 总喷气时长
+%     if isfield(log, 'Total_Pulse')
+%         Perf.Total_Pulse = log.Total_Pulse;
+%     else
+%         Perf.Total_Pulse = NaN;
+%     end
     
-    if isfield(log, 'Control_Count') && log.Control_Count > 0
-        Perf.Avg_Pulse_Per_Control = log.Total_Pulse / log.Control_Count;
-    else
-        Perf.Avg_Pulse_Per_Control = NaN;
-    end
+%     if isfield(log, 'Control_Count') && log.Control_Count > 0
+%         Perf.Avg_Pulse_Per_Control = log.Total_Pulse / log.Control_Count;
+%     else
+%         Perf.Avg_Pulse_Per_Control = NaN;
+%     end
     
-    % ---------- 位置误差 ----------
-    r_real = log.Y(1:3, :);
-    r_ref  = log.R;
+%     % 位置误差
+%     r_real = log.Y(1:3, :);
+%     r_ref  = log.R;
     
-    pos_err = r_ref - r_real;
-    pos_err_norm = vecnorm(pos_err, 2, 1);
+%     pos_err = r_ref - r_real;
+%     pos_err_norm = vecnorm(pos_err, 2, 1);
     
-    Perf.Pos_RMSE = sqrt(mean(pos_err_norm.^2));
-    Perf.Pos_MAE  = mean(pos_err_norm);
+%     Perf.Pos_RMSE = sqrt(mean(pos_err_norm.^2));
+%     Perf.Pos_MAE  = mean(pos_err_norm);
     
-    % ---------- 姿态误差 ----------
-    euler_real = log.Y_euler;
-    euler_ref  = log.E;
+%     % 姿态误差
+%     euler_real = log.Y_euler;
+%     euler_ref  = log.E;
     
-    att_err = euler_ref - euler_real;
-    att_err = wrapToPi_local(att_err);
-    att_err_norm = vecnorm(att_err, 2, 1);
+%     att_err = euler_ref - euler_real;
+%     att_err = wrapToPi_local(att_err);
+%     att_err_norm = vecnorm(att_err, 2, 1);
     
-    Perf.Att_RMSE = sqrt(mean(att_err_norm.^2));
-    Perf.Att_MAE  = mean(att_err_norm);
+%     Perf.Att_RMSE = sqrt(mean(att_err_norm.^2));
+%     Perf.Att_MAE  = mean(att_err_norm);
     
-    % ---------- 控制精度得分 ----------
-    Pos_Score = 1 / (1 + Perf.Pos_RMSE);
-    Att_Score = 1 / (1 + Perf.Att_RMSE);
+%     % 控制精度得分
+%     Pos_Score = 1 / (1 + Perf.Pos_RMSE);
+%     Att_Score = 1 / (1 + Perf.Att_RMSE);
     
-    Perf.Precision_Score = 0.5 * Pos_Score + 0.5 * Att_Score;
+%     Perf.Precision_Score = 0.5 * Pos_Score + 0.5 * Att_Score;
 
-    function x = wrapToPi_local(x)
-        x = mod(x + pi, 2*pi) - pi;
-    end
-end
+%     function x = wrapToPi_local(x)
+%         x = mod(x + pi, 2*pi) - pi;
+%     end
+% end
 
 %% 原始指标矩阵
 function [Z_Force, Z_Torque, Z_Total, StateNames] = get_Z_matrix(params, B_matrix)
