@@ -24,7 +24,6 @@ function Prop_Final = Thruster_invocation(v_cmd1,v_cmd2,Matrix_sub,faulty_thrust
             if ~isempty(faulty_thrusters)
                 valid_idx1 = setdiff(valid_idx1, faulty_thrusters);
             end
-    
             if isempty(valid_idx1)
                 continue;% 对应方向无可用推力器
             end

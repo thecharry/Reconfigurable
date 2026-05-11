@@ -604,8 +604,11 @@ function Plot_Jo_FullVector(params, B_orig, B_opt, faulty_thrusters)
     P_opt  = U_opt(:,1:3)'  * K_opt;
 
     figure('Name','Jo可诊断性：6维控制向量方向（PCA投影）','Color','w','Position',[100 100 1300 550]);
-    subplot(1,2,1); Plot_Vector3D(P_orig, idx_orig, '原布局控制向量方向');
-    subplot(1,2,2); Plot_Vector3D(P_opt,  idx_opt,  '优化布局控制向量方向');
+    % subplot(1,2,1); 
+    % Plot_Vector3D(P_orig, idx_orig, '原布局控制向量方向');
+    Plot_Jo_6D_Direct(K_orig, K_opt, idx_orig, idx_opt)
+    % subplot(1,2,2); 
+    % Plot_Vector3D(P_opt,  idx_opt,  '优化布局控制向量方向');
 end
 
 function Plot_Vector3D(V, idx, title_str)
@@ -619,6 +622,54 @@ function Plot_Vector3D(V, idx, title_str)
     end
     xlabel('主方向1'); ylabel('主方向2'); zlabel('主方向3');
     title(title_str); view(35,25);
+end
+function Plot_Jo_6D_Direct(K_orig, K_opt, idx_orig, idx_opt)
+    % 确保输入已经是归一化的单位 6 维向量 (你的原代码已经做了这一步)
+    
+    % ==========================================
+    % 1. 平行坐标图 (Parallel Coordinates Plot)
+    % ==========================================
+    figure('Name','6维控制向量：平行坐标图','Color','w','Position',[150 150 1000 400]);
+    
+    % 构造维度标签
+    dimLabels = {'Fx', 'Fy', 'Fz', 'Mx', 'My', 'Mz'}; 
+    
+    subplot(1,2,1);
+    parallelplot(K_orig', 'CoordinateTickLabels', dimLabels);
+    title('原布局：6维分量分布');
+    
+    subplot(1,2,2);
+    parallelplot(K_opt', 'CoordinateTickLabels', dimLabels);
+    title('优化布局：6维分量分布');
+    
+    % ==========================================
+    % 2. 推进器两两之间的夹角热力图 (可诊断性核心)
+    % ==========================================
+    % 由于 K 已经是单位向量，矩阵转置相乘 K' * K 就是两两之间的余弦相似度
+    cos_orig = K_orig' * K_orig;
+    cos_opt  = K_opt'  * K_opt;
+    
+    % 防止浮点数误差导致越界，将其限制在 [-1, 1] 内，然后算反余弦得到角度
+    angle_orig = acos(min(max(cos_orig, -1), 1)) * 180 / pi;
+    angle_opt  = acos(min(max(cos_opt,  -1), 1)) * 180 / pi;
+    
+    figure('Name','可诊断性：推进器方向夹角热力图','Color','w','Position',[200 200 1000 450]);
+    
+    subplot(1,2,1);
+    h1 = heatmap(idx_orig, idx_orig, angle_orig);
+    h1.Title = '原布局：向量夹角(度)';
+    h1.XLabel = '推进器编号'; h1.YLabel = '推进器编号';
+    colormap(h1, jet); % 使用彩虹色带，更容易看出角度大小差异
+    
+    subplot(1,2,2);
+    h2 = heatmap(idx_opt, idx_opt, angle_opt);
+    h2.Title = '优化布局：向量夹角(度)';
+    h2.XLabel = '推进器编号'; h2.YLabel = '推进器编号';
+    colormap(h2, jet);
+    
+    % 对于可诊断性，我们要尽量避免出现夹角接近 0 或 180 的情况
+    % 在热力图上，如果优化后的对角线以外区域，深蓝色(0度)和深红色(180度)变少了，
+    % 就直接证明了优化布局的可诊断性更好！
 end
 
 function Plot_Index_Compare_AllStates(Z_orig, Z_opt, F_orig, F_opt)

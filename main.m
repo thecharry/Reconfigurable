@@ -7,7 +7,7 @@ load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
 log_orig = closedloop(params, params.B_all);
 log_opt = closedloop(params, B_opt);
 
-Plot_results(faulty_thrusters, J, log, params, B_opt, r_opt, B,falut_time);
+Plot_results(log_opt, params, B_opt, r_opt);
 
 %% 闭环仿真函数
 function log = closedloop(params, B)
@@ -28,9 +28,6 @@ function log = closedloop(params, B)
     max_ctrl = ceil(T_sim / params.T) + 10;
     Prop_Final = zeros(params.Num, 1);
     Matrix_conf = params.F_max * B;
-    faulty_thrusters = [];% 空数组表示推力器无故障
-    % falut_time = rand() * T_sim;
-    falut_time = 0.5*T_sim;
     fault_trig = false;% 故障标志位
     num_faults = 1;% 允许的最大同时故障台数
 
@@ -53,17 +50,20 @@ function log = closedloop(params, B)
     log.Control_Time = zeros(1, max_ctrl);
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
+    log.faulty_thrusters = [];% 空数组表示推力器无故障
+    % log.falut_time = rand() * T_sim;
+    log.falut_time = 0.5*T_sim;
 
     tic;
     for k = 1:N
         t = (k-1) * dt;
-        if t >= falut_time && ~fault_trig
+        if t >= log.falut_time && ~fault_trig
             fault_trig = true;
             if num_faults == 0
-                faulty_thrusters = [];% 标况
+                log.faulty_thrusters = [];% 标况
             else
                 % faulty_thrusters = randperm(params.Num, num_faults);
-                faulty_thrusters = 3;
+                log.faulty_thrusters = 3;
             end
         end
         if t >= next_ctrl
@@ -89,7 +89,7 @@ function log = closedloop(params, B)
             int = int + sigma_err * params.T;
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
-            Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,faulty_thrusters,params);
+            Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,log.faulty_thrusters,params);
             % 累计真实总喷气时长
             log.Total_Pulse = log.Total_Pulse + sum(Prop_Final);
             log.Control_Count = log.Control_Count + 1;
@@ -122,70 +122,7 @@ function log = closedloop(params, B)
     log.Control_Time = log.Control_Time(1:log.Control_Count);
 end
 
-% 绘图
-function Plot_Jo_FullVector(params, B_orig, B_opt, faulty_thrusters)
-% ============================================================
-% Jo可视化：6维控制向量方向 → PCA降维到3D
-% ============================================================
 
-    if nargin < 4
-        faulty_thrusters = [];
-    end
-
-    % ===== 获取6维控制向量 =====
-    K_orig = params.F_max * B_orig;
-    K_opt  = params.F_max * B_opt;
-
-    idx_orig = setdiff(1:params.Num, faulty_thrusters);
-    idx_opt  = setdiff(1:params.Num, faulty_thrusters);
-
-    K_orig = K_orig(:, idx_orig);
-    K_opt  = K_opt(:, idx_opt);
-
-    % ===== 归一化（只看方向）=====
-    K_orig = K_orig ./ (vecnorm(K_orig,2,1) + 1e-12);
-    K_opt  = K_opt  ./ (vecnorm(K_opt,2,1) + 1e-12);
-
-    % ===== PCA降维 =====
-    [U_orig,~,~] = svd(K_orig,'econ');
-    [U_opt,~,~]  = svd(K_opt,'econ');
-
-    % 取前三个主方向
-    P_orig = U_orig(:,1:3)' * K_orig;
-    P_opt  = U_opt(:,1:3)'  * K_opt;
-
-    % ===== 绘图 =====
-    figure('Name','Jo可诊断性：6维向量方向（PCA投影）','Color','w','Position',[100 100 1300 550]);
-
-    subplot(1,2,1);
-    Plot_Vector3D(P_orig, idx_orig, '原布局控制向量方向');
-
-    subplot(1,2,2);
-    Plot_Vector3D(P_opt, idx_opt, '优化布局控制向量方向');
-end
-function Plot_Vector3D(V, idx, title_str)
-
-    hold on; grid on; axis equal;
-
-    N = size(V,2);
-    colors = lines(N);
-
-    for i = 1:N
-        quiver3(0,0,0, V(1,i), V(2,i), V(3,i), ...
-            0, 'LineWidth',1.8,'Color',colors(i,:));
-
-        text(1.1*V(1,i),1.1*V(2,i),1.1*V(3,i), ...
-            sprintf('%d', idx(i)), ...
-            'FontSize',10,'FontWeight','bold');
-    end
-
-    xlabel('X');
-    ylabel('Y');
-    zlabel('Z');
-
-    title(title_str);
-    view(35,25);
-end
 
 % function Perf = Evaluate_ClosedLoop_Performance(log)
 %     % 总喷气时长
