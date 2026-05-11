@@ -7,7 +7,7 @@ load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
 log_orig = closedloop(params, params.B_all);
 log_opt = closedloop(params, B_opt);
 
-Plot_results(log_opt, params, B_opt, r_opt);
+Plot_results(log_orig, log_opt, params, B_opt, r_opt);
 
 %% 闭环仿真函数
 function log = closedloop(params, B)

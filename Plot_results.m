@@ -1,5 +1,5 @@
 %% 仿真系统结果
-function Plot_results(log, params, B_opt, r_opt)
+function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     %% 推力器布局优化前后对比
     figure('Name', '推力器布局优化前后对比', 'Color','w');
     subplot(1,2,1);Plot_place(params.r_all, params.B_all, '原布局示意图');
@@ -28,18 +28,18 @@ function Plot_results(log, params, B_opt, r_opt)
         %     text(r(1,j), r(2,j), r(3,j) + 0.15, label_str, 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
         % end
         % 正常推力器用红色实线
-        healthy_idx = setdiff(1:params.Num, log.faulty_thrusters);
+        healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
         plot3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
               'o','MarkerSize',7,'MarkerFaceColor',[0.2 0.7 1],'MarkerEdgeColor','k');
         quiver3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
                 B(1,healthy_idx), B(2,healthy_idx), B(3,healthy_idx), ...
                 0.45,'r','LineWidth',1.4);
         % 故障推力器用灰色虚线
-        if ~isempty(log.faulty_thrusters)
-            plot3(r(1, log.faulty_thrusters), r(2, log.faulty_thrusters), r(3, log.faulty_thrusters), ...
+        if ~isempty(log_orig.faulty_thrusters)
+            plot3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
                   'o','MarkerSize',7,'MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');
-            quiver3(r(1, log.faulty_thrusters), r(2, log.faulty_thrusters), r(3, log.faulty_thrusters), ...
-                    B(1, log.faulty_thrusters), B(2, log.faulty_thrusters), B(3, log.faulty_thrusters), ...
+            quiver3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
+                    B(1, log_orig.faulty_thrusters), B(2, log_orig.faulty_thrusters), B(3, log_orig.faulty_thrusters), ...
                     0.45, 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5, 'LineStyle', '--');
         end
         % 推力器编号
@@ -54,11 +54,11 @@ function Plot_results(log, params, B_opt, r_opt)
         view(3);
     end
 
-    %% 重构评价指标优化前后对比
+    %% 评价指标优化前后对比
     figure('Name', '重构评价指标优化前后对比', 'Color','w');
     Matrix_orig = params.F_max * params.B_all;
     Matrix_opt  = params.F_max * B_opt;
-    healthy_idx = setdiff(1:params.Num, log.faulty_thrusters);
+    healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
     M_orig = Matrix_orig(:, healthy_idx);
     M_opt  = Matrix_opt(:, healthy_idx);
     % 连续域的Zonotope包络
@@ -109,61 +109,68 @@ function Plot_results(log, params, B_opt, r_opt)
     colormap(h2, jet);
     
     %% 闭环位置与姿态响应对比
-    figure('Name', '闭环位置与姿态响应对比', 'Color','w');
-    subplot(2,4,1);hold on;grid on;
-    Plot_Compare(log.Time, log.R(1:3,:), log.Y(1:3,:), '位置 (m)');
-    subplot(2,4,2);hold on;grid on;
-    Plot_Compare(log.Time, log.V(1:3,:), log.Y(4:6,:), '速度 (m/s)');
-    subplot(2,4,3);hold on;grid on;
-    Plot_Compare(log.Time, log.E(1:3,:), log.Y_euler(1:3,:), '欧拉角 (rad)');
-    subplot(2,4,4);hold on;grid on;
-    Plot_Compare(log.Time, log.O(1:3,:), log.Y(10:12,:), '角速度 (rad/s)');
-    subplot(2,4,5);hold on;grid on;
-    Plot_Compare(log.Time, log.Y(1:3,:)-log.R(1:3,:),'0', '位置误差 (m)');
-    subplot(2,4,6);hold on;grid on;
-    Plot_Compare(log.Time, log.Y(4:6,:)-log.V(1:3,:),'0', '速度误差 (m/s)');
-    subplot(2,4,7);hold on;grid on;
-    Plot_Compare(log.Time, log.Y_euler(1:3,:)-log.E(1:3,:),'0', '欧拉角误差 (rad)');
-    subplot(2,4,8);hold on;grid on;
-    Plot_Compare(log.Time, log.Y(10:12,:)-log.O(1:3,:),'0', '角速度误差 (rad/s)');
+    figure('Name', '闭环位置与姿态响应对比','Color','w');
+    subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.fault_time);
+    subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.fault_time);
+    function Plot_3Axis(t, ref, y_orig, y_opt, title_str, unit_str, fault_time)
+        hold on; grid on;
+        colors = lines(3);
+        for ii = 1:3
+            plot(t, ref(ii,:), '--', 'Color', colors(ii,:), 'LineWidth',0.9);
+            plot(t, y_orig(ii,:), '-',  'Color', colors(ii,:), 'LineWidth',1.1);
+            plot(t, y_opt(ii,:),  ':',  'Color', colors(ii,:), 'LineWidth',1.6);
+        end
+        xline(fault_time,'--r');
+        title(title_str); xlabel('t(s)'); ylabel(unit_str);
+        legend('ref','orig','opt');
+    end
+    % 误差范数
+    pos_err_orig = log_orig.Y(1:3,:) - log_orig.R;
+    pos_err_opt  = log_opt.Y(1:3,:)  - log_opt.R;
+    att_err_orig = mod((log_orig.Y_euler - log_orig.E) + pi, 2*pi) - pi;
+    att_err_opt  = mod((log_opt.Y_euler - log_opt.E) + pi, 2*pi) - pi;
+    subplot(2,2,3); hold on; grid on;
+    plot(log_orig.Time, vecnorm(pos_err_orig,2,1), 'LineWidth',1.2);
+    plot(log_orig.Time, vecnorm(pos_err_opt,2,1), 'LineWidth',1.2);
+    xline(log_orig.fault_time,'--r');
+    title('位置误差范数'); xlabel('t(s)'); ylabel('||e_r||(m)'); legend('原布局','优化布局');
+    subplot(2,2,4); hold on; grid on;
+    plot(log_orig.Time, vecnorm(att_err_orig,2,1), 'LineWidth',1.2);
+    plot(log_orig.Time, vecnorm(att_err_opt,2,1), 'LineWidth',1.2);
+    xline(log_orig.fault_time,'--r');
+    title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_\euler||(rad)'); legend('原布局','优化布局');
 
-    figure('Name', '推力器控制脉宽');
+    %% 推力器控制脉宽对比
+    figure('Name', '各推力器脉宽','Color','w');
     for i = 1:params.Num
-        subplot(3, 4, i);plot(log.Time, log.Pulse_Widths(i, :));
-        title(['推力器 ' num2str(i)]);xlabel('时间 (s)');ylabel('脉宽 (s)');
+        subplot(3, 4, i);plot(log_orig.Time, log_orig.Pulse_Widths(i, :));
+        title(['推力器 ' num2str(i)]);xlabel('时间(s)');ylabel('脉宽(s)');
         grid on;hold on;
-        xline(log.falut_time, '--r');
+        xline(log_orig.fault_time, '--r');
         hold off;
     end
-
-    % 绘图函数(内部)
-    function Plot_Compare(time, Data_exp, Data_act, title_str)
-        colors = ["#0072BD", "#D95319", "#77AC30"];
-        hold on; grid on;
-        p_exp = gobjects(3, 1);
-        p_act = gobjects(3, 1);
-        if Data_act ~= '0'
-            for j = 1:3
-                p_exp(j) = plot(time, Data_exp(j, :), '--', 'Color', colors(j));
-                p_act(j) = plot(time, Data_act(j, :), '-', 'Color', colors(j));
-            end
-        else
-            for j = 1:3
-                p_exp(j) = plot(time, Data_exp(j, :), '-', 'Color', colors(j));
-            end
-        end
-        title(title_str);
-        xline(log.falut_time, '--r');
-    end
-
+    % 总喷气时长对比
+    figure('Name','总喷气时长对比','Color','w');
+    subplot(3,1,1); hold on; grid on;
+    bar(1:2, [log_orig.Total_Pulse, log_opt.Total_Pulse]);xticks(1:2);xticklabels({'原布局','优化布局'});
+    ylabel('总喷气时长(s)'); title('全任务总喷气时长对比'); ylim([0, max(data)*1.2 + eps]);
+    subplot(3,1,2); hold on; grid on;
+    per_orig = sum(log_orig.Pulse_History, 2);
+    per_opt  = sum(log_opt.Pulse_History, 2);
+    bar(1:params.Num, [per_orig, per_opt], 'grouped');
+    xlabel('推力器编号'); ylabel('累计脉宽(s)'); title('各推力器累计脉宽对比');legend('原布局','优化布局');
+    subplot(3,1,3); hold on; grid on;
+    plot(log_orig.Control_Time, sum(log_orig.Pulse_History,1), 'LineWidth',1.0);
+    plot(log_opt.Control_Time, sum(log_opt.Pulse_History,1), 'LineWidth',1.0);
+    xline(log_orig.fault_time,'--r');
+    xlabel('时间(s)'); ylabel('当前控制周期总脉宽(s)'); title('控制周期总脉宽变化');legend('原布局','优化布局');
    
-
-    %% 分配策略和评价指标控制台输出
+    %% 仿真结果数据输出
     fprintf('\n');
     if num_faults == 0
         fprintf('======================== 推力器标况下 ========================\n');
     else
-        fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log.faulty_thrusters));
+        fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faulty_thrusters));
     end
 
     fprintf('推力器按轴分配策略\n');
@@ -175,8 +182,8 @@ function Plot_results(log, params, B_opt, r_opt)
         pos_idx = find(B(i, :) > 1e-3);
         neg_idx = find(B(i, :) < -1e-3);
         if num_faults > 0
-            pos_idx = setdiff(pos_idx, log.faulty_thrusters);
-            neg_idx = setdiff(neg_idx, log.faulty_thrusters);
+            pos_idx = setdiff(pos_idx, log_orig.faulty_thrusters);
+            neg_idx = setdiff(neg_idx, log_orig.faulty_thrusters);
         end
         fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
         fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
@@ -188,8 +195,8 @@ function Plot_results(log, params, B_opt, r_opt)
         pos_idx = find(B(i+3, :) > 1e-3);
         neg_idx = find(B(i+3, :) < -1e-3);
         if num_faults > 0
-            pos_idx = setdiff(pos_idx, log.faulty_thrusters);
-            neg_idx = setdiff(neg_idx, log.faulty_thrusters);
+            pos_idx = setdiff(pos_idx, log_orig.faulty_thrusters);
+            neg_idx = setdiff(neg_idx, log_orig.faulty_thrusters);
         end
         fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
         fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
