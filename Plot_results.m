@@ -28,18 +28,18 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         %     text(r(1,j), r(2,j), r(3,j) + 0.15, label_str, 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
         % end
         % 正常推力器用红色实线
-        healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
+        healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
         plot3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
               'o','MarkerSize',7,'MarkerFaceColor',[0.2 0.7 1],'MarkerEdgeColor','k');
         quiver3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
                 B(1,healthy_idx), B(2,healthy_idx), B(3,healthy_idx), ...
                 0.45,'r','LineWidth',1.4);
         % 故障推力器用灰色虚线
-        if ~isempty(log_orig.faulty_thrusters)
-            plot3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
+        if ~isempty(log_orig.faluty_thrusters)
+            plot3(r(1, log_orig.faluty_thrusters), r(2, log_orig.faluty_thrusters), r(3, log_orig.faluty_thrusters), ...
                   'o','MarkerSize',7,'MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');
-            quiver3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
-                    B(1, log_orig.faulty_thrusters), B(2, log_orig.faulty_thrusters), B(3, log_orig.faulty_thrusters), ...
+            quiver3(r(1, log_orig.faluty_thrusters), r(2, log_orig.faluty_thrusters), r(3, log_orig.faluty_thrusters), ...
+                    B(1, log_orig.faluty_thrusters), B(2, log_orig.faluty_thrusters), B(3, log_orig.faluty_thrusters), ...
                     0.45, 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5, 'LineStyle', '--');
         end
         % 推力器编号
@@ -58,7 +58,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     figure('Name', '重构评价指标优化前后对比', 'Color','w');
     Matrix_orig = params.F_max * params.B_all;
     Matrix_opt  = params.F_max * B_opt;
-    healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
+    healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
     M_orig = Matrix_orig(:, healthy_idx);
     M_opt  = Matrix_opt(:, healthy_idx);
     % 连续域的Zonotope包络
@@ -110,8 +110,8 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     
     %% 闭环位置与姿态响应对比
     figure('Name', '闭环位置与姿态响应对比','Color','w');
-    subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.fault_time);
-    subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.fault_time);
+    subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.faluty_time);
+    subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.faluty_time);
     function Plot_3Axis(t, ref, y_orig, y_opt, title_str, unit_str, fault_time)
         hold on; grid on;
         colors = lines(3);
@@ -132,12 +132,12 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     subplot(2,2,3); hold on; grid on;
     plot(log_orig.Time, vecnorm(pos_err_orig,2,1), 'LineWidth',1.2);
     plot(log_orig.Time, vecnorm(pos_err_opt,2,1), 'LineWidth',1.2);
-    xline(log_orig.fault_time,'--r');
+    xline(log_orig.faluty_time,'--r');
     title('位置误差范数'); xlabel('t(s)'); ylabel('||e_r||(m)'); legend('原布局','优化布局');
     subplot(2,2,4); hold on; grid on;
     plot(log_orig.Time, vecnorm(att_err_orig,2,1), 'LineWidth',1.2);
     plot(log_orig.Time, vecnorm(att_err_opt,2,1), 'LineWidth',1.2);
-    xline(log_orig.fault_time,'--r');
+    xline(log_orig.faluty_time,'--r');
     title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_\euler||(rad)'); legend('原布局','优化布局');
 
     %% 推力器控制脉宽对比
@@ -146,14 +146,14 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         subplot(3, 4, i);plot(log_orig.Time, log_orig.Pulse_Widths(i, :));
         title(['推力器 ' num2str(i)]);xlabel('时间(s)');ylabel('脉宽(s)');
         grid on;hold on;
-        xline(log_orig.fault_time, '--r');
+        xline(log_orig.faluty_time, '--r');
         hold off;
     end
     % 总喷气时长对比
     figure('Name','总喷气时长对比','Color','w');
     subplot(3,1,1); hold on; grid on;
     bar(1:2, [log_orig.Total_Pulse, log_opt.Total_Pulse]);xticks(1:2);xticklabels({'原布局','优化布局'});
-    ylabel('总喷气时长(s)'); title('全任务总喷气时长对比'); ylim([0, max(data)*1.2 + eps]);
+    ylabel('总喷气时长(s)'); title('全任务总喷气时长对比'); ylim([0, max([log_orig.Total_Pulse, log_opt.Total_Pulse])*1.2 + eps]);
     subplot(3,1,2); hold on; grid on;
     per_orig = sum(log_orig.Pulse_History, 2);
     per_opt  = sum(log_opt.Pulse_History, 2);
@@ -162,15 +162,15 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     subplot(3,1,3); hold on; grid on;
     plot(log_orig.Control_Time, sum(log_orig.Pulse_History,1), 'LineWidth',1.0);
     plot(log_opt.Control_Time, sum(log_opt.Pulse_History,1), 'LineWidth',1.0);
-    xline(log_orig.fault_time,'--r');
+    xline(log_orig.faluty_time,'--r');
     xlabel('时间(s)'); ylabel('当前控制周期总脉宽(s)'); title('控制周期总脉宽变化');legend('原布局','优化布局');
    
     %% 仿真结果数据输出
     fprintf('\n');
-    if num_faults == 0
+    if log_orig.faluty_thrusters == []
         fprintf('======================== 推力器标况下 ========================\n');
     else
-        fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faulty_thrusters));
+        fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faluty_thrusters));
     end
 
     fprintf('推力器按轴分配策略\n');
@@ -179,11 +179,11 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
 
     fprintf('【轨道控制推力器分配】\n');
     for i = 1:3
-        pos_idx = find(B(i, :) > 1e-3);
-        neg_idx = find(B(i, :) < -1e-3);
-        if num_faults > 0
-            pos_idx = setdiff(pos_idx, log_orig.faulty_thrusters);
-            neg_idx = setdiff(neg_idx, log_orig.faulty_thrusters);
+        pos_idx = find(B_opt(i, :) > 1e-3);
+        neg_idx = find(B_opt(i, :) < -1e-3);
+        if log_orig.faluty_thrusters ~= []
+            pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
+            neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
         end
         fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
         fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
@@ -192,29 +192,13 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
 
     fprintf('【姿态控制推力器分配】\n');
     for i = 1:3
-        pos_idx = find(B(i+3, :) > 1e-3);
-        neg_idx = find(B(i+3, :) < -1e-3);
-        if num_faults > 0
-            pos_idx = setdiff(pos_idx, log_orig.faulty_thrusters);
-            neg_idx = setdiff(neg_idx, log_orig.faulty_thrusters);
+        pos_idx = find(B_opt(i+3, :) > 1e-3);
+        neg_idx = find(B_opt(i+3, :) < -1e-3);
+        if log_orig.faluty_thrusters ~= []
+            pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
+            neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
         end
         fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
         fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
     end
-    fprintf('--------------------------------------------------------------\n');
-
-    fprintf('可重构性综合评价指标 (当前正在仿真的组合)\n');
-    fprintf('--------------------------------------------------------------\n');
-
-    actual_data_idx = curr_state_idx + 1; % 补全因为标况(0)带来的索引偏移
-
-    fprintf('->力空间控制能力  :原布局%8.4f N   优化后%8.4f N\n', Jc_F_orig(actual_data_idx), Jc_F_opt(actual_data_idx));
-    fprintf('->力矩空间控制能力:原布局%8.4f N*m 优化后%8.4f N*m\n', Jc_T_orig(actual_data_idx), Jc_T_opt(actual_data_idx));
-    fprintf('--------------------------------------------------------------\n');
-    fprintf('->力空间控制降级  :原布局%8.4f     优化后%8.4f\n', Ja_F_orig(actual_data_idx), Ja_F_opt(actual_data_idx));
-    fprintf('->力矩空间控制降级:原布局%8.4f     优化后%8.4f\n', Ja_T_orig(actual_data_idx), Ja_T_opt(actual_data_idx));
-    fprintf('--------------------------------------------------------------\n');
-    fprintf('->可诊断性        :原布局%8.4f     优化后%8.4f\n', Jo_actual_orig, Jo_actual_opt);
-    fprintf('--------------------------------------------------------------\n');
-
 end

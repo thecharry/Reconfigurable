@@ -50,20 +50,20 @@ function log = closedloop(params, B)
     log.Control_Time = zeros(1, max_ctrl);
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
-    log.faulty_thrusters = [];% 空数组表示推力器无故障
+    log.faluty_thrusters = [];% 空数组表示推力器无故障
     % log.falut_time = rand() * T_sim;
-    log.falut_time = 0.5*T_sim;
+    log.faluty_time = 0.5*T_sim;
 
     tic;
     for k = 1:N
         t = (k-1) * dt;
-        if t >= log.falut_time && ~fault_trig
+        if t >= log.faluty_time && ~fault_trig
             fault_trig = true;
             if num_faults == 0
-                log.faulty_thrusters = [];% 标况
+                log.faluty_thrusters = [];% 标况
             else
                 % faulty_thrusters = randperm(params.Num, num_faults);
-                log.faulty_thrusters = 3;
+                log.faluty_thrusters = 3;
             end
         end
         if t >= next_ctrl
@@ -89,7 +89,7 @@ function log = closedloop(params, B)
             int = int + sigma_err * params.T;
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
-            Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,log.faulty_thrusters,params);
+            Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,log.faluty_thrusters,params);
             % 累计真实总喷气时长
             log.Total_Pulse = log.Total_Pulse + sum(Prop_Final);
             log.Control_Count = log.Control_Count + 1;
