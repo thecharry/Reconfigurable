@@ -1,23 +1,40 @@
 %% 可重构评价指标函数
-function [Matrix_conf, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, faulty_thrusters)
+function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball)
+    Jc_Force = zeros(params.Num + 1, 2);
+    Jc_Torque = zeros(params.Num + 1, 2);
+    Jc_Force1 = zeros(params.Num + 1, 2);
+    Jc_Torque1 = zeros(params.Num + 1, 2);
+    Jc1 = zeros(params.Num + 1, 2);
+    Jc2 = zeros(params.Num + 1, 2);
+    Ja_Force = zeros(params.Num + 1, 2);
+    Ja_Torque = zeros(params.Num + 1, 2);
+    Ja = zeros(params.Num + 1, 2);
+    Jo = zeros(params.Num + 1, 1);
+    Jf = zeros(params.Num + 1, 1);
     Matrix_conf = params.F_max * Ball;
-    healthy_idx = setdiff(1:params.Num, faulty_thrusters);% 剔除所有故障推力器
-    Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
-    Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
-    Matrix_conf_H = Matrix_conf(:, healthy_idx);
-    % 控制能力指标
-    [Jc_Force,  Jc_Force1]  = Capability(Matrix_conf_F);
-    [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
-    Jc1 = [Jc_Force,  Jc_Torque];
-    Jc2 = [Jc_Force1,  Jc_Torque1];
-    % 控制分辨率指标
-    Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
-    Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
-    Ja = [Ja_Force, Ja_Torque];
-    % 可诊断性指标
-    Jo = Diagnosability(Matrix_conf_H);
-    % 燃料效能指标
-    Jf = Efficiency(Matrix_conf, faulty_thrusters, params);
+    for i = 1:params.Num+1
+        healthy_idx = setdiff(1:params.Num, i);% 剔除所有故障推力器
+        Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
+        Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        Matrix_conf_H = Matrix_conf(:, healthy_idx);
+        % 控制能力指标
+        [Jc_Force(i,:), Jc_Force1(i,:)]  = Capability(Matrix_conf_F);
+        [Jc_Torque(i,:), Jc_Torque1(i,:)] = Capability(Matrix_conf_T);
+        Jc1(i,:) = [Jc_Force(i,:), Jc_Torque(i,:)];
+        Jc2(i,:) = [Jc_Force1(i,:), Jc_Torque1(i,:)];
+        % 控制分辨率指标
+        Ja_Force(i,:) = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
+        Ja_Torque(i,:) = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
+        Ja(i,:) = [Ja_Force(i,:), Ja_Torque(i,:)];
+        % 可诊断性指标
+        Jo(i) = Diagnosability(Matrix_conf_H);
+        % 燃料效能指标
+        Jf(i) = Efficiency(Matrix_conf, i, params);
+    end
+    % 评价指标综合
+    Jc_all = 0.5 * Jc1(:,1) + 0.5 * Jc1(:,2);
+    Ja_all = 0.5 * Ja(:,1) + 0.5 * Ja(:,2);
+    Z = [Jc_all,Ja_all,Jo,Jf];
     
     %% 基于推力器方向分布的可诊断性指标Jo
     function Jo = Diagnosability(Matrix_sub)
