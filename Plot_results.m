@@ -138,7 +138,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     plot(log_orig.Time, vecnorm(att_err_orig,2,1), 'LineWidth',1.2);
     plot(log_orig.Time, vecnorm(att_err_opt,2,1), 'LineWidth',1.2);
     xline(log_orig.faluty_time,'--r');
-    title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_\euler||(rad)'); legend('原布局','优化布局');
+    title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_euler||(rad)'); legend('原布局','优化布局');
 
     %% 推力器控制脉宽对比
     figure('Name', '各推力器脉宽','Color','w');
@@ -199,125 +199,111 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         fprintf('-%s轴: [%s]\n', axes_names{idx2}, num2str(neg_idx));
     end
 
-    %% 综合评价指标输出
-    
-    function [F, W, U_ahp, V_entropy] = comprehensive(Z)
-        [m, n] = size(Z);
-        % 规范化处理
-        X = zeros(m, n);
-        for j = 1:n
-            z_max = max(Z(:, j));
-            z_min = min(Z(:, j));
-            if abs(z_max - z_min) < 1e-12
-                X(:, j) = 1;
-            else
-                X(:, j) = (Z(:, j) - z_min) / (z_max - z_min);
-            end
-        end
-        % AHP主观权重
-        G_AHP = [1,   2,   3,   4;
-                 1/2, 1,   2,   3;
-                 1/3, 1/2, 1,   2;
-                 1/4, 1/3, 1/2, 1];
-        U_ahp = AHP_Weight(G_AHP);
+    % %% 综合评价指标输出
+    % function [F, W, U_ahp, V_entropy] = Comprehensive(Z)
+    %     [m, n] = size(Z);
+    %     % 规范化处理
+    %     X = zeros(m, n);
+    %     for j = 1:n
+    %         z_max = max(Z(:, j));
+    %         z_min = min(Z(:, j));
+    %         if abs(z_max - z_min) < 1e-12
+    %             X(:, j) = 1;
+    %         else
+    %             X(:, j) = (Z(:, j) - z_min) / (z_max - z_min);
+    %         end
+    %     end
+    %     % AHP主观权重
+    %     G_AHP = [1,   2,   3,   4;
+    %              1/2, 1,   2,   3;
+    %              1/3, 1/2, 1,   2;
+    %              1/4, 1/3, 1/2, 1];
+    %     U_ahp = AHP_Weight(G_AHP);
+    %     function U = AHP_Weight(G)
+    %         % AHP 主观权重计算（特征向量法）
+    %         [V_eig, D_eig] = eig(G);
+    %         [~, idx] = max(real(diag(D_eig)));
+    %         U = real(V_eig(:, idx));
+    %         U = U / sum(U);
+    %         % 保证正值
+    %         U = abs(U);
+    %         U = U / sum(U);
+    %     end
+    %     % 熵权法客观权重
+    %     V_entropy = zeros(n, 1);
+    %     for j = 1:n
+    %         col_sum = sum(X(:, j));
+    %         if col_sum < 1e-12
+    %             r = ones(m,1) / m;
+    %         else
+    %             r = X(:, j) / col_sum;
+    %         end
+    %         r_valid = r(r > 1e-12);
+    %         E_j = -(1 / log(m)) * sum(r_valid .* log(r_valid));
+    %         V_entropy(j) = 1 - E_j;
+    %     end
+    %     if sum(V_entropy) < 1e-12
+    %         V_entropy = ones(n,1) / n;
+    %     else
+    %         V_entropy = V_entropy / sum(V_entropy);
+    %     end
+    %     % 最小二乘组合赋权
+    %     s = sum(X.^2, 1)';
+    %     A = diag(s);
+    %     B = 0.5 * (U_ahp + V_entropy) .* s;
+    %     e = ones(n, 1);
+    %     Ainv = inv(A);
+    %     W = Ainv * B + ((1 - e' * Ainv * B) / (e' * Ainv * e)) * (Ainv * e);
+    %     % 数值修正
+    %     W(W < 0) = 0;
+    %     if sum(W) < 1e-12
+    %         W = ones(n,1) / n;
+    %     else
+    %         W = W / sum(W);
+    %     end
+    %     % TOPSIS 综合评价
+    %     x_plus  = max(X, [], 1);
+    %     x_minus = min(X, [], 1);
+    %     L = zeros(m, 1);
+    %     D = zeros(m, 1);
+    %     F = zeros(m, 1);
+    %     for i = 1:m
+    %         L(i) = sqrt(sum((W' .* (X(i, :) - x_plus)).^2));
+    %         D(i) = sqrt(sum((W' .* (X(i, :) - x_minus)).^2));
+    %         F(i) = D(i) / (L(i) + D(i) + 1e-12);
+    %     end
+    % end
+    % %% 输出综合评价指标数据
+    % function Print_Layout_Evaluation(StateNames, F_Force_orig, F_Force_opt, ...
+    %     F_Torque_orig, F_Torque_opt, F_Total_orig, F_Total_opt, ...
+    %     W_Force, W_Torque, W_Total)
 
+    %     nState = length(StateNames);
 
-        % 熵权法客观权重
-        V_entropy = zeros(n, 1);
+    %     fprintf('\n==============================================================\n');
+    %     fprintf('布局层最终组合权重（统一评价池下）\n');
+    %     fprintf('指标顺序：[Jc, Ja, Jf, Jo]\n');
+    %     fprintf('--------------------------------------------------------------\n');
+    %     fprintf('Force  权重 = [%s]\n', num2str(W_Force',  '%.4f '));
+    %     fprintf('Torque 权重 = [%s]\n', num2str(W_Torque', '%.4f '));
+    %     fprintf('Total  权重 = [%s]\n', num2str(W_Total',  '%.4f '));
+    %     fprintf('==============================================================\n');
 
-        for j = 1:n
-            col_sum = sum(X(:, j));
-            if col_sum < 1e-12
-                r = ones(m,1) / m;
-            else
-                r = X(:, j) / col_sum;
-            end
-            r_valid = r(r > 1e-12);
-            E_j = -(1 / log(m)) * sum(r_valid .* log(r_valid));
-            V_entropy(j) = 1 - E_j;
-        end
+    %     fprintf('\n==================== F_layout 状态对比 ====================\n');
+    %     fprintf('%-14s | %10s | %10s | %10s\n', '状态', '原布局', '优化布局', '提升(%)');
+    %     for i = 1:nState
+    %         imp = (F_Total_opt(i) - F_Total_orig(i)) / (F_Total_orig(i) + 1e-12) * 100;
+    %         fprintf('%-14s | %10.4f | %10.4f | %+9.2f\n', StateNames{i}, F_Total_orig(i), F_Total_opt(i), imp);
+    %     end
 
-        if sum(V_entropy) < 1e-12
-            V_entropy = ones(n,1) / n;
-        else
-            V_entropy = V_entropy / sum(V_entropy);
-        end
-
-        % 最小二乘组合赋权
-        s = sum(X.^2, 1)';
-        A = diag(s);
-        B = 0.5 * (U_ahp + V_entropy) .* s;
-
-        e = ones(n, 1);
-        Ainv = inv(A);
-        W = Ainv * B + ((1 - e' * Ainv * B) / (e' * Ainv * e)) * (Ainv * e);
-
-        % 数值修正
-        W(W < 0) = 0;
-        if sum(W) < 1e-12
-            W = ones(n,1) / n;
-        else
-            W = W / sum(W);
-        end
-
-        % TOPSIS 综合评价
-        x_plus  = max(X, [], 1);
-        x_minus = min(X, [], 1);
-
-        L = zeros(m, 1);
-        D = zeros(m, 1);
-        F = zeros(m, 1);
-
-        for i = 1:m
-            L(i) = sqrt(sum((W' .* (X(i, :) - x_plus)).^2));
-            D(i) = sqrt(sum((W' .* (X(i, :) - x_minus)).^2));
-            F(i) = D(i) / (L(i) + D(i) + 1e-12);
-        end
-        function U = AHP_Weight(G)
-            % AHP 主观权重计算（特征向量法）
-
-            [V_eig, D_eig] = eig(G);
-            [~, idx] = max(real(diag(D_eig)));
-            U = real(V_eig(:, idx));
-            U = U / sum(U);
-
-            % 保证正值
-            U = abs(U);
-            U = U / sum(U);
-        end
-    end
-    %% 输出综合评价指标数据
-    function Print_Layout_Evaluation(StateNames, F_Force_orig, F_Force_opt, ...
-        F_Torque_orig, F_Torque_opt, F_Total_orig, F_Total_opt, ...
-        W_Force, W_Torque, W_Total)
-
-        nState = length(StateNames);
-
-        fprintf('\n==============================================================\n');
-        fprintf('布局层最终组合权重（统一评价池下）\n');
-        fprintf('指标顺序：[Jc, Ja, Jf, Jo]\n');
-        fprintf('--------------------------------------------------------------\n');
-        fprintf('Force  权重 = [%s]\n', num2str(W_Force',  '%.4f '));
-        fprintf('Torque 权重 = [%s]\n', num2str(W_Torque', '%.4f '));
-        fprintf('Total  权重 = [%s]\n', num2str(W_Total',  '%.4f '));
-        fprintf('==============================================================\n');
-
-        fprintf('\n==================== F_layout 状态对比 ====================\n');
-        fprintf('%-14s | %10s | %10s | %10s\n', '状态', '原布局', '优化布局', '提升(%)');
-        for i = 1:nState
-            imp = (F_Total_opt(i) - F_Total_orig(i)) / (F_Total_orig(i) + 1e-12) * 100;
-            fprintf('%-14s | %10.4f | %10.4f | %+9.2f\n', StateNames{i}, F_Total_orig(i), F_Total_opt(i), imp);
-        end
-
-        fprintf('\n==================== 平均布局综合性能 ====================\n');
-        fprintf('Force  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-            mean(F_Force_orig), mean(F_Force_opt), PercentImprove(mean(F_Force_orig), mean(F_Force_opt), true));
-        fprintf('Torque 平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-            mean(F_Torque_orig), mean(F_Torque_opt), PercentImprove(mean(F_Torque_orig), mean(F_Torque_opt), true));
-        fprintf('Total  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-            mean(F_Total_orig), mean(F_Total_opt), PercentImprove(mean(F_Total_orig), mean(F_Total_opt), true));
-    end
-
+    %     fprintf('\n==================== 平均布局综合性能 ====================\n');
+    %     fprintf('Force  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
+    %         mean(F_Force_orig), mean(F_Force_opt), PercentImprove(mean(F_Force_orig), mean(F_Force_opt), true));
+    %     fprintf('Torque 平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
+    %         mean(F_Torque_orig), mean(F_Torque_opt), PercentImprove(mean(F_Torque_orig), mean(F_Torque_opt), true));
+    %     fprintf('Total  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
+    %         mean(F_Total_orig), mean(F_Total_opt), PercentImprove(mean(F_Total_orig), mean(F_Total_opt), true));
+    % end
 
 
 

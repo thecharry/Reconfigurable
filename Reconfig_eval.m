@@ -1,13 +1,13 @@
 %% 可重构评价指标函数
 function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball)
-    Jc_Force = zeros(params.Num + 1, 2);
-    Jc_Torque = zeros(params.Num + 1, 2);
-    Jc_Force1 = zeros(params.Num + 1, 2);
-    Jc_Torque1 = zeros(params.Num + 1, 2);
+    Jc_Force = zeros(params.Num + 1, 1);
+    Jc_Torque = zeros(params.Num + 1, 1);
+    Jc_Force1 = zeros(params.Num + 1, 1);
+    Jc_Torque1 = zeros(params.Num + 1, 1);
     Jc1 = zeros(params.Num + 1, 2);
     Jc2 = zeros(params.Num + 1, 2);
-    Ja_Force = zeros(params.Num + 1, 2);
-    Ja_Torque = zeros(params.Num + 1, 2);
+    Ja_Force = zeros(params.Num + 1, 1);
+    Ja_Torque = zeros(params.Num + 1, 1);
     Ja = zeros(params.Num + 1, 2);
     Jo = zeros(params.Num + 1, 1);
     Jf = zeros(params.Num + 1, 1);
