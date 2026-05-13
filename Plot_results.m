@@ -199,6 +199,151 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         fprintf('-%s轴: [%s]\n', axes_names{idx2}, num2str(neg_idx));
     end
 
+    %% 不同故障数量下可重构性判定表
+    plot_falut_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
+    plot_falut_reconfig(params, B_opt, '优化布局:不同数量故障下可重构性判定表');
+    function plot_falut_reconfig(params, B, title)
+        Fault_Num = zeros(params.Num, 1);
+        Status = strings(params.Num, 1);
+        Reconfig_Count = zeros(params.Num, 1);
+        NonReconfig_Count = zeros(params.Num, 1);
+        Ratio_Text = strings(params.Num, 1);
+        for k_fault = 1:params.Num
+            reconfig_num = 0;
+            ireconfig_num = 0;
+            % 可重构性判定
+            [~, Jc_eval, ~, ~, ~, ~] = Reconfig_eval(params, B, k_fault);
+            cases = size(nchoosek(1:params.Num, k_fault),1);
+            for idx = 1:cases
+                Jc_force = Jc_eval(idx+1,1);
+                Jc_torque = Jc_eval(idx+1,2);
+                is_reconfig = (Jc_force > 1e-10) && (Jc_torque > 1e-10);
+                if is_reconfig
+                    reconfig_num = reconfig_num + 1;
+                else
+                    ireconfig_num = ireconfig_num + 1;
+                end
+            end
+            ratio = ireconfig_num / cases * 100;% 不可重构占比
+
+            Fault_Num(k_fault) = k_fault;
+            Reconfig_Count(k_fault) = reconfig_num;
+            NonReconfig_Count(k_fault) = ireconfig_num;
+            Ratio_Text(k_fault) = sprintf('%.2f%%', ratio);
+
+            if ireconfig_num == 0
+                Status(k_fault) = "完全可重构";
+            elseif reconfig_num == 0
+                Status(k_fault) = "不可重构";
+            else
+                Status(k_fault) = "部分可重构";
+            end
+        end
+        % 绘制表格
+        colNames = {'推力器故障数', '是否可以控制重构', '可重构情况数量', '不可重构情况数量', '不可重构情况占比'};
+        data = table2cell(table(Fault_Num, Status, Reconfig_Count, NonReconfig_Count, Ratio_Text, ...
+            'VariableNames', colNames));
+        nRow = size(data, 1);
+        fig = figure('Name', title, 'Color', 'w', 'Position', [200, 100, 950, 650]);
+        ax = axes(fig);
+        axis(ax, 'off');
+        hold(ax, 'on');
+        % 标题
+        text(0.5, 0.96, title, 'HorizontalAlignment', 'center', 'FontSize', 15, 'FontWeight', 'bold');
+        % 表格区域参数
+        x0 = 0.05;
+        x1 = 0.95;
+        y_top = 0.88;
+        y_bottom = 0.06;
+        colWidth = [0.14, 0.26, 0.20, 0.22, 0.18];
+        colX = x0 + [0, cumsum(colWidth)];
+        colCenter = colX(1:end-1) + colWidth / 2;
+        rowH = (y_top - y_bottom) / (nRow + 1);
+        % 三线表风格横线
+        line([x0, x1], [y_top, y_top], 'Color', 'k', 'LineWidth', 1.8);
+        line([x0, x1], [y_top - rowH, y_top - rowH], 'Color', 'k', 'LineWidth', 1.2);
+        line([x0, x1], [y_bottom, y_bottom], 'Color', 'k', 'LineWidth', 1.8);
+        % 表头
+        y_header = y_top - rowH / 2;
+        for j = 1:length(colNames)
+            text(colCenter(j), y_header, colNames{j}, 'HorizontalAlignment', 'center', 'FontSize', 12, 'FontWeight', 'bold');
+        end
+        % 表体
+        for i = 1:nRow
+            y = y_top - rowH * (i + 0.5);
+            text(colCenter(1), y, sprintf('%d', data{i,1}), ...
+                'HorizontalAlignment', 'center', 'FontSize', 12);
+            text(colCenter(2), y, char(data{i,2}), ...
+                'HorizontalAlignment', 'center', 'FontSize', 12);
+            text(colCenter(3), y, sprintf('%d', data{i,3}), ...
+                'HorizontalAlignment', 'center', 'FontSize', 12);
+            text(colCenter(4), y, sprintf('%d', data{i,4}), ...
+                'HorizontalAlignment', 'center', 'FontSize', 12);
+            text(colCenter(5), y, char(data{i,5}), ...
+                'HorizontalAlignment', 'center', 'FontSize', 12);
+        end
+        xlim([0, 1]);
+        ylim([0, 1]);
+    end
+    % function is_reconfig = Check_Control_Reconfigurable(params, B_matrix, faulty_thrusters)
+    % % ============================================================
+    % % 控制可重构性判据
+    % %
+    % % 判据：
+    % %   故障后剩余推力器是否可以产生六个基本控制方向：
+    % %   +Fx, -Fx, +Fy, -Fy, +Fz, -Fz,
+    % %   +Mx, -Mx, +My, -My, +Mz, -Mz。
+    % %
+    % % 方法：
+    % %   对每个目标方向 e_i，求解非负最小二乘：
+    % %       min ||M*u - e_i||,  s.t. u >= 0
+    % %   若残差足够小，则认为该方向可达。
+    % % ============================================================
+
+    %     healthy_idx = setdiff(1:params.Num, faulty_thrusters);
+
+    %     if isempty(healthy_idx)
+    %         is_reconfig = false;
+    %         return;
+    %     end
+
+    %     M = params.F_max * B_matrix;
+    %     M = M(:, healthy_idx);
+
+    %     % 健康推力器数量不足，直接不可重构
+    %     if size(M, 2) < 6
+    %         is_reconfig = false;
+    %         return;
+    %     end
+
+    %     % 秩不足，无法覆盖6维控制空间
+    %     if rank(M, 1e-8) < 6
+    %         is_reconfig = false;
+    %         return;
+    %     end
+
+    %     targets = [eye(6), -eye(6)];
+    %     tol = 1e-6;
+
+    %     for j = 1:size(targets, 2)
+    %         target = targets(:, j);
+
+    %         % 非负最小二乘，等价于寻找非负推力器组合逼近目标方向
+    %         u = lsqnonneg(M, target);
+    %         res = norm(M * u - target);
+
+    %         if res > tol
+    %             is_reconfig = false;
+    %             return;
+    %         end
+    %     end
+
+    %     is_reconfig = true;
+    % end
+    
+    
+
+
     % %% 综合评价指标输出
     % function [F, W, U_ahp, V_entropy] = Comprehensive(Z)
     %     [m, n] = size(Z);

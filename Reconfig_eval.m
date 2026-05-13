@@ -1,35 +1,40 @@
 %% 可重构评价指标函数
-function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball)
-    Jc_Force = zeros(params.Num + 1, 1);
-    Jc_Torque = zeros(params.Num + 1, 1);
-    Jc_Force1 = zeros(params.Num + 1, 1);
-    Jc_Torque1 = zeros(params.Num + 1, 1);
-    Jc1 = zeros(params.Num + 1, 2);
-    Jc2 = zeros(params.Num + 1, 2);
-    Ja_Force = zeros(params.Num + 1, 1);
-    Ja_Torque = zeros(params.Num + 1, 1);
-    Ja = zeros(params.Num + 1, 2);
-    Jo = zeros(params.Num + 1, 1);
-    Jf = zeros(params.Num + 1, 1);
+function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, max_faluts)
     Matrix_conf = params.F_max * Ball;
-    for i = 1:params.Num+1
-        healthy_idx = setdiff(1:params.Num, i);% 剔除所有故障推力器
+    if nargin < 3 || isempty(max_faluts)
+        max_faluts = 1;
+    end
+    % 生成所有故障组合
+    falutsets = {};
+    falutsets{end+1, 1} = [];
+    combs = nchoosek(1:params.Num, max_faluts);
+    for i = 1:size(combs, 1)
+        falutsets{end+1, 1} = combs(i, :);
+    end
+    Jc1 = zeros(length(falutsets), 2);
+    Jc2 = zeros(length(falutsets), 2);
+    Ja = zeros(length(falutsets), 2);
+    Jo = zeros(length(falutsets), 1);
+    Jf = zeros(length(falutsets), 1);
+    for i = 1:length(falutsets)
+        faluty_idx = falutsets{i};
+        healthy_idx = setdiff(1:params.Num, faluty_idx);% 剔除故障推力器
         Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
         Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
         Matrix_conf_H = Matrix_conf(:, healthy_idx);
         % 控制能力指标
-        [Jc_Force(i,:), Jc_Force1(i,:)]  = Capability(Matrix_conf_F);
-        [Jc_Torque(i,:), Jc_Torque1(i,:)] = Capability(Matrix_conf_T);
-        Jc1(i,:) = [Jc_Force(i,:), Jc_Torque(i,:)];
-        Jc2(i,:) = [Jc_Force1(i,:), Jc_Torque1(i,:)];
+        [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
+        [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
+        Jc1(i,:) = [Jc_Force, Jc_Torque];
+        Jc2(i,:) = [Jc_Force1, Jc_Torque1];
         % 控制分辨率指标
-        Ja_Force(i,:) = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
-        Ja_Torque(i,:) = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
-        Ja(i,:) = [Ja_Force(i,:), Ja_Torque(i,:)];
+        Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
+        Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
+        Ja(i,:) = [Ja_Force, Ja_Torque];
         % 可诊断性指标
         Jo(i) = Diagnosability(Matrix_conf_H);
         % 燃料效能指标
-        Jf(i) = Efficiency(Matrix_conf, i, params);
+        Jf(i) = Efficiency(Matrix_conf, faluty_idx, params);
     end
     % 评价指标综合
     Jc_all = 0.5 * Jc1(:,1) + 0.5 * Jc1(:,2);
@@ -38,7 +43,11 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball)
     
     %% 基于推力器方向分布的可诊断性指标Jo
     function Jo = Diagnosability(Matrix_sub)
-        N_sub = size(Matrix_sub, 2);
+        [~, N_sub] = size(Matrix_sub);
+        if N_sub < 2
+            Jo = 0;
+            return;
+        end
         col_norm = vecnorm(Matrix_sub, 2, 1);
         if any(col_norm < 1e-12)
             Jo = 0;
@@ -48,7 +57,8 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball)
         CosSim_Matrix = K_nor' * K_nor; % Kp/||Kp||_2 · (Kq/||Kq||_2)
         CosSim_Matrix(logical(eye(N_sub))) = -2; % 排除自身列向量相乘情况
         max_cos = max(CosSim_Matrix, [], 'all'); % 最大余弦值（最小夹角）
-        Jo = max(1 - max_cos, 0);
+        % Jo = max(1 - max_cos, 0);
+        Jo = 1 - max_cos;
     end
 
     %% 基于可达域几何特性的控制能力指标Jc
