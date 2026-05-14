@@ -166,38 +166,82 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     xlabel('时间(s)'); ylabel('当前控制周期总脉宽(s)'); title('控制周期总脉宽变化');legend('原布局','优化布局');
    
     %% 推力器分配策略输出
-    fprintf('\n');
-    if log_orig.faluty_thrusters == []
-        fprintf('======================== 推力器标况下 ========================\n');
-    else
-        fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faluty_thrusters));
-    end
-    fprintf('推力器按轴分配策略\n');
-    fprintf('--------------------------------------------------------------\n');
-    axes_names = {'X', 'Y', 'Z'};
-    fprintf('【轨道控制推力器分配】\n');
-    for idx1 = 1:3
-        pos_idx = find(B_opt(idx1, :) > 1e-3);
-        neg_idx = find(B_opt(idx1, :) < -1e-3);
-        if log_orig.faluty_thrusters ~= []
-            pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
-            neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
+    Print_Thruster_Allocation(params.B_all, log_orig.faluty_thrusters, '原布局');
+    Print_Thruster_Allocation(B_opt, log_orig.faluty_thrusters, '优化布局');
+    function Print_Thruster_Allocation(B, faulty_thrusters, name_str)
+
+        axes_names = {'X', 'Y', 'Z'};
+
+        fprintf('%s推力器分配策略\n', name_str);
+
+        if isempty(faulty_thrusters)
+            fprintf('推力器标况\n');
+        else
+            fprintf('推力器[%s]故障\n', num2str(faulty_thrusters));
         end
-        fprintf('+%s轴: [%s]\n', axes_names{idx1}, num2str(pos_idx));
-        fprintf('-%s轴: [%s]\n', axes_names{idx1}, num2str(neg_idx));
-    end
-    fprintf('--------------------------------------------------------------\n');
-    fprintf('【姿态控制推力器分配】\n');
-    for idx2 = 1:3
-        pos_idx = find(B_opt(idx2+3, :) > 1e-3);
-        neg_idx = find(B_opt(idx2+3, :) < -1e-3);
-        if log_orig.faluty_thrusters ~= []
-            pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
-            neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
+
+        fprintf('--------------------------------------------------------------\n');
+        fprintf('【轨道控制推力器分配】\n');
+
+        for i = 1:3
+            pos_idx = find(B(i, :) > 1e-3);
+            neg_idx = find(B(i, :) < -1e-3);
+
+            pos_idx = setdiff(pos_idx, faulty_thrusters);
+            neg_idx = setdiff(neg_idx, faulty_thrusters);
+
+            fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
+            fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
         end
-        fprintf('+%s轴: [%s]\n', axes_names{idx2}, num2str(pos_idx));
-        fprintf('-%s轴: [%s]\n', axes_names{idx2}, num2str(neg_idx));
+
+        fprintf('--------------------------------------------------------------\n');
+        fprintf('【姿态控制推力器分配】\n');
+
+        for i = 1:3
+            pos_idx = find(B(i+3, :) > 1e-3);
+            neg_idx = find(B(i+3, :) < -1e-3);
+
+            pos_idx = setdiff(pos_idx, faulty_thrusters);
+            neg_idx = setdiff(neg_idx, faulty_thrusters);
+
+            fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
+            fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
+        end
+
+        fprintf('--------------------------------------------------------------\n');
     end
+    % fprintf('\n');
+    % if log_orig.faluty_thrusters == []
+    %     fprintf('======================== 推力器标况下 ========================\n');
+    % else
+    %     fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faluty_thrusters));
+    % end
+    % fprintf('推力器按轴分配策略\n');
+    % fprintf('--------------------------------------------------------------\n');
+    % axes_names = {'X', 'Y', 'Z'};
+    % fprintf('【轨道控制推力器分配】\n');
+    % for idx1 = 1:3
+    %     pos_idx = find(B_opt(idx1, :) > 1e-3);
+    %     neg_idx = find(B_opt(idx1, :) < -1e-3);
+    %     if log_orig.faluty_thrusters ~= []
+    %         pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
+    %         neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
+    %     end
+    %     fprintf('+%s轴: [%s]\n', axes_names{idx1}, num2str(pos_idx));
+    %     fprintf('-%s轴: [%s]\n', axes_names{idx1}, num2str(neg_idx));
+    % end
+    % fprintf('--------------------------------------------------------------\n');
+    % fprintf('【姿态控制推力器分配】\n');
+    % for idx2 = 1:3
+    %     pos_idx = find(B_opt(idx2+3, :) > 1e-3);
+    %     neg_idx = find(B_opt(idx2+3, :) < -1e-3);
+    %     if log_orig.faluty_thrusters ~= []
+    %         pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
+    %         neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
+    %     end
+    %     fprintf('+%s轴: [%s]\n', axes_names{idx2}, num2str(pos_idx));
+    %     fprintf('-%s轴: [%s]\n', axes_names{idx2}, num2str(neg_idx));
+    % end
 
     %% 不同故障数量下可重构性判定表
     plot_falut_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
@@ -240,7 +284,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
             end
         end
         % 绘制表格
-        colNames = {'推力器故障数', '是否可以控制重构', '可重构情况数量', '不可重构情况数量', '不可重构情况占比'};
+        colNames = {'推力器故障数', '是否可重构', '可重构数量', '不可重构数量', '不可重构占比'};
         data = table2cell(table(Fault_Num, Status, Reconfig_Count, NonReconfig_Count, Ratio_Text, ...
             'VariableNames', colNames));
         nRow = size(data, 1);
@@ -255,7 +299,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         x1 = 0.95;
         y_top = 0.88;
         y_bottom = 0.06;
-        colWidth = [0.14, 0.26, 0.20, 0.22, 0.18];
+        colWidth = [0.18, 0.18, 0.18, 0.18, 0.18];
         colX = x0 + [0, cumsum(colWidth)];
         colCenter = colX(1:end-1) + colWidth / 2;
         rowH = (y_top - y_bottom) / (nRow + 1);
@@ -285,66 +329,12 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         xlim([0, 1]);
         ylim([0, 1]);
     end
-    % function is_reconfig = Check_Control_Reconfigurable(params, B_matrix, faulty_thrusters)
-    % % ============================================================
-    % % 控制可重构性判据
-    % %
-    % % 判据：
-    % %   故障后剩余推力器是否可以产生六个基本控制方向：
-    % %   +Fx, -Fx, +Fy, -Fy, +Fz, -Fz,
-    % %   +Mx, -Mx, +My, -My, +Mz, -Mz。
-    % %
-    % % 方法：
-    % %   对每个目标方向 e_i，求解非负最小二乘：
-    % %       min ||M*u - e_i||,  s.t. u >= 0
-    % %   若残差足够小，则认为该方向可达。
-    % % ============================================================
-
-    %     healthy_idx = setdiff(1:params.Num, faulty_thrusters);
-
-    %     if isempty(healthy_idx)
-    %         is_reconfig = false;
-    %         return;
-    %     end
-
-    %     M = params.F_max * B_matrix;
-    %     M = M(:, healthy_idx);
-
-    %     % 健康推力器数量不足，直接不可重构
-    %     if size(M, 2) < 6
-    %         is_reconfig = false;
-    %         return;
-    %     end
-
-    %     % 秩不足，无法覆盖6维控制空间
-    %     if rank(M, 1e-8) < 6
-    %         is_reconfig = false;
-    %         return;
-    %     end
-
-    %     targets = [eye(6), -eye(6)];
-    %     tol = 1e-6;
-
-    %     for j = 1:size(targets, 2)
-    %         target = targets(:, j);
-
-    %         % 非负最小二乘，等价于寻找非负推力器组合逼近目标方向
-    %         u = lsqnonneg(M, target);
-    %         res = norm(M * u - target);
-
-    %         if res > tol
-    %             is_reconfig = false;
-    %             return;
-    %         end
-    %     end
-
-    %     is_reconfig = true;
-    % end
     
+    %% 蒙特卡洛打靶仿真结果对比
+    % Montecarlo_sim(params, B_opt)
     
-
-
-    % %% 综合评价指标输出
+end
+% %% 综合评价指标输出
     % function [F, W, U_ahp, V_entropy] = Comprehensive(Z)
     %     [m, n] = size(Z);
     %     % 规范化处理
@@ -449,7 +439,3 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     %     fprintf('Total  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
     %         mean(F_Total_orig), mean(F_Total_opt), PercentImprove(mean(F_Total_orig), mean(F_Total_opt), true));
     % end
-
-
-
-end

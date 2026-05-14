@@ -21,20 +21,20 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, max_faluts)
         healthy_idx = setdiff(1:params.Num, faluty_idx);% 剔除故障推力器
         Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
         Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
-        Matrix_conf_H = Matrix_conf(:, healthy_idx);
+        % Matrix_conf_H = Matrix_conf(:, healthy_idx);
         % 控制能力指标
         [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
         [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
         Jc1(i,:) = [Jc_Force, Jc_Torque];
         Jc2(i,:) = [Jc_Force1, Jc_Torque1];
-        % 控制分辨率指标
-        Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
-        Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
-        Ja(i,:) = [Ja_Force, Ja_Torque];
-        % 可诊断性指标
-        Jo(i) = Diagnosability(Matrix_conf_H);
-        % 燃料效能指标
-        Jf(i) = Efficiency(Matrix_conf, faluty_idx, params);
+        % % 控制分辨率指标
+        % Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
+        % Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
+        % Ja(i,:) = [Ja_Force, Ja_Torque];
+        % % 可诊断性指标
+        % Jo(i) = Diagnosability(Matrix_conf_H);
+        % % 燃料效能指标
+        % Jf(i) = Efficiency(Matrix_conf, faluty_idx, params);
     end
     % 评价指标综合
     Jc_all = 0.5 * Jc1(:,1) + 0.5 * Jc1(:,2);
