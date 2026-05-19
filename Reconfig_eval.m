@@ -1,5 +1,5 @@
 %% 可重构评价指标函数
-function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, max_faluts)
+function [Z, Jc1, Jc2, Ja, Jo, Jf, Jc6] = Reconfig_eval(params, Ball, max_faluts)
     Matrix_conf = params.F_max * Ball;
     if nargin < 3 || isempty(max_faluts)
         max_faluts = 1;
@@ -16,17 +16,27 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, max_faluts)
     Ja = zeros(length(falutsets), 2);
     Jo = zeros(length(falutsets), 1);
     Jf = zeros(length(falutsets), 1);
+    Jc6 = [];
+    if nargout >= 7
+        Jc6 = zeros(length(falutsets), 1);
+        scale_6d = max(abs(Matrix_conf), [], 2);
+        scale_6d(scale_6d < 1e-12) = 1;
+    end
     for i = 1:length(falutsets)
         faluty_idx = falutsets{i};
         healthy_idx = setdiff(1:params.Num, faluty_idx);% 剔除故障推力器
         Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
         Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        Matrix_conf_6D = Matrix_conf(:, healthy_idx);
         % Matrix_conf_H = Matrix_conf(:, healthy_idx);
         % 控制能力指标
         [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
         [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
         Jc1(i,:) = [Jc_Force, Jc_Torque];
         Jc2(i,:) = [Jc_Force1, Jc_Torque1];
+        if nargout >= 7
+            [Jc6(i), ~] = Capability(Matrix_conf_6D ./ scale_6d);
+        end
         % % 控制分辨率指标
         % Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
         % Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);
@@ -64,18 +74,30 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf] = Reconfig_eval(params, Ball, max_faluts)
     %% 基于可达域几何特性的控制能力指标Jc
     function [umin, umax] = Capability(Matrix_sub)
         N_sub = size(Matrix_sub, 2);
-        c = 0.5 * ones(N_sub, 1); 
-        G = 0.5 * diag(ones(N_sub, 1));
-        Z = zonotope(Matrix_sub * c, Matrix_sub * G);
-        P = polytope(Z); % 获取半空间表达式H-rep(Hx <= w)
-        H = P.A;
-        w = P.b;
-        if any(w < -1e-6)
-            umin = 0; % 原点在外部
-        else
-            d = w ./ vecnorm(H, 2, 2); % 原点到所有边界面的最短距离:d = w/||H||_2
-            umin = min(d);
-            umax = max(d);
+        if N_sub == 0
+            umin = 0;
+            umax = 0;
+            return;
+        end
+
+        try
+            c = 0.5 * ones(N_sub, 1);
+            G = 0.5 * diag(ones(N_sub, 1));
+            Z = zonotope(Matrix_sub * c, Matrix_sub * G);
+            P = polytope(Z); % 获取半空间表达式H-rep(Hx <= w)
+            H = P.A;
+            w = P.b;
+            if isempty(H) || isempty(w) || any(w < -1e-6)
+                umin = 0; % 原点在外部
+                umax = 0;
+            else
+                d = w ./ (vecnorm(H, 2, 2) + 1e-12); % 原点到所有边界面的最短距离:d = w/||H||_2
+                umin = min(d);
+                umax = max(d);
+            end
+        catch
+            umin = 0;
+            umax = 0;
         end
     end
 

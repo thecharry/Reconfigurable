@@ -331,7 +331,8 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     end
     
     %% 蒙特卡洛打靶仿真结果对比
-    % Montecarlo_sim(params, B_opt)
+    % 默认每种故障数量分别选 1 个可重构组合和 1 个不可重构组合，按需启用。
+    % MC_Result = Montecarlo_sim(params, B_opt);
     
 end
 % %% 综合评价指标输出

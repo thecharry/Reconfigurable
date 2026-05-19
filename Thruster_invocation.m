@@ -1,6 +1,12 @@
 %% 推力器控制效率调用策略（改）
 function Prop_Final = Thruster_invocation(v_cmd1,v_cmd2,Matrix_sub,faulty_thrusters,params)
     N = size(Matrix_sub, 2);
+
+    if isfield(params, 'alloc_mode') && lower(string(params.alloc_mode)) == "joint_6d"
+        Prop_Final = Joint_6D_Allocation(v_cmd1, v_cmd2, Matrix_sub, faulty_thrusters, params);
+        return;
+    end
+
     u = zeros(N, 2);
     for v_cmd = 1:2
         u_opt = zeros(N, 1);
@@ -61,6 +67,53 @@ function Prop_Final = Thruster_invocation(v_cmd1,v_cmd2,Matrix_sub,faulty_thrust
         for i = 1:params.Num
             t_orb = Prop_F(i) * normal;
             Prop_Final(i) = t_att(i) + t_orb;
+        end
+    end
+
+    function Prop_Final = Joint_6D_Allocation(v_cmd1, v_cmd2, Matrix_sub, faulty_thrusters, params)
+        N = size(Matrix_sub, 2);
+        Prop_Final = zeros(N, 1);
+
+        healthy_idx = setdiff(1:N, faulty_thrusters);
+        if isempty(healthy_idx)
+            return;
+        end
+
+        A = Matrix_sub(:, healthy_idx);
+        b = [v_cmd1; v_cmd2];
+
+        scale = max(abs(Matrix_sub), [], 2);
+        scale(scale < 1e-12) = 1;
+        A_n = A ./ scale;
+        b_n = b ./ scale;
+
+        lambda = 1e-4;
+        lb = zeros(numel(healthy_idx), 1);
+        ub = ones(numel(healthy_idx), 1);
+
+        if exist('lsqlin', 'file') == 2
+            C = [A_n; sqrt(lambda) * eye(numel(healthy_idx))];
+            d = [b_n; zeros(numel(healthy_idx), 1)];
+            options = optimoptions('lsqlin', 'Display', 'off');
+            try
+                u_h = lsqlin(C, d, [], [], [], [], lb, ub, [], options);
+            catch
+                u_h = Regularized_LS(A_n, b_n, lambda, lb, ub);
+            end
+        else
+            u_h = Regularized_LS(A_n, b_n, lambda, lb, ub);
+        end
+
+        min_duty = params.t_min / params.T;
+        u_h(u_h > 0 & u_h < min_duty) = 0;
+
+        Prop_Final(healthy_idx) = u_h * params.T;
+
+        function u = Regularized_LS(A_n, b_n, lambda, lb, ub)
+            H = A_n' * A_n + lambda * eye(size(A_n, 2));
+            f = A_n' * b_n;
+            u = H \ f;
+            u = min(max(u, lb), ub);
         end
     end
 end

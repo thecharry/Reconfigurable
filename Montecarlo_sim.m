@@ -1,147 +1,302 @@
 %% 蒙特卡洛打靶仿真结果对比
-function Montecarlo_sim(params, B_opt)
+function MC = Montecarlo_sim(params, B_opt, mc_cfg)
+% ============================================================
+% 对原布局和优化布局的故障组合进行 Monte Carlo 打靶验证。
+%
+% 与旧版本相比：
+%   旧版本：每种故障数量只选 1 个 Jc 判定不可重构组合。
+%   当前默认：每种故障数量分别选 1 个可重构组合和 1 个不可重构组合。
+%   如需全组合验证，可设置 mc_cfg.case_selection = "all"。
+%
+% 输出：
+%   MC.orig.Detail / MC.orig.Summary : 原布局明细与汇总结果
+%   MC.opt.Detail  / MC.opt.Summary  : 优化布局明细与汇总结果
+% ============================================================
 
-    mc_cfg.N_trial = 5;                  % 每种故障数量打靶次数，汇报够用可取5~10
-    mc_cfg.T_sim = 2000;
-    mc_cfg.dt = 0.005;
+    default_cfg = Default_MC_Config(params);
+    if nargin < 3 || isempty(mc_cfg)
+        mc_cfg = default_cfg;
+    else
+        mc_cfg = Merge_MC_Config(default_cfg, mc_cfg);
+    end
 
-    mc_cfg.pos_tol = 0.5;                % 最终位置误差阈值，单位 m
-    mc_cfg.att_tol = deg2rad(2);         % 最终姿态误差阈值，单位 rad
+    mc_cfg.fault_count_list = unique(mc_cfg.fault_count_list(:)');
+    mc_cfg.fault_count_list = mc_cfg.fault_count_list( ...
+        mc_cfg.fault_count_list >= 0 & mc_cfg.fault_count_list <= params.Num & ...
+        floor(mc_cfg.fault_count_list) == mc_cfg.fault_count_list);
 
-    % 打靶初始条件
-    mc_cfg.r0 = [0; 15; 55];
-    mc_cfg.euler0 = deg2rad([0; 15; 55]);
+    if isempty(mc_cfg.fault_count_list)
+        error('mc_cfg.fault_count_list 必须包含 0 到 params.Num 之间的故障数量。');
+    end
 
-    % 目标位置随机范围
-    mc_cfg.rt_center = [5; 25; 35];
-    mc_cfg.rt_range  = [3; 3; 3];
+    MC.config = mc_cfg;
 
-    % 目标姿态随机范围，单位 deg
-    mc_cfg.eulert_center_deg = [5; 25; 35];
-    mc_cfg.eulert_range_deg  = [3; 3; 3];
+    MC.orig = MonteCarlo_Cases_Verify(params, params.B_all, mc_cfg, ...
+        '原布局Monte Carlo打靶验证');
 
-    % 为了验证故障构型本身，建议故障从任务开始就存在
-    mc_cfg.fault_time = 0;
+    MC.opt = MonteCarlo_Cases_Verify(params, B_opt, mc_cfg, ...
+        '优化布局Monte Carlo打靶验证');
 
-    % 固定随机种子，保证结果可复现
-    mc_cfg.rng_seed = 1;
+    if nargout == 0
+        assignin('base', 'MC_Result', MC);
+        fprintf('\nMonte Carlo 结果已写入工作区变量 MC_Result。\n');
+    end
 
-    MC_orig = MonteCarlo_Unreconfig_Verify(params, params.B_all, mc_cfg, ...
-        '原布局不可重构组合Monte Carlo打靶验证');
+    function cfg = Default_MC_Config(params)
+        cfg.N_trial = 10;                  % 每个故障组合的打靶次数
+        cfg.T_sim = 2000;
+        cfg.dt = 0.005;
 
-    MC_opt = MonteCarlo_Unreconfig_Verify(params, B_opt, mc_cfg, ...
-        '优化布局不可重构组合Monte Carlo打靶验证');
-    function MC_Result = MonteCarlo_Unreconfig_Verify(params, B, mc_cfg, title_str)
+        cfg.pos_tol = 0.5;                % 最终位置误差阈值，单位 m
+        cfg.att_tol = deg2rad(2);         % 最终姿态误差阈值，单位 rad
+
+        % 打靶初始条件
+        cfg.r0 = [0; 15; 55];
+        cfg.euler0 = deg2rad([0; 15; 55]);
+
+        % 目标位置随机范围
+        cfg.rt_center = [5; 25; 35];
+        cfg.rt_range  = [3; 3; 3];
+
+        % 目标姿态随机范围，单位 deg
+        cfg.eulert_center_deg = [5; 25; 35];
+        cfg.eulert_range_deg  = [3; 3; 3];
+
+        % 为了验证故障构型本身，默认故障从任务开始就存在
+        cfg.fault_time = 0;
+
+        % 默认验证全部非空故障数量；若想包含标况，可设置为 0:params.Num
+        cfg.fault_count_list = 1:params.Num;
+
+        % 可选值：
+        %   "one_per_status" : 每种故障数量分别选 1 个可重构组合和 1 个不可重构组合
+        %   "all"            : 枚举所有组合
+        cfg.case_selection = "one_per_status";
+
+        % 可选值：
+        %   "all"          : 可重构和不可重构组合都验证
+        %   "reconfig"     : 只验证 Jc 判定可重构组合
+        %   "unreconfig"   : 只验证 Jc 判定不可重构组合
+        cfg.status_filter = "all";
+
+        % 可选值：
+        %   "split"    : 只使用旧版 Jc_F 和 Jc_T 分开判据
+        %   "joint_6d" : 在 Jc_F/Jc_T 基础上增加归一化六维 Jc_6D 判据
+        cfg.reconfig_metric = "joint_6d";
+        cfg.jc_ratio_min = 0.0001;          % 相对标况能力至少保留 5%
+        cfg.jc_eps = 1e-10;
+
+        % 可选值：
+        %   "axis_split" : 保持旧版力/力矩分开分配
+        %   "joint_6d"   : 闭环仿真时使用六维联合分配
+        cfg.alloc_mode = "axis_split";
+
+        % 固定随机种子，保证原布局和优化布局使用相同打靶目标序列
+        cfg.rng_seed = 1;
+
+        % Monte Carlo 仿真输出量较大，默认压制 Closedloop_sim 内部 tic/toc 输出
+        cfg.silent_closed_loop = true;
+        cfg.verbose_case = true;
+        cfg.verbose_trial = false;
+
+        % 图表输出
+        cfg.disp_detail = true;
+        cfg.disp_summary = true;
+        cfg.draw_summary_table = true;
+        cfg.draw_success_bar = false;
+        cfg.draw_detail_table = false;
+    end
+
+    function cfg = Merge_MC_Config(default_cfg, user_cfg)
+        cfg = default_cfg;
+        names = fieldnames(user_cfg);
+        for ii = 1:numel(names)
+            cfg.(names{ii}) = user_cfg.(names{ii});
+        end
+    end
+
+    function MC_Result = MonteCarlo_Cases_Verify(params, B, mc_cfg, title_str)
     % ============================================================
-    % 每种故障数量选一个 Jc 判定不可重构的故障组合，进行 Monte Carlo 打靶验证
+    % 按 mc_cfg.case_selection 选取故障组合，按 Jc 判据分类后逐组合打靶。
     %
     % 判据：
-    %   Jc_F > 0 且 Jc_T > 0 认为可重构；
-    %   否则认为不可重构。
+    %   默认要求 Jc_F、Jc_T、归一化 Jc_6D 均不低于标况能力的一定比例；
+    %   若 mc_cfg.reconfig_metric = "split"，则退回旧版 Jc_F/Jc_T 判据。
     %
     % Monte Carlo 成功判据：
     %   最终位置误差 < mc_cfg.pos_tol
     %   且最终姿态误差 < mc_cfg.att_tol
-    %
-    % 输出：
-    %   MC_Result: table
     % ============================================================
 
         rng(mc_cfg.rng_seed);
 
         N_thr = params.Num;
+        Matrix_conf = params.F_max * B;
+        nominal_cap = Build_Nominal_Capability(params, Matrix_conf, mc_cfg);
+        sim_params = params;
+        sim_params.alloc_mode = mc_cfg.alloc_mode;
 
-        Fault_Num = zeros(N_thr, 1);
-        Fault_Set = strings(N_thr, 1);
-        MC_Count = zeros(N_thr, 1);
-        Success_Count = zeros(N_thr, 1);
-        Fail_Count = zeros(N_thr, 1);
-        Success_Ratio = zeros(N_thr, 1);
-        Mean_Final_PosErr = nan(N_thr, 1);
-        Mean_Final_AttErr_deg = nan(N_thr, 1);
-        Verdict = strings(N_thr, 1);
+        total_case_num = Count_Selected_Fault_Cases(params, Matrix_conf, nominal_cap, mc_cfg);
+        total_trial_num = total_case_num * mc_cfg.N_trial;
+
+        Fault_Num = zeros(total_case_num, 1);
+        Fault_Set = strings(total_case_num, 1);
+        Jc_Status = strings(total_case_num, 1);
+        Jc_Force = zeros(total_case_num, 1);
+        Jc_Torque = zeros(total_case_num, 1);
+        Jc_6D = zeros(total_case_num, 1);
+        MC_Count = zeros(total_case_num, 1);
+        Success_Count = zeros(total_case_num, 1);
+        Fail_Count = zeros(total_case_num, 1);
+        Success_Ratio = nan(total_case_num, 1);
+        Mean_Final_PosErr = nan(total_case_num, 1);
+        Mean_Final_AttErr_deg = nan(total_case_num, 1);
+        Verdict = strings(total_case_num, 1);
+
+        row = 0;
 
         fprintf('\n==============================================================\n');
         fprintf('%s\n', title_str);
         fprintf('==============================================================\n');
+        fprintf('故障数量范围: [%s]\n', num2str(mc_cfg.fault_count_list));
+        fprintf('组合选取模式: %s\n', char(string(mc_cfg.case_selection)));
+        fprintf('可重构判据: %s, 相对标况阈值: %.2f%%\n', ...
+            char(string(mc_cfg.reconfig_metric)), mc_cfg.jc_ratio_min * 100);
+        fprintf('闭环推力分配模式: %s\n', char(string(mc_cfg.alloc_mode)));
+        fprintf('实际验证组合数: %d, 每组合打靶次数: %d, 总打靶次数: %d\n', ...
+            total_case_num, mc_cfg.N_trial, total_trial_num);
 
-        for k_fault = 1:N_thr
+        for k_fault = mc_cfg.fault_count_list
+            fault_combs = nchoosek(1:N_thr, k_fault);
+            candidate_cases = size(fault_combs, 1);
+            fault_combs = Select_Fault_Combs(params, Matrix_conf, nominal_cap, fault_combs, mc_cfg);
+            cases = size(fault_combs, 1);
 
-            Fault_Num(k_fault) = k_fault;
+            fprintf('\n故障数 %2d: 候选 %d 个组合，实际验证 %d 个组合。\n', ...
+                k_fault, candidate_cases, cases);
 
-            % 1. 找到该故障数量下的一个不可重构组合
-            [found_case, faulty_set] = Find_One_Unreconfig_Case_By_Jc(params, B, k_fault);
-            [found_case1, faulty_set1] = Find_One_Reconfig_Case_By_Jc(params, B, k_fault);
+            for idx = 1:cases
+                faulty_set = fault_combs(idx, :);
 
-            if ~found_case
-                Fault_Set(k_fault) = "无";
-                MC_Count(k_fault) = 0;
-                Success_Count(k_fault) = 0;
-                Fail_Count(k_fault) = 0;
-                Success_Ratio(k_fault) = 0;
-                Verdict(k_fault) = "该故障数量下无不可重构组合";
+                [Jc_F, Jc_T, Jc_6D_case, is_reconfig] = Evaluate_Reconfig_By_Jc( ...
+                    params, Matrix_conf, nominal_cap, faulty_set, mc_cfg);
+                status_str = Reconfig_Status_String(is_reconfig);
 
-                fprintf('故障数 %2d: 未发现不可重构组合，跳过Monte Carlo验证。\n', k_fault);
-                continue;
+                if ~Should_Run_Status(status_str, mc_cfg.status_filter)
+                    continue;
+                end
+
+                row = row + 1;
+
+                final_pos_err_list = zeros(mc_cfg.N_trial, 1);
+                final_att_err_list = zeros(mc_cfg.N_trial, 1);
+                success_list = false(mc_cfg.N_trial, 1);
+
+                for trial = 1:mc_cfg.N_trial
+                    sim_cfg = Build_MC_Target_Config(mc_cfg, faulty_set);
+
+                    if mc_cfg.silent_closed_loop
+                        evalc('log_mc = Closedloop_sim(sim_params, B, sim_cfg);');
+                    else
+                        log_mc = Closedloop_sim(sim_params, B, sim_cfg);
+                    end
+
+                    [success, final_pos_err, final_att_err] = ...
+                        Evaluate_MC_Final_Error(log_mc, mc_cfg);
+
+                    success_list(trial) = success;
+                    final_pos_err_list(trial) = final_pos_err;
+                    final_att_err_list(trial) = final_att_err;
+
+                    if mc_cfg.verbose_trial
+                        fprintf('  故障数 %2d 组合 %s Trial %02d: pos_err = %.4f m, att_err = %.4f deg, result = %s\n', ...
+                            k_fault, mat2str(faulty_set), trial, final_pos_err, ...
+                            rad2deg(final_att_err), pass_fail_str(success));
+                    end
+                end
+
+                success_count = sum(success_list);
+                fail_count = mc_cfg.N_trial - success_count;
+
+                if mc_cfg.N_trial > 0
+                    success_ratio = success_count / mc_cfg.N_trial * 100;
+                    mean_pos_err = mean(final_pos_err_list);
+                    mean_att_err_deg = mean(rad2deg(final_att_err_list));
+                else
+                    success_ratio = NaN;
+                    mean_pos_err = NaN;
+                    mean_att_err_deg = NaN;
+                end
+
+                Fault_Num(row) = k_fault;
+                Fault_Set(row) = mat2str(faulty_set);
+                Jc_Status(row) = status_str;
+                Jc_Force(row) = Jc_F;
+                Jc_Torque(row) = Jc_T;
+                Jc_6D(row) = Jc_6D_case;
+                MC_Count(row) = mc_cfg.N_trial;
+                Success_Count(row) = success_count;
+                Fail_Count(row) = fail_count;
+                Success_Ratio(row) = success_ratio;
+                Mean_Final_PosErr(row) = mean_pos_err;
+                Mean_Final_AttErr_deg(row) = mean_att_err_deg;
+                Verdict(row) = Case_Verdict(status_str, success_count, mc_cfg.N_trial);
+
+                if mc_cfg.verbose_case
+                    fprintf('  [%4d/%4d] 组合 %-32s Jc=%s, 成功 %d/%d, 成功率 %.2f%%\n', ...
+                        idx, cases, mat2str(faulty_set), char(status_str), ...
+                        success_count, mc_cfg.N_trial, success_ratio);
+                end
             end
-
-            Fault_Set(k_fault) = mat2str(faulty_set);
-
-            final_pos_err_list = zeros(mc_cfg.N_trial, 1);
-            final_att_err_list = zeros(mc_cfg.N_trial, 1);
-            success_list = false(mc_cfg.N_trial, 1);
-
-            fprintf('\n故障数 %2d，选取不可重构组合：%s\n', k_fault, mat2str(faulty_set));
-
-            for trial = 1:mc_cfg.N_trial
-
-                % 2. 随机生成一个打靶目标
-                sim_cfg = Build_MC_Target_Config(mc_cfg, faulty_set);
-
-                % 3. 闭环仿真
-                log_mc = Closedloop_sim(params, B, sim_cfg);
-
-                % 4. 计算是否打靶成功
-                [success, final_pos_err, final_att_err] = Evaluate_MC_Final_Error(log_mc, mc_cfg);
-
-                success_list(trial) = success;
-                final_pos_err_list(trial) = final_pos_err;
-                final_att_err_list(trial) = final_att_err;
-
-                fprintf('  Trial %02d: pos_err = %.4f m, att_err = %.4f deg, result = %s\n', ...
-                    trial, final_pos_err, rad2deg(final_att_err), pass_fail_str(success));
-            end
-
-            success_count = sum(success_list);
-            fail_count = mc_cfg.N_trial - success_count;
-            success_ratio = success_count / mc_cfg.N_trial * 100;
-
-            MC_Count(k_fault) = mc_cfg.N_trial;
-            Success_Count(k_fault) = success_count;
-            Fail_Count(k_fault) = fail_count;
-            Success_Ratio(k_fault) = success_ratio;
-            Mean_Final_PosErr(k_fault) = mean(final_pos_err_list);
-            Mean_Final_AttErr_deg(k_fault) = mean(rad2deg(final_att_err_list));
-
-            if success_count == 0
-                Verdict(k_fault) = "验证支持不可重构";
-            else
-                Verdict(k_fault) = "存在可达任务，Jc判定偏保守";
-            end
-
-            fprintf('  统计结果: 成功 %d / %d，成功率 %.2f%%，结论：%s\n', ...
-                success_count, mc_cfg.N_trial, success_ratio, Verdict(k_fault));
         end
 
-        MC_Result = table(Fault_Num, Fault_Set, MC_Count, Success_Count, Fail_Count, ...
-            Success_Ratio, Mean_Final_PosErr, Mean_Final_AttErr_deg, Verdict, ...
-            'VariableNames', {'故障数量', '验证故障组合', '打靶次数', '成功次数', '失败次数', ...
-                            '成功率_percent', '平均最终位置误差_m', '平均最终姿态误差_deg', '验证结论'});
+        Fault_Num = Fault_Num(1:row);
+        Fault_Set = Fault_Set(1:row);
+        Jc_Status = Jc_Status(1:row);
+        Jc_Force = Jc_Force(1:row);
+        Jc_Torque = Jc_Torque(1:row);
+        Jc_6D = Jc_6D(1:row);
+        MC_Count = MC_Count(1:row);
+        Success_Count = Success_Count(1:row);
+        Fail_Count = Fail_Count(1:row);
+        Success_Ratio = Success_Ratio(1:row);
+        Mean_Final_PosErr = Mean_Final_PosErr(1:row);
+        Mean_Final_AttErr_deg = Mean_Final_AttErr_deg(1:row);
+        Verdict = Verdict(1:row);
 
-        disp(MC_Result);
+        Detail = table(Fault_Num, Fault_Set, Jc_Status, Jc_Force, Jc_Torque, Jc_6D, ...
+            MC_Count, Success_Count, Fail_Count, Success_Ratio, ...
+            Mean_Final_PosErr, Mean_Final_AttErr_deg, Verdict, ...
+            'VariableNames', {'故障数量', '故障组合', 'Jc判定', 'Jc_Force', 'Jc_Torque', 'Jc_6D', ...
+                            '打靶次数', '成功次数', '失败次数', '成功率_percent', ...
+                            '平均最终位置误差_m', '平均最终姿态误差_deg', '验证结论'});
 
-        Draw_MC_Verification_Table(MC_Result, title_str);
-        Plot_MC_Verification_Bar(MC_Result, title_str);
+        Summary = Build_MC_Summary(Detail, mc_cfg.fault_count_list);
+
+        MC_Result.Detail = Detail;
+        MC_Result.Summary = Summary;
+
+        if mc_cfg.disp_detail
+            fprintf('\n%s：组合明细结果\n', title_str);
+            disp(Detail);
+        end
+
+        if mc_cfg.disp_summary
+            fprintf('\n%s：按故障数量与Jc判定汇总结果\n', title_str);
+            disp(Summary);
+        end
+
+        if mc_cfg.draw_summary_table
+            Draw_MC_Summary_Table(Summary, [title_str, ' 汇总表']);
+        end
+
+        if mc_cfg.draw_success_bar
+            Plot_MC_Summary_Bar(Summary, title_str);
+        end
+
+        if mc_cfg.draw_detail_table
+            Draw_MC_Detail_Table(Detail, [title_str, ' 明细表']);
+        end
 
         function s = pass_fail_str(success)
             if success
@@ -151,70 +306,157 @@ function Montecarlo_sim(params, B_opt)
             end
         end
     end
-    function [found_case, faulty_set] = Find_One_Reconfig_Case_By_Jc(params, B, k_fault)
 
-        fault_combs = nchoosek(1:params.Num, k_fault);
+    function nominal_cap = Build_Nominal_Capability(params, Matrix_conf, mc_cfg)
+        nominal_cap.scale_6d = max(abs(Matrix_conf), [], 2);
+        nominal_cap.scale_6d(nominal_cap.scale_6d < 1e-12) = 1;
 
-        found_case = false;
-        faulty_set = [];
+        [Jc_F0, Jc_T0, Jc_6D0] = Evaluate_Jc_Values(params, Matrix_conf, [], nominal_cap.scale_6d);
 
-        Matrix_conf = params.F_max * B;
+        nominal_cap.Jc_Force = Jc_F0;
+        nominal_cap.Jc_Torque = Jc_T0;
+        nominal_cap.Jc_6D = Jc_6D0;
 
-        for i = 1:size(fault_combs, 1)
-            candidate = fault_combs(i, :);
-            healthy_idx = setdiff(1:params.Num, candidate);
+        % nominal_cap.Jc_Force_min = max(mc_cfg.jc_eps, mc_cfg.jc_ratio_min * Jc_F0);
+        % nominal_cap.Jc_Torque_min = max(mc_cfg.jc_eps, mc_cfg.jc_ratio_min * Jc_T0);
+        % nominal_cap.Jc_6D_min = max(mc_cfg.jc_eps, mc_cfg.jc_ratio_min * Jc_6D0);
+        nominal_cap.Jc_Force_min = mc_cfg.jc_eps;
+        nominal_cap.Jc_Torque_min = mc_cfg.jc_eps;
+        nominal_cap.Jc_6D_min = mc_cfg.jc_eps;
+    end
 
-            Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
-            Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+    function total_case_num = Count_Selected_Fault_Cases(params, Matrix_conf, nominal_cap, mc_cfg)
+        total_case_num = 0;
+        for kk = mc_cfg.fault_count_list
+            fault_combs = nchoosek(1:params.Num, kk);
+            fault_combs = Select_Fault_Combs(params, Matrix_conf, nominal_cap, fault_combs, mc_cfg);
+            total_case_num = total_case_num + size(fault_combs, 1);
+        end
+    end
 
-            [Jc_F, ~] = Capability_For_MC(Matrix_conf_F);
-            [Jc_T, ~] = Capability_For_MC(Matrix_conf_T);
+    function selected_combs = Select_Fault_Combs(params, Matrix_conf, nominal_cap, fault_combs, mc_cfg)
+        case_selection = lower(string(mc_cfg.case_selection));
 
-            is_reconfig = (Jc_F > 1e-10) && (Jc_T > 1e-10);
+        if case_selection == "all"
+            selected_combs = fault_combs;
+            return;
+        elseif case_selection ~= "one_per_status"
+            error('未知的 mc_cfg.case_selection: %s', char(case_selection));
+        end
 
-            if is_reconfig
-                found_case = true;
-                faulty_set = candidate;
+        selected_combs = zeros(0, size(fault_combs, 2));
+        found_reconfig = false;
+        found_unreconfig = false;
+
+        for ii = 1:size(fault_combs, 1)
+            candidate = fault_combs(ii, :);
+            [~, ~, ~, is_reconfig] = Evaluate_Reconfig_By_Jc( ...
+                params, Matrix_conf, nominal_cap, candidate, mc_cfg);
+            status_str = Reconfig_Status_String(is_reconfig);
+
+            if ~Should_Run_Status(status_str, mc_cfg.status_filter)
+                continue;
+            end
+
+            if status_str == "可重构" && ~found_reconfig
+                selected_combs = [selected_combs; candidate]; %#ok<AGROW>
+                found_reconfig = true;
+            elseif status_str == "不可重构" && ~found_unreconfig
+                selected_combs = [selected_combs; candidate]; %#ok<AGROW>
+                found_unreconfig = true;
+            end
+
+            if Should_Stop_Selecting(found_reconfig, found_unreconfig, mc_cfg.status_filter)
                 return;
             end
         end
     end
-    function [found_case, faulty_set] = Find_One_Unreconfig_Case_By_Jc(params, B, k_fault)
-    % ============================================================
-    % 在指定故障数量 k_fault 下，寻找一个 Jc 判定不可重构的组合
-    %
-    % 判据：
-    %   Jc_F > 0 且 Jc_T > 0，则可重构；
-    %   否则不可重构。
-    % ============================================================
 
-        fault_combs = nchoosek(1:params.Num, k_fault);
+    function should_stop = Should_Stop_Selecting(found_reconfig, found_unreconfig, status_filter)
+        status_filter = lower(string(status_filter));
 
-        found_case = false;
-        faulty_set = [];
+        if status_filter == "all"
+            should_stop = found_reconfig && found_unreconfig;
+        elseif status_filter == "reconfig" || status_filter == "可重构"
+            should_stop = found_reconfig;
+        elseif status_filter == "unreconfig" || status_filter == "nonreconfig" || ...
+                status_filter == "non-reconfig" || status_filter == "不可重构"
+            should_stop = found_unreconfig;
+        else
+            error('未知的 mc_cfg.status_filter: %s', char(status_filter));
+        end
+    end
 
-        Matrix_conf = params.F_max * B;
+    function [Jc_F, Jc_T, Jc_6D, is_reconfig] = Evaluate_Reconfig_By_Jc(params, Matrix_conf, nominal_cap, faulty_set, mc_cfg)
+        [Jc_F, Jc_T, Jc_6D] = Evaluate_Jc_Values(params, Matrix_conf, faulty_set, nominal_cap.scale_6d);
 
-        for i = 1:size(fault_combs, 1)
-            candidate = fault_combs(i, :);
+        split_ok = (Jc_F >= nominal_cap.Jc_Force_min) && ...
+                   (Jc_T >= nominal_cap.Jc_Torque_min);
 
-            healthy_idx = setdiff(1:params.Num, candidate);
+        reconfig_metric = lower(string(mc_cfg.reconfig_metric));
 
-            Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
-            Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        if reconfig_metric == "split"
+            is_reconfig = split_ok;
+        elseif reconfig_metric == "joint_6d"
+            is_reconfig = split_ok && (Jc_6D >= nominal_cap.Jc_6D_min);
+        else
+            error('未知的 mc_cfg.reconfig_metric: %s', char(reconfig_metric));
+        end
+    end
 
-            [Jc_F, ~] = Capability_For_MC(Matrix_conf_F);
-            [Jc_T, ~] = Capability_For_MC(Matrix_conf_T);
+    function [Jc_F, Jc_T, Jc_6D] = Evaluate_Jc_Values(params, Matrix_conf, faulty_set, scale_6d)
+        healthy_idx = setdiff(1:params.Num, faulty_set);
 
-            is_reconfig = (Jc_F > 1e-10) && (Jc_T > 1e-10);
+        Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
+        Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        Matrix_conf_6D = Matrix_conf(:, healthy_idx) ./ scale_6d;
 
-            if ~is_reconfig
-                found_case = true;
-                faulty_set = candidate;
-                return;
+        [Jc_F, ~] = Capability_For_MC(Matrix_conf_F);
+        [Jc_T, ~] = Capability_For_MC(Matrix_conf_T);
+        [Jc_6D, ~] = Capability_For_MC(Matrix_conf_6D);
+    end
+
+    function status_str = Reconfig_Status_String(is_reconfig)
+        if is_reconfig
+            status_str = "可重构";
+        else
+            status_str = "不可重构";
+        end
+    end
+
+    function should_run = Should_Run_Status(status_str, status_filter)
+        status_filter = lower(string(status_filter));
+
+        if status_filter == "all"
+            should_run = true;
+        elseif status_filter == "reconfig" || status_filter == "可重构"
+            should_run = (status_str == "可重构");
+        elseif status_filter == "unreconfig" || status_filter == "nonreconfig" || ...
+                status_filter == "non-reconfig" || status_filter == "不可重构"
+            should_run = (status_str == "不可重构");
+        else
+            error('未知的 mc_cfg.status_filter: %s', char(status_filter));
+        end
+    end
+
+    function verdict = Case_Verdict(status_str, success_count, trial_count)
+        if trial_count == 0
+            verdict = "未执行打靶";
+        elseif status_str == "可重构"
+            if success_count > 0
+                verdict = "打靶支持可重构";
+            else
+                verdict = "Jc可重构但本任务未命中";
+            end
+        else
+            if success_count == 0
+                verdict = "打靶支持不可重构";
+            else
+                verdict = "存在可达任务，Jc判定偏保守";
             end
         end
     end
+
     function sim_cfg = Build_MC_Target_Config(mc_cfg, faulty_set)
     % ============================================================
     % 构造一次 Monte Carlo 打靶仿真配置
@@ -244,6 +486,7 @@ function Montecarlo_sim(params, B_opt)
         sim_cfg.fault_time = mc_cfg.fault_time;
         sim_cfg.faulty_thrusters_fixed = faulty_set;
     end
+
     function [success, final_pos_err, final_att_err] = Evaluate_MC_Final_Error(log_mc, mc_cfg)
     % ============================================================
     % Monte Carlo 打靶最终误差判断
@@ -268,6 +511,7 @@ function Montecarlo_sim(params, B_opt)
 
         success = (final_pos_err < mc_cfg.pos_tol) && (final_att_err < mc_cfg.att_tol);
     end
+
     function [umin, umax] = Capability_For_MC(Matrix_sub)
     % ============================================================
     % 基于可达域几何特性的控制能力指标 Jc
@@ -311,108 +555,167 @@ function Montecarlo_sim(params, B_opt)
             umax = 0;
         end
     end
-    function Draw_MC_Verification_Table(T_result, table_title)
+
+    function Summary = Build_MC_Summary(Detail, fault_count_list)
+        status_order = ["可重构", "不可重构"];
+        n_row = numel(fault_count_list) * numel(status_order);
+
+        Fault_Num_S = zeros(n_row, 1);
+        Jc_Status_S = strings(n_row, 1);
+        Case_Count = zeros(n_row, 1);
+        MC_Count_S = zeros(n_row, 1);
+        Success_Count_S = zeros(n_row, 1);
+        Fail_Count_S = zeros(n_row, 1);
+        Success_Ratio_S = nan(n_row, 1);
+        Mean_Final_PosErr_S = nan(n_row, 1);
+        Mean_Final_AttErr_deg_S = nan(n_row, 1);
+        Verdict_S = strings(n_row, 1);
+
+        row_s = 0;
+
+        for kk = fault_count_list
+            for ss = 1:numel(status_order)
+                status_str = status_order(ss);
+                row_s = row_s + 1;
+
+                mask = Detail{:, 1} == kk & string(Detail{:, 3}) == status_str;
+
+                case_count = sum(mask);
+                mc_count = sum(Detail{mask, 7});
+                success_count = sum(Detail{mask, 8});
+                fail_count = sum(Detail{mask, 9});
+
+                Fault_Num_S(row_s) = kk;
+                Jc_Status_S(row_s) = status_str;
+                Case_Count(row_s) = case_count;
+                MC_Count_S(row_s) = mc_count;
+                Success_Count_S(row_s) = success_count;
+                Fail_Count_S(row_s) = fail_count;
+
+                if mc_count > 0
+                    Success_Ratio_S(row_s) = success_count / mc_count * 100;
+                    Mean_Final_PosErr_S(row_s) = mean(Detail{mask, 11}, 'omitnan');
+                    Mean_Final_AttErr_deg_S(row_s) = mean(Detail{mask, 12}, 'omitnan');
+                end
+
+                Verdict_S(row_s) = Summary_Verdict(status_str, case_count, success_count, mc_count);
+            end
+        end
+
+        % Summary = table(Fault_Num_S, Jc_Status_S, Case_Count, MC_Count_S, ...
+        %     Success_Count_S, Fail_Count_S, Success_Ratio_S, ...
+        %     Mean_Final_PosErr_S, Mean_Final_AttErr_deg_S, Verdict_S, ...
+        %     'VariableNames', {'故障数量', 'Jc判定', '组合数量', '打靶次数', ...
+        %                     '成功次数', '失败次数', '成功率_percent', ...
+        %                     '平均最终位置误差_m', '平均最终姿态误差_deg', '验证结论'});
+        Summary = table(Fault_Num_S, Jc_Status_S, MC_Count_S, ...
+            Success_Ratio_S, ...
+            Mean_Final_PosErr_S, Mean_Final_AttErr_deg_S, ...
+            'VariableNames', {'故障数量', '是否可重构', '打靶次数', ...
+                            '成功率', ...
+                            '平均最终位置误差', '平均最终姿态误差'});
+    end
+
+    function verdict = Summary_Verdict(status_str, case_count, success_count, mc_count)
+        if case_count == 0
+            verdict = "该类组合不存在";
+        elseif mc_count == 0
+            verdict = "未执行打靶";
+        elseif status_str == "可重构"
+            if success_count > 0
+                verdict = "总体支持可重构";
+            else
+                verdict = "可重构组合未命中当前任务集";
+            end
+        else
+            if success_count == 0
+                verdict = "总体支持不可重构";
+            else
+                verdict = "存在可达任务，Jc判定偏保守";
+            end
+        end
+    end
+
+    function Draw_MC_Summary_Table(T_result, table_title)
     % ============================================================
-    % 绘制 Monte Carlo 打靶验证表
+    % 绘制 Monte Carlo 汇总表
     % ============================================================
 
-        data = table2cell(T_result);
-
-        colNames = {'故障数量', '验证故障组合', '打靶次数', '成功次数', ...
+        data = Table_Cell_For_UITable(T_result);
+        colNames = {'故障数量', 'Jc判定', '组合数量', '打靶次数', '成功次数', ...
                     '失败次数', '成功率(%)', '平均位置误差(m)', ...
                     '平均姿态误差(deg)', '验证结论'};
 
-        nRow = size(data, 1);
+        fig = figure('Name', table_title, 'Color', 'w', 'Position', [100, 100, 1450, 720]);
 
-        figure('Name', table_title, 'Color', 'w', 'Position', [100, 100, 1350, 650]);
+        uicontrol(fig, 'Style', 'text', 'String', table_title, ...
+            'Units', 'normalized', 'Position', [0.02, 0.92, 0.96, 0.06], ...
+            'BackgroundColor', 'w', 'FontSize', 15, 'FontWeight', 'bold');
 
-        ax = axes;
-        axis(ax, 'off');
-        hold(ax, 'on');
-
-        text(0.5, 0.96, table_title, ...
-            'HorizontalAlignment', 'center', ...
-            'FontSize', 15, ...
-            'FontWeight', 'bold');
-
-        x0 = 0.03;
-        x1 = 0.97;
-        y_top = 0.88;
-        y_bottom = 0.06;
-
-        colWidth = [0.08, 0.16, 0.08, 0.08, 0.08, 0.10, 0.13, 0.13, 0.16];
-        colWidth = colWidth / sum(colWidth) * (x1 - x0);
-
-        colX = x0 + [0, cumsum(colWidth)];
-        colCenter = colX(1:end-1) + colWidth / 2;
-
-        rowH = (y_top - y_bottom) / (nRow + 1);
-
-        line([x0, x1], [y_top, y_top], 'Color', 'k', 'LineWidth', 1.8);
-        line([x0, x1], [y_top-rowH, y_top-rowH], 'Color', 'k', 'LineWidth', 1.2);
-        line([x0, x1], [y_bottom, y_bottom], 'Color', 'k', 'LineWidth', 1.8);
-
-        y_header = y_top - rowH / 2;
-
-        for j = 1:length(colNames)
-            text(colCenter(j), y_header, colNames{j}, ...
-                'HorizontalAlignment', 'center', ...
-                'FontSize', 10, ...
-                'FontWeight', 'bold');
-        end
-
-        for i = 1:nRow
-            y = y_top - rowH * (i + 0.5);
-
-            text(colCenter(1), y, sprintf('%d', data{i,1}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(2), y, char(data{i,2}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(3), y, sprintf('%d', data{i,3}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(4), y, sprintf('%d', data{i,4}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(5), y, sprintf('%d', data{i,5}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(6), y, sprintf('%.2f', data{i,6}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(7), y, sprintf('%.4f', data{i,7}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(8), y, sprintf('%.4f', data{i,8}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-
-            text(colCenter(9), y, char(data{i,9}), ...
-                'HorizontalAlignment', 'center', 'FontSize', 10);
-        end
-
-        xlim([0, 1]);
-        ylim([0, 1]);
+        uitable(fig, 'Data', data, 'ColumnName', colNames, ...
+            'Units', 'normalized', 'Position', [0.02, 0.04, 0.96, 0.86]);
     end
-    function Plot_MC_Verification_Bar(T_result, title_str)
+
+    function Draw_MC_Detail_Table(T_result, table_title)
     % ============================================================
-    % 绘制 Monte Carlo 成功率统计图
+    % 绘制 Monte Carlo 明细表。全组合行数很多，默认不启用。
     % ============================================================
+
+        data = Table_Cell_For_UITable(T_result);
+        colNames = {'故障数量', '故障组合', 'Jc判定', 'Jc_Force', 'Jc_Torque', 'Jc_6D', ...
+                    '打靶次数', '成功次数', '失败次数', '成功率(%)', ...
+                    '平均位置误差(m)', '平均姿态误差(deg)', '验证结论'};
+
+        fig = figure('Name', table_title, 'Color', 'w', 'Position', [80, 80, 1600, 820]);
+
+        uicontrol(fig, 'Style', 'text', 'String', table_title, ...
+            'Units', 'normalized', 'Position', [0.02, 0.92, 0.96, 0.06], ...
+            'BackgroundColor', 'w', 'FontSize', 15, 'FontWeight', 'bold');
+
+        uitable(fig, 'Data', data, 'ColumnName', colNames, ...
+            'Units', 'normalized', 'Position', [0.02, 0.04, 0.96, 0.86]);
+    end
+
+    function Plot_MC_Summary_Bar(T_result, title_str)
+    % ============================================================
+    % 绘制不同故障数量下可重构/不可重构组合 Monte Carlo 成功率
+    % ============================================================
+
+        fault_nums = unique(T_result{:, 1})';
+        status_order = ["可重构", "不可重构"];
+        y = nan(numel(fault_nums), numel(status_order));
+
+        for ii = 1:numel(fault_nums)
+            for jj = 1:numel(status_order)
+                mask = T_result{:, 1} == fault_nums(ii) & string(T_result{:, 2}) == status_order(jj);
+                if any(mask)
+                    y(ii, jj) = T_result{find(mask, 1), 7};
+                end
+            end
+        end
+
+        y_plot = y;
+        y_plot(isnan(y_plot)) = 0;
 
         figure('Name', [title_str, ' 成功率统计'], 'Color', 'w');
-
-        x = T_result{:, 1};   % 故障数量
-        y = T_result{:, 6};   % 成功率_percent
-
-        bar(x, y);
+        bar(fault_nums, y_plot, 'grouped');
 
         grid on;
         xlabel('故障数量');
         ylabel('Monte Carlo 打靶成功率 (%)');
-        title([title_str, '：不同故障数量下打靶成功率']);
-
-        xticks(x);
+        title([title_str, '：不同故障数量与Jc判定下打靶成功率']);
+        legend(cellstr(status_order), 'Location', 'best');
+        xticks(fault_nums);
         ylim([0, 100]);
+    end
+
+    function data = Table_Cell_For_UITable(T_result)
+        data = table2cell(T_result);
+
+        for ii = 1:numel(data)
+            if isstring(data{ii})
+                data{ii} = char(data{ii});
+            end
+        end
     end
 end
