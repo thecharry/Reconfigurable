@@ -1,7 +1,14 @@
 clear; clc; close all;
 
 params = Get_params();
-load('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
+data_files = dir('Optim_config_data_*.mat');
+if isempty(data_files)
+    error('未找到优化结果文件，请先运行 Optim_Algorithm.m。');
+end
+[~, latest_idx] = max([data_files.datenum]);
+latest_file = data_files(latest_idx).name;
+load(latest_file, 'B_opt', 'r_opt', 'fval');
+fprintf('已加载最新优化结果：%s\n', latest_file);
 
 disp('正在计算 原布局 底层指标...');
 [Z_Force_orig, Z_Torque_orig, Z_Total_orig, StateNames] = get_Z_matrix(params, params.B_all);

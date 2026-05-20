@@ -190,20 +190,16 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     Print_Thruster_Allocation(params.B_all, log_orig.faluty_thrusters, '原布局');
     Print_Thruster_Allocation(B_opt, log_orig.faluty_thrusters, '优化布局');
     function Print_Thruster_Allocation(B, faulty_thrusters, name_str)
-
         axes_names = {'X', 'Y', 'Z'};
-
         fprintf('%s推力器分配策略\n', name_str);
-
         if isempty(faulty_thrusters)
             fprintf('推力器标况\n');
         else
             fprintf('推力器[%s]故障\n', num2str(faulty_thrusters));
         end
-
+        
         fprintf('--------------------------------------------------------------\n');
         fprintf('【轨道控制推力器分配】\n');
-
         for i = 1:3
             pos_idx = find(B(i, :) > 1e-3);
             neg_idx = find(B(i, :) < -1e-3);
@@ -217,7 +213,6 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
 
         fprintf('--------------------------------------------------------------\n');
         fprintf('【姿态控制推力器分配】\n');
-
         for i = 1:3
             pos_idx = find(B(i+3, :) > 1e-3);
             neg_idx = find(B(i+3, :) < -1e-3);
@@ -228,7 +223,6 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
             fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
             fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
         end
-
         fprintf('--------------------------------------------------------------\n');
     end
 

@@ -16,7 +16,9 @@ tic;
 % [x_opt, fval] = ga(@(x) Optimal_config(x,params), 4, [], [], [], [], lb, ub, @(x) Physical_constraints(x,params), options);
 toc;
 [B_opt, r_opt] = Thruster_reconfig(x_opt,params);
-save('Optim_config_data1.mat', 'B_opt', 'r_opt', 'fval');
+timestamp = string(datetime('now', 'Format', 'yyyyMMdd_HHmmss_SSS'));
+output_file = sprintf('Optim_config_data_%s.mat', timestamp);
+save(output_file, 'B_opt', 'r_opt', 'fval', 'x_opt');
 
 %% 推力器布局优化配置
 function [B_all, r] = Thruster_reconfig(x, params)
@@ -82,11 +84,10 @@ function J = Optimal_config(x,params)
     [B_all, ~] = Thruster_reconfig(x,params);
     penalty = 0;
     [~, ~, ~, ~, ~,~,Jc] = Reconfig_eval(params, B_all);
+    [~, ~, ~, ~, ~,~,Jc2] = Reconfig_eval(params, B_all,2);
     v_Jc = max(0, params.Jc(:,1) - Jc(:,1));
-    % v_Ja = max(0, params.Z(:,2) - Z(:,2));
-    % v_Jo = max(0, params.Z(:,3) - Z(:,3));
-    % v_Jf = max(0, params.Z(:,4) - Z(:,4));
-    penalty = penalty+v_Jc'*v_Jc; % + v_Ja'*v_Ja + v_Jo'*v_Jo + v_Jf'*v_Jf;
+    v_Jc2 = max(0, 1e-10 - Jc2(:,1));
+    penalty = penalty+v_Jc'*v_Jc+v_Jc2'*v_Jc2;
     J = penalty;
 end
 
