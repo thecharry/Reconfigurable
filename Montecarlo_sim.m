@@ -43,7 +43,7 @@ function MC = Montecarlo_sim(params, B_opt, mc_cfg)
     end
 
     function cfg = Default_MC_Config(params)
-        cfg.N_trial = 10;                  % 每个故障组合的打靶次数
+        cfg.N_trial = 2;                  % 每个故障组合的打靶次数
         cfg.T_sim = 2000;
         cfg.dt = 0.005;
 
@@ -100,9 +100,9 @@ function MC = Montecarlo_sim(params, B_opt, mc_cfg)
         cfg.verbose_trial = false;
 
         % 图表输出
-        cfg.disp_detail = true;
+        cfg.disp_detail = false;
         cfg.disp_summary = true;
-        cfg.draw_summary_table = true;
+        cfg.draw_summary_table = false;
         cfg.draw_success_bar = false;
         cfg.draw_detail_table = false;
     end
@@ -398,7 +398,8 @@ function MC = Montecarlo_sim(params, B_opt, mc_cfg)
         if reconfig_metric == "split"
             is_reconfig = split_ok;
         elseif reconfig_metric == "joint_6d"
-            is_reconfig = split_ok && (Jc_6D >= nominal_cap.Jc_6D_min);
+            % is_reconfig = split_ok && (Jc_6D >= nominal_cap.Jc_6D_min);
+            is_reconfig = Jc_6D >= nominal_cap.Jc_6D_min;
         else
             error('未知的 mc_cfg.reconfig_metric: %s', char(reconfig_metric));
         end

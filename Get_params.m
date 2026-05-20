@@ -11,7 +11,7 @@ function params = Get_params()
     params.J = diag([10000, 6000, 13000]);
     params.n = sqrt(mu / (R_earth + h_orbit)^3);
     [params.B_all, params.r_all] = Thruster_config();
-    [params.Z, params.Jc, ~, params.Ja, params.Jo, params.Jf] = Reconfig_eval(params, params.B_all);
+    [params.Z, ~, ~, params.Ja, params.Jo, params.Jf, params.Jc] = Reconfig_eval(params, params.B_all);
 
     %% 推力器原布局
     function [B_all, r] = Thruster_config()

@@ -1,5 +1,5 @@
 %% 可重构评价指标函数
-function [Z, Jc1, Jc2, Ja, Jo, Jf, Jc6] = Reconfig_eval(params, Ball, max_faluts)
+function [Z, Jc1, Jc2, Ja, Jo, Jf, Jc] = Reconfig_eval(params, Ball, max_faluts)
     Matrix_conf = params.F_max * Ball;
     if nargin < 3 || isempty(max_faluts)
         max_faluts = 1;
@@ -16,27 +16,22 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf, Jc6] = Reconfig_eval(params, Ball, max_faluts
     Ja = zeros(length(falutsets), 2);
     Jo = zeros(length(falutsets), 1);
     Jf = zeros(length(falutsets), 1);
-    Jc6 = [];
-    if nargout >= 7
-        Jc6 = zeros(length(falutsets), 1);
-        scale_6d = max(abs(Matrix_conf), [], 2);
-        scale_6d(scale_6d < 1e-12) = 1;
-    end
+    Jc = zeros(length(falutsets), 1);
+    scale = max(abs(Matrix_conf), [], 2);% 每行的最大绝对值
+    scale(scale < 1e-12) = 1;
     for i = 1:length(falutsets)
         faluty_idx = falutsets{i};
         healthy_idx = setdiff(1:params.Num, faluty_idx);% 剔除故障推力器
-        Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
-        Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
-        Matrix_conf_6D = Matrix_conf(:, healthy_idx);
-        % Matrix_conf_H = Matrix_conf(:, healthy_idx);
+        % Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
+        % Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        Matrix_conf_H = Matrix_conf(:, healthy_idx);
         % 控制能力指标
-        [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
-        [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
-        Jc1(i,:) = [Jc_Force, Jc_Torque];
-        Jc2(i,:) = [Jc_Force1, Jc_Torque1];
-        if nargout >= 7
-            [Jc6(i), ~] = Capability(Matrix_conf_6D ./ scale_6d);
-        end
+        [Jc(i), ~] = Capability(Matrix_conf_H ./ scale);
+        % [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
+        % [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
+        % Jc1(i,:) = [Jc_Force, Jc_Torque];
+        % Jc2(i,:) = [Jc_Force1, Jc_Torque1];
+        
         % % 控制分辨率指标
         % Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
         % Ja_Torque = Precision(Matrix_conf(4:6, :), Matrix_conf_T, params.t_min);

@@ -81,8 +81,8 @@ end
 function J = Optimal_config(x,params)
     [B_all, ~] = Thruster_reconfig(x,params);
     penalty = 0;
-    [Z, ~, ~, ~, ~] = Reconfig_eval(params, B_all);
-    v_Jc = max(0, params.Z(:,1) - Z(:,1));
+    [~, ~, ~, ~, ~,~,Jc] = Reconfig_eval(params, B_all);
+    v_Jc = max(0, params.Jc(:,1) - Jc(:,1));
     % v_Ja = max(0, params.Z(:,2) - Z(:,2));
     % v_Jo = max(0, params.Z(:,3) - Z(:,3));
     % v_Jf = max(0, params.Z(:,4) - Z(:,4));

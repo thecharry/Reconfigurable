@@ -10,7 +10,7 @@ function log = Closedloop_sim(params, B, sim_cfg)
         sim_cfg.T_sim = 2000;% 仿真时间
         sim_cfg.dt = 0.005;
         sim_cfg.fault_time = 0.5 * sim_cfg.T_sim;
-        sim_cfg.faulty_thrusters_fixed = 3;
+        sim_cfg.faulty_thrusters_fixed = [];
         sim_cfg.Kp_pos = 10;
         sim_cfg.Kd_pos = 300;
         sim_cfg.Kp_att = 400 * eye(3);
@@ -35,7 +35,6 @@ function log = Closedloop_sim(params, B, sim_cfg)
     Prop_Final = zeros(params.Num, 1);
     Matrix_conf = params.F_max * B;
     fault_trig = false;% 故障标志位
-    num_faults = 1;% 允许的最大同时故障台数
 
     int = [0;0;0];
     Kp_pos = sim_cfg.Kp_pos;
@@ -65,12 +64,6 @@ function log = Closedloop_sim(params, B, sim_cfg)
         if t >= log.faluty_time && ~fault_trig
             fault_trig = true;
             log.faluty_thrusters = sim_cfg.faulty_thrusters_fixed;
-            % if num_faults == 0
-            %     log.faluty_thrusters = [];% 标况
-            % else
-            %     % faulty_thrusters = randperm(params.Num, num_faults);
-            %     log.faluty_thrusters = 3;
-            % end
         end
         if t >= next_ctrl
             % 初始和目标状态获取

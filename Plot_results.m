@@ -13,20 +13,19 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         patch('Vertices',vert,'Faces',fac,'FaceColor',[0.8 0.8 0.8], ...
               'FaceAlpha',0.18,'EdgeColor',[0.6 0.6 0.6]);
         % 推力器位置和方向
-        % plot3(r(1,:), r(2,:), r(3,:), 'o', 'Color', 'b', 'MarkerSize', 6, 'MarkerFaceColor', '#D9FFFF');
-        % for j = 1:params.Num
-        %     dx = B(1,j); dy = B(2,j); dz = B(3,j);
-        %     if r(1,j) > 0
-        %         beta_rad = acos(-dx);
-        %     else              
-        %         beta_rad = acos(dx);
-        %     end
-        %     alpha_rad = atan2(dz, dy);
-        %     beta_deg = rad2deg(beta_rad);
-        %     alpha_deg = mod(rad2deg(alpha_rad), 360);
-        %     label_str = sprintf(' %d(\\alpha:%.0f^\\circ, \\beta:%.0f^\\circ)', j, alpha_deg, beta_deg);
-        %     text(r(1,j), r(2,j), r(3,j) + 0.15, label_str, 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
-        % end
+        for j = 1:params.Num
+            dx = B(1,j); dy = B(2,j); dz = B(3,j);
+            if r(1,j) > 0
+                beta_rad = acos(-dx);
+            else              
+                beta_rad = acos(dx);
+            end
+            alpha_rad = atan2(dz, dy);
+            beta_deg = rad2deg(beta_rad);
+            alpha_deg = mod(rad2deg(alpha_rad), 360);
+            label_str = sprintf(' %d(\\alpha:%.0f^\\circ, \\beta:%.0f^\\circ)', j, alpha_deg, beta_deg);
+            text(r(1,j), r(2,j), r(3,j) + 0.15, label_str, 'FontSize', 10, 'FontWeight', 'bold', 'Color', 'k');% 推力器编号
+        end
         % 正常推力器用红色实线
         healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
         plot3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
@@ -42,11 +41,6 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
                     B(1, log_orig.faluty_thrusters), B(2, log_orig.faluty_thrusters), B(3, log_orig.faluty_thrusters), ...
                     0.45, 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5, 'LineStyle', '--');
         end
-        % 推力器编号
-        for j = 1:params.Num
-            text(r(1,j), r(2,j), r(3,j) + 0.15, sprintf('%d', j), ...
-            'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
-        end
         title(title_str);
         xlabel('X'); ylabel('Y'); zlabel('Z');
         xlim([-3, 3]); ylim([-1.2, 1.2]); zlim([-1.2, 1.2]);axis equal; grid on;
@@ -61,36 +55,63 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
     M_orig = Matrix_orig(:, healthy_idx);
     M_opt  = Matrix_opt(:, healthy_idx);
+    scale_orig = max(abs(Matrix_orig), [], 2);
+    scale_orig(scale_orig < 1e-12) = 1;
+    scale_opt = max(abs(Matrix_opt), [], 2);
+    scale_opt(scale_opt < 1e-12) = 1;
     % 连续域的Zonotope包络
     N_h = length(healthy_idx);
     c = 0.5 * ones(N_h,1);
     G = 0.5 * eye(N_h);
-    Z_orig = zonotope(M_orig*c, M_orig*G);
-    Z_opt  = zonotope(M_opt*c,  M_opt*G);
+    % Z_orig = zonotope(M_orig*c, M_orig*G);
+    % Z_opt  = zonotope(M_opt*c,  M_opt*G);
+    Z1_orig = zonotope((M_orig ./ scale_orig)*c, (M_orig ./ scale_orig)*G);
+    Z1_opt  = zonotope((M_opt  ./ scale_opt)*c,  (M_opt  ./ scale_opt)*G);
     % 离散域的全状态点云
     tau = dec2bin(0:2^N_h-1) - '0';
-    Pts_orig = M_orig * tau';
-    Pts_opt  = M_opt  * tau';  
+    % Pts_orig = M_orig * tau';
+    % Pts_opt  = M_opt  * tau';  
+    Pts1_orig = (M_orig ./ scale_orig) * tau';
+    Pts1_opt  = (M_opt  ./ scale_opt)  * tau';
     warning('off','all');
-    % 力空间对比
-    subplot(2,2,1);hold on;grid on;
-    plot(Z_orig,[1 2 3],'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
-    plot(Z_opt,[1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
-    plot3(Pts_orig(1,:), Pts_orig(2,:), Pts_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
-    plot3(Pts_opt(1,:), Pts_opt(2,:), Pts_opt(3,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    % % 力空间对比
+    % subplot(2,2,1);hold on;grid on;
+    % plot(Z_orig,[1 2 3],'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    % plot(Z_opt,[1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    % plot3(Pts_orig(1,:), Pts_orig(2,:), Pts_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    % plot3(Pts_opt(1,:), Pts_opt(2,:), Pts_opt(3,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    % plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
+    % title('力空间包络与离散点云');xlabel('Fx (N)'); ylabel('Fy (N)'); zlabel('Fz (N)');
+    % legend('原布局包络','优化布局包络','原布局离散点','优化布局离散点');
+    % axis equal;view(3);
+    % % 力矩空间对比
+    % subplot(2,2,2);hold on;grid on;
+    % plot(Z_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    % plot(Z_opt, [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    % plot3(Pts_orig(4,:), Pts_orig(5,:), Pts_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    % plot3(Pts_opt(4,:), Pts_opt(5,:), Pts_opt(6,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    % plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
+    % title('力矩空间包络与离散点云');xlabel('Mx (N·m)'); ylabel('My (N·m)'); zlabel('Mz (N·m)');
+    % axis equal;view(3);
+    % contSet/plot 最多只能显示 3 个维度，因此将 6 维归一化包络拆成力/力矩两个 3D 投影。
+    % 力空间对比（归一化）
+    subplot(2,2,1); hold on; grid on;
+    plot(Z1_orig, [1 2 3], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    plot(Z1_opt,  [1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    plot3(Pts1_orig(1,:), Pts1_orig(2,:), Pts1_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    plot3(Pts1_opt(1,:),  Pts1_opt(2,:),  Pts1_opt(3,:),  '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
     plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
-    title('力空间包络与离散点云');xlabel('Fx (N)'); ylabel('Fy (N)'); zlabel('Fz (N)');
-    legend('原布局包络','优化布局包络','原布局离散点','优化布局离散点');
-    axis equal;view(3);
-    % 力矩空间对比
-    subplot(2,2,2);hold on;grid on;
-    plot(Z_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
-    plot(Z_opt, [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
-    plot3(Pts_orig(4,:), Pts_orig(5,:), Pts_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
-    plot3(Pts_opt(4,:), Pts_opt(5,:), Pts_opt(6,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    title('归一化力空间包络与离散点云'); xlabel('Fx'); ylabel('Fy'); zlabel('Fz');
+    axis equal; view(3);
+    % 力矩空间对比（归一化）
+    subplot(2,2,2); hold on; grid on;
+    plot(Z1_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    plot(Z1_opt,  [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    plot3(Pts1_orig(4,:), Pts1_orig(5,:), Pts1_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    plot3(Pts1_opt(4,:),  Pts1_opt(5,:),  Pts1_opt(6,:),  '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
     plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
-    title('力矩空间包络与离散点云');xlabel('Mx (N·m)'); ylabel('My (N·m)'); zlabel('Mz (N·m)');
-    axis equal;view(3);
+    title('归一化力矩空间包络与离散点云'); xlabel('Mx'); ylabel('My'); zlabel('Mz');
+    axis equal; view(3);
     warning('on','all');
     % 6维向量夹角热力图
     M_orig = M_orig ./ (vecnorm(M_orig,2,1) + 1e-12);% 归一化
@@ -210,38 +231,6 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
 
         fprintf('--------------------------------------------------------------\n');
     end
-    % fprintf('\n');
-    % if log_orig.faluty_thrusters == []
-    %     fprintf('======================== 推力器标况下 ========================\n');
-    % else
-    %     fprintf('=================== 推力器[%s]故障下 ===================\n', num2str(log_orig.faluty_thrusters));
-    % end
-    % fprintf('推力器按轴分配策略\n');
-    % fprintf('--------------------------------------------------------------\n');
-    % axes_names = {'X', 'Y', 'Z'};
-    % fprintf('【轨道控制推力器分配】\n');
-    % for idx1 = 1:3
-    %     pos_idx = find(B_opt(idx1, :) > 1e-3);
-    %     neg_idx = find(B_opt(idx1, :) < -1e-3);
-    %     if log_orig.faluty_thrusters ~= []
-    %         pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
-    %         neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
-    %     end
-    %     fprintf('+%s轴: [%s]\n', axes_names{idx1}, num2str(pos_idx));
-    %     fprintf('-%s轴: [%s]\n', axes_names{idx1}, num2str(neg_idx));
-    % end
-    % fprintf('--------------------------------------------------------------\n');
-    % fprintf('【姿态控制推力器分配】\n');
-    % for idx2 = 1:3
-    %     pos_idx = find(B_opt(idx2+3, :) > 1e-3);
-    %     neg_idx = find(B_opt(idx2+3, :) < -1e-3);
-    %     if log_orig.faluty_thrusters ~= []
-    %         pos_idx = setdiff(pos_idx, log_orig.faluty_thrusters);
-    %         neg_idx = setdiff(neg_idx, log_orig.faluty_thrusters);
-    %     end
-    %     fprintf('+%s轴: [%s]\n', axes_names{idx2}, num2str(pos_idx));
-    %     fprintf('-%s轴: [%s]\n', axes_names{idx2}, num2str(neg_idx));
-    % end
 
     %% 不同故障数量下可重构性判定表
     plot_falut_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
@@ -256,12 +245,13 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
             reconfig_num = 0;
             ireconfig_num = 0;
             % 可重构性判定
-            [~, Jc_eval, ~, ~, ~, ~] = Reconfig_eval(params, B, k_fault);
+            [~, ~, ~, ~, ~, ~,Jc] = Reconfig_eval(params, B, k_fault);
             cases = size(nchoosek(1:params.Num, k_fault),1);
             for idx = 1:cases
-                Jc_force = Jc_eval(idx+1,1);
-                Jc_torque = Jc_eval(idx+1,2);
-                is_reconfig = (Jc_force > 1e-10) && (Jc_torque > 1e-10);
+                % Jc_force = Jc_eval(idx+1,1);
+                % Jc_torque = Jc_eval(idx+1,2);
+                % is_reconfig = (Jc_force > 1e-10) && (Jc_torque > 1e-10);
+                is_reconfig = (Jc(idx+1) > 1e-10);
                 if is_reconfig
                     reconfig_num = reconfig_num + 1;
                 else
@@ -332,7 +322,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     
     %% 蒙特卡洛打靶仿真结果对比
     % 默认每种故障数量分别选 1 个可重构组合和 1 个不可重构组合，按需启用。
-    % MC_Result = Montecarlo_sim(params, B_opt);
+    % Montecarlo_sim(params, B_opt);
     
 end
 % %% 综合评价指标输出
