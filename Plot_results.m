@@ -27,18 +27,18 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
             text(r(1,j), r(2,j), r(3,j) + 0.15, label_str, 'FontSize', 10, 'FontWeight', 'bold', 'Color', 'k');% 推力器编号
         end
         % 正常推力器用红色实线
-        healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
+        healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
         plot3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
               'o','MarkerSize',7,'MarkerFaceColor',[0.2 0.7 1],'MarkerEdgeColor','k');
         quiver3(r(1,healthy_idx), r(2,healthy_idx), r(3,healthy_idx), ...
                 B(1,healthy_idx), B(2,healthy_idx), B(3,healthy_idx), ...
                 0.45,'r','LineWidth',1.4);
         % 故障推力器用灰色虚线
-        if ~isempty(log_orig.faluty_thrusters)
-            plot3(r(1, log_orig.faluty_thrusters), r(2, log_orig.faluty_thrusters), r(3, log_orig.faluty_thrusters), ...
+        if ~isempty(log_orig.faulty_thrusters)
+            plot3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
                   'o','MarkerSize',7,'MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');
-            quiver3(r(1, log_orig.faluty_thrusters), r(2, log_orig.faluty_thrusters), r(3, log_orig.faluty_thrusters), ...
-                    B(1, log_orig.faluty_thrusters), B(2, log_orig.faluty_thrusters), B(3, log_orig.faluty_thrusters), ...
+            quiver3(r(1, log_orig.faulty_thrusters), r(2, log_orig.faulty_thrusters), r(3, log_orig.faulty_thrusters), ...
+                    B(1, log_orig.faulty_thrusters), B(2, log_orig.faulty_thrusters), B(3, log_orig.faulty_thrusters), ...
                     0.45, 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5, 'LineStyle', '--');
         end
         title(title_str);
@@ -52,7 +52,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     figure('Name', '重构评价指标优化前后对比', 'Color','w');
     Matrix_orig = params.F_max * params.B_all;
     Matrix_opt  = params.F_max * B_opt;
-    healthy_idx = setdiff(1:params.Num, log_orig.faluty_thrusters);
+    healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
     M_orig = Matrix_orig(:, healthy_idx);
     M_opt  = Matrix_opt(:, healthy_idx);
     scale_orig = max(abs(Matrix_orig), [], 2);
@@ -63,39 +63,37 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     N_h = length(healthy_idx);
     c = 0.5 * ones(N_h,1);
     G = 0.5 * eye(N_h);
-    % Z_orig = zonotope(M_orig*c, M_orig*G);
-    % Z_opt  = zonotope(M_opt*c,  M_opt*G);
+    Z_orig = zonotope(M_orig*c, M_orig*G);
+    Z_opt  = zonotope(M_opt*c,  M_opt*G);
     Z1_orig = zonotope((M_orig ./ scale_orig)*c, (M_orig ./ scale_orig)*G);
     Z1_opt  = zonotope((M_opt  ./ scale_opt)*c,  (M_opt  ./ scale_opt)*G);
     % 离散域的全状态点云
     tau = dec2bin(0:2^N_h-1) - '0';
-    % Pts_orig = M_orig * tau';
-    % Pts_opt  = M_opt  * tau';  
+    Pts_orig = M_orig * tau';
+    Pts_opt  = M_opt  * tau';  
     Pts1_orig = (M_orig ./ scale_orig) * tau';
     Pts1_opt  = (M_opt  ./ scale_opt)  * tau';
     warning('off','all');
-    % % 力空间对比
-    % subplot(2,2,1);hold on;grid on;
-    % plot(Z_orig,[1 2 3],'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
-    % plot(Z_opt,[1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
-    % plot3(Pts_orig(1,:), Pts_orig(2,:), Pts_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
-    % plot3(Pts_opt(1,:), Pts_opt(2,:), Pts_opt(3,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
-    % plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
-    % title('力空间包络与离散点云');xlabel('Fx (N)'); ylabel('Fy (N)'); zlabel('Fz (N)');
-    % legend('原布局包络','优化布局包络','原布局离散点','优化布局离散点');
-    % axis equal;view(3);
-    % % 力矩空间对比
-    % subplot(2,2,2);hold on;grid on;
-    % plot(Z_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
-    % plot(Z_opt, [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
-    % plot3(Pts_orig(4,:), Pts_orig(5,:), Pts_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
-    % plot3(Pts_opt(4,:), Pts_opt(5,:), Pts_opt(6,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
-    % plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
-    % title('力矩空间包络与离散点云');xlabel('Mx (N·m)'); ylabel('My (N·m)'); zlabel('Mz (N·m)');
-    % axis equal;view(3);
-    % contSet/plot 最多只能显示 3 个维度，因此将 6 维归一化包络拆成力/力矩两个 3D 投影。
+    % 力空间对比
+    subplot(3,2,1);hold on;grid on;
+    plot(Z_orig,[1 2 3],'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    plot(Z_opt,[1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    plot3(Pts_orig(1,:), Pts_orig(2,:), Pts_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    plot3(Pts_opt(1,:), Pts_opt(2,:), Pts_opt(3,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
+    title('力空间包络与离散点云');xlabel('Fx (N)'); ylabel('Fy (N)'); zlabel('Fz (N)');
+    axis equal;view(3);
+    % 力矩空间对比
+    subplot(3,2,2);hold on;grid on;
+    plot(Z_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
+    plot(Z_opt, [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
+    plot3(Pts_orig(4,:), Pts_orig(5,:), Pts_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
+    plot3(Pts_opt(4,:), Pts_opt(5,:), Pts_opt(6,:), '.', 'Color', [0.8, 0, 0], 'MarkerSize', 4);
+    plot3(0, 0, 0, 'ko', 'MarkerSize', 3, 'MarkerFaceColor', 'k');
+    title('力矩空间包络与离散点云');xlabel('Mx (N·m)'); ylabel('My (N·m)'); zlabel('Mz (N·m)');
+    axis equal;view(3);
     % 力空间对比（归一化）
-    subplot(2,2,1); hold on; grid on;
+    subplot(3,2,3); hold on; grid on;
     plot(Z1_orig, [1 2 3], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
     plot(Z1_opt,  [1 2 3], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
     plot3(Pts1_orig(1,:), Pts1_orig(2,:), Pts1_orig(3,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
@@ -104,7 +102,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     title('归一化力空间包络与离散点云'); xlabel('Fx'); ylabel('Fy'); zlabel('Fz');
     axis equal; view(3);
     % 力矩空间对比（归一化）
-    subplot(2,2,2); hold on; grid on;
+    subplot(3,2,4); hold on; grid on;
     plot(Z1_orig, [4 5 6], 'FaceColor', [0.7 1 0.7], 'FaceAlpha', 0.15, 'EdgeColor', 'g');
     plot(Z1_opt,  [4 5 6], 'FaceColor', [0.9 0.7 0.7], 'FaceAlpha', 0.3, 'EdgeColor', 'r');
     plot3(Pts1_orig(4,:), Pts1_orig(5,:), Pts1_orig(6,:), '.', 'Color', [0, 0.8, 0], 'MarkerSize', 4);
@@ -120,19 +118,19 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     cos_opt  = M_opt'  * M_opt;
     angle_orig = acos(min(max(cos_orig, -1), 1)) * 180 / pi;
     angle_opt  = acos(min(max(cos_opt,  -1), 1)) * 180 / pi;
-    subplot(2,2,3);
+    subplot(3,2,5);
     h1 = heatmap(healthy_idx, healthy_idx, angle_orig);
     h1.Title = '原布局向量夹角';h1.XLabel = '推进器编号';h1.YLabel = '推进器编号';
     colormap(h1, jet);
-    subplot(2,2,4);
+    subplot(3,2,6);
     h2 = heatmap(healthy_idx, healthy_idx, angle_opt);
     h2.Title = '优化布局向量夹角';h2.XLabel = '推进器编号';h2.YLabel = '推进器编号';
     colormap(h2, jet);
     
     %% 闭环位置与姿态响应对比
     figure('Name', '闭环位置与姿态响应对比','Color','w');
-    subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.faluty_time);
-    subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.faluty_time);
+    subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.faulty_time);
+    subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.faulty_time);
     function Plot_3Axis(t, ref, y_orig, y_opt, title_str, unit_str, fault_time)
         hold on; grid on;
         colors = lines(3);
@@ -153,12 +151,12 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     subplot(2,2,3); hold on; grid on;
     plot(log_orig.Time, vecnorm(pos_err_orig,2,1), 'LineWidth',1.2);
     plot(log_orig.Time, vecnorm(pos_err_opt,2,1), 'LineWidth',1.2);
-    xline(log_orig.faluty_time,'--r');
+    xline(log_orig.faulty_time,'--r');
     title('位置误差范数'); xlabel('t(s)'); ylabel('||e_r||(m)'); legend('原布局','优化布局');
     subplot(2,2,4); hold on; grid on;
     plot(log_orig.Time, vecnorm(att_err_orig,2,1), 'LineWidth',1.2);
     plot(log_orig.Time, vecnorm(att_err_opt,2,1), 'LineWidth',1.2);
-    xline(log_orig.faluty_time,'--r');
+    xline(log_orig.faulty_time,'--r');
     title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_euler||(rad)'); legend('原布局','优化布局');
 
     %% 推力器控制脉宽对比
@@ -167,7 +165,7 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         subplot(3, 4, i);plot(log_orig.Time, log_orig.Pulse_Widths(i, :));
         title(['推力器 ' num2str(i)]);xlabel('时间(s)');ylabel('脉宽(s)');
         grid on;hold on;
-        xline(log_orig.faluty_time, '--r');
+        xline(log_orig.faulty_time, '--r');
         hold off;
     end
     % 总喷气时长对比
@@ -183,12 +181,12 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     subplot(3,1,3); hold on; grid on;
     plot(log_orig.Control_Time, sum(log_orig.Pulse_History,1), 'LineWidth',1.0);
     plot(log_opt.Control_Time, sum(log_opt.Pulse_History,1), 'LineWidth',1.0);
-    xline(log_orig.faluty_time,'--r');
+    xline(log_orig.faulty_time,'--r');
     xlabel('时间(s)'); ylabel('当前控制周期总脉宽(s)'); title('控制周期总脉宽变化');legend('原布局','优化布局');
    
     %% 推力器分配策略输出
-    Print_Thruster_Allocation(params.B_all, log_orig.faluty_thrusters, '原布局');
-    Print_Thruster_Allocation(B_opt, log_orig.faluty_thrusters, '优化布局');
+    Print_Thruster_Allocation(params.B_all, log_orig.faulty_thrusters, '原布局');
+    Print_Thruster_Allocation(B_opt, log_orig.faulty_thrusters, '优化布局');
     function Print_Thruster_Allocation(B, faulty_thrusters, name_str)
         axes_names = {'X', 'Y', 'Z'};
         fprintf('%s推力器分配策略\n', name_str);
@@ -227,9 +225,9 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
     end
 
     %% 不同故障数量下可重构性判定表
-    plot_falut_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
-    plot_falut_reconfig(params, B_opt, '优化布局:不同数量故障下可重构性判定表');
-    function plot_falut_reconfig(params, B, title)
+    plot_faulty_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
+    plot_faulty_reconfig(params, B_opt, '优化布局:不同数量故障下可重构性判定表');
+    function plot_faulty_reconfig(params, B, title)
         Fault_Num = zeros(params.Num, 1);
         Status = strings(params.Num, 1);
         Reconfig_Count = zeros(params.Num, 1);

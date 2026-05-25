@@ -1,40 +1,28 @@
 %% 闭环仿真函数
-function log = Closedloop_sim(params, B, sim_cfg)
-    % 初始化 
-    if nargin < 3 || isempty(sim_cfg)
-        sim_cfg.r0 = [0;15;55];
-        sim_cfg.rt = [5;25;35];
-        sim_cfg.v0 = [0;0;0];
-        sim_cfg.euler0 = deg2rad([0;15;55]);
-        sim_cfg.eulert = deg2rad([5;25;35]);
-        sim_cfg.T_sim = 2000;% 仿真时间
-        sim_cfg.dt = 0.005;
-        sim_cfg.fault_time = 0.5 * sim_cfg.T_sim;
-        sim_cfg.faulty_thrusters_fixed = [];
-        sim_cfg.Kp_pos = 10;
-        sim_cfg.Kd_pos = 300;
-        sim_cfg.Kp_att = 400 * eye(3);
-        sim_cfg.Kd_att = 3200 * eye(3);
-        sim_cfg.Ki_att = 20 * eye(3);
-    end
-
+function log = Closedloop_sim(params, B)
+    % 初始化
+    sim_cfg = Sim_config();
     r0 = sim_cfg.r0;
     rt = sim_cfg.rt;
     v0 = sim_cfg.v0;
     euler0 = sim_cfg.euler0;
     eulert = sim_cfg.eulert;
-    sigma0 = Euler_to_MRPs(euler0);
-    omega0 = [0;0;0];
-    Y = [r0; v0; sigma0; omega0];
-
-    next_ctrl = 0;
+    sigma0 = sim_cfg.sigma0;
+    omega0 = sim_cfg.omega0;
     T_sim = sim_cfg.T_sim;
     dt = sim_cfg.dt;
+
+    next_ctrl = 0;
+    Matrix_conf = params.F_max * B;
+    Y = [r0; v0; sigma0; omega0];
     N = floor(T_sim / dt);
     max_ctrl = ceil(T_sim / params.T) + 10;
-    Prop_Final = zeros(params.Num, 1);
-    Matrix_conf = params.F_max * B;
-    fault_trig = false;% 故障标志位
+    faulty_trig = false;% 故障触发标志位
+    true_faults = sim_cfg.true_faults;
+    estimated_faults = [];
+    diagnosis_trig = false;% 诊断触发标志位
+    diagnosis_success = false;
+    diagnosis_time = NaN;
 
     int = [0;0;0];
     Kp_pos = sim_cfg.Kp_pos;
@@ -50,20 +38,25 @@ function log = Closedloop_sim(params, B, sim_cfg)
     log.E = zeros(3, N);
     log.O = zeros(3, N);
     log.Y = zeros(12, N);
-    log.Pulse_Widths = zeros(params.Num, N);% 
+    log.Pulse_Widths = zeros(params.Num, N);
     log.Pulse_History = zeros(params.Num, max_ctrl);
+    log.Pulse_Command_History = zeros(params.Num, max_ctrl);
+    log.Pulse_Actual_History = zeros(params.Num, max_ctrl);
     log.Control_Time = zeros(1, max_ctrl);
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
-    log.faluty_thrusters = [];% 空数组表示推力器无故障
-    log.faluty_time = sim_cfg.fault_time;
+    log.faulty_thrusters = [];
+    log.estimated_faults = [];
+    log.faulty_time = sim_cfg.faulty_time;
+    log.diagnosis_time = NaN;
+    log.diagnosis_success = false;
 
     tic;
     for k = 1:N
         t = (k-1) * dt;
-        if t >= log.faluty_time && ~fault_trig
-            fault_trig = true;
-            log.faluty_thrusters = sim_cfg.faulty_thrusters_fixed;
+        if t >= log.faulty_time && ~faulty_trig
+            faulty_trig = true;
+            log.faulty_thrusters = true_faults;
         end
         if t >= next_ctrl
             % 初始和目标状态获取
@@ -73,32 +66,44 @@ function log = Closedloop_sim(params, B, sim_cfg)
             omega = Y(10:12);
             [r_d, v_d] = Guidance(t, r0, rt, T_sim);
             [euler_d, euler_rate_d] = Guidance(t, euler0, eulert, T_sim);
-            R = [1, 0, -sin(euler_d(2));% 欧拉角速率与角速度转换矩阵
-                0, cos(euler_d(1)), sin(euler_d(1))*cos(euler_d(2));
-                0, -sin(euler_d(1)), cos(euler_d(1))*cos(euler_d(2))];
-            omega_d = R * euler_rate_d; % 本体系期望角速度
+            [~, ~, R_b2o, R] = Matrix_conver(sigma, euler_d);
             sigma_d = Euler_to_MRPs(euler_d);
+            omega_d = R * euler_rate_d;
             % 轨道控制期望控制力
             F_orbit_req =  Kp_pos * (r_d - r) + Kd_pos * (v_d - v);
-            [~, ~, R_b2o] = Body_to_Orbit(sigma);
             F_body_req = R_b2o' * F_orbit_req;
             % 姿态控制期望控制力矩
             sigma_err = ((1-sigma'*sigma)*sigma_d-(1-sigma_d'*sigma_d)*sigma-2*cross(sigma_d,-sigma))/...
-                (1+(sigma_d'*sigma_d)*(sigma'*sigma)-2*dot(sigma_d,-sigma));% MRP乘法运算法则求误差姿态
+                        (1+(sigma_d'*sigma_d)*(sigma'*sigma)-2*dot(sigma_d,-sigma));% MRP乘法运算法则求误差姿态
             int = int + sigma_err * params.T;
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
-            Prop_Final = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,log.faluty_thrusters,params);
+            Prop_Command = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
+            Prop_Actual = Actual_invocation(Prop_Command, true_faults, faulty_trig);
+            % 故障诊断
+            if faulty_trig && ~diagnosis_trig
+                [faults] = Diagnose_faults(Matrix_conf, Prop_Command, Prop_Actual, sim_cfg.residual_threshold);
+                if ~isempty(faults)
+                    diagnosis_trig = true;
+                    estimated_faults = faults;
+                    diagnosis_success = isequal(estimated_faults, true_faults);
+                    diagnosis_time = t;
+                    Prop_Command = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
+                    Prop_Actual = Actual_invocation(Prop_Command,true_faults,faulty_trig);
+                end
+            end
             % 累计真实总喷气时长
-            log.Total_Pulse = log.Total_Pulse + sum(Prop_Final);
+            log.Total_Pulse = log.Total_Pulse + sum(Prop_Actual);
             log.Control_Count = log.Control_Count + 1;
-            log.Pulse_History(:, log.Control_Count) = Prop_Final;
+            log.Pulse_Command_History(:, log.Control_Count) = Prop_Command;
+            log.Pulse_Actual_History(:, log.Control_Count) = Prop_Actual;
+            log.Pulse_History(:, log.Control_Count) = Prop_Actual;
             log.Control_Time(log.Control_Count) = t;
             % 更新时间
             next_ctrl = next_ctrl + params.T;
         end
         time_in_cycle = t - (next_ctrl - params.T);
-        u_applied = params.F_max * (time_in_cycle < Prop_Final);
+        u_applied = params.F_max * (time_in_cycle < Prop_Actual);
         % 实际力和力矩
         W_total = B * u_applied;
         params.current_F = W_total(1:3);
@@ -106,7 +111,7 @@ function log = Closedloop_sim(params, B, sim_cfg)
         % 动力学积分
         dY = Spacecraft_dynamics(Y, params);
         Y = Y + dY * dt;
-        % 数据记录
+
         log.Y_euler(:,k) = MRPs_to_Euler(Y(7:9,:));
         log.Time(k) = t;
         log.R(:,k) = r_d;
@@ -114,11 +119,61 @@ function log = Closedloop_sim(params, B, sim_cfg)
         log.E(:,k) = euler_d;
         log.O(:,k) = omega_d;
         log.Y(:,k) = Y;
-        log.Pulse_Widths(1:12,k) = Prop_Final;
+        log.Pulse_Widths(1:params.Num,k) = Prop_Actual;
     end
     toc;
     log.Pulse_History = log.Pulse_History(:, 1:log.Control_Count);
+    log.Pulse_Command_History = log.Pulse_Command_History(:, 1:log.Control_Count);
+    log.Pulse_Actual_History = log.Pulse_Actual_History(:, 1:log.Control_Count);
     log.Control_Time = log.Control_Time(1:log.Control_Count);
+    log.estimated_faults = estimated_faults;
+    log.diagnosis_time = diagnosis_time;
+    log.diagnosis_success = diagnosis_success;
+
+    %% 仿真参数设置
+    function cfg = Sim_config()
+        cfg.r0 = [0;15;55];
+        cfg.rt = [5;25;35];
+        cfg.v0 = [0;0;0];
+        cfg.euler0 = deg2rad([0;15;55]);
+        cfg.eulert = deg2rad([5;25;35]);
+        cfg.sigma0 = Euler_to_MRPs(cfg.euler0);
+        cfg.omega0 = [0;0;0];
+        cfg.T_sim = 2000;
+        cfg.dt = 0.005;
+        cfg.faulty_time = 0.5 * cfg.T_sim;
+        cfg.true_faults = [1];
+        cfg.residual_threshold = 1e-9;% 残差阈值
+        cfg.Kp_pos = 10;
+        cfg.Kd_pos = 300;
+        cfg.Kp_att = 400 * eye(3);
+        cfg.Kd_att = 3200 * eye(3);
+        cfg.Ki_att = 20 * eye(3);
+    end
+
+    %% 实际推力器输出脉宽
+    function Prop_Actual = Actual_invocation(Prop_Command, true_faults, fault_trig)
+        Prop_Actual = Prop_Command;
+        if fault_trig && ~isempty(true_faults)
+            Prop_Actual(true_faults) = 0;
+        end
+    end
+
+    %% 故障诊断函数
+    function [faults] = Diagnose_faults(Matrix_conf, Prop_Command, Prop_Actual, residual_threshold)
+        residual = Matrix_conf * (Prop_Command - Prop_Actual);% 实际残差
+        faults = [];
+        if norm(residual) <= residual_threshold
+            return;
+        end
+
+        errors = zeros(1, numel(Prop_Command));
+        for ii = 1:numel(Prop_Command)
+            expected_loss = Matrix_conf(:, ii) * Prop_Command(ii);% 预期残差
+            errors(ii) = norm(residual - expected_loss);
+        end
+        [~, faults] = min(errors);
+    end
 
     %% 卫星动力学与运动学方程
     function dY = Spacecraft_dynamics(Y, params)    
@@ -132,7 +187,7 @@ function log = Closedloop_sim(params, B, sim_cfg)
         F_body = params.current_F;
         T_body = params.current_T;
         % C-W 轨道动力学
-        [sigma_f, sigma_c, R_b2o] = Body_to_Orbit(sigma);
+        [sigma_f, sigma_c, R_b2o] = Matrix_conver(sigma);
         F_orbit = R_b2o * F_body;
         ax = 3*n^2*r(1) + 2*n*v(2) + F_orbit(1)/m;
         ay = -2*n*v(1) + F_orbit(2)/m;
@@ -155,11 +210,16 @@ function log = Closedloop_sim(params, B, sim_cfg)
         v_d = (r_final - r_start) * ds;
     end
 
-    %% 本体系到轨道系旋转矩阵
-    function [sigma_f, sigma_c, R_b2o] = Body_to_Orbit(sigma)
+    %% 矩阵转换
+    function [sigma_f, sigma_c, R_b2o, R] = Matrix_conver(sigma, euler_d)
         sigma_f = dot(sigma, sigma);
         sigma_c = [0, -sigma(3), sigma(2); sigma(3), 0, -sigma(1); -sigma(2), sigma(1), 0];
-        R_b2o = eye(3) + (8 * sigma_c^2 - 4 * (1 - sigma_f) * sigma_c) / (1 + sigma_f)^2;
+        R_b2o = eye(3) + (8 * sigma_c^2 - 4 * (1 - sigma_f) * sigma_c) / (1 + sigma_f)^2;% 本体系到轨道系旋转矩阵
+        if nargin > 1
+            R = [1, 0, -sin(euler_d(2));
+                0, cos(euler_d(1)), sin(euler_d(1))*cos(euler_d(2));
+                0, -sin(euler_d(1)), cos(euler_d(1))*cos(euler_d(2))];% 欧拉角速率与角速度转换矩阵
+        end
     end
 
     %% 欧拉角转换为修正罗得里格斯参数

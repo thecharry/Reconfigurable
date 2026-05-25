@@ -64,14 +64,15 @@ function Prop_Final = Thruster_invocation(v_cmd1,v_cmd2,Matrix_sub,faulty_thrust
         end
     end
 end
+
 % %% 推力器控制效率调用策略
-% function u_opt = Thruster_invocation(v_cmd, Matrix_conf, falut_idx)
+% function u_opt = Thruster_invocation(v_cmd, Matrix_conf, faulty_idx)
 % N = size(Matrix_conf, 2);
 % lb = zeros(N, 1);
 % ub = ones(N, 1);
-% if falut_idx ~= 1
-%     lb(falut_idx - 1) = 0;
-%     ub(falut_idx - 1) = 0;
+% if faulty_idx ~= 1
+%     lb(faulty_idx - 1) = 0;
+%     ub(faulty_idx - 1) = 0;
 % end
 % % W_d = 1e4; % 跟踪误差权重
 % % W_u = 1;   % 燃料消耗权重
