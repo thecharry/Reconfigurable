@@ -1,7 +1,7 @@
 %% 闭环仿真函数
 function log = Closedloop_sim(params, B)
     % 初始化
-    sim_cfg = Sim_config();
+    sim_cfg = Sim_config(params);
     r0 = sim_cfg.r0;
     rt = sim_cfg.rt;
     v0 = sim_cfg.v0;
@@ -23,6 +23,7 @@ function log = Closedloop_sim(params, B)
     diagnosis_trig = false;% 诊断触发标志位
     diagnosis_success = false;
     diagnosis_time = NaN;
+    diagnosis_enable = false;% 启用诊断功能
 
     int = [0;0;0];
     Kp_pos = sim_cfg.Kp_pos;
@@ -42,6 +43,12 @@ function log = Closedloop_sim(params, B)
     log.Pulse_History = zeros(params.Num, max_ctrl);
     log.Pulse_Command_History = zeros(params.Num, max_ctrl);
     log.Pulse_Actual_History = zeros(params.Num, max_ctrl);
+    log.Pulse_Att_History = zeros(params.Num, max_ctrl);
+    log.Pulse_Orbit_History = zeros(params.Num, max_ctrl);
+    log.Pulse_6D_History = zeros(params.Num, max_ctrl);
+    log.Attitude_Window_History = NaN(1, max_ctrl);
+    log.Position_Window_History = NaN(1, max_ctrl);
+    log.Alloc_Mode_History = strings(1, max_ctrl);
     log.Control_Time = zeros(1, max_ctrl);
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
@@ -57,6 +64,9 @@ function log = Closedloop_sim(params, B)
         if t >= log.faulty_time && ~faulty_trig
             faulty_trig = true;
             log.faulty_thrusters = true_faults;
+            if ~diagnosis_enable
+                estimated_faults = true_faults;
+            end
         end
         if t >= next_ctrl
             % 初始和目标状态获取
@@ -78,26 +88,33 @@ function log = Closedloop_sim(params, B)
             int = int + sigma_err * params.T;
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
-            Prop_Command = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
+            [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
             Prop_Actual = Actual_invocation(Prop_Command, true_faults, faulty_trig);
             % 故障诊断
-            if faulty_trig && ~diagnosis_trig
+            if faulty_trig && ~diagnosis_trig && diagnosis_enable
                 [faults] = Diagnose_faults(Matrix_conf, Prop_Command, Prop_Actual, sim_cfg.residual_threshold);
                 if ~isempty(faults)
                     diagnosis_trig = true;
                     estimated_faults = faults;
                     diagnosis_success = isequal(estimated_faults, true_faults);
                     diagnosis_time = t;
-                    Prop_Command = Thruster_invocation(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
+                    [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
                     Prop_Actual = Actual_invocation(Prop_Command,true_faults,faulty_trig);
                 end
             end
+            [Prop_Att, Prop_Orbit, Prop_6D] = Allocation_Ownership(alloc_info, Prop_Command, Prop_Actual);
             % 累计真实总喷气时长
             log.Total_Pulse = log.Total_Pulse + sum(Prop_Actual);
             log.Control_Count = log.Control_Count + 1;
             log.Pulse_Command_History(:, log.Control_Count) = Prop_Command;
             log.Pulse_Actual_History(:, log.Control_Count) = Prop_Actual;
             log.Pulse_History(:, log.Control_Count) = Prop_Actual;
+            log.Pulse_Att_History(:, log.Control_Count) = Prop_Att;
+            log.Pulse_Orbit_History(:, log.Control_Count) = Prop_Orbit;
+            log.Pulse_6D_History(:, log.Control_Count) = Prop_6D;
+            log.Attitude_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'attitude_window', NaN);
+            log.Position_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'position_window', NaN);
+            log.Alloc_Mode_History(log.Control_Count) = string(Get_Info_Field(alloc_info, 'mode', 'unknown'));
             log.Control_Time(log.Control_Count) = t;
             % 更新时间
             next_ctrl = next_ctrl + params.T;
@@ -125,33 +142,104 @@ function log = Closedloop_sim(params, B)
     log.Pulse_History = log.Pulse_History(:, 1:log.Control_Count);
     log.Pulse_Command_History = log.Pulse_Command_History(:, 1:log.Control_Count);
     log.Pulse_Actual_History = log.Pulse_Actual_History(:, 1:log.Control_Count);
+    log.Pulse_Att_History = log.Pulse_Att_History(:, 1:log.Control_Count);
+    log.Pulse_Orbit_History = log.Pulse_Orbit_History(:, 1:log.Control_Count);
+    log.Pulse_6D_History = log.Pulse_6D_History(:, 1:log.Control_Count);
+    log.Attitude_Window_History = log.Attitude_Window_History(1:log.Control_Count);
+    log.Position_Window_History = log.Position_Window_History(1:log.Control_Count);
+    log.Alloc_Mode_History = log.Alloc_Mode_History(1:log.Control_Count);
     log.Control_Time = log.Control_Time(1:log.Control_Count);
     log.estimated_faults = estimated_faults;
     log.diagnosis_time = diagnosis_time;
     log.diagnosis_success = diagnosis_success;
 
     %% 仿真参数设置
-    function cfg = Sim_config()
-        cfg.r0 = [0;15;55];
-        cfg.rt = [5;25;35];
-        cfg.v0 = [0;0;0];
-        cfg.euler0 = deg2rad([0;15;55]);
-        cfg.eulert = deg2rad([5;25;35]);
-        cfg.sigma0 = Euler_to_MRPs(cfg.euler0);
-        cfg.omega0 = [0;0;0];
-        cfg.T_sim = 2000;
-        cfg.dt = 0.005;
-        cfg.faulty_time = 0.5 * cfg.T_sim;
-        cfg.true_faults = [1];
-        cfg.residual_threshold = 1e-9;% 残差阈值
-        cfg.Kp_pos = 10;
-        cfg.Kd_pos = 300;
-        cfg.Kp_att = 400 * eye(3);
-        cfg.Kd_att = 3200 * eye(3);
-        cfg.Ki_att = 20 * eye(3);
+    function sim_cfg = Sim_config(params)
+        sim_cfg.r0 = [0;15;55];
+        sim_cfg.rt = [5;25;35];
+        sim_cfg.v0 = [0;0;0];
+        sim_cfg.euler0 = deg2rad([0;15;55]);
+        sim_cfg.eulert = deg2rad([5;25;35]);
+        sim_cfg.sigma0 = Euler_to_MRPs(sim_cfg.euler0);
+        sim_cfg.omega0 = [0;0;0];
+        sim_cfg.T_sim = 2000;
+        sim_cfg.dt = 0.005;
+        sim_cfg.faulty_time = 0.5 * sim_cfg.T_sim;
+        sim_cfg.true_faults = params.true_faults;
+        sim_cfg.residual_threshold = 1e-9;% 残差阈值
+        sim_cfg.Kp_pos = 10;
+        sim_cfg.Kd_pos = 300;
+        sim_cfg.Kp_att = 400 * eye(3);
+        sim_cfg.Kd_att = 3200 * eye(3);
+        sim_cfg.Ki_att = 20 * eye(3);
     end
 
     %% 实际推力器输出脉宽
+    function [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params)
+        alloc_mode = 'axis_split';
+        if isfield(params, 'alloc_mode') && ~isempty(params.alloc_mode)
+            alloc_mode = char(params.alloc_mode);
+        end
+
+        if any(strcmpi(alloc_mode, {'six_d_qp', 'full_6d', 'lsqlin', 'quadprog', ...
+                                    'task_book', 'mission_book', 'strict_sync', 'sync_task_book'}))
+            if any(strcmpi(alloc_mode, {'six_d_qp', 'full_6d', 'lsqlin', 'quadprog'})) && ...
+                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
+                params.reuse_mode = 'six_d_qp';
+            elseif any(strcmpi(alloc_mode, {'task_book', 'mission_book'})) && ...
+                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
+                params.reuse_mode = 'task_book';
+            elseif any(strcmpi(alloc_mode, {'strict_sync', 'sync_task_book'})) && ...
+                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
+                params.reuse_mode = 'strict_sync';
+            end
+            [Prop_Command, alloc_info] = Thruster_invocation_decoupled(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
+        else
+            Prop_Command = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
+            alloc_info = Default_Alloc_Info(Prop_Command, 'axis_split_old');
+        end
+    end
+
+    function alloc_info = Default_Alloc_Info(Prop_Command, mode_name)
+        alloc_info.mode = mode_name;
+        alloc_info.Prop_T_used = zeros(params.Num, 1);
+        alloc_info.Prop_F_used = zeros(params.Num, 1);
+        alloc_info.Prop_6D = Prop_Command;
+        alloc_info.attitude_window = NaN;
+        alloc_info.position_window = NaN;
+    end
+
+    function [Prop_Att, Prop_Orbit, Prop_6D] = Allocation_Ownership(alloc_info, Prop_Command, Prop_Actual)
+        Prop_Att = zeros(params.Num, 1);
+        Prop_Orbit = zeros(params.Num, 1);
+        Prop_6D = zeros(params.Num, 1);
+
+        actual_ratio = zeros(params.Num, 1);
+        valid_idx = Prop_Command > 1e-12;
+        actual_ratio(valid_idx) = Prop_Actual(valid_idx) ./ Prop_Command(valid_idx);
+        actual_ratio = max(0, min(1, actual_ratio));
+
+        if isfield(alloc_info, 'Prop_6D') && any(alloc_info.Prop_6D > 1e-12)
+            Prop_6D = alloc_info.Prop_6D(:) .* actual_ratio;
+            return;
+        end
+
+        if isfield(alloc_info, 'Prop_T_used')
+            Prop_Att = alloc_info.Prop_T_used(:) .* actual_ratio;
+        end
+        if isfield(alloc_info, 'Prop_F_used')
+            Prop_Orbit = alloc_info.Prop_F_used(:) .* actual_ratio;
+        end
+    end
+
+    function value = Get_Info_Field(info, field_name, default_value)
+        if isfield(info, field_name) && ~isempty(info.(field_name))
+            value = info.(field_name);
+        else
+            value = default_value;
+        end
+    end
+
     function Prop_Actual = Actual_invocation(Prop_Command, true_faults, fault_trig)
         Prop_Actual = Prop_Command;
         if fault_trig && ~isempty(true_faults)

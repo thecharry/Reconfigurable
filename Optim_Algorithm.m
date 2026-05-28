@@ -12,7 +12,7 @@ options = optimoptions('ga', ...
                        'FunctionTolerance', 1e-4, ...
                        'UseParallel', true);
 tic;
-[x_opt, fval] = ga(@(x) Optimal_config(x,params), 8, [], [], [], [], lb, ub, @(x) Physical_constraints(x,params), options);
+[x_opt, fval] = ga(@(x) Optimal_config(x,params), 8, [], [], [], [], lb, ub, [], options);
 % [x_opt, fval] = ga(@(x) Optimal_config(x,params), 4, [], [], [], [], lb, ub, @(x) Physical_constraints(x,params), options);
 toc;
 [B_opt, r_opt] = Thruster_reconfig(x_opt,params);
@@ -83,11 +83,13 @@ end
 function J = Optimal_config(x,params)
     [B_all, ~] = Thruster_reconfig(x,params);
     penalty = 0;
-    [~, ~, ~, ~, ~,~,Jc] = Reconfig_eval(params, B_all);
-    [~, ~, ~, ~, ~,~,Jc2] = Reconfig_eval(params, B_all,2);
-    v_Jc = max(0, params.Jc(:,1) - Jc(:,1));
-    v_Jc2 = max(0, 1e-10 - Jc2(:,1));
-    penalty = penalty+v_Jc'*v_Jc+v_Jc2'*v_Jc2;
+    [~, Jc1, ~, ~, ~,~,~] = Reconfig_eval(params, B_all);
+    [~, Jc2, ~, ~, ~,~,~] = Reconfig_eval(params, B_all,2);
+    v_Jc1_f = max(0, 0 - Jc1(:,1));
+    v_Jc1_t = max(0,0-Jc1(:,2));
+    v_Jc2_f = max(0, 0 - Jc2(:,1));
+    v_Jc2_t = max(0,0-Jc2(:,2));
+    penalty = penalty+v_Jc1_f'*v_Jc1_f+v_Jc1_t'*v_Jc1_t+v_Jc2_f'*v_Jc2_f+v_Jc2_t'*v_Jc2_t;
     J = penalty;
 end
 

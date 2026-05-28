@@ -22,15 +22,15 @@ function [Z, Jc1, Jc2, Ja, Jo, Jf, Jc] = Reconfig_eval(params, Ball, max_faultys
     for i = 1:length(faultysets)
         faulty_idx = faultysets{i};
         healthy_idx = setdiff(1:params.Num, faulty_idx);% 剔除故障推力器
-        % Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
-        % Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
+        Matrix_conf_F = Matrix_conf(1:3, healthy_idx);
+        Matrix_conf_T = Matrix_conf(4:6, healthy_idx);
         Matrix_conf_H = Matrix_conf(:, healthy_idx);
         % 控制能力指标
         [Jc(i), ~] = Capability(Matrix_conf_H ./ scale);
-        % [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
-        % [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
-        % Jc1(i,:) = [Jc_Force, Jc_Torque];
-        % Jc2(i,:) = [Jc_Force1, Jc_Torque1];
+        [Jc_Force, Jc_Force1]  = Capability(Matrix_conf_F);
+        [Jc_Torque, Jc_Torque1] = Capability(Matrix_conf_T);
+        Jc1(i,:) = [Jc_Force, Jc_Torque];
+        Jc2(i,:) = [Jc_Force1, Jc_Torque1];
         
         % % 控制分辨率指标
         % Ja_Force = Precision(Matrix_conf(1:3, :), Matrix_conf_F, params.t_min);
