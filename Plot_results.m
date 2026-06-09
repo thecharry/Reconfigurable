@@ -1,12 +1,21 @@
 %% 仿真系统结果
-function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
-    % plot_1();% 推力器布局优化前后对比
-    % plot_2();% 重构评价指标优化前后对比
+function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
+    if nargin < 6 || isempty(layout_set)
+        layout_set = struct('name', {'原布局', '优化布局'}, ...
+                            'B', {params.B_all, B_opt}, ...
+                            'r', {params.r_all, r_opt});
+    else
+        layout_set = layout_set(:)';
+    end
+
+    plot_1();% 推力器布局优化前后对比
+    plot_2();% 评价指标优化前后对比
     plot_3();% 闭环仿真结果对比
-    % plot_4();% 推力器控制脉宽对比
-    % plot_5();% 推力器分配策略输出
-    % plot_6();% 不同数量故障下可重构性判定表
-    % plot_7();% 诊断结果输出
+    plot_4();% 推力器控制脉宽对比
+    plot_5();% 推力器分配策略输出
+    plot_6();% 诊断结果输出
+    plot_7();% 不同数量故障下可重构性判定表
+    plot_8();% 单推力器故障综合评价明细表
 
     %% 推力器布局优化前后对比
     function plot_1()
@@ -242,98 +251,8 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
         end
     end
 
-    %% 不同故障数量下可重构性判定表
-    function plot_6()
-        plot_faulty_reconfig(params, params.B_all, '原布局:不同数量故障下可重构性判定表');
-        plot_faulty_reconfig(params, B_opt, '优化布局:不同数量故障下可重构性判定表');
-        function plot_faulty_reconfig(params, B, title)
-            Fault_Num = zeros(params.Num, 1);
-            Status = strings(params.Num, 1);
-            Reconfig_Count = zeros(params.Num, 1);
-            NonReconfig_Count = zeros(params.Num, 1);
-            Ratio_Text = strings(params.Num, 1);
-            for k_fault = 1:params.Num
-                reconfig_num = 0;
-                ireconfig_num = 0;
-                % 可重构性判定
-                [~, ~, ~, ~, ~, ~,Jc] = Reconfig_eval(params, B, k_fault);
-                cases = size(nchoosek(1:params.Num, k_fault),1);
-                for idx = 1:cases
-                    % Jc_force = Jc_eval(idx+1,1);
-                    % Jc_torque = Jc_eval(idx+1,2);
-                    % is_reconfig = (Jc_force > 1e-10) && (Jc_torque > 1e-10);
-                    is_reconfig = (Jc(idx+1) > 1e-10);
-                    if is_reconfig
-                        reconfig_num = reconfig_num + 1;
-                    else
-                        ireconfig_num = ireconfig_num + 1;
-                    end
-                end
-                ratio = ireconfig_num / cases * 100;% 不可重构占比
-
-                Fault_Num(k_fault) = k_fault;
-                Reconfig_Count(k_fault) = reconfig_num;
-                NonReconfig_Count(k_fault) = ireconfig_num;
-                Ratio_Text(k_fault) = sprintf('%.2f%%', ratio);
-
-                if ireconfig_num == 0
-                    Status(k_fault) = "完全可重构";
-                elseif reconfig_num == 0
-                    Status(k_fault) = "不可重构";
-                else
-                    Status(k_fault) = "部分可重构";
-                end
-            end
-            % 绘制表格
-            colNames = {'推力器故障数', '是否可重构', '可重构数量', '不可重构数量', '不可重构占比'};
-            data = table2cell(table(Fault_Num, Status, Reconfig_Count, NonReconfig_Count, Ratio_Text, ...
-                'VariableNames', colNames));
-            nRow = size(data, 1);
-            fig = figure('Name', title, 'Color', 'w', 'Position', [200, 100, 950, 650]);
-            ax = axes(fig);
-            axis(ax, 'off');
-            hold(ax, 'on');
-            % 标题
-            text(0.5, 0.96, title, 'HorizontalAlignment', 'center', 'FontSize', 15, 'FontWeight', 'bold');
-            % 表格区域参数
-            x0 = 0.05;
-            x1 = 0.95;
-            y_top = 0.88;
-            y_bottom = 0.06;
-            colWidth = [0.18, 0.18, 0.18, 0.18, 0.18];
-            colX = x0 + [0, cumsum(colWidth)];
-            colCenter = colX(1:end-1) + colWidth / 2;
-            rowH = (y_top - y_bottom) / (nRow + 1);
-            % 三线表风格横线
-            line([x0, x1], [y_top, y_top], 'Color', 'k', 'LineWidth', 1.8);
-            line([x0, x1], [y_top - rowH, y_top - rowH], 'Color', 'k', 'LineWidth', 1.2);
-            line([x0, x1], [y_bottom, y_bottom], 'Color', 'k', 'LineWidth', 1.8);
-            % 表头
-            y_header = y_top - rowH / 2;
-            for j = 1:length(colNames)
-                text(colCenter(j), y_header, colNames{j}, 'HorizontalAlignment', 'center', 'FontSize', 12, 'FontWeight', 'bold');
-            end
-            % 表体
-            for i = 1:nRow
-                y = y_top - rowH * (i + 0.5);
-                text(colCenter(1), y, sprintf('%d', data{i,1}), ...
-                    'HorizontalAlignment', 'center', 'FontSize', 12);
-                text(colCenter(2), y, char(data{i,2}), ...
-                    'HorizontalAlignment', 'center', 'FontSize', 12);
-                text(colCenter(3), y, sprintf('%d', data{i,3}), ...
-                    'HorizontalAlignment', 'center', 'FontSize', 12);
-                text(colCenter(4), y, sprintf('%d', data{i,4}), ...
-                    'HorizontalAlignment', 'center', 'FontSize', 12);
-                text(colCenter(5), y, char(data{i,5}), ...
-                    'HorizontalAlignment', 'center', 'FontSize', 12);
-            end
-            xlim([0, 1]);
-            ylim([0, 1]);
-        end
-    end
-
     %% 诊断结果输出
-    function plot_7()
+    function plot_6()
         fprintf('随机故障配置: 实际故障推力器 = [%s], 故障时间 = %.2f s\n', ...
                 num2str(log_orig.faulty_thrusters), log_orig.faulty_time);
         fprintf('原布局诊断结果: 诊断故障推力器 = [%s], 诊断时间 = %.2f s, 诊断率 = %d\n', ...
@@ -342,114 +261,283 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt)
                 num2str(log_opt.estimated_faults), log_opt.diagnosis_time, log_opt.diagnosis_success);
     end
 
+    %% 不同故障数量下可重构性判定表
+    function plot_7()
+        fault_nums = 1:params.Num;
+        [Eval_grid, ~] = samples_combin(layout_set, fault_nums);
+        positive_eps = eps;
+
+        for fault_idx = 1:numel(fault_nums)
+            for layout_idx = 1:numel(layout_set)
+                Eval = Eval_grid{layout_idx, fault_idx};
+                rows = 2:size(Eval.MetricRaw, 1);
+                Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
+                Eval.Status(:) = "不可重构";
+                Eval.Status(Eval.IsReconfig) = "可重构";
+                Eval_grid{layout_idx, fault_idx} = Eval;
+            end
+        end
+
+        colNames = {'推力器故障数', '是否可重构', '可重构数量', '不可重构数量', '不可重构占比'};
+        for layout_idx = 1:numel(layout_set)
+            data = strings(numel(fault_nums), numel(colNames));
+            for fault_idx = 1:numel(fault_nums)
+                Eval = Eval_grid{layout_idx, fault_idx};
+                rows = 2:numel(Eval.FaultSets);
+                reconfig_num = sum(Eval.IsReconfig(rows));
+                nonreconfig_num = numel(rows) - reconfig_num;
+
+                if nonreconfig_num == 0
+                    status = "完全可重构";
+                elseif reconfig_num == 0
+                    status = "不可重构";
+                else
+                    status = "部分可重构";
+                end
+
+                data(fault_idx, :) = [string(fault_nums(fault_idx)), status, ...
+                                      string(reconfig_num), string(nonreconfig_num), ...
+                                      string(sprintf('%.2f%%', 100 * nonreconfig_num / numel(rows)))];
+            end
+
+            Draw_Three_Line_Table([char(layout_set(layout_idx).name) ':不同数量故障下可重构性判定表'], ...
+                                  {}, colNames, data, [0.18, 0.18, 0.18, 0.18, 0.18]);
+        end
+    end
+
+    %% 单推力器故障综合评价明细表
+    function plot_8()
+        [Eval_case, Raw] = samples_combin(layout_set, 1);
+        Weight = Least_Squares_Combined_Weight(Raw, AHP_Weight(params, 4), Entropy_Weight(Raw));
+        positive_eps = eps;
+
+        for layout_idx = 1:numel(layout_set)
+            Eval = Eval_case{layout_idx};
+            rows = 2:size(Eval.MetricRaw, 1);
+            Eval.Score(rows) = Eval.MetricRaw(rows, :) * Weight;
+            Eval.Weight = Weight;
+            Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
+            Eval.Status(:) = "不可重构";
+            Eval.Status(Eval.IsReconfig) = "可重构";
+            Eval_case{layout_idx} = Eval;
+        end
+
+        layout_avg = zeros(numel(layout_set), 1);
+        avg_text = cell(1, numel(layout_set));
+        for layout_idx = 1:numel(layout_set)
+            layout_avg(layout_idx) = mean(Eval_case{layout_idx}.Score(2:end));
+            avg_text{layout_idx} = sprintf('%s %.4f', char(layout_set(layout_idx).name), layout_avg(layout_idx));
+        end
+
+        colNames = {'故障推力器', '状态', '综合能力', '控制能力', '可诊断性', '跟踪性能', '能耗效率'};
+        weight_text = sprintf('组合权重: 控制 %.3f, 诊断 %.3f, 跟踪 %.3f, 能耗 %.3f', ...
+                              Weight(1), Weight(2), Weight(3), Weight(4));
+        for layout_idx = 1:numel(layout_set)
+            Eval = Eval_case{layout_idx};
+            data = strings(params.Num, numel(colNames));
+            row = 0;
+            for eval_idx = 2:numel(Eval.FaultSets)
+                faulty_idx = Eval.FaultSets{eval_idx};
+                if numel(faulty_idx) ~= 1
+                    continue;
+                end
+                row = row + 1;
+                data(row, :) = [string(faulty_idx), Eval.Status(eval_idx), ...
+                                string(sprintf('%.4f', Eval.Score(eval_idx))), ...
+                                string(sprintf('%.4f', Eval.MetricRaw(eval_idx, 1))), ...
+                                string(sprintf('%.4f', Eval.MetricRaw(eval_idx, 2))), ...
+                                string(sprintf('%.4f', Eval.MetricRaw(eval_idx, 3))), ...
+                                string(sprintf('%.4f', Eval.MetricRaw(eval_idx, 4)))];
+            end
+            data = data(1:row, :);
+            Draw_Three_Line_Table([char(layout_set(layout_idx).name) ':单推力器故障综合评价指标明细表'], ...
+                                  {weight_text, ['单故障平均综合能力: ' strjoin(avg_text, ' | ')]}, ...
+                                  colNames, data, [0.12, 0.13, 0.13, 0.125, 0.125, 0.125, 0.125]);
+        end
+    end
+
+    %% 三个布局的样本组合函数
+    function [Eval_grid, Raw] = samples_combin(layout_set, fault_nums)
+        Eval_grid = cell(numel(layout_set), numel(fault_nums));
+        sample_count = 0;
+        for fault_idx = 1:numel(fault_nums)
+            if fault_nums(fault_idx) >= params.Num
+                sample_count = sample_count + 1;
+            else
+                sample_count = sample_count + nchoosek(params.Num, fault_nums(fault_idx));
+            end
+        end
+
+        Raw = zeros(sample_count * numel(layout_set), 4);
+        raw_row = 0;
+        for fault_idx = 1:numel(fault_nums)
+            fault_num = fault_nums(fault_idx);
+            for layout_idx = 1:numel(layout_set)
+                if fault_num >= params.Num
+                    Eval = struct('FaultSets', {{[], 1:params.Num}}, ...
+                                  'Jc', zeros(2, 1), 'Jo', zeros(2, 1), ...
+                                  'Jt', zeros(2, 1), 'Jf', zeros(2, 1));
+                else
+                    Eval = Reconfig_eval(params, layout_set(layout_idx).B, fault_num);
+                end
+                Eval.MetricRaw = [Eval.Jc(:), Eval.Jo(:), Eval.Jt(:), Eval.Jf(:)];
+                Eval.Score = nan(size(Eval.MetricRaw, 1), 1);
+                Eval.Weight = nan(4, 1);
+                Eval.IsReconfig = false(size(Eval.MetricRaw, 1), 1);
+                Eval.Status = strings(size(Eval.MetricRaw, 1), 1);
+                n_sample = size(Eval.MetricRaw, 1) - 1;
+                sample_rows = raw_row + (1:n_sample);
+                Raw(sample_rows, :) = Eval.MetricRaw(2:end, :);
+                raw_row = raw_row + numel(sample_rows);
+                Eval_grid{layout_idx, fault_idx} = Eval;
+            end
+        end
+        Raw = Raw(1:raw_row, :);
+    end
+
+    %% AHP赋权函数
+    function W = AHP_Weight(params, n)
+        if isfield(params, 'reconfig_ahp_weight') && ~isempty(params.reconfig_ahp_weight)
+            W = params.reconfig_ahp_weight(:);
+            if numel(W) == n && all(isfinite(W)) && sum(max(W, 0)) > 1e-12
+                W = max(W, 0);
+                W = W / sum(W);
+                return;
+            end
+        end
+
+        if isfield(params, 'reconfig_ahp_matrix') && ~isempty(params.reconfig_ahp_matrix)
+            G = params.reconfig_ahp_matrix;
+        else
+            % 指标顺序：[控制能力, 可诊断性, 跟踪性能, 能耗效率]
+            G = [1,   6,   7,   7;
+                 1/6, 1,   6,   6;
+                 1/7, 1/6,   1,   2;
+                 1/7, 1/6,   1/2, 1];
+        end
+
+        if size(G, 1) ~= n || size(G, 2) ~= n || any(~isfinite(G(:))) || any(G(:) <= 0)
+            W = ones(n, 1) / n;
+            return;
+        end
+
+        W = prod(G, 2).^(1 / n);
+        W = W / sum(W);
+        RI = [0, 0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49];
+        if n > 2 && n <= numel(RI)
+            lambda_max = mean((G * W) ./ W);
+            CR = ((lambda_max - n) / (n - 1)) / RI(n);
+            if CR > 0.10
+                warning('AHP判断矩阵一致性比例CR=%.3f，大于0.10。', CR);
+            end
+        end
+    end
+
+    %% 熵权法赋权函数
+    function W = Entropy_Weight(X)
+        [m, n] = size(X);
+        if m <= 1
+            W = ones(n, 1) / n;
+            return;
+        end
+
+        W = zeros(n, 1);
+        for col = 1:n
+            col_sum = sum(X(:, col));
+            if col_sum > 1e-12
+                p = X(:, col) / col_sum;
+            else
+                p = ones(m, 1) / m;
+            end
+            p = p(p > 1e-12);
+            W(col) = 1 + sum(p .* log(p)) / log(m);
+        end
+
+        if sum(W) > 1e-12
+            W = W / sum(W);
+        else
+            W = ones(n, 1) / n;
+        end
+    end
+
+    %% 最小二乘组合赋权函数
+    function W = Least_Squares_Combined_Weight(X, U, V)
+        [~, n] = size(X);
+        s = sum(X.^2, 1)';
+        if sum(s) < 1e-12
+            W = 0.5 * (U(:) + V(:));
+        else
+            A = diag(max(s, 1e-12));
+            b = 0.5 * (U(:) + V(:)) .* s;
+            e = ones(n, 1);
+            sol = [A, e; e', 0] \ [b; 1];
+            W = sol(1:n);
+        end
+        W = W(:);
+        if numel(W) ~= n || any(~isfinite(W)) || sum(abs(W)) < 1e-12
+            W = ones(n, 1) / n;
+            return;
+        end
+        W(W < 0) = 0;
+        if sum(W) < 1e-12
+            W = ones(n, 1) / n;
+        else
+            W = W / sum(W);
+        end
+    end
+
+    %% 三线表表格绘制函数
+    function Draw_Three_Line_Table(title_str, subtitle, colNames, data, colWidth)
+        subtitle = cellstr(string(subtitle));
+        nRow = size(data, 1);
+        nCol = numel(colNames);
+        if nargin < 5 || numel(colWidth) ~= nCol || sum(colWidth) <= 0
+            colWidth = ones(1, nCol);
+        end
+
+        fig = figure('Name', title_str, 'Color', 'w', 'Position', [120, 100, 1250, 650]);
+        ax = axes(fig);
+        axis(ax, 'off');
+        hold(ax, 'on');
+
+        text(0.5, 0.96, title_str, 'HorizontalAlignment', 'center', 'FontSize', 15, 'FontWeight', 'bold');
+        for idx = 1:numel(subtitle)
+            text(0.5, 0.92 - 0.035 * (idx - 1), subtitle{idx}, ...
+                 'HorizontalAlignment', 'center', 'FontSize', 10.5);
+        end
+
+        x0 = 0.05;
+        x1 = 0.95;
+        y_top = 0.875 - 0.035 * max(numel(subtitle) - 1, 0);
+        y_bottom = 0.06;
+        colWidth = colWidth / sum(colWidth) * (x1 - x0);
+        colX = x0 + [0, cumsum(colWidth)];
+        colCenter = colX(1:end-1) + colWidth / 2;
+        rowH = (y_top - y_bottom) / (nRow + 1);
+
+        line([x0, x1], [y_top, y_top], 'Color', 'k', 'LineWidth', 1.8);
+        line([x0, x1], [y_top - rowH, y_top - rowH], 'Color', 'k', 'LineWidth', 1.2);
+        line([x0, x1], [y_bottom, y_bottom], 'Color', 'k', 'LineWidth', 1.8);
+
+        y_header = y_top - rowH / 2;
+        for col = 1:nCol
+            text(colCenter(col), y_header, colNames{col}, ...
+                 'HorizontalAlignment', 'center', 'FontSize', 11.5, 'FontWeight', 'bold');
+        end
+
+        for row = 1:nRow
+            y = y_top - rowH * (row + 0.5);
+            for col = 1:nCol
+                if iscell(data)
+                    value = char(string(data{row, col}));
+                else
+                    value = char(string(data(row, col)));
+                end
+                text(colCenter(col), y, value, 'HorizontalAlignment', 'center', 'FontSize', 11.5);
+            end
+        end
+
+        xlim([0, 1]);
+        ylim([0, 1]);
+    end
 end
-    %% 蒙特卡洛打靶仿真结果对比
-    % 默认每种故障数量分别选 1 个可重构组合和 1 个不可重构组合，按需启用。
-    % Montecarlo_sim(params, B_opt);
-    
-
-% %% 综合评价指标输出
-    % function [F, W, U_ahp, V_entropy] = Comprehensive(Z)
-    %     [m, n] = size(Z);
-    %     % 规范化处理
-    %     X = zeros(m, n);
-    %     for j = 1:n
-    %         z_max = max(Z(:, j));
-    %         z_min = min(Z(:, j));
-    %         if abs(z_max - z_min) < 1e-12
-    %             X(:, j) = 1;
-    %         else
-    %             X(:, j) = (Z(:, j) - z_min) / (z_max - z_min);
-    %         end
-    %     end
-    %     % AHP主观权重
-    %     G_AHP = [1,   2,   3,   4;
-    %              1/2, 1,   2,   3;
-    %              1/3, 1/2, 1,   2;
-    %              1/4, 1/3, 1/2, 1];
-    %     U_ahp = AHP_Weight(G_AHP);
-    %     function U = AHP_Weight(G)
-    %         % AHP 主观权重计算（特征向量法）
-    %         [V_eig, D_eig] = eig(G);
-    %         [~, idx] = max(real(diag(D_eig)));
-    %         U = real(V_eig(:, idx));
-    %         U = U / sum(U);
-    %         % 保证正值
-    %         U = abs(U);
-    %         U = U / sum(U);
-    %     end
-    %     % 熵权法客观权重
-    %     V_entropy = zeros(n, 1);
-    %     for j = 1:n
-    %         col_sum = sum(X(:, j));
-    %         if col_sum < 1e-12
-    %             r = ones(m,1) / m;
-    %         else
-    %             r = X(:, j) / col_sum;
-    %         end
-    %         r_valid = r(r > 1e-12);
-    %         E_j = -(1 / log(m)) * sum(r_valid .* log(r_valid));
-    %         V_entropy(j) = 1 - E_j;
-    %     end
-    %     if sum(V_entropy) < 1e-12
-    %         V_entropy = ones(n,1) / n;
-    %     else
-    %         V_entropy = V_entropy / sum(V_entropy);
-    %     end
-    %     % 最小二乘组合赋权
-    %     s = sum(X.^2, 1)';
-    %     A = diag(s);
-    %     B = 0.5 * (U_ahp + V_entropy) .* s;
-    %     e = ones(n, 1);
-    %     Ainv = inv(A);
-    %     W = Ainv * B + ((1 - e' * Ainv * B) / (e' * Ainv * e)) * (Ainv * e);
-    %     % 数值修正
-    %     W(W < 0) = 0;
-    %     if sum(W) < 1e-12
-    %         W = ones(n,1) / n;
-    %     else
-    %         W = W / sum(W);
-    %     end
-    %     % TOPSIS 综合评价
-    %     x_plus  = max(X, [], 1);
-    %     x_minus = min(X, [], 1);
-    %     L = zeros(m, 1);
-    %     D = zeros(m, 1);
-    %     F = zeros(m, 1);
-    %     for i = 1:m
-    %         L(i) = sqrt(sum((W' .* (X(i, :) - x_plus)).^2));
-    %         D(i) = sqrt(sum((W' .* (X(i, :) - x_minus)).^2));
-    %         F(i) = D(i) / (L(i) + D(i) + 1e-12);
-    %     end
-    % end
-    % %% 输出综合评价指标数据
-    % function Print_Layout_Evaluation(StateNames, F_Force_orig, F_Force_opt, ...
-    %     F_Torque_orig, F_Torque_opt, F_Total_orig, F_Total_opt, ...
-    %     W_Force, W_Torque, W_Total)
-
-    %     nState = length(StateNames);
-
-    %     fprintf('\n==============================================================\n');
-    %     fprintf('布局层最终组合权重（统一评价池下）\n');
-    %     fprintf('指标顺序：[Jc, Ja, Jf, Jo]\n');
-    %     fprintf('--------------------------------------------------------------\n');
-    %     fprintf('Force  权重 = [%s]\n', num2str(W_Force',  '%.4f '));
-    %     fprintf('Torque 权重 = [%s]\n', num2str(W_Torque', '%.4f '));
-    %     fprintf('Total  权重 = [%s]\n', num2str(W_Total',  '%.4f '));
-    %     fprintf('==============================================================\n');
-
-    %     fprintf('\n==================== F_layout 状态对比 ====================\n');
-    %     fprintf('%-14s | %10s | %10s | %10s\n', '状态', '原布局', '优化布局', '提升(%)');
-    %     for i = 1:nState
-    %         imp = (F_Total_opt(i) - F_Total_orig(i)) / (F_Total_orig(i) + 1e-12) * 100;
-    %         fprintf('%-14s | %10.4f | %10.4f | %+9.2f\n', StateNames{i}, F_Total_orig(i), F_Total_opt(i), imp);
-    %     end
-
-    %     fprintf('\n==================== 平均布局综合性能 ====================\n');
-    %     fprintf('Force  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-    %         mean(F_Force_orig), mean(F_Force_opt), PercentImprove(mean(F_Force_orig), mean(F_Force_opt), true));
-    %     fprintf('Torque 平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-    %         mean(F_Torque_orig), mean(F_Torque_opt), PercentImprove(mean(F_Torque_orig), mean(F_Torque_opt), true));
-    %     fprintf('Total  平均F: 原布局 %.4f, 优化布局 %.4f, 提升 %+6.2f%%\n', ...
-    %         mean(F_Total_orig), mean(F_Total_opt), PercentImprove(mean(F_Total_orig), mean(F_Total_opt), true));
-    % end
