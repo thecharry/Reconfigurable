@@ -1,7 +1,11 @@
 %% 闭环仿真函数
-function log = Closedloop_sim(params, B)
+function log = Closedloop_sim(params, B, sim_cfg_override)
+    if nargin < 3 || isempty(sim_cfg_override)
+        sim_cfg_override = struct();
+    end
+
     % 初始化
-    sim_cfg = Sim_config(params);
+    sim_cfg = Sim_config(params, sim_cfg_override);
     r0 = sim_cfg.r0;
     rt = sim_cfg.rt;
     v0 = sim_cfg.v0;
@@ -154,24 +158,54 @@ function log = Closedloop_sim(params, B)
     log.diagnosis_success = diagnosis_success;
 
     %% 仿真参数设置
-    function sim_cfg = Sim_config(params)
+    function sim_cfg = Sim_config(params, sim_cfg_override)
         sim_cfg.r0 = [0;15;55];
         sim_cfg.rt = [5;25;35];
         sim_cfg.v0 = [0;0;0];
         sim_cfg.euler0 = deg2rad([0;15;55]);
         sim_cfg.eulert = deg2rad([5;25;35]);
-        sim_cfg.sigma0 = Euler_to_MRPs(sim_cfg.euler0);
         sim_cfg.omega0 = [0;0;0];
         sim_cfg.T_sim = 2000;
         sim_cfg.dt = 0.005;
         sim_cfg.faulty_time = 0.5 * sim_cfg.T_sim;
-        sim_cfg.true_faults = params.true_faults;
+        if isfield(params, 'true_faults') && ~isempty(params.true_faults)
+            sim_cfg.true_faults = params.true_faults;
+        else
+            sim_cfg.true_faults = [];
+        end
         sim_cfg.residual_threshold = 1e-9;% 残差阈值
         sim_cfg.Kp_pos = 10;
         sim_cfg.Kd_pos = 300;
         sim_cfg.Kp_att = 400 * eye(3);
         sim_cfg.Kd_att = 3200 * eye(3);
         sim_cfg.Ki_att = 20 * eye(3);
+
+        has_sigma_override = isfield(sim_cfg_override, 'sigma0') && ~isempty(sim_cfg_override.sigma0);
+        sim_cfg = Merge_Sim_Config(sim_cfg, sim_cfg_override);
+        if ~has_sigma_override
+            sim_cfg.sigma0 = Euler_to_MRPs(sim_cfg.euler0);
+        end
+    end
+
+    function sim_cfg = Merge_Sim_Config(sim_cfg, sim_cfg_override)
+        if isempty(sim_cfg_override)
+            return;
+        end
+
+        if isfield(sim_cfg_override, 'fault_time') && ~isempty(sim_cfg_override.fault_time)
+            sim_cfg_override.faulty_time = sim_cfg_override.fault_time;
+        end
+        if isfield(sim_cfg_override, 'faulty_thrusters_fixed') && ~isempty(sim_cfg_override.faulty_thrusters_fixed)
+            sim_cfg_override.true_faults = sim_cfg_override.faulty_thrusters_fixed;
+        end
+
+        names = fieldnames(sim_cfg_override);
+        for field_idx = 1:numel(names)
+            field_name = names{field_idx};
+            if ~isempty(sim_cfg_override.(field_name))
+                sim_cfg.(field_name) = sim_cfg_override.(field_name);
+            end
+        end
     end
 
     %% 实际推力器输出脉宽
