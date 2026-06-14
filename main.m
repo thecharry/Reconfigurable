@@ -15,7 +15,7 @@ layout_set = struct('name', {'原布局', '方案一', '方案二'}, ...
         params.true_faults = [1];
         params.alloc_mode = 'task_book';% 可选: 'six_d_qp' / 'task_book' / 'strict_sync'
         log_orig = Closedloop_sim(params,params.B_all);
-        log_opt1 = Closedloop_sim(params,B_opt);
-        log_opt2 = Closedloop_sim(params,B_opt);
-        Plot_results(log_orig, log_opt1, params, B_opt, r_opt, layout_set);
+        log_opt1 = Closedloop_sim(params,data_1.B_opt);
+        log_opt2 = Closedloop_sim(params,data_2.B_opt);
+        Plot_results(log_orig, log_opt1, log_opt2, params, B_opt, r_opt, layout_set);
 % end

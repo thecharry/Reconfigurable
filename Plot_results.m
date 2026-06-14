@@ -1,6 +1,6 @@
 %% 仿真系统结果
-function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
-    if nargin < 6 || isempty(layout_set)
+function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_set)
+    if nargin < 7 || isempty(layout_set)
         layout_set = struct('name', {'原布局', '优化布局'}, ...
                             'B', {params.B_all, B_opt}, ...
                             'r', {params.r_all, r_opt});
@@ -10,13 +10,13 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
 
     % plot_1();% 推力器布局优化前后对比
     % plot_2();% 评价指标优化前后对比
-    % plot_3();% 闭环仿真结果对比
-    % plot_3_1();% 全故障工况与标况闭环响应对比
+    plot_3();% 闭环仿真结果对比
+    plot_3_1();% 全故障工况与标况闭环响应对比
     % plot_4();% 推力器控制脉宽对比
     % plot_5();% 推力器分配策略输出
     % plot_6();% 诊断结果输出
     % plot_7();% 不同数量故障下可重构性判定表
-    plot_7_mc();% 三种布局故障1~3台全部组合Monte Carlo打靶验证
+    % plot_7_mc();% 三种布局故障1~3台全部组合Monte Carlo打靶验证
     % plot_8();% 单推力器故障综合评价明细表
 
     %% 推力器布局优化前后对比
@@ -409,36 +409,102 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
     
     %% 闭环位置与姿态响应对比
     function plot_3()
+        plot_logs = {log_orig, log_opt, log_opt1};
+        plot_labels = Plot3_Layout_Labels(numel(plot_logs));
+
         figure('Name', '闭环位置与姿态响应对比','Color','w');
-        subplot(2,2,1); Plot_3Axis(log_orig.Time, log_orig.R, log_orig.Y(1:3,:), log_opt.Y(1:3,:), '位置响应', '(m)', log_orig.faulty_time);
-        subplot(2,2,2); Plot_3Axis(log_orig.Time, log_orig.E, log_orig.Y_euler, log_opt.Y_euler, '姿态响应', '(rad)', log_orig.faulty_time);
-        function Plot_3Axis(t, ref, y_orig, y_opt, title_str, unit_str, fault_time)
-            hold on; grid on;
+        subplot(2,2,1); Plot_3Axis(plot_logs, plot_labels, 'pos', '位置响应', '(m)', log_orig.faulty_time);
+        subplot(2,2,2); Plot_3Axis(plot_logs, plot_labels, 'att', '姿态响应', '(rad)', log_orig.faulty_time);
+        subplot(2,2,3); Plot_Error_Norm(plot_logs, plot_labels, 'pos', '位置误差范数', '||e_r||(m)', log_orig.faulty_time);
+        subplot(2,2,4); Plot_Error_Norm(plot_logs, plot_labels, 'att', '姿态误差范数', '||e_e||(rad)', log_orig.faulty_time);
+
+        function Plot_3Axis(logs, labels, data_type, title_str, unit_str, fault_time)
+            ax = gca;
+            hold(ax, 'on'); grid(ax, 'on');
             colors = lines(3);
-            for ii = 1:3
-                plot(t, ref(ii,:), '--', 'Color', colors(ii,:), 'LineWidth',0.9);
-                plot(t, y_orig(ii,:), '-',  'Color', colors(ii,:), 'LineWidth',1.1);
-                plot(t, y_opt(ii,:),  ':',  'Color', colors(ii,:), 'LineWidth',1.6);
+            line_styles = {'-', '--', ':', '-.'};
+            line_widths = [1.2, 1.3, 1.7, 1.3];
+            axis_names = Plot3_Axis_Names(data_type);
+            legend_handles = gobjects(1, numel(logs) * 3);
+            legend_labels = cell(1, numel(logs) * 3);
+            legend_idx = 0;
+
+            for layout_idx = 1:numel(logs)
+                data = Plot3_Response_Data(logs{layout_idx}, data_type);
+                line_style = line_styles{min(layout_idx, numel(line_styles))};
+                line_width = line_widths(min(layout_idx, numel(line_widths)));
+                for axis_idx = 1:3
+                    legend_idx = legend_idx + 1;
+                    legend_handles(legend_idx) = plot(ax, logs{layout_idx}.Time, data(axis_idx, :), ...
+                        line_style, 'Color', colors(axis_idx, :), 'LineWidth', line_width);
+                    legend_labels{legend_idx} = [labels{layout_idx} '-' axis_names{axis_idx}];
+                end
             end
-            xline(fault_time,'--r');
-            title(title_str); xlabel('t(s)'); ylabel(unit_str);
-            legend('ref','orig','opt');
+            Draw_Plot3_Fault_Line(ax, fault_time);
+            title(ax, title_str); xlabel(ax, 't(s)'); ylabel(ax, unit_str);
+            legend(ax, legend_handles, legend_labels, 'Location', 'best');
         end
-        % 误差范数
-        pos_err_orig = log_orig.Y(1:3,:) - log_orig.R;
-        pos_err_opt  = log_opt.Y(1:3,:)  - log_opt.R;
-        att_err_orig = mod((log_orig.Y_euler - log_orig.E) + pi, 2*pi) - pi;
-        att_err_opt  = mod((log_opt.Y_euler - log_opt.E) + pi, 2*pi) - pi;
-        subplot(2,2,3); hold on; grid on;
-        plot(log_orig.Time, vecnorm(pos_err_orig,2,1), 'LineWidth',1.2);
-        plot(log_orig.Time, vecnorm(pos_err_opt,2,1), 'LineWidth',1.2);
-        xline(log_orig.faulty_time,'--r');
-        title('位置误差范数'); xlabel('t(s)'); ylabel('||e_r||(m)'); legend('原布局','优化布局');
-        subplot(2,2,4); hold on; grid on;
-        plot(log_orig.Time, vecnorm(att_err_orig,2,1), 'LineWidth',1.2);
-        plot(log_orig.Time, vecnorm(att_err_opt,2,1), 'LineWidth',1.2);
-        xline(log_orig.faulty_time,'--r');
-        title('姿态误差范数'); xlabel('t(s)'); ylabel('||e_euler||(rad)'); legend('原布局','优化布局');
+
+        function Plot_Error_Norm(logs, labels, data_type, title_str, ylabel_str, fault_time)
+            ax = gca;
+            hold(ax, 'on'); grid(ax, 'on');
+            line_styles = {'-', '--', ':', '-.'};
+            line_widths = [1.2, 1.3, 1.7, 1.3];
+            handles = gobjects(1, numel(logs));
+            for layout_idx = 1:numel(logs)
+                err = Plot3_Error_Data(logs{layout_idx}, data_type);
+                handles(layout_idx) = plot(ax, logs{layout_idx}.Time, vecnorm(err, 2, 1), ...
+                    line_styles{min(layout_idx, numel(line_styles))}, ...
+                    'LineWidth', line_widths(min(layout_idx, numel(line_widths))));
+            end
+            Draw_Plot3_Fault_Line(ax, fault_time);
+            title(ax, title_str); xlabel(ax, 't(s)'); ylabel(ax, ylabel_str);
+            legend(ax, handles, labels, 'Location', 'best');
+        end
+
+        function data = Plot3_Response_Data(log_data, data_type)
+            if strcmp(data_type, 'pos')
+                data = log_data.Y(1:3, :);
+            else
+                data = log_data.Y_euler;
+            end
+        end
+
+        function err = Plot3_Error_Data(log_data, data_type)
+            if strcmp(data_type, 'pos')
+                err = log_data.Y(1:3, :) - log_data.R;
+            else
+                err = mod((log_data.Y_euler - log_data.E) + pi, 2*pi) - pi;
+            end
+        end
+
+        function axis_names = Plot3_Axis_Names(data_type)
+            if strcmp(data_type, 'pos')
+                axis_names = {'x', 'y', 'z'};
+            else
+                axis_names = {'phi', 'theta', 'psi'};
+            end
+        end
+
+        function labels = Plot3_Layout_Labels(label_count)
+            labels = cell(1, label_count);
+            default_labels = {'原布局', '方案一', '方案二'};
+            for label_idx = 1:label_count
+                if numel(layout_set) >= label_idx && isfield(layout_set, 'name')
+                    labels{label_idx} = char(layout_set(label_idx).name);
+                elseif label_idx <= numel(default_labels)
+                    labels{label_idx} = default_labels{label_idx};
+                else
+                    labels{label_idx} = ['布局' num2str(label_idx)];
+                end
+            end
+        end
+
+        function Draw_Plot3_Fault_Line(ax, fault_time)
+            if ~isempty(fault_time) && isfinite(fault_time)
+                xline(ax, fault_time, '--r');
+            end
+        end
     end
 
     %% 全故障工况与标况闭环位置、姿态响应对比
@@ -697,15 +763,11 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
     function plot_7()
         fault_nums = 1:params.Num;
         [Eval_grid, ~] = samples_combin(layout_set, fault_nums);
-        positive_eps = eps;
 
         for fault_idx = 1:numel(fault_nums)
             for layout_idx = 1:numel(layout_set)
                 Eval = Eval_grid{layout_idx, fault_idx};
-                rows = 2:size(Eval.MetricRaw, 1);
-                Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
-                Eval.Status(:) = "不可重构";
-                Eval.Status(Eval.IsReconfig) = "可重构";
+                Eval = Apply_Reconfig_Status(Eval);
                 Eval_grid{layout_idx, fault_idx} = Eval;
             end
         end
@@ -952,14 +1014,10 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
         end
 
         function Eval_grid = Mark_Reconfig_Status(Eval_grid)
-            positive_eps = eps;
             for fault_idx_local = 1:size(Eval_grid, 2)
                 for layout_idx_local = 1:size(Eval_grid, 1)
                     Eval = Eval_grid{layout_idx_local, fault_idx_local};
-                    rows = 2:size(Eval.MetricRaw, 1);
-                    Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
-                    Eval.Status(:) = "不可重构";
-                    Eval.Status(Eval.IsReconfig) = "可重构";
+                    Eval = Apply_Reconfig_Status(Eval);
                     Eval_grid{layout_idx_local, fault_idx_local} = Eval;
                 end
             end
@@ -1071,16 +1129,13 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
     function plot_8()
         [Eval_case, Raw] = samples_combin(layout_set, 1);
         Weight = Least_Squares_Combined_Weight(Raw, AHP_Weight(params, 4), Entropy_Weight(Raw));
-        positive_eps = eps;
 
         for layout_idx = 1:numel(layout_set)
             Eval = Eval_case{layout_idx};
             rows = 2:size(Eval.MetricRaw, 1);
             Eval.Score(rows) = Eval.MetricRaw(rows, :) * Weight;
             Eval.Weight = Weight;
-            Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
-            Eval.Status(:) = "不可重构";
-            Eval.Status(Eval.IsReconfig) = "可重构";
+            Eval = Apply_Reconfig_Status(Eval);
             Eval_case{layout_idx} = Eval;
         end
 
@@ -1138,7 +1193,8 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
                 if fault_num >= params.Num
                     Eval = struct('FaultSets', {{[], 1:params.Num}}, ...
                                   'Jc', zeros(2, 1), 'Jo', zeros(2, 1), ...
-                                  'Jt', zeros(2, 1), 'Jf', zeros(2, 1));
+                                  'Jt', zeros(2, 1), 'Jf', zeros(2, 1), ...
+                                  'Jc6', zeros(2, 1));
                 else
                     Eval = Reconfig_eval(params, layout_set(layout_idx).B, fault_num);
                 end
@@ -1155,6 +1211,24 @@ function Plot_results(log_orig, log_opt, params, B_opt, r_opt, layout_set)
             end
         end
         Raw = Raw(1:raw_row, :);
+    end
+
+    %% 可重构状态判定函数
+    function Eval = Apply_Reconfig_Status(Eval)
+        positive_eps = eps;
+        rows = 2:size(Eval.MetricRaw, 1);
+        jc6 = zeros(size(Eval.MetricRaw, 1), 1);
+        if isfield(Eval, 'Jc6') && ~isempty(Eval.Jc6)
+            jc6_count = min(numel(jc6), numel(Eval.Jc6));
+            jc6(1:jc6_count) = Eval.Jc6(1:jc6_count);
+        end
+        Eval.Jc6 = jc6;
+
+        Eval.IsReconfig(:) = false;
+        Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2) & ...
+                                jc6(rows) > positive_eps;
+        Eval.Status(:) = "不可重构";
+        Eval.Status(Eval.IsReconfig) = "可重构";
     end
 
     %% AHP赋权函数

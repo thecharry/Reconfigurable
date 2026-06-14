@@ -39,6 +39,7 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
     % 四个基础评价指标，均为越大越好。
     Z = struct();
     Z.FaultSets = faultysets;
+    Z.Jc6 = Jc;
     Z.Jc = Clip01(min(Jc1(:, 1) ./ max(Jc1(1, 1), eps), Jc1(:, 2) ./ max(Jc1(1, 2), eps)));
     Z.Jo = Clip01(Jo ./ pi);
     Z.Jt = Clip01(Jt);
