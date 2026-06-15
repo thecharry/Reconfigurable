@@ -17,6 +17,7 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
     Jc = zeros(n_case, 1);% 6维控制能力
     Jo = zeros(n_case, 1);% 可诊断性
     Jt = zeros(n_case, 1);% 跟踪性能
+    Jt_err = zeros(n_case, 1);% 跟踪误差
     Jf = zeros(n_case, 1);% 能耗效率
 
     % 评价指标计算
@@ -33,17 +34,22 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
         [Jc1(i, 2), Jc2(i, 2)] = Capability(Matrix_conf_T);
         [Jc(i), ~] = Capability(Matrix_conf_H ./ scale);
         Jo(i) = Diagnosability(Matrix_conf_H);
-        [Jt(i), Jf(i)] = Tracking_Energy(Matrix_conf, faulty_idx, scale, params);
+        [Jt(i), Jf(i), Jt_err(i)] = Tracking_Energy(Matrix_conf, faulty_idx, scale, params);
     end
-
-    % 四个基础评价指标，均为越大越好。
+    % 仅输出原始评价量；跨布局归一化在Plot_results.m中统一完成。
     Z = struct();
     Z.FaultSets = faultysets;
     Z.Jc6 = Jc;
-    Z.Jc = Clip01(min(Jc1(:, 1) ./ max(Jc1(1, 1), eps), Jc1(:, 2) ./ max(Jc1(1, 2), eps)));
-    Z.Jo = Clip01(Jo ./ pi);
-    Z.Jt = Clip01(Jt);
-    Z.Jf = Clip01(1 ./ (1 + Jf));
+    Z.Jc = Jc1;
+    Z.Jo = Jo;
+    Z.Jt = Jt;
+    Z.Jf = Jf;
+    % Z.Raw = struct('JcForce', Jc1(:, 1), 'JcTorque', Jc1(:, 2), ...
+    %                'Jc6', Jc, 'JoAngle', Jo, ...
+    %                'JtQuality', Jt, 'JtError', Jt_err, 'JfPulse', Jf);
+    Z.Raw = struct('JcForce', Jc1(:, 1), 'JcTorque', Jc1(:, 2), ...
+                   'Jc6', Jc, 'JoAngle', Jo, ...
+                   'JtQuality', Jt, 'JtError', Jf, 'JfPulse', Jf);
 
     %% 控制能力评价指标
     function [Jc_min, Jc_max] = Capability(Matrix_sub)
@@ -98,13 +104,14 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
         min_angle = min(angle_matrix(:));
         if isfinite(min_angle)
             Jo = min_angle;
+            % Jo = sin(min_angle / 2);
         else
             Jo = 0;
         end
     end
 
     %% 跟踪性能和能耗效率评价指标
-    function [Jt, Jf] = Tracking_Energy(Matrix_conf, faulty_idx, scale, params)
+    function [Jt, Jf, mean_err] = Tracking_Energy(Matrix_conf, faulty_idx, scale, params)
         % 构建典型指令集
         dirs = [eye(3), -eye(3)];
         F_cmds = zeros(3, 0);
@@ -132,7 +139,8 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
         end
 
         n_cmd = size(F_cmds, 2);
-        cmd_dev = zeros(n_cmd, 1);
+        cmd_quality = zeros(n_cmd, 1);
+        cmd_err = zeros(n_cmd, 1);
         pulse_sum = zeros(n_cmd, 1);
         for k = 1:n_cmd
             F_cmd = F_cmds(:, k);
@@ -145,15 +153,14 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
                 Prop_Final = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
                 actual = Matrix_conf * (Prop_Final / params.T);
             end
-            cmd_dev(k) = (1 - norm((cmd - actual) ./ scale) / (norm(cmd ./ scale) + 1e-12));
+            rel_err = norm((cmd - actual) ./ scale) / (norm(cmd ./ scale) + 1e-12);
+            cmd_err(k) = rel_err;
+            cmd_quality(k) = 1 / (1 + rel_err);
             pulse_sum(k) = sum(Prop_Final);
         end
-        Jt = mean(cmd_dev);
+        Jt = mean(cmd_quality);
+        mean_err = mean(cmd_err);
         Jf = mean(pulse_sum);
     end
 
-    function value = Clip01(value)
-        value(~isfinite(value)) = 0;
-        value = max(0, min(1, value));
-    end
 end

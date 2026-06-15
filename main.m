@@ -11,11 +11,15 @@ layout_set = struct('name', {'原布局', '方案一', '方案二'}, ...
                     'B', {params.B_all, data_1.B_opt, data_2.B_opt}, ...
                     'r', {params.r_all, data_1.r_opt, data_2.r_opt});
 % 闭环仿真
-% for i = 1:params.Num
-        params.true_faults = [1];
+for i = 1:params.Num
+        params.true_faults = [i];
         params.alloc_mode = 'task_book';% 可选: 'six_d_qp' / 'task_book' / 'strict_sync'
-        log_orig = Closedloop_sim(params,params.B_all);
-        log_opt1 = Closedloop_sim(params,data_1.B_opt);
-        log_opt2 = Closedloop_sim(params,data_2.B_opt);
+        sim_cfg_override = struct('faulty_time', (0.2 + 0.6 * rand) * 2000);
+        log_orig = Closedloop_sim(params,params.B_all,sim_cfg_override);
+        log_opt1 = Closedloop_sim(params,data_1.B_opt,sim_cfg_override);
+        log_opt2 = Closedloop_sim(params,data_2.B_opt,sim_cfg_override);
+        log_orig.B_all = params.B_all;
+        log_opt1.B_opt = data_1.B_opt;
+        log_opt2.B_opt = data_2.B_opt;
         Plot_results(log_orig, log_opt1, log_opt2, params, B_opt, r_opt, layout_set);
-% end
+end

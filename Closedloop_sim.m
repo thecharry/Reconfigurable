@@ -24,10 +24,11 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     faulty_trig = false;% 故障触发标志位
     true_faults = sim_cfg.true_faults;
     estimated_faults = [];
+    active_diag_next_idx = 1;
     diagnosis_trig = false;% 诊断触发标志位
     diagnosis_success = false;
     diagnosis_time = NaN;
-    diagnosis_enable = false;% 启用诊断功能
+    diagnosis_enable = true;% 启用诊断功能
 
     int = [0;0;0];
     Kp_pos = sim_cfg.Kp_pos;
@@ -53,6 +54,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.Attitude_Window_History = NaN(1, max_ctrl);
     log.Position_Window_History = NaN(1, max_ctrl);
     log.Alloc_Mode_History = strings(1, max_ctrl);
+    log.Active_Diagnosis_History = zeros(1, max_ctrl);
     log.Control_Time = zeros(1, max_ctrl);
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
@@ -62,7 +64,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.diagnosis_time = NaN;
     log.diagnosis_success = false;
 
-    tic;
+    % tic;
     for k = 1:N
         t = (k-1) * dt;
         if t >= log.faulty_time && ~faulty_trig
@@ -93,6 +95,8 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             T_body_req = Kp_att * sigma_err + Kd_att * (omega_d - omega)+ Ki_att * int;
             % 推力器调用策略
             [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_body_req,T_body_req,Matrix_conf,estimated_faults,params);
+            [Prop_Command, active_diag_next_idx, active_diag_thruster] = ...
+                Apply_Active_Diagnosis(Prop_Command, active_diag_next_idx, faulty_trig, diagnosis_trig, diagnosis_enable, sim_cfg);
             Prop_Actual = Actual_invocation(Prop_Command, true_faults, faulty_trig);
             % 故障诊断
             if faulty_trig && ~diagnosis_trig && diagnosis_enable
@@ -119,6 +123,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             log.Attitude_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'attitude_window', NaN);
             log.Position_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'position_window', NaN);
             log.Alloc_Mode_History(log.Control_Count) = string(Get_Info_Field(alloc_info, 'mode', 'unknown'));
+            log.Active_Diagnosis_History(log.Control_Count) = active_diag_thruster;
             log.Control_Time(log.Control_Count) = t;
             % 更新时间
             next_ctrl = next_ctrl + params.T;
@@ -142,7 +147,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
         log.Y(:,k) = Y;
         log.Pulse_Widths(1:params.Num,k) = Prop_Actual;
     end
-    toc;
+    % toc;
     log.Pulse_History = log.Pulse_History(:, 1:log.Control_Count);
     log.Pulse_Command_History = log.Pulse_Command_History(:, 1:log.Control_Count);
     log.Pulse_Actual_History = log.Pulse_Actual_History(:, 1:log.Control_Count);
@@ -152,6 +157,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.Attitude_Window_History = log.Attitude_Window_History(1:log.Control_Count);
     log.Position_Window_History = log.Position_Window_History(1:log.Control_Count);
     log.Alloc_Mode_History = log.Alloc_Mode_History(1:log.Control_Count);
+    log.Active_Diagnosis_History = log.Active_Diagnosis_History(1:log.Control_Count);
     log.Control_Time = log.Control_Time(1:log.Control_Count);
     log.estimated_faults = estimated_faults;
     log.diagnosis_time = diagnosis_time;
@@ -167,13 +173,26 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
         sim_cfg.omega0 = [0;0;0];
         sim_cfg.T_sim = 2000;
         sim_cfg.dt = 0.005;
-        sim_cfg.faulty_time = 0.5 * sim_cfg.T_sim;
+        % sim_cfg.faulty_time = 0.5 * sim_cfg.T_sim;% 固定故障时间
+        sim_cfg.faulty_time = (0.2 + 0.6 * rand) * sim_cfg.T_sim;% 随机故障时间
         if isfield(params, 'true_faults') && ~isempty(params.true_faults)
             sim_cfg.true_faults = params.true_faults;
         else
             sim_cfg.true_faults = [];
         end
         sim_cfg.residual_threshold = 1e-9;% 残差阈值
+        sim_cfg.active_diagnosis_enable = true;% 主动诊断激励开关
+        sim_cfg.active_diagnosis_pulse = params.t_min;% 主动诊断最小脉宽
+        sim_cfg.active_diagnosis_command_tol = 1e-12;% 已有指令判定阈值
+        if isfield(params, 'active_diagnosis_enable') && ~isempty(params.active_diagnosis_enable)
+            sim_cfg.active_diagnosis_enable = params.active_diagnosis_enable;
+        end
+        if isfield(params, 'active_diagnosis_pulse') && ~isempty(params.active_diagnosis_pulse)
+            sim_cfg.active_diagnosis_pulse = params.active_diagnosis_pulse;
+        end
+        if isfield(params, 'active_diagnosis_command_tol') && ~isempty(params.active_diagnosis_command_tol)
+            sim_cfg.active_diagnosis_command_tol = params.active_diagnosis_command_tol;
+        end
         sim_cfg.Kp_pos = 10;
         sim_cfg.Kd_pos = 300;
         sim_cfg.Kp_att = 400 * eye(3);
@@ -263,6 +282,40 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
         end
         if isfield(alloc_info, 'Prop_F_used')
             Prop_Orbit = alloc_info.Prop_F_used(:) .* actual_ratio;
+        end
+    end
+
+    function [Prop_Command, next_idx, active_thruster] = Apply_Active_Diagnosis( ...
+            Prop_Command, next_idx, faulty_trig, diagnosis_trig, diagnosis_enable, sim_cfg)
+        active_thruster = 0;
+        if ~faulty_trig || diagnosis_trig || ~diagnosis_enable || ...
+                ~sim_cfg.active_diagnosis_enable
+            return;
+        end
+
+        pulse = min(max(sim_cfg.active_diagnosis_pulse, 0), params.T);
+        command_tol = sim_cfg.active_diagnosis_command_tol;
+        if pulse <= command_tol
+            return;
+        end
+
+        N_thr = numel(Prop_Command);
+        for offset = 0:(N_thr - 1)
+            thruster_idx = mod(next_idx - 1 + offset, N_thr) + 1;
+            if Prop_Command(thruster_idx) > command_tol
+                continue;
+            end
+
+            available_pulse = max(0, params.T - Prop_Command(thruster_idx));
+            diag_pulse = min(pulse, available_pulse);
+            if diag_pulse <= command_tol
+                continue;
+            end
+
+            Prop_Command(thruster_idx) = Prop_Command(thruster_idx) + diag_pulse;
+            active_thruster = thruster_idx;
+            next_idx = mod(thruster_idx, N_thr) + 1;
+            return;
         end
     end
 
