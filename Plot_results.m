@@ -13,10 +13,10 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
     % plot_3();% 闭环仿真结果对比
     % plot_3_1();% 全故障工况与标况闭环响应对比
     % plot_4();% 推力器控制脉宽对比
-    % plot_5();% 推力器分配策略输出
+    plot_5();% 推力器分配策略输出
     % plot_6();% 诊断结果输出
     % plot_7();% 不同数量故障下可重构性判定表
-    plot_7_mc();% 单推力器故障下三种布局Monte Carlo打靶验证
+    % plot_7_mc();% 单推力器故障下三种布局Monte Carlo打靶验证
     % plot_8();% 单推力器故障综合评价明细表
 
     %% 推力器布局优化前后对比
@@ -43,133 +43,52 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
             for view_idx = 1:numel(view_defs)
                 ax = subplot(layout_num, numel(view_defs), ...
                              (layout_idx - 1) * numel(view_defs) + view_idx);
-                Plot_place_view(ax, r, B, view_defs(view_idx), layout_name);
+                plot_options = struct();
+                plot_options.LayoutName = layout_name;
+                plot_options.FaultyIndices = log_orig.faulty_thrusters;
+                plot_options.ShowLabels = false;
+                plot_options.ShowTitle = false;
+                RCPlotter.plotLayoutProjection( ...
+                    ax, B, r, view_defs(view_idx), plot_options);
             end
-        end
-
-        function Plot_place_view(ax, r, B, view_def, layout_name)
-            axes(ax);
-            cla(ax);
-            hold(ax, 'on'); grid(ax, 'on');
-            Plot_Body_Projection(view_def.axes);
-
-            healthy_idx = setdiff(1:params.Num, log_orig.faulty_thrusters);
-            faulty_idx = intersect(1:params.Num, log_orig.faulty_thrusters);
-
-            Plot_Thruster_Group(r, B, healthy_idx, view_def.axes, ...
-                                [0.2 0.7 1], 'r', '-');
-            Plot_Thruster_Group(r, B, faulty_idx, view_def.axes, ...
-                                [0.8 0.8 0.8], [0.5 0.5 0.5], '--');
-
-            % title(ax, [layout_name, ' - ', view_def.name]);
-            xlabel(ax, view_def.xlabel);
-            ylabel(ax, view_def.ylabel);
-            axis(ax, 'equal');
-            xlim(ax, view_def.xlim);
-            ylim(ax, view_def.ylim);
-            set(ax, 'XDir', view_def.xdir, 'YDir', view_def.ydir);
-        end
-
-        function Plot_Body_Projection(proj_axes)
-            half_size = [2, 0.6, 0.6];
-            x_half = half_size(proj_axes(1));
-            y_half = half_size(proj_axes(2));
-            body_x = [-x_half, x_half, x_half, -x_half];
-            body_y = [-y_half, -y_half, y_half, y_half];
-            patch(body_x, body_y, [0.8 0.8 0.8], ...
-                  'FaceAlpha', 0.18, 'EdgeColor', [0.6 0.6 0.6], ...
-                  'LineWidth', 1.0);
-        end
-
-        function Plot_Thruster_Labels(r, view_def)
-            proj_axes = view_def.axes;
-            p = r(proj_axes, :);
-            half_size = [2, 0.6, 0.6];
-            x_half = half_size(proj_axes(1));
-            side_gap = max(0.32, 0.18 * diff(view_def.xlim));
-            group_gap = 0.11;
-            label_x_side = [-x_half - side_gap, x_half + side_gap];
-
-            side_flag = ones(1, params.Num);
-            side_flag(p(1, :) < 0) = -1;
-            side_flag(abs(p(1, :)) < 1e-9 & p(2, :) < 0) = -1;
-
-            for side_value = [-1, 1]
-                side_idx = find(side_flag == side_value);
-                if isempty(side_idx)
-                    continue;
-                end
-
-                [~, order] = sortrows([round(p(2, side_idx)' / group_gap), ...
-                                       round(p(1, side_idx)' / group_gap), ...
-                                       side_idx(:)]);
-                side_idx = side_idx(order);
-                desired_y = p(2, side_idx);
-                label_y = Spread_Label_Y(desired_y, view_def.ylim, 0.18);
-                if side_value > 0
-                    label_x = label_x_side(2);
-                else
-                    label_x = label_x_side(1);
-                end
-
-                for local_idx = 1:numel(side_idx)
-                    thr_idx = side_idx(local_idx);
-                    text(label_x, label_y(local_idx), sprintf('%d', thr_idx), ...
-                         'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', ...
-                         'FontSize', 9, 'FontWeight', 'bold', 'Color', 'k');
-                end
-            end
-        end
-
-        function label_y = Spread_Label_Y(desired_y, ylim_value, min_gap)
-            [sorted_y, sorted_idx] = sort(desired_y(:));
-            if isempty(sorted_y)
-                label_y = sorted_y;
-                return;
-            end
-
-            y_low = ylim_value(1) + 0.12;
-            y_high = ylim_value(2) - 0.12;
-            sorted_y = max(y_low, min(y_high, sorted_y));
-
-            for idx = 2:numel(sorted_y)
-                sorted_y(idx) = max(sorted_y(idx), sorted_y(idx - 1) + min_gap);
-            end
-
-            overflow = sorted_y(end) - y_high;
-            if overflow > 0
-                sorted_y = sorted_y - overflow;
-            end
-
-            for idx = numel(sorted_y)-1:-1:1
-                sorted_y(idx) = min(sorted_y(idx), sorted_y(idx + 1) - min_gap);
-            end
-            underflow = y_low - sorted_y(1);
-            if underflow > 0
-                sorted_y = sorted_y + underflow;
-            end
-
-            label_y = zeros(size(sorted_y));
-            label_y(sorted_idx) = sorted_y;
-        end
-
-        function Plot_Thruster_Group(r, B, idx, proj_axes, marker_color, arrow_color, line_style)
-            if isempty(idx)
-                return;
-            end
-
-            plot(r(proj_axes(1), idx), r(proj_axes(2), idx), ...
-                 'o', 'MarkerSize', 5, 'MarkerFaceColor', marker_color, ...
-                 'MarkerEdgeColor', 'k');
-            quiver(r(proj_axes(1), idx), r(proj_axes(2), idx), ...
-                   B(proj_axes(1), idx), B(proj_axes(2), idx), ...
-                   0.35, 'Color', arrow_color, 'LineWidth', 1.2, ...
-                   'LineStyle', line_style, 'MaxHeadSize', 0.8);
         end
     end
 
     %% 评价指标优化前后对比
     function plot_2()
+        fault_num = 1;
+        if isfield(params, 'plot_2_fault_num') && ...
+                ~isempty(params.plot_2_fault_num) && ...
+                isnumeric(params.plot_2_fault_num) && ...
+                isfinite(params.plot_2_fault_num(1))
+            fault_num = max(1, min(params.Num, ...
+                round(params.plot_2_fault_num(1))));
+        end
+
+        comparison = RCPlotter.metricComparisonData( ...
+            params, layout_set, fault_num);
+        figure('Name', '重构评价四项指标优化前后对比', 'Color','w');
+        for metric_idx = 1:4
+            RCPlotter.plotMetricBars( ...
+                subplot(2, 2, metric_idx), comparison, metric_idx);
+        end
+
+        figure('Name', '标况控制能力包络空间对比', 'Color', 'w');
+        RCPlotter.plotControlEnvelopeComparison( ...
+            subplot(1, 2, 1), subplot(1, 2, 2), params, layout_set);
+
+        figure('Name', '六维控制向量夹角对比', 'Color','w');
+        for layout_idx = 1:numel(layout_set)
+            options = struct('Title', [char(layout_set(layout_idx).name), ...
+                '：6维向量夹角']);
+            RCPlotter.plotDirectionAngleMatrix( ...
+                subplot(1, numel(layout_set), layout_idx), ...
+                layout_set(layout_idx).B, log_orig.faulty_thrusters, options);
+        end
+    end
+
+%{
+        % 旧版 plot_2 实现保留作算法追溯；当前绘图统一调用 RCPlotter。
         figure('Name', '重构评价指标优化前后对比', 'Color','w');
         Matrix_orig = params.F_max * params.B_all;
         Matrix_opt  = params.F_max * log_opt.B_opt;
@@ -424,7 +343,7 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
                 label = ['故障[' strjoin(cellstr(string(fault_set)), ',') ']'];
             end
         end
-    end
+%}
     
     %% 闭环位置与姿态响应对比
     function plot_3()
@@ -432,78 +351,16 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
         plot_labels = Plot3_Layout_Labels(numel(plot_logs));
 
         figure('Name', '闭环位置与姿态响应对比','Color','w');
-        subplot(2,2,1); Plot_3Axis(plot_logs, plot_labels, 'pos', '位置响应', '(m)', log_orig.faulty_time);
-        subplot(2,2,2); Plot_3Axis(plot_logs, plot_labels, 'att', '姿态响应', '(rad)', log_orig.faulty_time);
-        subplot(2,2,3); Plot_Error_Norm(plot_logs, plot_labels, 'pos', '位置误差范数', '||e_r||(m)', log_orig.faulty_time);
-        subplot(2,2,4); Plot_Error_Norm(plot_logs, plot_labels, 'att', '姿态误差范数', '||e_e||(rad)', log_orig.faulty_time);
-
-        function Plot_3Axis(logs, labels, data_type, title_str, unit_str, fault_time)
-            ax = gca;
-            hold(ax, 'on'); grid(ax, 'on');
-            colors = lines(3);
-            line_styles = {'-', '--', ':', '-.'};
-            line_widths = [1.2, 1.3, 1.7, 1.3];
-            axis_names = Plot3_Axis_Names(data_type);
-            legend_handles = gobjects(1, numel(logs) * 3);
-            legend_labels = cell(1, numel(logs) * 3);
-            legend_idx = 0;
-
-            for layout_idx = 1:numel(logs)
-                data = Plot3_Response_Data(logs{layout_idx}, data_type);
-                line_style = line_styles{min(layout_idx, numel(line_styles))};
-                line_width = line_widths(min(layout_idx, numel(line_widths)));
-                for axis_idx = 1:3
-                    legend_idx = legend_idx + 1;
-                    legend_handles(legend_idx) = plot(ax, logs{layout_idx}.Time, data(axis_idx, :), ...
-                        line_style, 'Color', colors(axis_idx, :), 'LineWidth', line_width);
-                    legend_labels{legend_idx} = [labels{layout_idx} '-' axis_names{axis_idx}];
-                end
-            end
-            Draw_Plot3_Fault_Line(ax, fault_time);
-            title(ax, title_str); xlabel(ax, 't(s)'); ylabel(ax, unit_str);
-            legend(ax, legend_handles, legend_labels, 'Location', 'best');
-        end
-
-        function Plot_Error_Norm(logs, labels, data_type, title_str, ylabel_str, fault_time)
-            ax = gca;
-            hold(ax, 'on'); grid(ax, 'on');
-            line_styles = {'-', '--', ':', '-.'};
-            line_widths = [1.2, 1.3, 1.7, 1.3];
-            handles = gobjects(1, numel(logs));
-            for layout_idx = 1:numel(logs)
-                err = Plot3_Error_Data(logs{layout_idx}, data_type);
-                handles(layout_idx) = plot(ax, logs{layout_idx}.Time, vecnorm(err, 2, 1), ...
-                    line_styles{min(layout_idx, numel(line_styles))}, ...
-                    'LineWidth', line_widths(min(layout_idx, numel(line_widths))));
-            end
-            Draw_Plot3_Fault_Line(ax, fault_time);
-            title(ax, title_str); xlabel(ax, 't(s)'); ylabel(ax, ylabel_str);
-            legend(ax, handles, labels, 'Location', 'best');
-        end
-
-        function data = Plot3_Response_Data(log_data, data_type)
-            if strcmp(data_type, 'pos')
-                data = log_data.Y(1:3, :);
-            else
-                data = log_data.Y_euler;
-            end
-        end
-
-        function err = Plot3_Error_Data(log_data, data_type)
-            if strcmp(data_type, 'pos')
-                err = log_data.Y(1:3, :) - log_data.R;
-            else
-                err = mod((log_data.Y_euler - log_data.E) + pi, 2*pi) - pi;
-            end
-        end
-
-        function axis_names = Plot3_Axis_Names(data_type)
-            if strcmp(data_type, 'pos')
-                axis_names = {'x', 'y', 'z'};
-            else
-                axis_names = {'phi', 'theta', 'psi'};
-            end
-        end
+        options = struct('FaultTime', log_orig.faulty_time, ...
+            'ShowFaultTime', true, 'ShowLegend', true);
+        RCPlotter.plotResponseComponents(subplot(2,2,1), ...
+            plot_logs, plot_labels, 'pos', options);
+        RCPlotter.plotResponseComponents(subplot(2,2,2), ...
+            plot_logs, plot_labels, 'att', options);
+        RCPlotter.plotErrorNorm(subplot(2,2,3), ...
+            plot_logs, plot_labels, 'pos', options);
+        RCPlotter.plotErrorNorm(subplot(2,2,4), ...
+            plot_logs, plot_labels, 'att', options);
 
         function labels = Plot3_Layout_Labels(label_count)
             labels = cell(1, label_count);
@@ -519,18 +376,12 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
             end
         end
 
-        function Draw_Plot3_Fault_Line(ax, fault_time)
-            if ~isempty(fault_time) && isfinite(fault_time)
-                xline(ax, fault_time, '--r');
-            end
-        end
     end
 
     %% 全故障工况与标况闭环位置、姿态响应对比
     function plot_3_1()
         fault_sets = Build_Plot31_Fault_Sets();
         case_num = numel(fault_sets);
-        colors = lines(case_num);
 
         for layout_idx = 1:numel(layout_set)
             layout_name = char(layout_set(layout_idx).name);
@@ -544,50 +395,21 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
             end
 
             figure('Name', [layout_name, ' 全故障工况与标况位置姿态响应对比'], 'Color','w');
-            plot_handles = gobjects(1, case_num);
-            pos_names = {'x', 'y', 'z'};
-            att_names = {'\phi', '\theta', '\psi'};
-
             for axis_idx = 1:3
                 ax = subplot(2, 3, axis_idx);
-                hold(ax, 'on'); grid(ax, 'on');
-                for case_idx = 1:case_num
-                    line_style = '-';
-                    line_width = 0.9;
-                    if isempty(fault_sets{case_idx})
-                        line_width = 1.8;
-                    end
-                    h = plot(ax, logs{case_idx}.Time, logs{case_idx}.Y(axis_idx, :), ...
-                             line_style, 'Color', colors(case_idx, :), 'LineWidth', line_width);
-                    if axis_idx == 1
-                        plot_handles(case_idx) = h;
-                    end
-                end
-                Draw_Fault_Time_Line(ax, logs{1});
-                % title(ax, [pos_names{axis_idx}, '位置响应']);
-                xlabel(ax, 't(s)');
-                ylabel(ax, [pos_names{axis_idx},'(m)']);
+                options = struct('ShowLegend', axis_idx == 1, ...
+                    'ShowFaultTime', true);
+                RCPlotter.plotFaultCaseComponent( ...
+                    ax, logs, labels, 'pos', axis_idx, options);
             end
 
             for axis_idx = 1:3
                 ax = subplot(2, 3, axis_idx + 3);
-                hold(ax, 'on'); grid(ax, 'on');
-                for case_idx = 1:case_num
-                    line_style = '-';
-                    line_width = 0.9;
-                    if isempty(fault_sets{case_idx})
-                        line_width = 1.8;
-                    end
-                    plot(ax, logs{case_idx}.Time, logs{case_idx}.Y_euler(axis_idx, :), ...
-                         line_style, 'Color', colors(case_idx, :), 'LineWidth', line_width);
-                end
-                Draw_Fault_Time_Line(ax, logs{1});
-                % title(ax, [att_names{axis_idx}, '姿态响应']);
-                xlabel(ax, 't(s)');
-                ylabel(ax, [att_names{axis_idx},'(rad)']);
+                options = struct('ShowLegend', axis_idx == 1, ...
+                    'ShowFaultTime', true);
+                RCPlotter.plotFaultCaseComponent( ...
+                    ax, logs, labels, 'att', axis_idx, options);
             end
-
-            legend(plot_handles, labels, 'Location', 'eastoutside');
         end
 
         function fault_sets = Build_Plot31_Fault_Sets()
@@ -692,23 +514,21 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
             end
         end
 
-        function Draw_Fault_Time_Line(ax, log_case)
-            if isfield(log_case, 'faulty_time') && isfinite(log_case.faulty_time)
-                xline(ax, log_case.faulty_time, '--r', 'LineWidth', 0.8);
-            end
-        end
     end
 
     %% 推力器控制脉宽对比
     function plot_4()
-        figure('Name', '各推力器脉宽','Color','w');
+        pulse_figure = figure('Name', '各推力器脉宽','Color','w');
+        column_count = min(4, params.Num);
+        row_count = ceil(params.Num / column_count);
+        pulse_layout = tiledlayout(pulse_figure, row_count, column_count, ...
+            'TileSpacing', 'compact', 'Padding', 'compact');
+        pulse_axes = gobjects(1, params.Num);
         for i = 1:params.Num
-            subplot(3, 4, i);plot(log_orig.Time, log_orig.Pulse_Widths(i, :));
-            title(['推力器 ' num2str(i)]);xlabel('时间(s)');ylabel('脉宽(s)');
-            grid on;hold on;
-            xline(log_orig.faulty_time, '--r');
-            hold off;
+            pulse_axes(i) = nexttile(pulse_layout, i);
         end
+        RCPlotter.plotThrusterPulseWidths(pulse_axes, log_orig, ...
+            struct('LayoutName', '原布局', 'ShowFaultTime', true));
         % 总喷气时长对比
         figure('Name','总喷气时长对比','Color','w');
         subplot(3,1,1); hold on; grid on;
@@ -728,45 +548,10 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
    
     %% 推力器分配策略输出
     function plot_5()
-        Print_Thruster_Allocation(params.B_all, log_orig.faulty_thrusters, '原布局');
-        Print_Thruster_Allocation(log_opt.B_opt, log_orig.faulty_thrusters, '方案一');
-        Print_Thruster_Allocation(log_opt1.B_opt, log_orig.faulty_thrusters, '方案二');
-        function Print_Thruster_Allocation(B, faulty_thrusters, name_str)
-            axes_names = {'X', 'Y', 'Z'};
-            fprintf('%s推力器分配策略\n', name_str);
-            if isempty(faulty_thrusters)
-                fprintf('推力器标况\n');
-            else
-                fprintf('推力器[%s]故障\n', num2str(faulty_thrusters));
-            end
-
-            fprintf('--------------------------------------------------------------\n');
-            fprintf('【轨道控制推力器分配】\n');
-            for i = 1:3
-                pos_idx = find(B(i, :) > 1e-3);
-                neg_idx = find(B(i, :) < -1e-3);
-
-                pos_idx = setdiff(pos_idx, faulty_thrusters);
-                neg_idx = setdiff(neg_idx, faulty_thrusters);
-
-                fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
-                fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
-            end
-
-            fprintf('--------------------------------------------------------------\n');
-            fprintf('【姿态控制推力器分配】\n');
-            for i = 1:3
-                pos_idx = find(B(i+3, :) > 1e-3);
-                neg_idx = find(B(i+3, :) < -1e-3);
-
-                pos_idx = setdiff(pos_idx, faulty_thrusters);
-                neg_idx = setdiff(neg_idx, faulty_thrusters);
-
-                fprintf('+%s轴: [%s]\n', axes_names{i}, num2str(pos_idx));
-                fprintf('-%s轴: [%s]\n', axes_names{i}, num2str(neg_idx));
-            end
-            fprintf('--------------------------------------------------------------\n');
-        end
+        result = RCPlotter.allocationStrategyData( ...
+            params, layout_set, log_orig.faulty_thrusters);
+        fprintf('三种布局推力器六轴分配策略\n');
+        disp(cell2table(result.Data, 'VariableNames', result.ColumnNames));
     end
 
     %% 诊断结果输出
@@ -784,86 +569,10 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
     %% 不同故障数量下可重构性判定表
     function plot_7()
         fault_nums = 1:params.Num;
-        [Eval_grid, ~] = samples_combin(layout_set, fault_nums);
-
-        for fault_idx = 1:numel(fault_nums)
-            for layout_idx = 1:numel(layout_set)
-                Eval = Eval_grid{layout_idx, fault_idx};
-                Eval = Apply_Reconfig_Status(Eval);
-                Eval_grid{layout_idx, fault_idx} = Eval;
-            end
-        end
-
-        layout_names = Plot7_Layout_Names();
-        colNames = {'推力器故障数'};
-        colWidth = 0.08;
-        for layout_idx = 1:numel(layout_set)
-            colNames = [colNames, ...
-                        {[layout_names{layout_idx}], ...
-                         ['可重构数'], ...
-                         ['不可重构数']}]; %#ok<AGROW>
-            colWidth = [colWidth, 0.08, 0.07, 0.08]; %#ok<AGROW>
-        end
-
-        data = strings(numel(fault_nums), numel(colNames));
-        for fault_idx = 1:numel(fault_nums)
-            data(fault_idx, 1) = string(fault_nums(fault_idx));
-            for layout_idx = 1:numel(layout_set)
-                Eval = Eval_grid{layout_idx, fault_idx};
-                rows = 2:numel(Eval.FaultSets);
-                reconfig_num = sum(Eval.IsReconfig(rows));
-                nonreconfig_num = numel(rows) - reconfig_num;
-
-                if nonreconfig_num == 0
-                    status = "完全可重构";
-                elseif reconfig_num == 0
-                    status = "不可重构";
-                else
-                    status = "部分可重构";
-                end
-
-                col0 = 2 + (layout_idx - 1) * 3;
-                data(fault_idx, col0:(col0 + 2)) = [status, ...
-                                                    string(reconfig_num), ...
-                                                    string(nonreconfig_num)];
-            end
-        end
-
+        result = RCPlotter.reconfigSummaryData(params, layout_set, fault_nums);
+        colWidth = [0.08, repmat([0.08, 0.07, 0.08], 1, numel(layout_set))];
         Draw_Three_Line_Table('不同数量故障下可重构性判断对比表', ...
-                              '', colNames, data, colWidth);
-
-        function layout_names = Plot7_Layout_Names()
-            layout_names = cell(1, numel(layout_set));
-            for idx = 1:numel(layout_set)
-                if idx == 1
-                    layout_names{idx} = '原布局';
-                else
-                    layout_names{idx} = ['方案' Plot7_Chinese_Num(idx - 1)];
-                end
-            end
-        end
-
-        function subtitle = Plot7_Subtitle(layout_names)
-            subtitle = {};
-            if numel(layout_set) <= 1
-                return;
-            end
-
-            items = cell(1, numel(layout_set) - 1);
-            for idx = 2:numel(layout_set)
-                items{idx - 1} = sprintf('%s: %s', layout_names{idx}, char(layout_set(idx).name));
-            end
-            subtitle = {strjoin(items, ' | ')};
-        end
-
-        function value = Plot7_Chinese_Num(num)
-            names = {'一', '二', '三', '四', '五', '六', '七', '八', '九', '十'};
-            if num >= 1 && num <= numel(names)
-                value = names{num};
-            else
-                value = num2str(num);
-            end
-        end
+                              '', result.ColumnNames, result.Data, colWidth);
     end
 
     %% 单推力器故障下三种布局全部故障组合的Monte Carlo打靶验证
@@ -1126,66 +835,11 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
 
     %% 单推力器故障综合评价明细表
     function plot_8()
-        [Eval_case, Raw] = samples_combin(layout_set, 1);
-        Weight = Least_Squares_Combined_Weight(Raw, AHP_Weight(params, 4), Entropy_Weight(Raw));
-
-        for layout_idx = 1:numel(layout_set)
-            Eval = Eval_case{layout_idx};
-            Eval.Score(:) = Eval.MetricRaw * Weight;
-            Eval.Weight = Weight;
-            Eval = Apply_Reconfig_Status(Eval);
-            Eval_case{layout_idx} = Eval;
-        end
-
-        layout_avg = zeros(numel(layout_set), 1);
-        avg_text = cell(1, numel(layout_set));
-        for layout_idx = 1:numel(layout_set)
-            layout_avg(layout_idx) = mean(Eval_case{layout_idx}.Score(:));
-            avg_text{layout_idx} = sprintf('%s %.4f', char(layout_set(layout_idx).name), layout_avg(layout_idx));
-        end
-
-        weight_text = sprintf('组合权重: 控制 %.3f, 诊断 %.3f, 跟踪 %.3f, 能耗 %.3f', ...
-                              Weight(1), Weight(2), Weight(3), Weight(4));
-        layout_num = numel(layout_set);
-        colNames = cell(1, 1 + layout_num);
-        colNames{1} = '故障推力器编号';
-        for layout_idx = 1:layout_num
-            layout_name = char(layout_set(layout_idx).name);
-            colNames{layout_idx + 1} = sprintf('%s\n综合评价', layout_name);
-        end
-
-        fault_labels = 0:params.Num;
-        data = strings(numel(fault_labels), numel(colNames));
-        for row_idx = 1:numel(fault_labels)
-            faulty_idx = fault_labels(row_idx);
-            data(row_idx, 1) = string(faulty_idx);
-            for layout_idx = 1:layout_num
-                Eval = Eval_case{layout_idx};
-                eval_idx = Find_Plot8_Fault_Row(Eval.FaultSets, faulty_idx);
-                if isempty(eval_idx)
-                    continue;
-                end
-
-                data(row_idx, layout_idx + 1) = string(sprintf('%.4f', Eval.Score(eval_idx)));
-            end
-        end
-
-        col_width = [0.08, repmat(0.08, 1, layout_num)];
+        result = RCPlotter.singleFaultEvaluationData(params, layout_set);
+        col_width = [0.08, repmat(0.08, 1, numel(layout_set))];
         Draw_Three_Line_Table('三种布局单推力器故障综合评价指标对比表', ...
-                              {weight_text, ['标况与单故障平均综合能力: ' strjoin(avg_text, ' | ')]}, ...
-                              colNames, data, col_width);
-
-        function row_idx = Find_Plot8_Fault_Row(fault_sets, target_fault)
-            row_idx = [];
-            for set_idx = 1:numel(fault_sets)
-                fault_set = fault_sets{set_idx};
-                if (target_fault == 0 && isempty(fault_set)) || ...
-                        (numel(fault_set) == 1 && fault_set == target_fault)
-                    row_idx = set_idx;
-                    return;
-                end
-            end
-        end
+                              {result.WeightText, result.AverageText}, ...
+                              result.ColumnNames, result.Data, col_width);
     end
 
     %% 三个布局的样本组合函数

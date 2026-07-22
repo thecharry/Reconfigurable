@@ -49,7 +49,7 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
     %                'JtQuality', Jt, 'JtError', Jt_err, 'JfPulse', Jf);
     Z.Raw = struct('JcForce', Jc1(:, 1), 'JcTorque', Jc1(:, 2), ...
                    'Jc6', Jc, 'JoAngle', Jo, ...
-                   'JtQuality', Jt, 'JtError', Jf, 'JfPulse', Jf);
+                   'JtQuality', Jt, 'JtError', Jt_err, 'JfPulse', Jf);
 
     %% 控制能力评价指标
     function [Jc_min, Jc_max] = Capability(Matrix_sub)
@@ -146,13 +146,8 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
             F_cmd = F_cmds(:, k);
             T_cmd = T_cmds(:, k);
             cmd = [F_cmd; T_cmd];
-            try
-                [Prop_Final, info] = Thruster_invocation_decoupled(F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
-                actual = info.actual;
-            catch
-                Prop_Final = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
-                actual = Matrix_conf * (Prop_Final / params.T);
-            end
+            [Prop_Final, info] = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
+            actual = info.actual;
             rel_err = norm((cmd - actual) ./ scale) / (norm(cmd ./ scale) + 1e-12);
             cmd_err(k) = rel_err;
             cmd_quality(k) = 1 / (1 + rel_err);

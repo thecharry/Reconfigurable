@@ -229,37 +229,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
 
     %% 实际推力器输出脉宽
     function [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params)
-        alloc_mode = 'axis_split';
-        if isfield(params, 'alloc_mode') && ~isempty(params.alloc_mode)
-            alloc_mode = char(params.alloc_mode);
-        end
-
-        if any(strcmpi(alloc_mode, {'six_d_qp', 'full_6d', 'lsqlin', 'quadprog', ...
-                                    'task_book', 'mission_book', 'strict_sync', 'sync_task_book'}))
-            if any(strcmpi(alloc_mode, {'six_d_qp', 'full_6d', 'lsqlin', 'quadprog'})) && ...
-                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
-                params.reuse_mode = 'six_d_qp';
-            elseif any(strcmpi(alloc_mode, {'task_book', 'mission_book'})) && ...
-                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
-                params.reuse_mode = 'task_book';
-            elseif any(strcmpi(alloc_mode, {'strict_sync', 'sync_task_book'})) && ...
-                    (~isfield(params, 'reuse_mode') || isempty(params.reuse_mode))
-                params.reuse_mode = 'strict_sync';
-            end
-            [Prop_Command, alloc_info] = Thruster_invocation_decoupled(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
-        else
-            Prop_Command = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
-            alloc_info = Default_Alloc_Info(Prop_Command, 'axis_split_old');
-        end
-    end
-
-    function alloc_info = Default_Alloc_Info(Prop_Command, mode_name)
-        alloc_info.mode = mode_name;
-        alloc_info.Prop_T_used = zeros(params.Num, 1);
-        alloc_info.Prop_F_used = zeros(params.Num, 1);
-        alloc_info.Prop_6D = Prop_Command;
-        alloc_info.attitude_window = NaN;
-        alloc_info.position_window = NaN;
+        [Prop_Command, alloc_info] = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
     end
 
     function [Prop_Att, Prop_Orbit, Prop_6D] = Allocation_Ownership(alloc_info, Prop_Command, Prop_Actual)
