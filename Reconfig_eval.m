@@ -146,7 +146,8 @@ function [Z, Jc1, Jc2, Jc, Jo, Jt, Jf] = Reconfig_eval(params, Ball, max_faultys
             F_cmd = F_cmds(:, k);
             T_cmd = T_cmds(:, k);
             cmd = [F_cmd; T_cmd];
-            [Prop_Final, info] = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
+            [Prop_Final, info] = Thruster_allocator( ...
+                F_cmd, T_cmd, Matrix_conf, faulty_idx, params);
             actual = info.actual;
             rel_err = norm((cmd - actual) ./ scale) / (norm(cmd ./ scale) + 1e-12);
             cmd_err(k) = rel_err;

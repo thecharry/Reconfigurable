@@ -11,7 +11,7 @@ function result = Optim_Algorithm(params, opt_cfg)
 %             position_b_range, alpha_range, beta_range, min_install_distance,
 %             min_install_angle_deg, population_size,
 %             max_generations, function_tolerance, use_parallel,
-%             display, save_result, output_dir
+%             display, save_result, output_dir, progress_callback
 %
 % 输出：
 %   result.B_opt / result.r_opt / result.x_opt / result.fval
@@ -73,6 +73,9 @@ function result = Optim_Algorithm(params, opt_cfg)
     ub = repmat([positionARange(2), positionBRange(2), ...
         opt_cfg.alpha_range(2), opt_cfg.beta_range(2)], 1, base_num);
     nvars = 4 * base_num;
+    evaluationCount = 0;
+    progressClock = tic;
+    lastProgressNotification = -inf;
 
     can_run_ga = exist('ga', 'file') == 2 && exist('optimoptions', 'file') == 2;
     if can_run_ga
@@ -82,10 +85,18 @@ function result = Optim_Algorithm(params, opt_cfg)
                 'PopulationSize', opt_cfg.population_size, ...
                 'MaxGenerations', opt_cfg.max_generations, ...
                 'FunctionTolerance', opt_cfg.function_tolerance, ...
-                'UseParallel', opt_cfg.use_parallel);
+                'UseParallel', opt_cfg.use_parallel, ...
+                'OutputFcn', @(options, state, flag) ...
+                    GA_Progress_Output(options, state, flag, opt_cfg));
+
+            if opt_cfg.use_parallel
+                objectiveFunction = @(x) Optimal_config(x, params);
+            else
+                objectiveFunction = @Objective_With_Progress;
+            end
 
             tic;
-            [x_opt, fval] = ga(@(x) Optimal_config(x, params), nvars, ...
+            [x_opt, fval] = ga(objectiveFunction, nvars, ...
                 [], [], [], [], lb, ub, ...
                 @(x) Physical_constraints(x, params, opt_cfg), options);
             elapsed_time = toc;
@@ -119,6 +130,19 @@ function result = Optim_Algorithm(params, opt_cfg)
     end
 
     result = Load_Fallback_Optim_Result(opt_cfg.output_dir, params);
+
+    function objectiveValue = Objective_With_Progress(x)
+        evaluationCount = evaluationCount + 1;
+        currentTime = toc(progressClock);
+        if evaluationCount == 1 || currentTime - lastProgressNotification >= 0.25
+            info = struct('Stage', 'evaluation', ...
+                'Generation', NaN, 'Progress', NaN, ...
+                'EvaluationCount', evaluationCount);
+            Notify_Progress(opt_cfg, info);
+            lastProgressNotification = currentTime;
+        end
+        objectiveValue = Optimal_config(x, params);
+    end
 end
 
 function opt_cfg = Fill_Opt_Config(opt_cfg)
@@ -138,6 +162,7 @@ function opt_cfg = Fill_Opt_Config(opt_cfg)
     defaults.save_result = true;
     defaults.min_install_distance = 0;
     defaults.min_install_angle_deg = 0;
+    defaults.progress_callback = [];
 
     names = fieldnames(defaults);
     for index = 1:numel(names)
@@ -145,6 +170,37 @@ function opt_cfg = Fill_Opt_Config(opt_cfg)
         if ~isfield(opt_cfg, name) || isempty(opt_cfg.(name))
             opt_cfg.(name) = defaults.(name);
         end
+    end
+end
+
+function [state, options, optchanged] = ...
+        GA_Progress_Output(options, state, flag, opt_cfg)
+    optchanged = false;
+    generation = 0;
+    if isfield(state, 'Generation') && ~isempty(state.Generation)
+        generation = double(state.Generation);
+    end
+    if strcmpi(flag, 'done')
+        progress = 1;
+    else
+        progress = generation / max(1, opt_cfg.max_generations);
+    end
+    info = struct('Stage', char(flag), ...
+        'Generation', generation, ...
+        'Progress', max(0, min(1, progress)), ...
+        'EvaluationCount', 0);
+    Notify_Progress(opt_cfg, info);
+end
+
+function Notify_Progress(opt_cfg, info)
+    if ~isfield(opt_cfg, 'progress_callback') || ...
+            ~isa(opt_cfg.progress_callback, 'function_handle')
+        return;
+    end
+    try
+        opt_cfg.progress_callback(info);
+    catch
+        % 进度显示不应中断优化计算。
     end
 end
 
@@ -283,16 +339,58 @@ function [B_all, r] = Thruster_reconfig(x, params)
 end
 
 %% 最优布局参数目标函数
-function J = Optimal_config(x,params)
-    [B_all, ~] = Thruster_reconfig(x,params);
-    penatly = 0;
-    [~, Jc1, ~, Jc, ~,~,~] = Reconfig_eval(params, B_all);
-    % [~, Jc2, ~, ~, ~,~,~] = Reconfig_eval(params, B_all,2);
-    v_Jc = max(0, 0 - Jc);
-    % v_Jc1_f = max(0,0 - Jc1(:,1));
-    % v_Jc1_t = max(0,0 - Jc1(:,2));
-    penatly = penatly + 10000 * (v_Jc' * v_Jc);
-    J = -(Jc1(:,1)'*Jc1(:,1)+Jc1(:,2)'*Jc1(:,2))+penatly;
+function J = Optimal_config(x, params)
+    [B_all, ~] = Thruster_reconfig(x, params);
+    [~, Jc1, ~, Jc6, Jo, ~, ~] = Reconfig_eval(params, B_all, 1);
+    F_ref = params.F_max;
+    if isfield(params, 'optim_x_face')
+        L_ref = params.optim_x_face;
+    else
+        L_ref = 2;
+    end
+    T_ref = params.F_max * L_ref;
+
+    force_cap  = Jc1(:, 1) / max(F_ref, 1e-12);
+    torque_cap = Jc1(:, 2) / max(T_ref, 1e-12);
+
+    % 每种故障工况下，取力和力矩中较弱的一项
+    balanced_cap = min(force_cap, torque_cap);
+
+    % 主要保证最坏故障，少量奖励整体平均性能
+    worst_cap = min(balanced_cap);
+    mean_cap  = mean(balanced_cap);
+
+    % 六维联合能力已在 Reconfig_eval 中按行归一化
+    % worst_6d = min(Jc6);
+    % mean_6d  = mean(Jc6);
+
+    % 可诊断性只作为次要指标
+    diag_score = min(Jo) / pi;
+
+    % 避免推力器组完全重叠
+    % group_spread_penalty = 0;
+    % base_num = params.Num / 4;
+    % for i = 1:base_num
+    %     for j = i+1:base_num
+    %         xi = x(4*(i-1)+(1:4));
+    %         xj = x(4*(j-1)+(1:4));
+    % 
+    %         position_distance = norm(xi(1:2)-xj(1:2));
+    %         direction_distance = norm(xi(3:4)-xj(3:4));
+    % 
+    %         group_spread_penalty = group_spread_penalty + ...
+    %             exp(-10*position_distance) + ...
+    %             0.2*exp(-5*direction_distance);
+    %     end
+    % end
+
+    % ga 执行最小化，因此前面加负号
+    J = -worst_cap;
+
+    % 评价计算失败时，不能让 GA 把零值当成正常候选
+    if any(~isfinite([J; Jc1(:); Jc6(:)]))
+        J = 1e6;
+    end
 end
 
 %% 非线性物理约束

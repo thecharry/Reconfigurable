@@ -10,281 +10,330 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
     % Properties that correspond to App Designer components
     % Properties that correspond to App Designer components
     % Properties that correspond to App Designer components
+    % Properties that correspond to App Designer components
     properties (Access = public)
         UIFigure                         matlab.ui.Figure
         RootGrid                         matlab.ui.container.GridLayout
-        HeaderPanel                      matlab.ui.container.Panel
-        GridLayout1                      matlab.ui.container.GridLayout
-        Label1                           matlab.ui.control.Label
-        OpenButton                       matlab.ui.control.Button
-        ImportButton                     matlab.ui.control.Button
+        Panel1                           matlab.ui.container.Panel
+        GridLayout2                      matlab.ui.container.GridLayout
+        Label2                           matlab.ui.control.Label
+        StatusLabel                      matlab.ui.control.Label
+        ProgressGauge                    matlab.ui.control.LinearGauge
+        ProgressLabel                    matlab.ui.control.Label
         BodyGrid                         matlab.ui.container.GridLayout
-        NavigationPanel                  matlab.ui.container.Panel
-        GridLayout3                      matlab.ui.container.GridLayout
-        NavigationList                   matlab.ui.control.ListBox
-        Button1                          matlab.ui.control.Button
         PageHostPanel                    matlab.ui.container.Panel
         TabGroup                         matlab.ui.container.TabGroup
-        SimulationTab                    matlab.ui.container.Tab
-        GridLayout10                     matlab.ui.container.GridLayout
-        ControllerPanel_2                matlab.ui.container.Panel
-        ControllerGrid_2                 matlab.ui.container.GridLayout
-        ControlPeriodField_6             matlab.ui.control.NumericEditField
-        Label47_6                        matlab.ui.control.Label
-        ControlPeriodField_5             matlab.ui.control.NumericEditField
-        Label47_5                        matlab.ui.control.Label
-        ControlPeriodField_4             matlab.ui.control.NumericEditField
-        Label47_4                        matlab.ui.control.Label
-        ControlPeriodField_3             matlab.ui.control.NumericEditField
-        Label47_3                        matlab.ui.control.Label
-        ControlPeriodField_2             matlab.ui.control.NumericEditField
-        Label47_2                        matlab.ui.control.Label
-        Panel10_5                        matlab.ui.container.Panel
-        GridLayout21_5                   matlab.ui.container.GridLayout
-        Label24_38                       matlab.ui.control.Label
-        Label36_7                        matlab.ui.control.Label
-        GenerationField_6                matlab.ui.control.EditField
-        SimulationLayoutDropDown         matlab.ui.control.DropDown
-        Label36_6                        matlab.ui.control.Label
-        GenerationField_5                matlab.ui.control.EditField
-        Label36_5                        matlab.ui.control.Label
-        RunSimulationButton              matlab.ui.control.Button
-        SimulationViewTabGroup           matlab.ui.container.TabGroup
-        SimulationPulseTab               matlab.ui.container.Tab
-        SimulationPulseGrid              matlab.ui.container.GridLayout
-        SimulationPulsePlaceholderAxes   matlab.ui.control.UIAxes
-        SimulationFaultCompareTab        matlab.ui.container.Tab
-        SimulationFaultGrid              matlab.ui.container.GridLayout
-        SimulationFaultAttZAxes          matlab.ui.control.UIAxes
-        SimulationFaultAttYAxes          matlab.ui.control.UIAxes
-        SimulationFaultAttXAxes          matlab.ui.control.UIAxes
-        SimulationFaultPosZAxes          matlab.ui.control.UIAxes
-        SimulationFaultPosYAxes          matlab.ui.control.UIAxes
-        SimulationFaultPosXAxes          matlab.ui.control.UIAxes
-        SimulationPositionTab            matlab.ui.container.Tab
-        SimulationPositionGrid           matlab.ui.container.GridLayout
-        SimulationAttitudeErrorAxes      matlab.ui.control.UIAxes
-        SimulationPositionErrorAxes      matlab.ui.control.UIAxes
-        SimulationAttitudeAxes           matlab.ui.control.UIAxes
-        SimulationAxes                   matlab.ui.control.UIAxes
-        Label10                          matlab.ui.control.Label
+        HomeTab                          matlab.ui.container.Tab
+        GridLayout4                      matlab.ui.container.GridLayout
+        HomeSimulationPanel              matlab.ui.container.Panel
+        HomeSimulationGrid               matlab.ui.container.GridLayout
+        HomeSimulationTitle              matlab.ui.control.Label
+        HomeSimulationDesc               matlab.ui.control.Label
+        Panel7                           matlab.ui.container.Panel
+        GridLayout18                     matlab.ui.container.GridLayout
+        Label23                          matlab.ui.control.Label
+        Label22                          matlab.ui.control.Label
+        Panel6                           matlab.ui.container.Panel
+        GridLayout17                     matlab.ui.container.GridLayout
+        Label21                          matlab.ui.control.Label
+        Label20                          matlab.ui.control.Label
+        Panel5                           matlab.ui.container.Panel
+        GridLayout16                     matlab.ui.container.GridLayout
+        Label19                          matlab.ui.control.Label
+        Label18                          matlab.ui.control.Label
+        Panel3                           matlab.ui.container.Panel
+        GridLayout14                     matlab.ui.container.GridLayout
+        Label15                          matlab.ui.control.Label
+        Label14                          matlab.ui.control.Label
+        Panel2                           matlab.ui.container.Panel
+        GridLayout13                     matlab.ui.container.GridLayout
+        Label13                          matlab.ui.control.Label
+        Label12                          matlab.ui.control.Label
+        Label3                           matlab.ui.control.Label
+        ParameterTab                     matlab.ui.container.Tab
+        GridLayout5                      matlab.ui.container.GridLayout
+        ParameterFileGrid_2              matlab.ui.container.GridLayout
+        Button2_4                        matlab.ui.control.Button
+        ThrusterPanel_3                  matlab.ui.container.Panel
+        ThrusterGrid_3                   matlab.ui.container.GridLayout
+        Label24_28                       matlab.ui.control.Label
+        Label24_27                       matlab.ui.control.Label
+        Label24_26                       matlab.ui.control.Label
+        Label49_3                        matlab.ui.control.Label
+        FmaxField_3                      matlab.ui.control.NumericEditField
+        Label50_3                        matlab.ui.control.Label
+        MinPulseField_3                  matlab.ui.control.NumericEditField
+        TextArea                         matlab.ui.control.TextArea
+        ParameterFileGrid                matlab.ui.container.GridLayout
+        Button2_2                        matlab.ui.control.Button
+        Panel8                           matlab.ui.container.Panel
+        GridLayout19                     matlab.ui.container.GridLayout
+        MinPulseField_4                  matlab.ui.control.NumericEditField
+        Label24_32                       matlab.ui.control.Label
+        Label38_5                        matlab.ui.control.Label
+        Label24_31                       matlab.ui.control.Label
+        SimulationTimeField_4            matlab.ui.control.NumericEditField
+        Label38_4                        matlab.ui.control.Label
+        Label24_30                       matlab.ui.control.Label
+        SimulationTimeField_3            matlab.ui.control.NumericEditField
+        Label38_3                        matlab.ui.control.Label
+        Label24_29                       matlab.ui.control.Label
+        SimulationTimeField_2            matlab.ui.control.NumericEditField
+        Label38_2                        matlab.ui.control.Label
+        Label24_6                        matlab.ui.control.Label
+        Label24_5                        matlab.ui.control.Label
+        Label24_4                        matlab.ui.control.Label
+        Label24_3                        matlab.ui.control.Label
+        Label24_2                        matlab.ui.control.Label
+        EditField4                       matlab.ui.control.EditField
+        Label27                          matlab.ui.control.Label
+        EditField3                       matlab.ui.control.EditField
+        Label26                          matlab.ui.control.Label
+        EditField2                       matlab.ui.control.EditField
+        Label25                          matlab.ui.control.Label
+        EditField1                       matlab.ui.control.EditField
+        Label24                          matlab.ui.control.Label
+        SimulationTimeField              matlab.ui.control.NumericEditField
+        Label38                          matlab.ui.control.Label
+        SpacecraftPanel                  matlab.ui.container.Panel
+        SpacecraftGrid                   matlab.ui.container.GridLayout
+        Label24_10                       matlab.ui.control.Label
+        Label24_9                        matlab.ui.control.Label
+        Label24_8                        matlab.ui.control.Label
+        Label24_7                        matlab.ui.control.Label
+        Label43                          matlab.ui.control.Label
+        MassField                        matlab.ui.control.NumericEditField
+        Label44                          matlab.ui.control.Label
+        JxxField                         matlab.ui.control.NumericEditField
+        Label45                          matlab.ui.control.Label
+        JyyField                         matlab.ui.control.NumericEditField
+        Label46                          matlab.ui.control.Label
+        JzzField                         matlab.ui.control.NumericEditField
+        ControllerPanel                  matlab.ui.container.Panel
+        ControllerGrid                   matlab.ui.container.GridLayout
+        Label24_11                       matlab.ui.control.Label
+        Label47                          matlab.ui.control.Label
+        ControlPeriodField               matlab.ui.control.NumericEditField
+        Label4                           matlab.ui.control.Label
+        OptimizationTab                  matlab.ui.container.Tab
+        GridLayout7                      matlab.ui.container.GridLayout
+        LayoutTemplateDropDown           matlab.ui.control.DropDown
+        DeleteLayoutButton               matlab.ui.control.Button
+        ApplyLayoutButton_2              matlab.ui.control.Button
+        LayoutViewTabGroup               matlab.ui.container.TabGroup
+        Layout3DTab                      matlab.ui.container.Tab
+        Layout3DGrid                     matlab.ui.container.GridLayout
+        LayoutAxes                       matlab.ui.control.UIAxes
+        LayoutViewsTab                   matlab.ui.container.Tab
+        LayoutViewsGrid                  matlab.ui.container.GridLayout
+        LayoutXZAxes                     matlab.ui.control.UIAxes
+        LayoutXYAxes                     matlab.ui.control.UIAxes
+        LayoutYZAxes                     matlab.ui.control.UIAxes
+        LayoutParametersTab              matlab.ui.container.Tab
+        LayoutParametersGrid             matlab.ui.container.GridLayout
+        LayoutTable                      matlab.ui.control.Table
+        Panel10_3                        matlab.ui.container.Panel
+        GridLayout21_3                   matlab.ui.container.GridLayout
+        StartOptimizationButton_3        matlab.ui.control.Button
+        DropDown1                        matlab.ui.control.DropDown
+        Label37                          matlab.ui.control.Label
+        GenerationField_3                matlab.ui.control.NumericEditField
+        Label36_3                        matlab.ui.control.Label
+        PopulationField                  matlab.ui.control.NumericEditField
+        Label35_3                        matlab.ui.control.Label
+        ThrusterPanel_2                  matlab.ui.container.Panel
+        ThrusterGrid_2                   matlab.ui.container.GridLayout
+        EditField1_5                     matlab.ui.control.EditField
+        EditField1_4                     matlab.ui.control.EditField
+        EditField1_3                     matlab.ui.control.EditField
+        EditField1_2                     matlab.ui.control.EditField
+        Label24_37                       matlab.ui.control.Label
+        Label33_6                        matlab.ui.control.Label
+        Label24_36                       matlab.ui.control.Label
+        Label33_5                        matlab.ui.control.Label
+        Label24_35                       matlab.ui.control.Label
+        Label33_4                        matlab.ui.control.Label
+        Label24_34                       matlab.ui.control.Label
+        Label33_3                        matlab.ui.control.Label
+        Label24_33                       matlab.ui.control.Label
+        FmaxField_4                      matlab.ui.control.NumericEditField
+        Label49_4                        matlab.ui.control.Label
+        Label24_25                       matlab.ui.control.Label
+        NumericEditField2_6              matlab.ui.control.NumericEditField
+        Label34_6                        matlab.ui.control.Label
+        Label24_24                       matlab.ui.control.Label
+        NumericEditField2_5              matlab.ui.control.NumericEditField
+        Label34_5                        matlab.ui.control.Label
+        Label24_23                       matlab.ui.control.Label
+        Label24_22                       matlab.ui.control.Label
+        Label24_20                       matlab.ui.control.Label
+        Label24_19                       matlab.ui.control.Label
+        Label49_2                        matlab.ui.control.Label
+        FmaxField_2                      matlab.ui.control.NumericEditField
+        NumericEditField1_2              matlab.ui.control.NumericEditField
+        Label33_2                        matlab.ui.control.Label
+        NumericEditField2_4              matlab.ui.control.NumericEditField
+        Label34_4                        matlab.ui.control.Label
+        Label7                           matlab.ui.control.Label
+        EvaluationTab                    matlab.ui.container.Tab
+        GridLayout8                      matlab.ui.container.GridLayout
+        Panel10_2                        matlab.ui.container.Panel
+        GridLayout21_2                   matlab.ui.container.GridLayout
+        FaultCountDropDown               matlab.ui.control.DropDown
+        StartOptimizationButton_2        matlab.ui.control.Button
+        JudgmentLayoutDropDown           matlab.ui.control.DropDown
+        GenerationField_2                matlab.ui.control.EditField
+        JudgmentLayoutLabel              matlab.ui.control.Label
+        Label36_2                        matlab.ui.control.Label
+        Label35_2                        matlab.ui.control.Label
+        JudgmentViewTabGroup             matlab.ui.container.TabGroup
+        JudgmentDetailTab                matlab.ui.container.Tab
+        JudgmentDetailGrid               matlab.ui.container.GridLayout
+        EvaluationTable                  matlab.ui.control.Table
+        JudgmentSummaryTab               matlab.ui.container.Tab
+        JudgmentSummaryGrid              matlab.ui.container.GridLayout
+        JudgmentSummaryTable             matlab.ui.control.Table
+        Label8                           matlab.ui.control.Label
+        ReconfigDesignTab                matlab.ui.container.Tab
+        GridLayout25                     matlab.ui.container.GridLayout
+        MetricsEvaluateButton            matlab.ui.control.Button
+        Label41                          matlab.ui.control.Label
+        MetricsViewTabGroup              matlab.ui.container.TabGroup
+        MetricsControlTab                matlab.ui.container.Tab
+        MetricsControlGrid               matlab.ui.container.GridLayout
+        MetricsTorqueAxes                matlab.ui.control.UIAxes
+        MetricsForceAxes                 matlab.ui.control.UIAxes
+        MetricsAnglesTab                 matlab.ui.container.Tab
+        MetricsAnglesGrid                matlab.ui.container.GridLayout
+        MetricsAngleAxes1                matlab.ui.control.UIAxes
+        MetricsAngleAxes2                matlab.ui.control.UIAxes
+        MetricsAngleAxes3                matlab.ui.control.UIAxes
+        MetricsChartsTab                 matlab.ui.container.Tab
+        MetricsChartsGrid                matlab.ui.container.GridLayout
+        MetricsJcAxes                    matlab.ui.control.UIAxes
+        MetricsJoAxes                    matlab.ui.control.UIAxes
+        MetricsJtAxes                    matlab.ui.control.UIAxes
+        MetricsJfAxes                    matlab.ui.control.UIAxes
+        MetricsSingleFaultTab            matlab.ui.container.Tab
+        MetricsSingleFaultGrid           matlab.ui.container.GridLayout
+        SingleFaultInfoLabel             matlab.ui.control.Label
+        SingleFaultTable                 matlab.ui.control.Table
         AllocationTab                    matlab.ui.container.Tab
         GridLayout9                      matlab.ui.container.GridLayout
-        Panel10_4                        matlab.ui.container.Panel
-        GridLayout21_4                   matlab.ui.container.GridLayout
-        AllocationModeDropDown_2         matlab.ui.control.DropDown
-        Label35_5                        matlab.ui.control.Label
-        GenerateAllocationButton         matlab.ui.control.Button
-        AllocationModeDropDown           matlab.ui.control.DropDown
-        Label35_4                        matlab.ui.control.Label
-        Label36_4                        matlab.ui.control.Label
-        JudgmentLayoutLabel_2            matlab.ui.control.Label
-        GenerationField_4                matlab.ui.control.EditField
-        JudgmentLayoutDropDown_2         matlab.ui.control.DropDown
+        Label9                           matlab.ui.control.Label
         AllocationViewTabGroup           matlab.ui.container.TabGroup
         AllocationStrategyTab            matlab.ui.container.Tab
         AllocationStrategyGrid           matlab.ui.container.GridLayout
         AllocationStrategyTable          matlab.ui.control.Table
-        Label9                           matlab.ui.control.Label
-        ReconfigDesignTab                matlab.ui.container.Tab
-        GridLayout25                     matlab.ui.container.GridLayout
-        MetricsViewTabGroup              matlab.ui.container.TabGroup
-        MetricsSingleFaultTab            matlab.ui.container.Tab
-        MetricsSingleFaultGrid           matlab.ui.container.GridLayout
-        SingleFaultTable                 matlab.ui.control.Table
-        SingleFaultInfoLabel             matlab.ui.control.Label
-        MetricsChartsTab                 matlab.ui.container.Tab
-        MetricsChartsGrid                matlab.ui.container.GridLayout
-        MetricsJfAxes                    matlab.ui.control.UIAxes
-        MetricsJtAxes                    matlab.ui.control.UIAxes
-        MetricsJoAxes                    matlab.ui.control.UIAxes
-        MetricsJcAxes                    matlab.ui.control.UIAxes
-        MetricsAnglesTab                 matlab.ui.container.Tab
-        MetricsAnglesGrid                matlab.ui.container.GridLayout
-        MetricsAngleAxes3                matlab.ui.control.UIAxes
-        MetricsAngleAxes2                matlab.ui.control.UIAxes
-        MetricsAngleAxes1                matlab.ui.control.UIAxes
-        MetricsControlTab                matlab.ui.container.Tab
-        MetricsControlGrid               matlab.ui.container.GridLayout
-        MetricsForceAxes                 matlab.ui.control.UIAxes
-        MetricsTorqueAxes                matlab.ui.control.UIAxes
-        Label41                          matlab.ui.control.Label
-        MetricsEvaluateButton            matlab.ui.control.Button
-        EvaluationTab                    matlab.ui.container.Tab
-        GridLayout8                      matlab.ui.container.GridLayout
-        Label8                           matlab.ui.control.Label
-        JudgmentViewTabGroup             matlab.ui.container.TabGroup
-        JudgmentSummaryTab               matlab.ui.container.Tab
-        JudgmentSummaryGrid              matlab.ui.container.GridLayout
-        JudgmentSummaryTable             matlab.ui.control.Table
-        JudgmentDetailTab                matlab.ui.container.Tab
-        JudgmentDetailGrid               matlab.ui.container.GridLayout
-        EvaluationTable                  matlab.ui.control.Table
-        Panel10_2                        matlab.ui.container.Panel
-        GridLayout21_2                   matlab.ui.container.GridLayout
-        Label35_2                        matlab.ui.control.Label
-        Label36_2                        matlab.ui.control.Label
-        JudgmentLayoutLabel              matlab.ui.control.Label
-        GenerationField_2                matlab.ui.control.EditField
-        JudgmentLayoutDropDown           matlab.ui.control.DropDown
-        StartOptimizationButton_2        matlab.ui.control.Button
-        FaultCountDropDown               matlab.ui.control.DropDown
-        OptimizationTab                  matlab.ui.container.Tab
-        GridLayout7                      matlab.ui.container.GridLayout
-        Label7                           matlab.ui.control.Label
-        ThrusterPanel_2                  matlab.ui.container.Panel
-        ThrusterGrid_2                   matlab.ui.container.GridLayout
-        Label34_4                        matlab.ui.control.Label
-        NumericEditField2_4              matlab.ui.control.NumericEditField
-        Label33_2                        matlab.ui.control.Label
-        NumericEditField1_2              matlab.ui.control.NumericEditField
-        FmaxField_2                      matlab.ui.control.NumericEditField
-        Label49_2                        matlab.ui.control.Label
-        Label24_19                       matlab.ui.control.Label
-        Label24_20                       matlab.ui.control.Label
-        Label24_22                       matlab.ui.control.Label
-        Label24_23                       matlab.ui.control.Label
-        Label34_5                        matlab.ui.control.Label
-        NumericEditField2_5              matlab.ui.control.NumericEditField
-        Label24_24                       matlab.ui.control.Label
-        Label34_6                        matlab.ui.control.Label
-        NumericEditField2_6              matlab.ui.control.NumericEditField
-        Label24_25                       matlab.ui.control.Label
-        Label49_4                        matlab.ui.control.Label
-        FmaxField_4                      matlab.ui.control.NumericEditField
-        Label24_33                       matlab.ui.control.Label
-        Label33_3                        matlab.ui.control.Label
-        Label24_34                       matlab.ui.control.Label
-        Label33_4                        matlab.ui.control.Label
-        Label24_35                       matlab.ui.control.Label
-        Label33_5                        matlab.ui.control.Label
-        Label24_36                       matlab.ui.control.Label
-        Label33_6                        matlab.ui.control.Label
-        Label24_37                       matlab.ui.control.Label
-        EditField1_2                     matlab.ui.control.EditField
-        EditField1_3                     matlab.ui.control.EditField
-        EditField1_4                     matlab.ui.control.EditField
-        EditField1_5                     matlab.ui.control.EditField
-        Panel10_3                        matlab.ui.container.Panel
-        GridLayout21_3                   matlab.ui.container.GridLayout
-        Label35_3                        matlab.ui.control.Label
-        PopulationField                  matlab.ui.control.NumericEditField
-        Label36_3                        matlab.ui.control.Label
-        GenerationField_3                matlab.ui.control.NumericEditField
-        Label37                          matlab.ui.control.Label
-        DropDown1                        matlab.ui.control.DropDown
-        StartOptimizationButton_3        matlab.ui.control.Button
-        LayoutViewTabGroup               matlab.ui.container.TabGroup
-        LayoutParametersTab              matlab.ui.container.Tab
-        LayoutParametersGrid             matlab.ui.container.GridLayout
-        LayoutTable                      matlab.ui.control.Table
-        LayoutViewsTab                   matlab.ui.container.Tab
-        LayoutViewsGrid                  matlab.ui.container.GridLayout
-        LayoutYZAxes                     matlab.ui.control.UIAxes
-        LayoutXYAxes                     matlab.ui.control.UIAxes
-        LayoutXZAxes                     matlab.ui.control.UIAxes
-        Layout3DTab                      matlab.ui.container.Tab
-        Layout3DGrid                     matlab.ui.container.GridLayout
-        LayoutAxes                       matlab.ui.control.UIAxes
-        ApplyLayoutButton_2              matlab.ui.control.Button
-        DeleteLayoutButton               matlab.ui.control.Button
-        LayoutTemplateDropDown           matlab.ui.control.DropDown
-        ParameterTab                     matlab.ui.container.Tab
-        GridLayout5                      matlab.ui.container.GridLayout
-        Label4                           matlab.ui.control.Label
-        ControllerPanel                  matlab.ui.container.Panel
-        ControllerGrid                   matlab.ui.container.GridLayout
-        ControlPeriodField               matlab.ui.control.NumericEditField
-        Label47                          matlab.ui.control.Label
-        Label24_11                       matlab.ui.control.Label
-        SpacecraftPanel                  matlab.ui.container.Panel
-        SpacecraftGrid                   matlab.ui.container.GridLayout
-        JzzField                         matlab.ui.control.NumericEditField
-        Label46                          matlab.ui.control.Label
-        JyyField                         matlab.ui.control.NumericEditField
-        Label45                          matlab.ui.control.Label
-        JxxField                         matlab.ui.control.NumericEditField
-        Label44                          matlab.ui.control.Label
-        MassField                        matlab.ui.control.NumericEditField
-        Label43                          matlab.ui.control.Label
-        Label24_7                        matlab.ui.control.Label
-        Label24_8                        matlab.ui.control.Label
-        Label24_9                        matlab.ui.control.Label
-        Label24_10                       matlab.ui.control.Label
-        Panel8                           matlab.ui.container.Panel
-        GridLayout19                     matlab.ui.container.GridLayout
-        Label38                          matlab.ui.control.Label
-        SimulationTimeField              matlab.ui.control.NumericEditField
-        Label24                          matlab.ui.control.Label
-        EditField1                       matlab.ui.control.EditField
-        Label25                          matlab.ui.control.Label
-        EditField2                       matlab.ui.control.EditField
-        Label26                          matlab.ui.control.Label
-        EditField3                       matlab.ui.control.EditField
-        Label27                          matlab.ui.control.Label
-        EditField4                       matlab.ui.control.EditField
-        Label24_2                        matlab.ui.control.Label
-        Label24_3                        matlab.ui.control.Label
-        Label24_4                        matlab.ui.control.Label
-        Label24_5                        matlab.ui.control.Label
-        Label24_6                        matlab.ui.control.Label
-        Label38_2                        matlab.ui.control.Label
-        SimulationTimeField_2            matlab.ui.control.NumericEditField
-        Label24_29                       matlab.ui.control.Label
-        Label38_3                        matlab.ui.control.Label
-        SimulationTimeField_3            matlab.ui.control.NumericEditField
-        Label24_30                       matlab.ui.control.Label
-        Label38_4                        matlab.ui.control.Label
-        SimulationTimeField_4            matlab.ui.control.NumericEditField
-        Label24_31                       matlab.ui.control.Label
-        Label38_5                        matlab.ui.control.Label
-        Label24_32                       matlab.ui.control.Label
-        MinPulseField_4                  matlab.ui.control.NumericEditField
-        ParameterFileGrid                matlab.ui.container.GridLayout
-        Button2_2                        matlab.ui.control.Button
-        TextArea                         matlab.ui.control.TextArea
-        ThrusterPanel_3                  matlab.ui.container.Panel
-        ThrusterGrid_3                   matlab.ui.container.GridLayout
-        MinPulseField_3                  matlab.ui.control.NumericEditField
-        Label50_3                        matlab.ui.control.Label
-        FmaxField_3                      matlab.ui.control.NumericEditField
-        Label49_3                        matlab.ui.control.Label
-        Label24_26                       matlab.ui.control.Label
-        Label24_27                       matlab.ui.control.Label
-        Label24_28                       matlab.ui.control.Label
-        ParameterFileGrid_2              matlab.ui.container.GridLayout
-        Button2_4                        matlab.ui.control.Button
-        HomeTab                          matlab.ui.container.Tab
-        GridLayout4                      matlab.ui.container.GridLayout
-        Label3                           matlab.ui.control.Label
-        Panel2                           matlab.ui.container.Panel
-        GridLayout13                     matlab.ui.container.GridLayout
-        Label12                          matlab.ui.control.Label
-        Label13                          matlab.ui.control.Label
-        Panel3                           matlab.ui.container.Panel
-        GridLayout14                     matlab.ui.container.GridLayout
-        Label14                          matlab.ui.control.Label
-        Label15                          matlab.ui.control.Label
-        Panel5                           matlab.ui.container.Panel
-        GridLayout16                     matlab.ui.container.GridLayout
-        Label18                          matlab.ui.control.Label
-        Label19                          matlab.ui.control.Label
-        Panel6                           matlab.ui.container.Panel
-        GridLayout17                     matlab.ui.container.GridLayout
-        Label20                          matlab.ui.control.Label
-        Label21                          matlab.ui.control.Label
-        Panel7                           matlab.ui.container.Panel
-        GridLayout18                     matlab.ui.container.GridLayout
-        Label22                          matlab.ui.control.Label
-        Label23                          matlab.ui.control.Label
-        HomeSimulationPanel              matlab.ui.container.Panel
-        HomeSimulationGrid               matlab.ui.container.GridLayout
-        HomeSimulationDesc               matlab.ui.control.Label
-        HomeSimulationTitle              matlab.ui.control.Label
-        Panel1                           matlab.ui.container.Panel
-        GridLayout2                      matlab.ui.container.GridLayout
-        StatusLabel                      matlab.ui.control.Label
-        Label2                           matlab.ui.control.Label
+        AllocationVerificationTab        matlab.ui.container.Tab
+        AllocationVerificationGrid       matlab.ui.container.GridLayout
+        AllocationVerificationSummaryLabel matlab.ui.control.Label
+        AllocationVerificationTable      matlab.ui.control.Table
+        Panel10_4                        matlab.ui.container.Panel
+        GridLayout21_4                   matlab.ui.container.GridLayout
+        JudgmentLayoutDropDown_2         matlab.ui.control.DropDown
+        GenerationField_4                matlab.ui.control.EditField
+        JudgmentLayoutLabel_2            matlab.ui.control.Label
+        Label36_4                        matlab.ui.control.Label
+        Label35_4                        matlab.ui.control.Label
+        AllocationModeDropDown           matlab.ui.control.DropDown
+        GenerateAllocationButton         matlab.ui.control.Button
+        Label35_5                        matlab.ui.control.Label
+        AllocationModeDropDown_2         matlab.ui.control.DropDown
+        SimulationTab                    matlab.ui.container.Tab
+        GridLayout10                     matlab.ui.container.GridLayout
+        Label10                          matlab.ui.control.Label
+        SimulationViewTabGroup           matlab.ui.container.TabGroup
+        SimulationPositionTab            matlab.ui.container.Tab
+        SimulationPositionGrid           matlab.ui.container.GridLayout
+        SimulationAxes                   matlab.ui.control.UIAxes
+        SimulationAttitudeAxes           matlab.ui.control.UIAxes
+        SimulationPositionErrorAxes      matlab.ui.control.UIAxes
+        SimulationAttitudeErrorAxes      matlab.ui.control.UIAxes
+        SimulationFaultCompareTab        matlab.ui.container.Tab
+        SimulationFaultGrid              matlab.ui.container.GridLayout
+        SimulationFaultPosXAxes          matlab.ui.control.UIAxes
+        SimulationFaultPosYAxes          matlab.ui.control.UIAxes
+        SimulationFaultPosZAxes          matlab.ui.control.UIAxes
+        SimulationFaultAttXAxes          matlab.ui.control.UIAxes
+        SimulationFaultAttYAxes          matlab.ui.control.UIAxes
+        SimulationFaultAttZAxes          matlab.ui.control.UIAxes
+        SimulationCommandTab             matlab.ui.container.Tab
+        SimulationCommandGrid            matlab.ui.container.GridLayout
+        SimulationCommandCaseTabGroup    matlab.ui.container.TabGroup
+        SimulationNominalCommandTab      matlab.ui.container.Tab
+        SimulationNominalCommandGrid     matlab.ui.container.GridLayout
+        SimulationForceXAxes             matlab.ui.control.UIAxes
+        SimulationForceYAxes             matlab.ui.control.UIAxes
+        SimulationForceZAxes             matlab.ui.control.UIAxes
+        SimulationTorqueXAxes            matlab.ui.control.UIAxes
+        SimulationTorqueYAxes            matlab.ui.control.UIAxes
+        SimulationTorqueZAxes            matlab.ui.control.UIAxes
+        SimulationFaultCommandTab        matlab.ui.container.Tab
+        SimulationFaultCommandGrid       matlab.ui.container.GridLayout
+        SimulationFaultForceXAxes        matlab.ui.control.UIAxes
+        SimulationFaultForceYAxes        matlab.ui.control.UIAxes
+        SimulationFaultForceZAxes        matlab.ui.control.UIAxes
+        SimulationFaultTorqueXAxes       matlab.ui.control.UIAxes
+        SimulationFaultTorqueYAxes       matlab.ui.control.UIAxes
+        SimulationFaultTorqueZAxes       matlab.ui.control.UIAxes
+        SimulationTrajectoryTab          matlab.ui.container.Tab
+        SimulationTrajectoryGrid         matlab.ui.container.GridLayout
+        SimulationTrajectoryCaseTabGroup matlab.ui.container.TabGroup
+        SimulationNominalTrajectoryTab   matlab.ui.container.Tab
+        SimulationNominalTrajectoryGrid  matlab.ui.container.GridLayout
+        SimulationNominalTrajectory3DAxes matlab.ui.control.UIAxes
+        SimulationNominalTrajectoryXYAxes matlab.ui.control.UIAxes
+        SimulationNominalTrajectoryXZAxes matlab.ui.control.UIAxes
+        SimulationNominalTrajectoryYZAxes matlab.ui.control.UIAxes
+        SimulationFaultTrajectoryTab     matlab.ui.container.Tab
+        SimulationFaultTrajectoryGrid    matlab.ui.container.GridLayout
+        SimulationFaultTrajectory3DAxes  matlab.ui.control.UIAxes
+        SimulationFaultTrajectoryXYAxes  matlab.ui.control.UIAxes
+        SimulationFaultTrajectoryXZAxes  matlab.ui.control.UIAxes
+        SimulationFaultTrajectoryYZAxes  matlab.ui.control.UIAxes
+        SimulationPulseTab               matlab.ui.container.Tab
+        SimulationPulseGrid              matlab.ui.container.GridLayout
+        SimulationPulsePlaceholderAxes   matlab.ui.control.UIAxes
+        SimulationScheduleTab            matlab.ui.container.Tab
+        SimulationScheduleGrid           matlab.ui.container.GridLayout
+        SimulationScheduleControlGrid    matlab.ui.container.GridLayout
+        SimulationScheduleStartTimeLabel matlab.ui.control.Label
+        SimulationScheduleStartTimeField matlab.ui.control.NumericEditField
+        SimulationScheduleCycleCountLabel matlab.ui.control.Label
+        SimulationScheduleCycleCountField matlab.ui.control.NumericEditField
+        SimulationScheduleAxes           matlab.ui.control.UIAxes
+        Panel10_5                        matlab.ui.container.Panel
+        GridLayout21_5                   matlab.ui.container.GridLayout
+        RunSimulationButton              matlab.ui.control.Button
+        Label36_5                        matlab.ui.control.Label
+        GenerationField_5                matlab.ui.control.EditField
+        Label36_6                        matlab.ui.control.Label
+        SimulationLayoutDropDown         matlab.ui.control.DropDown
+        GenerationField_6                matlab.ui.control.EditField
+        Label36_7                        matlab.ui.control.Label
+        Label24_38                       matlab.ui.control.Label
+        ControllerPanel_2                matlab.ui.container.Panel
+        ControllerGrid_2                 matlab.ui.container.GridLayout
+        Label47_2                        matlab.ui.control.Label
+        ControlPeriodField_2             matlab.ui.control.NumericEditField
+        Label47_3                        matlab.ui.control.Label
+        ControlPeriodField_3             matlab.ui.control.NumericEditField
+        Label47_4                        matlab.ui.control.Label
+        ControlPeriodField_4             matlab.ui.control.NumericEditField
+        Label47_5                        matlab.ui.control.Label
+        ControlPeriodField_5             matlab.ui.control.NumericEditField
+        Label47_6                        matlab.ui.control.Label
+        ControlPeriodField_6             matlab.ui.control.NumericEditField
+        NavigationPanel                  matlab.ui.container.Panel
+        GridLayout3                      matlab.ui.container.GridLayout
+        Button1                          matlab.ui.control.Button
+        NavigationList                   matlab.ui.control.ListBox
+        HeaderPanel                      matlab.ui.container.Panel
+        GridLayout1                      matlab.ui.container.GridLayout
+        ImportButton                     matlab.ui.control.Button
+        OpenButton                       matlab.ui.control.Button
+        Label1                           matlab.ui.control.Label
     end
 
     properties (Access = private)
@@ -305,6 +354,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         OptimizedLayoutCount = 0
         MetricsDiagnosticDynamicAxes = gobjects(0)
         SimulationPulseDynamicAxes = gobjects(0)
+        ProgressStartTic = []
+        OptimizationCurrentGeneration = 0
+        OptimizationMaxGenerations = 1
     end
     
     methods (Access = private)
@@ -391,6 +443,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.StartOptimizationButton_2.ButtonPushedFcn = createCallbackFcn(app, @EvaluateButtonPushed, true);
             app.MetricsEvaluateButton.ButtonPushedFcn = createCallbackFcn(app, @MetricsEvaluateButtonPushed, true);
             app.GenerateAllocationButton.ButtonPushedFcn = createCallbackFcn(app, @GenerateAllocationButtonPushed, true);
+            app.AllocationModeDropDown.ValueChangedFcn = createCallbackFcn(app, @AllocationModeDropDownValueChanged, true);
+            app.SimulationScheduleStartTimeField.ValueChangedFcn = createCallbackFcn(app, @SimulationScheduleWindowValueChanged, true);
+            app.SimulationScheduleCycleCountField.ValueChangedFcn = createCallbackFcn(app, @SimulationScheduleWindowValueChanged, true);
             app.RunSimulationButton.ButtonPushedFcn = createCallbackFcn(app, @RunSimulationButtonPushed, true);
             app.PageHostPanel.SizeChangedFcn = createCallbackFcn(app, @PageHostPanelSizeChanged, true);
         end
@@ -424,6 +479,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 app.SimulationPulsePlaceholderAxes.Visible = 'off';
             end
             app.populateParameterControls();
+            app.syncAllocationStrategyControls();
             app.TextArea.Value = {''};
             app.refreshLayoutDropDown('原布局');
             app.prepareDiagnosticAxes(1);
@@ -431,6 +487,10 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.drawLayout();
             app.updateAllocationTable([]);
             app.updateAllocationStrategyTable([]);
+            app.updateAllocationVerification([]);
+            app.ProgressStartTic = [];
+            app.ProgressGauge.Value = 0;
+            app.ProgressLabel.Text = '等待运行｜0%｜耗时 00:00';
             app.updateReport("已载入默认参数和原始推力器布局。");
             app.setStatus('就绪｜已载入默认参数');
         end
@@ -1563,17 +1623,20 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     '最终复用脉宽', '-', '等待生成'};
                 return;
             end
-            if isfield(info, 'mode') && strcmpi(info.mode, 'joint_6d')
+            if isfield(info, 'mode') && ...
+                    strcmp(info.mode, 'joint_optimization')
                 app.AllocationTable.Data = {
-                    '六维联合脉宽', app.activeThrusterText(info.Prop_Final), '力与力矩指令统一分配';
+                    '联合六维脉宽', app.activeThrusterText(info.Prop_6D), '直接匹配六维目标控制量';
+                    '轨控/姿控拆分', '-', '联合优化不预先分成两类纯控制组';
+                    '最终调用脉宽', app.activeThrusterText(info.Prop_Final), '每台推力器在本周期的总喷气时间';
                     '分配残差', sprintf('%.3e', norm(info.residual)), '指令与实际控制效果的差值'};
-                return;
+            else
+                app.AllocationTable.Data = {
+                    '轨控脉宽', app.activeThrusterText(info.Prop_F_used), '由位置控制需求得到';
+                    '姿控脉宽', app.activeThrusterText(info.Prop_T_used), '由姿态控制需求得到';
+                    '最终复用脉宽', app.activeThrusterText(info.Prop_Final), '轨控与姿控复用后的实际指令';
+                    '分配残差', sprintf('%.3e', norm(info.residual)), '指令与实际控制效果的差值'};
             end
-            app.AllocationTable.Data = {
-                '轨控脉宽', app.activeThrusterText(info.Prop_F_used), '由位置控制需求得到';
-                '姿控脉宽', app.activeThrusterText(info.Prop_T_used), '由姿态控制需求得到';
-                '最终复用脉宽', app.activeThrusterText(info.Prop_Final), '轨控与姿控复用后的实际指令';
-                '分配残差', sprintf('%.3e', norm(info.residual)), '指令与实际控制效果的差值'};
         end
 
         function updateAllocationStrategyTable(app, strategy)
@@ -1583,13 +1646,283 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 controlType = [repmat({'轨道控制'}, 6, 1); ...
                     repmat({'姿态控制'}, 6, 1)];
                 app.AllocationStrategyTable.ColumnName = ...
-                    {'控制类型', '轴向', '标况下调用', '故障下调用'};
+                    {'控制类型', '轴向', '标况主份', '主份配对', ...
+                     '故障下调用', '故障关停/状态'};
                 app.AllocationStrategyTable.Data = [controlType, axesText, ...
-                    repmat({'等待生成'}, 12, 2)];
+                    repmat({'等待生成'}, 12, 4)];
+                app.applyAllocationControlColors();
                 return;
             end
             app.AllocationStrategyTable.ColumnName = strategy.ColumnNames;
             app.AllocationStrategyTable.Data = strategy.Data;
+            app.applyAllocationControlColors();
+        end
+
+        function updateAllocationVerification(app, verification)
+            % “解耦验证”表不展示某一时刻的轨道/姿态响应，而是直接
+            % 展示调用器分离出的两部分脉冲在一个控制周期内的六维效果。
+            if isempty(verification)
+                app.AllocationVerificationSummaryLabel.Text = '等待生成调用策略';
+                app.AllocationVerificationTable.ColumnName = { ...
+                    '工况', '可重构', '姿控缩放', '轨控缩放', ...
+                    '平均轨控残余力矩', '平均姿控残余力', ...
+                    '瞬时轨控残余力矩峰值', '瞬时姿控残余力峰值', ...
+                    '周期平均解耦', '最大脉宽', '执行状态'};
+                app.AllocationVerificationTable.Data = { ...
+                    '等待生成', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'};
+                return;
+            end
+            app.AllocationVerificationSummaryLabel.Text = verification.Summary;
+            app.AllocationVerificationTable.ColumnName = verification.ColumnNames;
+            app.AllocationVerificationTable.Data = verification.Data;
+        end
+
+        function verification = buildAllocationVerification(app, params, ...
+                layout, faultCases)
+            % 用固定的六轴联合负载展示策略的关键性质：姿控优先时的
+            % 整体缩放，以及 B*u_F、B*u_T 中交叉分量是否为零。
+            matrixConf = params.F_max * layout.B;
+            command = app.allocationVerificationCommand(matrixConf);
+            verificationCases = [{[]}, faultCases(:)'];
+            rowCount = numel(verificationCases);
+            data = cell(rowCount, 11);
+            maxOrbitCrossTorque = 0;
+            maxAttitudeCrossForce = 0;
+            maxInstantOrbitCrossTorque = 0;
+            maxInstantAttitudeCrossForce = 0;
+            reconfigurableCount = 0;
+
+            for caseIndex = 1:rowCount
+                faults = verificationCases{caseIndex};
+                [pulse, info] = Thruster_allocator( ...
+                    command(1:3), command(4:6), matrixConf, faults, params);
+                if isfinite(info.orbit_cross_torque)
+                    maxOrbitCrossTorque = max(maxOrbitCrossTorque, ...
+                        info.orbit_cross_torque);
+                end
+                if isfinite(info.attitude_cross_force)
+                    maxAttitudeCrossForce = max(maxAttitudeCrossForce, ...
+                        info.attitude_cross_force);
+                end
+                if isfield(info, 'scheduler')
+                    instantOrbitCrossTorque = ...
+                        info.scheduler.peak_orbit_torque;
+                    instantAttitudeCrossForce = ...
+                        info.scheduler.peak_attitude_force;
+                else
+                    [instantOrbitCrossTorque, instantAttitudeCrossForce] = ...
+                        app.allocationInstantaneousCross( ...
+                        matrixConf, info.Prop_F_used, ...
+                        info.Prop_T_used, params.T);
+                end
+                if isfinite(instantOrbitCrossTorque)
+                    maxInstantOrbitCrossTorque = max( ...
+                        maxInstantOrbitCrossTorque, instantOrbitCrossTorque);
+                end
+                if isfinite(instantAttitudeCrossForce)
+                    maxInstantAttitudeCrossForce = max( ...
+                        maxInstantAttitudeCrossForce, instantAttitudeCrossForce);
+                end
+                reconfigurableCount = reconfigurableCount + ...
+                    double(info.structurally_reconfigurable);
+
+                if isempty(faults)
+                    caseText = '标况';
+                else
+                    caseText = ['故障', app.faultSetText(faults)];
+                end
+                if info.structurally_reconfigurable
+                    reconfigurableText = '是';
+                else
+                    reconfigurableText = '否';
+                end
+                if info.period_average_decoupled && ...
+                        info.structurally_reconfigurable
+                    decoupledText = '是';
+                else
+                    decoupledText = '否';
+                end
+                data(caseIndex, :) = {caseText, reconfigurableText, ...
+                    app.allocationMetricText(info.attitude_scale, '%.3f'), ...
+                    app.allocationMetricText(info.force_scale, '%.3f'), ...
+                    app.allocationMetricText(info.orbit_cross_torque, '%.3e N m'), ...
+                    app.allocationMetricText(info.attitude_cross_force, '%.3e N'), ...
+                    app.allocationMetricText(instantOrbitCrossTorque, '%.3e N m'), ...
+                    app.allocationMetricText(instantAttitudeCrossForce, '%.3e N'), ...
+                    decoupledText, sprintf('%.4f s', max(pulse)), ...
+                    app.allocationVerificationStatus(info, ...
+                    instantOrbitCrossTorque, instantAttitudeCrossForce)};
+            end
+
+            verification.Data = data;
+            verification.ColumnNames = {'工况', '可重构', ...
+                '姿控缩放', '轨控缩放', '平均轨控残余力矩', ...
+                '平均姿控残余力', '瞬时轨控残余力矩峰值', ...
+                '瞬时姿控残余力峰值', '周期平均解耦', '最大脉宽', '执行状态'};
+            verification.Summary = sprintf([ ...
+                '六轴联合验证｜%d/%d 工况可重构｜轨控附带力矩最大 %.3e N m｜', ...
+                '姿控附带力最大 %.3e N｜瞬时残余峰值 %.3e N m / %.3e N'], ...
+                reconfigurableCount, rowCount, maxOrbitCrossTorque, ...
+                maxAttitudeCrossForce, maxInstantOrbitCrossTorque, ...
+                maxInstantAttitudeCrossForce);
+        end
+
+        function command = allocationVerificationCommand(~, matrixConf)
+            % 每一维均有非零指令；0.70 的归一化幅值会使原布局出现
+            % 轨控容量缩放，便于在界面中直观看到姿控优先机制。
+            rowScale = max(abs(matrixConf), [], 2);
+            rowScale(rowScale < 1e-12) = 1;
+            direction = [1; -0.8; 0.6; 0.7; -0.6; 1];
+            command = 0.70 * rowScale .* direction;
+        end
+
+        function [peakOrbitTorque, peakAttitudeForce] = ...
+                allocationInstantaneousCross(~, matrixConf, ...
+                orbitPulse, attitudePulse, controlPeriod)
+            % 当前闭环仿真中每台推力器在周期起点开始喷气，在其脉宽
+            % 结束时关闭。这里按全部开关时刻分段，计算每一段的瞬时
+            % 交叉控制量。它与周期平均量不同，能暴露脉宽不等时的
+            % 瞬时姿轨耦合。
+            timeEdges = unique([0; orbitPulse(:); attitudePulse(:); ...
+                controlPeriod]);
+            peakOrbitTorque = 0;
+            peakAttitudeForce = 0;
+            for edgeIndex = 1:(numel(timeEdges) - 1)
+                timeSample = 0.5 * (timeEdges(edgeIndex) + ...
+                    timeEdges(edgeIndex + 1));
+                orbitWrench = matrixConf * double(orbitPulse > timeSample);
+                attitudeWrench = matrixConf * ...
+                    double(attitudePulse > timeSample);
+                peakOrbitTorque = max(peakOrbitTorque, ...
+                    norm(orbitWrench(4:6)));
+                peakAttitudeForce = max(peakAttitudeForce, ...
+                    norm(attitudeWrench(1:3)));
+            end
+        end
+
+        function text = allocationVerificationStatus(~, info, ...
+                peakOrbitTorque, peakAttitudeForce)
+            if isfield(info, 'mode') && strcmp(info.mode, 'joint_optimization')
+                text = '联合六维优化（不拆分姿轨纯控制组）';
+                return;
+            end
+            axisNames = {'Fx', 'Fy', 'Fz', 'Mx', 'My', 'Mz'};
+            skippedAxes = {};
+            if isfield(info, 'axis_strategy')
+                for controlType = 1:2
+                    for axis = 1:3
+                        strategy = info.axis_strategy{controlType, axis};
+                        if isstruct(strategy) && ...
+                                strcmp(strategy.status, 'below_minimum_pulse')
+                            skippedAxes{end + 1} = axisNames{ ...
+                                axis + 3 * (controlType - 1)}; %#ok<AGROW>
+                        end
+                    end
+                end
+            end
+            if isfield(info, 'scheduler') && ...
+                    ~isempty(info.scheduler.suppressed_force_axes)
+                axisText = strjoin(axisNames( ...
+                    info.scheduler.suppressed_force_axes), ',');
+                text = ['峰值约束停用 ', axisText];
+            elseif isfield(info, 'impulse_margin_unavailable_axes') && ...
+                    ~isempty(info.impulse_margin_unavailable_axes)
+                axisText = strjoin(axisNames( ...
+                    info.impulse_margin_unavailable_axes), ',');
+                text = ['冲量裕度不足 ', axisText];
+            elseif ~info.structurally_reconfigurable
+                text = '无完整成对瞬时备份';
+            elseif ~isempty(skippedAxes)
+                text = ['最小脉宽跳过 ', strjoin(skippedAxes, ',')];
+            elseif isfield(info, 'uses_impulse_margin_fallback') && ...
+                    info.uses_impulse_margin_fallback
+                text = '冲量裕度耦合备用';
+            elseif info.attitude_scale < 1 - 1e-9
+                text = '姿控同比例缩放，轨控暂停';
+            elseif info.force_scale < 1 - 1e-9
+                text = '轨控同比例缩放';
+            else
+                text = '完整执行';
+            end
+            if peakOrbitTorque > 1e-9 || peakAttitudeForce > 1e-9
+                text = [text, '；存在瞬时残余'];
+            end
+        end
+
+        function strategy = buildAllocationStrategyComparison(app, params, ...
+                layout, faultCases)
+            if ~iscell(faultCases)
+                faultCases = {faultCases};
+            end
+            if numel(faultCases) == 1
+                strategy = RCPlotter.allocationComparisonData( ...
+                    params, layout, faultCases{1});
+                return;
+            end
+
+            rowsPerCase = 12;
+            allRows = {};
+            baseColumnNames = {};
+            for caseIndex = 1:numel(faultCases)
+                app.StatusLabel.Text = sprintf( ...
+                    '正在生成全部单故障调用策略｜%d/%d', ...
+                    caseIndex, numel(faultCases));
+                drawnow limitrate nocallbacks;
+                caseResult = RCPlotter.allocationComparisonData( ...
+                    params, layout, faultCases{caseIndex});
+                if isempty(baseColumnNames)
+                    baseColumnNames = caseResult.ColumnNames;
+                    allRows = cell(rowsPerCase * numel(faultCases), ...
+                        numel(baseColumnNames) + 1);
+                end
+                rowCount = size(caseResult.Data, 1);
+                firstRow = (caseIndex - 1) * rowsPerCase + 1;
+                lastRow = firstRow + rowCount - 1;
+                conditionText = ['故障', app.faultSetText(faultCases{caseIndex})];
+                allRows(firstRow:lastRow, :) = [ ...
+                    repmat({conditionText}, rowCount, 1), caseResult.Data];
+            end
+            strategy = struct('Data', {allRows}, 'ColumnNames', ...
+                {{'故障工况', baseColumnNames{:}}});
+        end
+
+        function applyAllocationControlColors(app)
+            if isempty(app.AllocationStrategyTable) || ...
+                    ~isvalid(app.AllocationStrategyTable)
+                return;
+            end
+            try
+                removeStyle(app.AllocationStrategyTable);
+                tableData = app.AllocationStrategyTable.Data;
+                if isempty(tableData)
+                    return;
+                end
+                columnNames = string(app.AllocationStrategyTable.ColumnName);
+                controlColumn = find(columnNames == "控制类型", 1, 'first');
+                if isempty(controlColumn)
+                    return;
+                end
+                if istable(tableData)
+                    controlTypes = string(tableData{:, controlColumn});
+                else
+                    controlTypes = string(tableData(:, controlColumn));
+                end
+                orbitRows = find(controlTypes == "轨道控制");
+                attitudeRows = find(controlTypes == "姿态控制");
+                if ~isempty(orbitRows)
+                    orbitStyle = uistyle('BackgroundColor', [1 1 1]);
+                    addStyle(app.AllocationStrategyTable, orbitStyle, ...
+                        'row', orbitRows);
+                end
+                if ~isempty(attitudeRows)
+                    attitudeStyle = uistyle( ...
+                        'BackgroundColor', [0.90 0.91 0.92]);
+                    addStyle(app.AllocationStrategyTable, attitudeStyle, ...
+                        'row', attitudeRows);
+                end
+            catch
+                % 表格着色失败时仍保留完整的调用策略数据。
+            end
         end
 
         function plotSimulationResult(app, stateLogs, stateLabels, ...
@@ -1619,6 +1952,61 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             RCPlotter.plotFaultCaseComponent(app.SimulationFaultAttZAxes, ...
                 faultLogs, faultLabels, 'att', 3, compactOptions);
 
+            if numel(faultLogs) >= 2
+                nominalLog = faultLogs{1};
+                comparisonLog = faultLogs{2};
+                comparisonLabels = {faultLabels{1}, faultLabels{2}};
+            elseif ~isempty(faultLogs)
+                nominalLog = faultLogs{1};
+                comparisonLog = faultLogs{1};
+                comparisonLabels = {faultLabels{1}, faultLabels{1}};
+            else
+                nominalLog = stateLogs{1};
+                comparisonLog = stateLogs{1};
+                comparisonLabels = {stateLabels{1}, stateLabels{1}};
+            end
+
+            app.SimulationNominalCommandTab.Title = comparisonLabels{1};
+            app.SimulationFaultCommandTab.Title = comparisonLabels{2};
+            nominalWrenchAxes = [app.SimulationForceXAxes, ...
+                app.SimulationForceYAxes, app.SimulationForceZAxes, ...
+                app.SimulationTorqueXAxes, app.SimulationTorqueYAxes, ...
+                app.SimulationTorqueZAxes];
+            nominalWrenchOptions = struct('ShowFaultTime', false, ...
+                'LineColor', [0.10, 0.42, 0.76]);
+            RCPlotter.plotBodyWrenchHistory(nominalWrenchAxes, nominalLog, ...
+                comparisonLabels{1}, nominalWrenchOptions);
+            faultWrenchAxes = [app.SimulationFaultForceXAxes, ...
+                app.SimulationFaultForceYAxes, ...
+                app.SimulationFaultForceZAxes, ...
+                app.SimulationFaultTorqueXAxes, ...
+                app.SimulationFaultTorqueYAxes, ...
+                app.SimulationFaultTorqueZAxes];
+            faultWrenchOptions = struct('ShowFaultTime', true, ...
+                'LineColor', [0.90, 0.42, 0.16]);
+            RCPlotter.plotBodyWrenchHistory(faultWrenchAxes, comparisonLog, ...
+                comparisonLabels{2}, faultWrenchOptions);
+
+            trajectoryOptions = struct('BodyHalfSize', ...
+                app.currentBodyHalfSize(), 'SnapshotCount', 9, ...
+                'AutoScaleBody', true);
+            app.SimulationNominalTrajectoryTab.Title = comparisonLabels{1};
+            app.SimulationFaultTrajectoryTab.Title = comparisonLabels{2};
+            nominalTrajectoryAxes = [ ...
+                app.SimulationNominalTrajectory3DAxes, ...
+                app.SimulationNominalTrajectoryXYAxes, ...
+                app.SimulationNominalTrajectoryXZAxes, ...
+                app.SimulationNominalTrajectoryYZAxes];
+            RCPlotter.plotTrajectoryViews(nominalTrajectoryAxes, ...
+                nominalLog, comparisonLabels{1}, trajectoryOptions);
+            faultTrajectoryAxes = [ ...
+                app.SimulationFaultTrajectory3DAxes, ...
+                app.SimulationFaultTrajectoryXYAxes, ...
+                app.SimulationFaultTrajectoryXZAxes, ...
+                app.SimulationFaultTrajectoryYZAxes];
+            RCPlotter.plotTrajectoryViews(faultTrajectoryAxes, ...
+                comparisonLog, comparisonLabels{2}, trajectoryOptions);
+
             if ~isempty(stateLogs)
                 pulseLog = stateLogs{1};
                 pulseAxes = app.prepareThrusterPulseAxes( ...
@@ -1630,7 +2018,42 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     'LayoutName', stateLabels{1});
                 RCPlotter.plotThrusterPulseWidths( ...
                     pulseAxes, pulseLog, pulseOptions);
+                app.SimulationScheduleStartTimeField.Value = ...
+                    RCPlotter.selectFullPeriodScheduleStart(pulseLog);
+                scheduleOptions = struct('ShowFaultTime', true, ...
+                    'ControlPeriod', pulseLog.Control_Period, ...
+                    'StartTime', app.SimulationScheduleStartTimeField.Value, ...
+                    'CycleCount', app.SimulationScheduleCycleCountField.Value, ...
+                    'Title', [stateLabels{1}, '｜推力器调用时序']);
+                RCPlotter.plotThrusterSchedule( ...
+                    app.SimulationScheduleAxes, pulseLog, scheduleOptions);
             end
+        end
+
+        function refreshSimulationSchedulePlot(app)
+            if isempty(app.SimulationLog) || ...
+                    ~isstruct(app.SimulationLog) || ...
+                    ~isfield(app.SimulationLog, 'StateLog')
+                return;
+            end
+            pulseLog = app.SimulationLog.StateLog;
+            if ~isstruct(pulseLog) || ...
+                    ~isfield(pulseLog, 'Pulse_Schedule_History') || ...
+                    isempty(pulseLog.Pulse_Schedule_History)
+                return;
+            end
+
+            cycleCount = max(1, round( ...
+                app.SimulationScheduleCycleCountField.Value));
+            app.SimulationScheduleCycleCountField.Value = cycleCount;
+            scheduleOptions = struct('ShowFaultTime', true, ...
+                'ControlPeriod', pulseLog.Control_Period, ...
+                'StartTime', app.SimulationScheduleStartTimeField.Value, ...
+                'CycleCount', cycleCount, ...
+                'Title', [app.SimulationLog.SelectedLayoutName, ...
+                    '｜推力器调用时序']);
+            RCPlotter.plotThrusterSchedule( ...
+                app.SimulationScheduleAxes, pulseLog, scheduleOptions);
         end
 
         function logData = runClosedloopCase(app, params, B, simCfg, faultSet)
@@ -1703,21 +2126,40 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             end
         end
 
-        function mode = mapAllocationMode(app, text)
-            switch text
-                case '六维联合'
-                    mode = 'joint_6d';
+        function mode = mapAllocationMode(~, displayMode)
+            switch char(string(displayMode))
+                case '异步分时复用'
+                    mode = 'asynchronous_time_division';
+                case '同步分时复用'
+                    mode = 'synchronous_time_division';
+                case '联合优化复用'
+                    mode = 'joint_optimization';
                 otherwise
-                    mode = 'task_book';
+                    mode = 'synchronous_time_division';
             end
         end
 
-        function strategy = mapAllocationStrategy(app, text)
-            switch text
-                case '轴向分配'
-                    strategy = 'axis';
+        function strategy = mapAllocationStrategy(~, displayStrategy)
+            switch char(string(displayStrategy))
+                case '联合优化分配'
+                    strategy = 'joint_optimization';
                 otherwise
                     strategy = 'primary_backup';
+            end
+        end
+
+        function syncAllocationStrategyControls(app)
+            % 联合优化直接求六维占空比，不再经过轴向主备分配。因此该
+            % 复用模式下将分配下拉框固定为联合优化分配，避免无效组合。
+            isJoint = strcmp(app.AllocationModeDropDown.Value, '联合优化复用');
+            if isJoint
+                app.AllocationModeDropDown_2.Items = {'联合优化分配'};
+                app.AllocationModeDropDown_2.Value = '联合优化分配';
+                app.AllocationModeDropDown_2.Enable = 'off';
+            else
+                app.AllocationModeDropDown_2.Items = {'最简主备分配'};
+                app.AllocationModeDropDown_2.Value = '最简主备分配';
+                app.AllocationModeDropDown_2.Enable = 'on';
             end
         end
 
@@ -1732,6 +2174,14 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 parts(index) = sprintf('%d: %.4fs', active(index), pulse(active(index)));
             end
             text = char(strjoin(parts, ', '));
+        end
+
+        function text = allocationMetricText(~, value, formatText)
+            if isfinite(value)
+                text = sprintf(formatText, value);
+            else
+                text = '-';
+            end
         end
 
         function indices = parseIndexList(app, value)
@@ -1811,6 +2261,83 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
         function setStatus(app, message)
             app.StatusLabel.Text = char(message);
+        end
+
+        function beginOptimizationProgress(app, maxGenerations)
+            app.ProgressStartTic = tic;
+            app.OptimizationCurrentGeneration = 0;
+            app.OptimizationMaxGenerations = max(1, round(maxGenerations));
+            app.ProgressGauge.Value = 0;
+            app.ProgressLabel.Text = sprintf('第 0/%d 代｜0%%｜耗时 00:00', ...
+                app.OptimizationMaxGenerations);
+            app.setStatus('正在进行布局优化｜正在初始化遗传算法...');
+            drawnow;
+        end
+
+        function updateOptimizationProgress(app, info)
+            if isempty(app.ProgressStartTic)
+                app.ProgressStartTic = tic;
+            end
+            elapsedSeconds = toc(app.ProgressStartTic);
+            evaluationCount = 0;
+            if isfield(info, 'EvaluationCount') && isfinite(info.EvaluationCount)
+                evaluationCount = max(0, round(info.EvaluationCount));
+            end
+            if isfield(info, 'Generation') && isfinite(info.Generation)
+                app.OptimizationCurrentGeneration = max(0, ...
+                    min(app.OptimizationMaxGenerations, round(info.Generation)));
+            end
+            if isfield(info, 'Progress') && isfinite(info.Progress)
+                progressValue = 100 * max(0, min(1, info.Progress));
+            else
+                progressValue = 100 * app.OptimizationCurrentGeneration / ...
+                    app.OptimizationMaxGenerations;
+            end
+            app.ProgressGauge.Value = progressValue;
+
+            elapsedText = app.formatElapsedTime(elapsedSeconds);
+            app.ProgressLabel.Text = sprintf('第 %d/%d 代｜%d%%｜耗时 %s', ...
+                app.OptimizationCurrentGeneration, ...
+                app.OptimizationMaxGenerations, floor(progressValue), elapsedText);
+            if evaluationCount > 0
+                app.StatusLabel.Text = sprintf( ...
+                    '正在进行布局优化｜已评估 %d 个候选布局', evaluationCount);
+            else
+                app.StatusLabel.Text = sprintf( ...
+                    '正在进行布局优化｜第 %d/%d 代', ...
+                    app.OptimizationCurrentGeneration, ...
+                    app.OptimizationMaxGenerations);
+            end
+            drawnow limitrate nocallbacks;
+        end
+
+        function finishOptimizationProgress(app, completed)
+            if isempty(app.ProgressStartTic)
+                elapsedSeconds = 0;
+            else
+                elapsedSeconds = toc(app.ProgressStartTic);
+            end
+            elapsedText = app.formatElapsedTime(elapsedSeconds);
+            if completed
+                app.ProgressGauge.Value = 100;
+                app.ProgressLabel.Text = sprintf('已完成｜100%%｜耗时 %s', elapsedText);
+            else
+                app.ProgressLabel.Text = sprintf('运行中止｜耗时 %s', elapsedText);
+            end
+            app.ProgressStartTic = [];
+            drawnow;
+        end
+
+        function textValue = formatElapsedTime(app, elapsedSeconds)
+            elapsedSeconds = max(0, floor(elapsedSeconds));
+            hours = floor(elapsedSeconds / 3600);
+            minutes = floor(mod(elapsedSeconds, 3600) / 60);
+            seconds = mod(elapsedSeconds, 60);
+            if hours > 0
+                textValue = sprintf('%02d:%02d:%02d', hours, minutes, seconds);
+            else
+                textValue = sprintf('%02d:%02d', minutes, seconds);
+            end
         end
 
         function updateReport(app, message)
@@ -1920,6 +2447,16 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         % Size changed function: PageHostPanel
         function PageHostPanelSizeChanged(app, event)
             app.resizeMainTabGroup();
+        end
+
+        % Value changed function: AllocationModeDropDown
+        function AllocationModeDropDownValueChanged(app, event)
+            app.syncAllocationStrategyControls();
+        end
+
+        % Value changed function: schedule viewing window
+        function SimulationScheduleWindowValueChanged(app, event)
+            app.refreshSimulationSchedulePlot();
         end
 
         % Button pushed function: NewButton
@@ -2087,7 +2624,6 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         % Button pushed function: StartOptimizationButton
         function StartOptimizationButtonPushed(app, event)
             try
-                app.setBusy('正在进行布局优化...');
                 params = app.readParamsFromUI();
                 if ~strcmp(app.DropDown1.Value, '控制能力优先')
                     error('当前版本仅实现“控制能力优先”，请选择该优化目标。');
@@ -2101,6 +2637,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 optCfg = struct();
                 optCfg.population_size = max(10, round(app.PopulationField.Value));
                 optCfg.max_generations = max(1, round(app.GenerationField_3.Value));
+                app.beginOptimizationProgress(optCfg.max_generations);
                 optCfg.y_max = app.NumericEditField1_2.Value;
                 optCfg.z_max = app.NumericEditField2_4.Value;
                 optCfg.position_a_range = app.parseMathRange(app.EditField1_2.Value, '位置参数 a 范围');
@@ -2113,6 +2650,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 optCfg.display = 'iter';
                 optCfg.save_result = true;
                 optCfg.output_dir = app.ProjectRoot;
+                optCfg.progress_callback = @(info) ...
+                    app.updateOptimizationProgress(info);
                 evalc('result = Optim_Algorithm(params, optCfg);');
                 app.OptimResult = result;
                 params.Num = size(result.B_opt, 2);
@@ -2130,8 +2669,10 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     reportLine = reportLine + "｜结果文件：" + string(result.output_file);
                 end
                 app.updateReport(reportLine);
+                app.finishOptimizationProgress(true);
                 app.setStatus(['优化完成｜', char(string(result.source))]);
             catch ME
+                app.finishOptimizationProgress(false);
                 app.showError('优化计算失败', ME);
             end
         end
@@ -2236,30 +2777,54 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 params.allocation_strategy = app.mapAllocationStrategy( ...
                     app.AllocationModeDropDown_2.Value);
                 matrixConf = params.F_max * layout.B;
+                faultInputText = strtrim(char(string(app.GenerationField_4.Value)));
                 faultyThrusters = app.parseIndexList(app.GenerationField_4.Value);
                 if isempty(faultyThrusters)
-                    error('请输入至少一个有效的故障推力器编号，例如1或[1 3]。');
+                    if isempty(regexp(faultInputText, '\d', 'once'))
+                        faultCases = arrayfun(@(index) index, ...
+                            1:params.Num, 'UniformOutput', false);
+                        invocationFaults = [];
+                        faultDescription = sprintf('全部%d种单台故障', params.Num);
+                    else
+                        error('故障编号应为1～%d之间的整数，例如1或[1 3]；留空可生成全部单故障。', ...
+                            params.Num);
+                    end
+                else
+                    faultCases = {faultyThrusters};
+                    invocationFaults = faultyThrusters;
+                    faultDescription = app.faultSetText(faultyThrusters);
                 end
                 if any(faultyThrusters > params.Num)
                     error('故障编号不能大于布局“%s”的推力器总数 %d。', ...
                         layout.name, params.Num);
                 end
-                forceCmd = [0.2; 0; 0] * max(abs(matrixConf(1, :)));
-                torqueCmd = [0; 0; 0.2] * max(abs(matrixConf(6, :)));
-                [propFinal, info] = Thruster_invocation(forceCmd, torqueCmd, ...
-                    matrixConf, faultyThrusters, params);
+                verificationCommand = app.allocationVerificationCommand( ...
+                    matrixConf);
+                forceCmd = verificationCommand(1:3);
+                torqueCmd = verificationCommand(4:6);
+                [propFinal, info] = Thruster_allocator(forceCmd, torqueCmd, ...
+                    matrixConf, invocationFaults, params);
                 info.Prop_Final = propFinal;
                 app.updateAllocationTable(info);
-                strategy = RCPlotter.allocationComparisonData( ...
-                    params, layout, faultyThrusters);
+                strategy = app.buildAllocationStrategyComparison( ...
+                    params, layout, faultCases);
                 app.updateAllocationStrategyTable(strategy);
-                app.AllocationViewTabGroup.SelectedTab = app.AllocationStrategyTab;
+                verification = app.buildAllocationVerification( ...
+                    params, layout, faultCases);
+                app.updateAllocationVerification(verification);
+                app.AllocationViewTabGroup.SelectedTab = ...
+                    app.AllocationVerificationTab;
                 app.updateReport(sprintf(['调用策略生成完成：布局=%s，故障=%s，', ...
                     '复用策略=%s，分配策略=%s。'], layout.name, ...
-                    app.faultSetText(faultyThrusters), ...
+                    faultDescription, ...
                     app.AllocationModeDropDown.Value, ...
                     app.AllocationModeDropDown_2.Value));
-                app.setStatus('调用策略生成完成');
+                if numel(faultCases) > 1
+                    app.setStatus(sprintf('调用策略生成完成｜全部%d种单台故障', ...
+                        numel(faultCases)));
+                else
+                    app.setStatus('调用策略生成完成');
+                end
             catch ME
                 app.showError('调用策略生成失败', ME);
             end
@@ -2359,6 +2924,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         % Create UIFigure and components
         % Create UIFigure and components
         % Create UIFigure and components
+        % Create UIFigure and components
         function createComponents(app)
 
             % Create UIFigure
@@ -2370,45 +2936,52 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             % Create RootGrid
             app.RootGrid = uigridlayout(app.UIFigure);
             app.RootGrid.ColumnWidth = {'1x'};
-            app.RootGrid.RowHeight = {72, '1x', 30};
+            app.RootGrid.RowHeight = {72, '1x', 38};
             app.RootGrid.RowSpacing = 0;
             app.RootGrid.Padding = [0 0 0 0];
 
-            % Create HeaderPanel
-            app.HeaderPanel = uipanel(app.RootGrid);
-            app.HeaderPanel.BorderType = 'none';
-            app.HeaderPanel.Layout.Row = 1;
-            app.HeaderPanel.Layout.Column = 1;
+            % Create Panel1
+            app.Panel1 = uipanel(app.RootGrid);
+            app.Panel1.BorderType = 'none';
+            app.Panel1.BackgroundColor = [0.9 0.93 0.95];
+            app.Panel1.Layout.Row = 3;
+            app.Panel1.Layout.Column = 1;
 
-            % Create GridLayout1
-            app.GridLayout1 = uigridlayout(app.HeaderPanel);
-            app.GridLayout1.ColumnWidth = {'1x', 104, 104, 104, 24};
-            app.GridLayout1.RowHeight = {'1x'};
-            app.GridLayout1.Padding = [20 10 12 10];
-            app.GridLayout1.BackgroundColor = [0.075 0.2 0.32];
+            % Create GridLayout2
+            app.GridLayout2 = uigridlayout(app.Panel1);
+            app.GridLayout2.ColumnWidth = {'1x', 220, 245, 180};
+            app.GridLayout2.RowHeight = {'1x'};
+            app.GridLayout2.Padding = [18 2 12 2];
 
-            % Create Label1
-            app.Label1 = uilabel(app.GridLayout1);
-            app.Label1.FontSize = 22;
-            app.Label1.FontWeight = 'bold';
-            app.Label1.FontColor = [1 1 1];
-            app.Label1.Layout.Row = 1;
-            app.Label1.Layout.Column = 1;
-            app.Label1.Text = 'RC-Designer  可重构性设计软件';
+            % Create Label2
+            app.Label2 = uilabel(app.GridLayout2);
+            app.Label2.HorizontalAlignment = 'right';
+            app.Label2.FontColor = [0.38 0.46 0.53];
+            app.Label2.Layout.Row = 1;
+            app.Label2.Layout.Column = 4;
+            app.Label2.Text = '原型版本 0.1｜MATLAB R2023b';
 
-            % Create OpenButton
-            app.OpenButton = uibutton(app.GridLayout1, 'push');
-            app.OpenButton.ButtonPushedFcn = createCallbackFcn(app, @OpenButtonPushed, true);
-            app.OpenButton.Layout.Row = 1;
-            app.OpenButton.Layout.Column = 3;
-            app.OpenButton.Text = '导出参数';
+            % Create StatusLabel
+            app.StatusLabel = uilabel(app.GridLayout2);
+            app.StatusLabel.Layout.Row = 1;
+            app.StatusLabel.Layout.Column = 1;
+            app.StatusLabel.Text = '就绪｜已载入默认参数';
 
-            % Create ImportButton
-            app.ImportButton = uibutton(app.GridLayout1, 'push');
-            app.ImportButton.ButtonPushedFcn = createCallbackFcn(app, @ImportButtonPushed, true);
-            app.ImportButton.Layout.Row = 1;
-            app.ImportButton.Layout.Column = 4;
-            app.ImportButton.Text = '导出布局';
+            % Create ProgressGauge
+            app.ProgressGauge = uigauge(app.GridLayout2, 'linear');
+            app.ProgressGauge.Limits = [0 100];
+            app.ProgressGauge.MajorTicks = [];
+            app.ProgressGauge.Value = 0;
+            app.ProgressGauge.Layout.Row = 1;
+            app.ProgressGauge.Layout.Column = 2;
+
+            % Create ProgressLabel
+            app.ProgressLabel = uilabel(app.GridLayout2);
+            app.ProgressLabel.HorizontalAlignment = 'center';
+            app.ProgressLabel.FontColor = [0.25 0.36 0.45];
+            app.ProgressLabel.Layout.Row = 1;
+            app.ProgressLabel.Layout.Column = 3;
+            app.ProgressLabel.Text = '等待运行｜0%｜耗时 00:00';
 
             % Create BodyGrid
             app.BodyGrid = uigridlayout(app.RootGrid);
@@ -2419,35 +2992,6 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.BodyGrid.Layout.Row = 2;
             app.BodyGrid.Layout.Column = 1;
             app.BodyGrid.BackgroundColor = [0.96 0.97 0.98];
-
-            % Create NavigationPanel
-            app.NavigationPanel = uipanel(app.BodyGrid);
-            app.NavigationPanel.Title = '功能导航';
-            app.NavigationPanel.BackgroundColor = [0.93 0.95 0.97];
-            app.NavigationPanel.Layout.Row = 1;
-            app.NavigationPanel.Layout.Column = 1;
-
-            % Create GridLayout3
-            app.GridLayout3 = uigridlayout(app.NavigationPanel);
-            app.GridLayout3.ColumnWidth = {'1x'};
-            app.GridLayout3.RowHeight = {'1x', 55};
-            app.GridLayout3.Padding = [8 12 8 8];
-
-            % Create NavigationList
-            app.NavigationList = uilistbox(app.GridLayout3);
-            app.NavigationList.Items = {'项目首页', '输入条件', '优化设计', '可重构判断', '可重构评价', '调用策略', '闭环仿真'};
-            app.NavigationList.ValueChangedFcn = createCallbackFcn(app, @NavigationListValueChanged, true);
-            app.NavigationList.FontSize = 15;
-            app.NavigationList.Layout.Row = 1;
-            app.NavigationList.Layout.Column = 1;
-            app.NavigationList.Value = '项目首页';
-
-            % Create Button1
-            app.Button1 = uibutton(app.GridLayout3, 'push');
-            app.Button1.ButtonPushedFcn = createCallbackFcn(app, @HelpButtonPushed, true);
-            app.Button1.Layout.Row = 2;
-            app.Button1.Layout.Column = 1;
-            app.Button1.Text = '使用说明';
 
             % Create PageHostPanel
             app.PageHostPanel = uipanel(app.BodyGrid);
@@ -2463,613 +3007,615 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.TabGroup.TabLocation = 'bottom';
             app.TabGroup.Position = [0 -31 1059 707];
 
-            % Create SimulationTab
-            app.SimulationTab = uitab(app.TabGroup);
-            app.SimulationTab.Title = '闭环仿真';
-
-            % Create GridLayout10
-            app.GridLayout10 = uigridlayout(app.SimulationTab);
-            app.GridLayout10.ColumnWidth = {180, '1x', '1x'};
-            app.GridLayout10.RowHeight = {55, 260, '1x'};
-            app.GridLayout10.Padding = [22 18 22 18];
-
-            % Create ControllerPanel_2
-            app.ControllerPanel_2 = uipanel(app.GridLayout10);
-            app.ControllerPanel_2.Title = '控制器参数';
-            app.ControllerPanel_2.Layout.Row = 2;
-            app.ControllerPanel_2.Layout.Column = 1;
-
-            % Create ControllerGrid_2
-            app.ControllerGrid_2 = uigridlayout(app.ControllerPanel_2);
-            app.ControllerGrid_2.ColumnWidth = {67, 70};
-            app.ControllerGrid_2.RowHeight = {34, 34, 34, 34, 34};
-
-            % Create ControlPeriodField_6
-            app.ControlPeriodField_6 = uieditfield(app.ControllerGrid_2, 'numeric');
-            app.ControlPeriodField_6.Limits = [0 Inf];
-            app.ControlPeriodField_6.Layout.Row = 5;
-            app.ControlPeriodField_6.Layout.Column = 2;
-            app.ControlPeriodField_6.Value = 3200;
-
-            % Create Label47_6
-            app.Label47_6 = uilabel(app.ControllerGrid_2);
-            app.Label47_6.Layout.Row = 5;
-            app.Label47_6.Layout.Column = 1;
-            app.Label47_6.Text = '姿态Kd';
-
-            % Create ControlPeriodField_5
-            app.ControlPeriodField_5 = uieditfield(app.ControllerGrid_2, 'numeric');
-            app.ControlPeriodField_5.Limits = [0 Inf];
-            app.ControlPeriodField_5.Layout.Row = 4;
-            app.ControlPeriodField_5.Layout.Column = 2;
-            app.ControlPeriodField_5.Value = 20;
-
-            % Create Label47_5
-            app.Label47_5 = uilabel(app.ControllerGrid_2);
-            app.Label47_5.Layout.Row = 4;
-            app.Label47_5.Layout.Column = 1;
-            app.Label47_5.Text = '姿态Ki';
-
-            % Create ControlPeriodField_4
-            app.ControlPeriodField_4 = uieditfield(app.ControllerGrid_2, 'numeric');
-            app.ControlPeriodField_4.Limits = [0 Inf];
-            app.ControlPeriodField_4.Layout.Row = 3;
-            app.ControlPeriodField_4.Layout.Column = 2;
-            app.ControlPeriodField_4.Value = 400;
-
-            % Create Label47_4
-            app.Label47_4 = uilabel(app.ControllerGrid_2);
-            app.Label47_4.Layout.Row = 3;
-            app.Label47_4.Layout.Column = 1;
-            app.Label47_4.Text = '姿态Kp';
-
-            % Create ControlPeriodField_3
-            app.ControlPeriodField_3 = uieditfield(app.ControllerGrid_2, 'numeric');
-            app.ControlPeriodField_3.Limits = [0 Inf];
-            app.ControlPeriodField_3.Layout.Row = 2;
-            app.ControlPeriodField_3.Layout.Column = 2;
-            app.ControlPeriodField_3.Value = 300;
-
-            % Create Label47_3
-            app.Label47_3 = uilabel(app.ControllerGrid_2);
-            app.Label47_3.Layout.Row = 2;
-            app.Label47_3.Layout.Column = 1;
-            app.Label47_3.Text = '位置Kd';
-
-            % Create ControlPeriodField_2
-            app.ControlPeriodField_2 = uieditfield(app.ControllerGrid_2, 'numeric');
-            app.ControlPeriodField_2.Limits = [0 Inf];
-            app.ControlPeriodField_2.Layout.Row = 1;
-            app.ControlPeriodField_2.Layout.Column = 2;
-            app.ControlPeriodField_2.Value = 10;
-
-            % Create Label47_2
-            app.Label47_2 = uilabel(app.ControllerGrid_2);
-            app.Label47_2.Layout.Row = 1;
-            app.Label47_2.Layout.Column = 1;
-            app.Label47_2.Text = '位置Kp';
-
-            % Create Panel10_5
-            app.Panel10_5 = uipanel(app.GridLayout10);
-            app.Panel10_5.Title = '故障设置';
-            app.Panel10_5.Layout.Row = 3;
-            app.Panel10_5.Layout.Column = 1;
-
-            % Create GridLayout21_5
-            app.GridLayout21_5 = uigridlayout(app.Panel10_5);
-            app.GridLayout21_5.ColumnWidth = {'1x', 'fit'};
-            app.GridLayout21_5.RowHeight = {'fit', 38, 'fit', 38, 'fit', 38, 38};
-
-            % Create Label24_38
-            app.Label24_38 = uilabel(app.GridLayout21_5);
-            app.Label24_38.Layout.Row = 6;
-            app.Label24_38.Layout.Column = 2;
-            app.Label24_38.Text = 's';
-
-            % Create Label36_7
-            app.Label36_7 = uilabel(app.GridLayout21_5);
-            app.Label36_7.Layout.Row = 3;
-            app.Label36_7.Layout.Column = 1;
-            app.Label36_7.Text = '故障编号';
-
-            % Create GenerationField_6
-            app.GenerationField_6 = uieditfield(app.GridLayout21_5, 'text');
-            app.GenerationField_6.Layout.Row = 4;
-            app.GenerationField_6.Layout.Column = [1 2];
-            app.GenerationField_6.Value = '1';
-
-            % Create SimulationLayoutDropDown
-            app.SimulationLayoutDropDown = uidropdown(app.GridLayout21_5);
-            app.SimulationLayoutDropDown.Items = {'原布局'};
-            app.SimulationLayoutDropDown.Layout.Row = 2;
-            app.SimulationLayoutDropDown.Layout.Column = [1 2];
-            app.SimulationLayoutDropDown.Value = '原布局';
-
-            % Create Label36_6
-            app.Label36_6 = uilabel(app.GridLayout21_5);
-            app.Label36_6.Layout.Row = 1;
-            app.Label36_6.Layout.Column = 1;
-            app.Label36_6.Text = '布局方案';
-
-            % Create GenerationField_5
-            app.GenerationField_5 = uieditfield(app.GridLayout21_5, 'text');
-            app.GenerationField_5.Layout.Row = 6;
-            app.GenerationField_5.Layout.Column = 1;
-            app.GenerationField_5.Value = '1000';
-
-            % Create Label36_5
-            app.Label36_5 = uilabel(app.GridLayout21_5);
-            app.Label36_5.Layout.Row = 5;
-            app.Label36_5.Layout.Column = 1;
-            app.Label36_5.Text = '故障时刻';
-
-            % Create RunSimulationButton
-            app.RunSimulationButton = uibutton(app.GridLayout21_5, 'push');
-            app.RunSimulationButton.ButtonPushedFcn = createCallbackFcn(app, @RunSimulationButtonPushed, true);
-            app.RunSimulationButton.Layout.Row = 7;
-            app.RunSimulationButton.Layout.Column = [1 2];
-            app.RunSimulationButton.Text = '运行闭环仿真';
-
-            % Create SimulationViewTabGroup
-            app.SimulationViewTabGroup = uitabgroup(app.GridLayout10);
-            app.SimulationViewTabGroup.Layout.Row = [2 3];
-            app.SimulationViewTabGroup.Layout.Column = [2 3];
-
-            % Create SimulationPulseTab
-            app.SimulationPulseTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationPulseTab.Title = '各推力器脉宽';
-
-            % Create SimulationPulseGrid
-            app.SimulationPulseGrid = uigridlayout(app.SimulationPulseTab);
-            app.SimulationPulseGrid.ColumnWidth = {'1x'};
-            app.SimulationPulseGrid.RowHeight = {'1x'};
-            app.SimulationPulseGrid.Padding = [8 8 8 8];
-            app.SimulationPulseGrid.Scrollable = 'on';
-
-            % Create SimulationPulsePlaceholderAxes
-            app.SimulationPulsePlaceholderAxes = uiaxes(app.SimulationPulseGrid);
-            app.SimulationPulsePlaceholderAxes.Layout.Row = 1;
-            app.SimulationPulsePlaceholderAxes.Layout.Column = 1;
-            app.SimulationPulsePlaceholderAxes.Visible = 'off';
-
-            % Create SimulationFaultCompareTab
-            app.SimulationFaultCompareTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationFaultCompareTab.Title = '故障工况对比';
-
-            % Create SimulationFaultGrid
-            app.SimulationFaultGrid = uigridlayout(app.SimulationFaultCompareTab);
-            app.SimulationFaultGrid.ColumnWidth = {'1x', '1x', '1x'};
-            app.SimulationFaultGrid.Padding = [8 8 8 8];
-
-            % Create SimulationFaultAttZAxes
-            app.SimulationFaultAttZAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttZAxes.Layout.Row = 2;
-            app.SimulationFaultAttZAxes.Layout.Column = 3;
-            app.SimulationFaultAttZAxes.Visible = 'off';
-
-            % Create SimulationFaultAttYAxes
-            app.SimulationFaultAttYAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttYAxes.Layout.Row = 2;
-            app.SimulationFaultAttYAxes.Layout.Column = 2;
-            app.SimulationFaultAttYAxes.Visible = 'off';
-
-            % Create SimulationFaultAttXAxes
-            app.SimulationFaultAttXAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttXAxes.Layout.Row = 2;
-            app.SimulationFaultAttXAxes.Layout.Column = 1;
-            app.SimulationFaultAttXAxes.Visible = 'off';
-
-            % Create SimulationFaultPosZAxes
-            app.SimulationFaultPosZAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosZAxes.Layout.Row = 1;
-            app.SimulationFaultPosZAxes.Layout.Column = 3;
-            app.SimulationFaultPosZAxes.Visible = 'off';
-
-            % Create SimulationFaultPosYAxes
-            app.SimulationFaultPosYAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosYAxes.Layout.Row = 1;
-            app.SimulationFaultPosYAxes.Layout.Column = 2;
-            app.SimulationFaultPosYAxes.Visible = 'off';
-
-            % Create SimulationFaultPosXAxes
-            app.SimulationFaultPosXAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosXAxes.Layout.Row = 1;
-            app.SimulationFaultPosXAxes.Layout.Column = 1;
-            app.SimulationFaultPosXAxes.Visible = 'off';
-
-            % Create SimulationPositionTab
-            app.SimulationPositionTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationPositionTab.Title = '状态响应';
-
-            % Create SimulationPositionGrid
-            app.SimulationPositionGrid = uigridlayout(app.SimulationPositionTab);
-            app.SimulationPositionGrid.Padding = [8 8 8 8];
-
-            % Create SimulationAttitudeErrorAxes
-            app.SimulationAttitudeErrorAxes = uiaxes(app.SimulationPositionGrid);
-            app.SimulationAttitudeErrorAxes.Layout.Row = 2;
-            app.SimulationAttitudeErrorAxes.Layout.Column = 2;
-            app.SimulationAttitudeErrorAxes.Visible = 'off';
-
-            % Create SimulationPositionErrorAxes
-            app.SimulationPositionErrorAxes = uiaxes(app.SimulationPositionGrid);
-            app.SimulationPositionErrorAxes.Layout.Row = 2;
-            app.SimulationPositionErrorAxes.Layout.Column = 1;
-            app.SimulationPositionErrorAxes.Visible = 'off';
-
-            % Create SimulationAttitudeAxes
-            app.SimulationAttitudeAxes = uiaxes(app.SimulationPositionGrid);
-            app.SimulationAttitudeAxes.Layout.Row = 1;
-            app.SimulationAttitudeAxes.Layout.Column = 2;
-            app.SimulationAttitudeAxes.Visible = 'off';
-
-            % Create SimulationAxes
-            app.SimulationAxes = uiaxes(app.SimulationPositionGrid);
-            app.SimulationAxes.Layout.Row = 1;
-            app.SimulationAxes.Layout.Column = 1;
-            app.SimulationAxes.Visible = 'off';
-
-            % Create Label10
-            app.Label10 = uilabel(app.GridLayout10);
-            app.Label10.FontSize = 22;
-            app.Label10.FontWeight = 'bold';
-            app.Label10.FontColor = [0.1 0.27 0.42];
-            app.Label10.Layout.Row = 1;
-            app.Label10.Layout.Column = 1;
-            app.Label10.Text = '闭环仿真验证';
-
-            % Create AllocationTab
-            app.AllocationTab = uitab(app.TabGroup);
-            app.AllocationTab.Title = '调用策略';
-
-            % Create GridLayout9
-            app.GridLayout9 = uigridlayout(app.AllocationTab);
-            app.GridLayout9.RowHeight = {55, 'fit', '1x'};
-            app.GridLayout9.Padding = [22 18 22 18];
-
-            % Create Panel10_4
-            app.Panel10_4 = uipanel(app.GridLayout9);
-            app.Panel10_4.Title = '调用设置';
-            app.Panel10_4.Layout.Row = 2;
-            app.Panel10_4.Layout.Column = [1 2];
-
-            % Create GridLayout21_4
-            app.GridLayout21_4 = uigridlayout(app.Panel10_4);
-            app.GridLayout21_4.ColumnWidth = {'1x', '1x', '1x', '1x', '1x'};
-            app.GridLayout21_4.RowHeight = {'fit', 38};
-
-            % Create AllocationModeDropDown_2
-            app.AllocationModeDropDown_2 = uidropdown(app.GridLayout21_4);
-            app.AllocationModeDropDown_2.Items = {'轴向分配', '主备分配'};
-            app.AllocationModeDropDown_2.Layout.Row = 2;
-            app.AllocationModeDropDown_2.Layout.Column = 2;
-            app.AllocationModeDropDown_2.Value = '主备分配';
-
-            % Create Label35_5
-            app.Label35_5 = uilabel(app.GridLayout21_4);
-            app.Label35_5.Layout.Row = 1;
-            app.Label35_5.Layout.Column = 2;
-            app.Label35_5.Text = '分配策略';
-
-            % Create GenerateAllocationButton
-            app.GenerateAllocationButton = uibutton(app.GridLayout21_4, 'push');
-            app.GenerateAllocationButton.ButtonPushedFcn = createCallbackFcn(app, @GenerateAllocationButtonPushed, true);
-            app.GenerateAllocationButton.Layout.Row = 2;
-            app.GenerateAllocationButton.Layout.Column = 5;
-            app.GenerateAllocationButton.Text = '生成调用策略';
-
-            % Create AllocationModeDropDown
-            app.AllocationModeDropDown = uidropdown(app.GridLayout21_4);
-            app.AllocationModeDropDown.Items = {'分时复用', '六维联合'};
-            app.AllocationModeDropDown.Layout.Row = 2;
-            app.AllocationModeDropDown.Layout.Column = 1;
-            app.AllocationModeDropDown.Value = '分时复用';
-
-            % Create Label35_4
-            app.Label35_4 = uilabel(app.GridLayout21_4);
-            app.Label35_4.Layout.Row = 1;
-            app.Label35_4.Layout.Column = 1;
-            app.Label35_4.Text = '复用策略';
-
-            % Create Label36_4
-            app.Label36_4 = uilabel(app.GridLayout21_4);
-            app.Label36_4.Layout.Row = 1;
-            app.Label36_4.Layout.Column = 3;
-            app.Label36_4.Text = '故障编号';
-
-            % Create JudgmentLayoutLabel_2
-            app.JudgmentLayoutLabel_2 = uilabel(app.GridLayout21_4);
-            app.JudgmentLayoutLabel_2.Layout.Row = 1;
-            app.JudgmentLayoutLabel_2.Layout.Column = 4;
-            app.JudgmentLayoutLabel_2.Text = '布局方案';
-
-            % Create GenerationField_4
-            app.GenerationField_4 = uieditfield(app.GridLayout21_4, 'text');
-            app.GenerationField_4.Layout.Row = 2;
-            app.GenerationField_4.Layout.Column = 3;
-            app.GenerationField_4.Value = '1';
-
-            % Create JudgmentLayoutDropDown_2
-            app.JudgmentLayoutDropDown_2 = uidropdown(app.GridLayout21_4);
-            app.JudgmentLayoutDropDown_2.Items = {'原布局'};
-            app.JudgmentLayoutDropDown_2.Layout.Row = 2;
-            app.JudgmentLayoutDropDown_2.Layout.Column = 4;
-            app.JudgmentLayoutDropDown_2.Value = '原布局';
-
-            % Create AllocationViewTabGroup
-            app.AllocationViewTabGroup = uitabgroup(app.GridLayout9);
-            app.AllocationViewTabGroup.Layout.Row = 3;
-            app.AllocationViewTabGroup.Layout.Column = [1 2];
-
-            % Create AllocationStrategyTab
-            app.AllocationStrategyTab = uitab(app.AllocationViewTabGroup);
-            app.AllocationStrategyTab.Title = '六轴推力器分配';
-
-            % Create AllocationStrategyGrid
-            app.AllocationStrategyGrid = uigridlayout(app.AllocationStrategyTab);
-            app.AllocationStrategyGrid.ColumnWidth = {'1x'};
-            app.AllocationStrategyGrid.RowHeight = {'1x'};
-
-            % Create AllocationStrategyTable
-            app.AllocationStrategyTable = uitable(app.AllocationStrategyGrid);
-            app.AllocationStrategyTable.ColumnName = {'控制类型'; '轴向'; '标况下调用'; '故障下调用'};
-            app.AllocationStrategyTable.RowName = {};
-            app.AllocationStrategyTable.Layout.Row = 1;
-            app.AllocationStrategyTable.Layout.Column = 1;
-
-            % Create Label9
-            app.Label9 = uilabel(app.GridLayout9);
-            app.Label9.FontSize = 22;
-            app.Label9.FontWeight = 'bold';
-            app.Label9.FontColor = [0.1 0.27 0.42];
-            app.Label9.Layout.Row = 1;
-            app.Label9.Layout.Column = 1;
-            app.Label9.Text = '推力器调用策略';
-
-            % Create ReconfigDesignTab
-            app.ReconfigDesignTab = uitab(app.TabGroup);
-            app.ReconfigDesignTab.Title = '可重构评价';
-
-            % Create GridLayout25
-            app.GridLayout25 = uigridlayout(app.ReconfigDesignTab);
-            app.GridLayout25.ColumnWidth = {'1.1x', 200, 200};
-            app.GridLayout25.RowHeight = {55, '1x'};
-            app.GridLayout25.Padding = [22 18 22 18];
-
-            % Create MetricsViewTabGroup
-            app.MetricsViewTabGroup = uitabgroup(app.GridLayout25);
-            app.MetricsViewTabGroup.Layout.Row = 2;
-            app.MetricsViewTabGroup.Layout.Column = [1 3];
-
-            % Create MetricsSingleFaultTab
-            app.MetricsSingleFaultTab = uitab(app.MetricsViewTabGroup);
-            app.MetricsSingleFaultTab.Title = '综合评价';
-
-            % Create MetricsSingleFaultGrid
-            app.MetricsSingleFaultGrid = uigridlayout(app.MetricsSingleFaultTab);
-            app.MetricsSingleFaultGrid.ColumnWidth = {'1x'};
-            app.MetricsSingleFaultGrid.RowHeight = {44, '1x'};
-
-            % Create SingleFaultTable
-            app.SingleFaultTable = uitable(app.MetricsSingleFaultGrid);
-            app.SingleFaultTable.ColumnName = {'故障推力器编号'};
-            app.SingleFaultTable.RowName = {};
-            app.SingleFaultTable.Layout.Row = 2;
-            app.SingleFaultTable.Layout.Column = 1;
-
-            % Create SingleFaultInfoLabel
-            app.SingleFaultInfoLabel = uilabel(app.MetricsSingleFaultGrid);
-            app.SingleFaultInfoLabel.Layout.Row = 1;
-            app.SingleFaultInfoLabel.Layout.Column = 1;
-            app.SingleFaultInfoLabel.Text = '';
-
-            % Create MetricsChartsTab
-            app.MetricsChartsTab = uitab(app.MetricsViewTabGroup);
-            app.MetricsChartsTab.Title = '归一化指标';
-
-            % Create MetricsChartsGrid
-            app.MetricsChartsGrid = uigridlayout(app.MetricsChartsTab);
-            app.MetricsChartsGrid.Padding = [8 8 8 8];
-
-            % Create MetricsJfAxes
-            app.MetricsJfAxes = uiaxes(app.MetricsChartsGrid);
-            app.MetricsJfAxes.Layout.Row = 2;
-            app.MetricsJfAxes.Layout.Column = 2;
-            app.MetricsJfAxes.Visible = 'off';
-
-            % Create MetricsJtAxes
-            app.MetricsJtAxes = uiaxes(app.MetricsChartsGrid);
-            app.MetricsJtAxes.Layout.Row = 2;
-            app.MetricsJtAxes.Layout.Column = 1;
-            app.MetricsJtAxes.Visible = 'off';
-
-            % Create MetricsJoAxes
-            app.MetricsJoAxes = uiaxes(app.MetricsChartsGrid);
-            app.MetricsJoAxes.Layout.Row = 1;
-            app.MetricsJoAxes.Layout.Column = 2;
-            app.MetricsJoAxes.Visible = 'off';
-
-            % Create MetricsJcAxes
-            app.MetricsJcAxes = uiaxes(app.MetricsChartsGrid);
-            app.MetricsJcAxes.Layout.Row = 1;
-            app.MetricsJcAxes.Layout.Column = 1;
-            app.MetricsJcAxes.Visible = 'off';
-
-            % Create MetricsAnglesTab
-            app.MetricsAnglesTab = uitab(app.MetricsViewTabGroup);
-            app.MetricsAnglesTab.Title = '可诊断性';
-
-            % Create MetricsAnglesGrid
-            app.MetricsAnglesGrid = uigridlayout(app.MetricsAnglesTab);
-            app.MetricsAnglesGrid.ColumnWidth = {'1x'};
-            app.MetricsAnglesGrid.RowHeight = {'1x'};
-            app.MetricsAnglesGrid.Padding = [8 8 8 8];
-
-            % Create MetricsAngleAxes3
-            app.MetricsAngleAxes3 = uiaxes(app.MetricsAnglesGrid);
-            app.MetricsAngleAxes3.Layout.Row = 1;
-            app.MetricsAngleAxes3.Layout.Column = 1;
-            app.MetricsAngleAxes3.Visible = 'off';
-
-            % Create MetricsAngleAxes2
-            app.MetricsAngleAxes2 = uiaxes(app.MetricsAnglesGrid);
-            app.MetricsAngleAxes2.Layout.Row = 1;
-            app.MetricsAngleAxes2.Layout.Column = 1;
-            app.MetricsAngleAxes2.Visible = 'off';
-
-            % Create MetricsAngleAxes1
-            app.MetricsAngleAxes1 = uiaxes(app.MetricsAnglesGrid);
-            app.MetricsAngleAxes1.Layout.Row = 1;
-            app.MetricsAngleAxes1.Layout.Column = 1;
-
-            % Create MetricsControlTab
-            app.MetricsControlTab = uitab(app.MetricsViewTabGroup);
-            app.MetricsControlTab.Title = '控制能力';
-
-            % Create MetricsControlGrid
-            app.MetricsControlGrid = uigridlayout(app.MetricsControlTab);
-            app.MetricsControlGrid.RowHeight = {'1x'};
-            app.MetricsControlGrid.Padding = [8 8 8 8];
-
-            % Create MetricsForceAxes
-            app.MetricsForceAxes = uiaxes(app.MetricsControlGrid);
-            app.MetricsForceAxes.Layout.Row = 1;
-            app.MetricsForceAxes.Layout.Column = 1;
-            app.MetricsForceAxes.Visible = 'off';
-
-            % Create MetricsTorqueAxes
-            app.MetricsTorqueAxes = uiaxes(app.MetricsControlGrid);
-            app.MetricsTorqueAxes.Layout.Row = 1;
-            app.MetricsTorqueAxes.Layout.Column = 2;
-            app.MetricsTorqueAxes.Visible = 'off';
-
-            % Create Label41
-            app.Label41 = uilabel(app.GridLayout25);
-            app.Label41.FontSize = 22;
-            app.Label41.FontWeight = 'bold';
-            app.Label41.FontColor = [0.1 0.27 0.42];
-            app.Label41.Layout.Row = 1;
-            app.Label41.Layout.Column = 1;
-            app.Label41.Text = '可重构性评价指标';
-
-            % Create MetricsEvaluateButton
-            app.MetricsEvaluateButton = uibutton(app.GridLayout25, 'push');
-            app.MetricsEvaluateButton.ButtonPushedFcn = createCallbackFcn(app, @MetricsEvaluateButtonPushed, true);
-            app.MetricsEvaluateButton.Layout.Row = 1;
-            app.MetricsEvaluateButton.Layout.Column = 3;
-            app.MetricsEvaluateButton.Text = '可重构性评价';
-
-            % Create EvaluationTab
-            app.EvaluationTab = uitab(app.TabGroup);
-            app.EvaluationTab.Title = '可重构判断';
-
-            % Create GridLayout8
-            app.GridLayout8 = uigridlayout(app.EvaluationTab);
-            app.GridLayout8.ColumnWidth = {200, '1x'};
-            app.GridLayout8.RowHeight = {55, 'fit', '1x'};
-            app.GridLayout8.Padding = [22 18 22 18];
-
-            % Create Label8
-            app.Label8 = uilabel(app.GridLayout8);
-            app.Label8.FontSize = 22;
-            app.Label8.FontWeight = 'bold';
-            app.Label8.FontColor = [0.1 0.27 0.42];
-            app.Label8.Layout.Row = 1;
-            app.Label8.Layout.Column = 1;
-            app.Label8.Text = '可重构性判断';
-
-            % Create JudgmentViewTabGroup
-            app.JudgmentViewTabGroup = uitabgroup(app.GridLayout8);
-            app.JudgmentViewTabGroup.Layout.Row = 3;
-            app.JudgmentViewTabGroup.Layout.Column = [1 2];
-
-            % Create JudgmentSummaryTab
-            app.JudgmentSummaryTab = uitab(app.JudgmentViewTabGroup);
-            app.JudgmentSummaryTab.Title = '不同布局对比';
-
-            % Create JudgmentSummaryGrid
-            app.JudgmentSummaryGrid = uigridlayout(app.JudgmentSummaryTab);
-            app.JudgmentSummaryGrid.ColumnWidth = {'1x'};
-            app.JudgmentSummaryGrid.RowHeight = {'1x'};
-
-            % Create JudgmentSummaryTable
-            app.JudgmentSummaryTable = uitable(app.JudgmentSummaryGrid);
-            app.JudgmentSummaryTable.ColumnName = {'布局方案'; '故障数量'; '故障状态'; '可重构数'; '不可重构数'};
-            app.JudgmentSummaryTable.RowName = {};
-            app.JudgmentSummaryTable.Layout.Row = 1;
-            app.JudgmentSummaryTable.Layout.Column = 1;
-
-            % Create JudgmentDetailTab
-            app.JudgmentDetailTab = uitab(app.JudgmentViewTabGroup);
-            app.JudgmentDetailTab.Title = '可重构性判断';
-
-            % Create JudgmentDetailGrid
-            app.JudgmentDetailGrid = uigridlayout(app.JudgmentDetailTab);
-            app.JudgmentDetailGrid.ColumnWidth = {'1x'};
-            app.JudgmentDetailGrid.RowHeight = {'1x'};
-
-            % Create EvaluationTable
-            app.EvaluationTable = uitable(app.JudgmentDetailGrid);
-            app.EvaluationTable.ColumnName = {'故障编号'; '力裕度JcF'; '力矩裕度JcT'; '六维裕度Jc'; '判断结果'};
-            app.EvaluationTable.RowName = {};
-            app.EvaluationTable.Layout.Row = 1;
-            app.EvaluationTable.Layout.Column = 1;
-
-            % Create Panel10_2
-            app.Panel10_2 = uipanel(app.GridLayout8);
-            app.Panel10_2.Title = '故障设置';
-            app.Panel10_2.Layout.Row = 2;
-            app.Panel10_2.Layout.Column = [1 2];
-
-            % Create GridLayout21_2
-            app.GridLayout21_2 = uigridlayout(app.Panel10_2);
-            app.GridLayout21_2.ColumnWidth = {'1x', '1x', '1x', '1x'};
-            app.GridLayout21_2.RowHeight = {'fit', 38};
-
-            % Create Label35_2
-            app.Label35_2 = uilabel(app.GridLayout21_2);
-            app.Label35_2.Layout.Row = 1;
-            app.Label35_2.Layout.Column = 1;
-            app.Label35_2.Text = '故障情况';
-
-            % Create Label36_2
-            app.Label36_2 = uilabel(app.GridLayout21_2);
-            app.Label36_2.Layout.Row = 1;
-            app.Label36_2.Layout.Column = 2;
-            app.Label36_2.Text = '故障编号';
-
-            % Create JudgmentLayoutLabel
-            app.JudgmentLayoutLabel = uilabel(app.GridLayout21_2);
-            app.JudgmentLayoutLabel.Layout.Row = 1;
-            app.JudgmentLayoutLabel.Layout.Column = 3;
-            app.JudgmentLayoutLabel.Text = '布局方案';
-
-            % Create GenerationField_2
-            app.GenerationField_2 = uieditfield(app.GridLayout21_2, 'text');
-            app.GenerationField_2.Layout.Row = 2;
-            app.GenerationField_2.Layout.Column = 2;
-            app.GenerationField_2.Value = '1';
-
-            % Create JudgmentLayoutDropDown
-            app.JudgmentLayoutDropDown = uidropdown(app.GridLayout21_2);
-            app.JudgmentLayoutDropDown.Items = {'原布局'};
-            app.JudgmentLayoutDropDown.Layout.Row = 2;
-            app.JudgmentLayoutDropDown.Layout.Column = 3;
-            app.JudgmentLayoutDropDown.Value = '原布局';
-
-            % Create StartOptimizationButton_2
-            app.StartOptimizationButton_2 = uibutton(app.GridLayout21_2, 'push');
-            app.StartOptimizationButton_2.ButtonPushedFcn = createCallbackFcn(app, @EvaluateButtonPushed, true);
-            app.StartOptimizationButton_2.Layout.Row = 2;
-            app.StartOptimizationButton_2.Layout.Column = 4;
-            app.StartOptimizationButton_2.Text = '可重构性判断';
-
-            % Create FaultCountDropDown
-            app.FaultCountDropDown = uidropdown(app.GridLayout21_2);
-            app.FaultCountDropDown.Items = {'单台故障', '两台故障', '自定义故障组合'};
-            app.FaultCountDropDown.Layout.Row = 2;
-            app.FaultCountDropDown.Layout.Column = 1;
-            app.FaultCountDropDown.Value = '单台故障';
+            % Create HomeTab
+            app.HomeTab = uitab(app.TabGroup);
+            app.HomeTab.Title = '项目首页';
+
+            % Create GridLayout4
+            app.GridLayout4 = uigridlayout(app.HomeTab);
+            app.GridLayout4.ColumnWidth = {'1x', '1x', '1x'};
+            app.GridLayout4.RowHeight = {80, 125, 125, 125};
+            app.GridLayout4.ColumnSpacing = 16;
+            app.GridLayout4.RowSpacing = 16;
+            app.GridLayout4.Padding = [26 20 26 20];
+
+            % Create HomeSimulationPanel
+            app.HomeSimulationPanel = uipanel(app.GridLayout4);
+            app.HomeSimulationPanel.BackgroundColor = [0.96 0.96 0.96];
+            app.HomeSimulationPanel.Layout.Row = 3;
+            app.HomeSimulationPanel.Layout.Column = 3;
+
+            % Create HomeSimulationGrid
+            app.HomeSimulationGrid = uigridlayout(app.HomeSimulationPanel);
+            app.HomeSimulationGrid.ColumnWidth = {'1x'};
+            app.HomeSimulationGrid.RowHeight = {38, '1x'};
+            app.HomeSimulationGrid.Padding = [16 12 16 12];
+
+            % Create HomeSimulationTitle
+            app.HomeSimulationTitle = uilabel(app.HomeSimulationGrid);
+            app.HomeSimulationTitle.FontSize = 17;
+            app.HomeSimulationTitle.FontWeight = 'bold';
+            app.HomeSimulationTitle.FontColor = [0.1 0.27 0.42];
+            app.HomeSimulationTitle.Layout.Row = 1;
+            app.HomeSimulationTitle.Layout.Column = 1;
+            app.HomeSimulationTitle.Text = '闭环仿真';
+
+            % Create HomeSimulationDesc
+            app.HomeSimulationDesc = uilabel(app.HomeSimulationGrid);
+            app.HomeSimulationDesc.FontSize = 13;
+            app.HomeSimulationDesc.FontColor = [0.2 0.27 0.33];
+            app.HomeSimulationDesc.Layout.Row = 2;
+            app.HomeSimulationDesc.Layout.Column = 1;
+            app.HomeSimulationDesc.Text = '位置响应｜姿态响应';
+
+            % Create Panel7
+            app.Panel7 = uipanel(app.GridLayout4);
+            app.Panel7.BackgroundColor = [0.96 0.96 0.96];
+            app.Panel7.Layout.Row = 3;
+            app.Panel7.Layout.Column = 2;
+
+            % Create GridLayout18
+            app.GridLayout18 = uigridlayout(app.Panel7);
+            app.GridLayout18.ColumnWidth = {'1x'};
+            app.GridLayout18.RowHeight = {38, '1x'};
+            app.GridLayout18.Padding = [16 12 16 12];
+
+            % Create Label23
+            app.Label23 = uilabel(app.GridLayout18);
+            app.Label23.FontSize = 13;
+            app.Label23.FontColor = [0.2 0.27 0.33];
+            app.Label23.Layout.Row = 2;
+            app.Label23.Layout.Column = 1;
+            app.Label23.Text = '复用策略｜分配策略';
+
+            % Create Label22
+            app.Label22 = uilabel(app.GridLayout18);
+            app.Label22.FontSize = 17;
+            app.Label22.FontWeight = 'bold';
+            app.Label22.FontColor = [0.1 0.27 0.42];
+            app.Label22.Layout.Row = 1;
+            app.Label22.Layout.Column = 1;
+            app.Label22.Text = '调用策略';
+
+            % Create Panel6
+            app.Panel6 = uipanel(app.GridLayout4);
+            app.Panel6.BackgroundColor = [0.96 0.96 0.96];
+            app.Panel6.Layout.Row = 3;
+            app.Panel6.Layout.Column = 1;
+
+            % Create GridLayout17
+            app.GridLayout17 = uigridlayout(app.Panel6);
+            app.GridLayout17.ColumnWidth = {'1x'};
+            app.GridLayout17.RowHeight = {38, '1x'};
+            app.GridLayout17.Padding = [16 12 16 12];
+
+            % Create Label21
+            app.Label21 = uilabel(app.GridLayout17);
+            app.Label21.WordWrap = 'on';
+            app.Label21.FontSize = 13;
+            app.Label21.FontColor = [0.2 0.27 0.33];
+            app.Label21.Layout.Row = 2;
+            app.Label21.Layout.Column = 1;
+            app.Label21.Text = '评价指标｜综合评价';
+
+            % Create Label20
+            app.Label20 = uilabel(app.GridLayout17);
+            app.Label20.FontSize = 17;
+            app.Label20.FontWeight = 'bold';
+            app.Label20.FontColor = [0.1 0.27 0.42];
+            app.Label20.Layout.Row = 1;
+            app.Label20.Layout.Column = 1;
+            app.Label20.Text = '可重构评价';
+
+            % Create Panel5
+            app.Panel5 = uipanel(app.GridLayout4);
+            app.Panel5.BackgroundColor = [0.96 0.96 0.96];
+            app.Panel5.Layout.Row = 2;
+            app.Panel5.Layout.Column = 3;
+
+            % Create GridLayout16
+            app.GridLayout16 = uigridlayout(app.Panel5);
+            app.GridLayout16.ColumnWidth = {'1x'};
+            app.GridLayout16.RowHeight = {38, '1x'};
+            app.GridLayout16.Padding = [16 12 16 12];
+
+            % Create Label19
+            app.Label19 = uilabel(app.GridLayout16);
+            app.Label19.FontSize = 13;
+            app.Label19.FontColor = [0.2 0.27 0.33];
+            app.Label19.Layout.Row = 2;
+            app.Label19.Layout.Column = 1;
+            app.Label19.Text = '标况｜单台故障｜多台故障';
+
+            % Create Label18
+            app.Label18 = uilabel(app.GridLayout16);
+            app.Label18.FontSize = 17;
+            app.Label18.FontWeight = 'bold';
+            app.Label18.FontColor = [0.1 0.27 0.42];
+            app.Label18.Layout.Row = 1;
+            app.Label18.Layout.Column = 1;
+            app.Label18.Text = '可重构判断';
+
+            % Create Panel3
+            app.Panel3 = uipanel(app.GridLayout4);
+            app.Panel3.BackgroundColor = [0.96 0.96 0.96];
+            app.Panel3.Layout.Row = 2;
+            app.Panel3.Layout.Column = 2;
+
+            % Create GridLayout14
+            app.GridLayout14 = uigridlayout(app.Panel3);
+            app.GridLayout14.ColumnWidth = {'1x'};
+            app.GridLayout14.RowHeight = {38, '1x'};
+            app.GridLayout14.Padding = [16 12 16 12];
+
+            % Create Label15
+            app.Label15 = uilabel(app.GridLayout14);
+            app.Label15.FontSize = 13;
+            app.Label15.FontColor = [0.2 0.27 0.33];
+            app.Label15.Layout.Row = 2;
+            app.Label15.Layout.Column = 1;
+            app.Label15.Text = '安装约束｜优化算法｜布局显示';
+
+            % Create Label14
+            app.Label14 = uilabel(app.GridLayout14);
+            app.Label14.FontSize = 17;
+            app.Label14.FontWeight = 'bold';
+            app.Label14.FontColor = [0.1 0.27 0.42];
+            app.Label14.Layout.Row = 1;
+            app.Label14.Layout.Column = 1;
+            app.Label14.Text = '优化设计';
+
+            % Create Panel2
+            app.Panel2 = uipanel(app.GridLayout4);
+            app.Panel2.BackgroundColor = [0.96 0.96 0.96];
+            app.Panel2.Layout.Row = 2;
+            app.Panel2.Layout.Column = 1;
+
+            % Create GridLayout13
+            app.GridLayout13 = uigridlayout(app.Panel2);
+            app.GridLayout13.ColumnWidth = {'1x'};
+            app.GridLayout13.RowHeight = {38, '1x'};
+            app.GridLayout13.Padding = [16 12 16 12];
+
+            % Create Label13
+            app.Label13 = uilabel(app.GridLayout13);
+            app.Label13.FontSize = 13;
+            app.Label13.FontColor = [0.2 0.27 0.33];
+            app.Label13.Layout.Row = 2;
+            app.Label13.Layout.Column = 1;
+            app.Label13.Text = '任务场景｜参数设置';
+
+            % Create Label12
+            app.Label12 = uilabel(app.GridLayout13);
+            app.Label12.FontSize = 17;
+            app.Label12.FontWeight = 'bold';
+            app.Label12.FontColor = [0.1 0.27 0.42];
+            app.Label12.Layout.Row = 1;
+            app.Label12.Layout.Column = 1;
+            app.Label12.Text = '输入条件';
+
+            % Create Label3
+            app.Label3 = uilabel(app.GridLayout4);
+            app.Label3.HorizontalAlignment = 'center';
+            app.Label3.FontSize = 24;
+            app.Label3.FontWeight = 'bold';
+            app.Label3.FontColor = [0.1 0.27 0.42];
+            app.Label3.Layout.Row = 1;
+            app.Label3.Layout.Column = [1 3];
+            app.Label3.Text = {'机动飞行器姿轨耦合复用推力器'; '故障下的可重构性设计'};
+
+            % Create ParameterTab
+            app.ParameterTab = uitab(app.TabGroup);
+            app.ParameterTab.Title = '输入条件';
+
+            % Create GridLayout5
+            app.GridLayout5 = uigridlayout(app.ParameterTab);
+            app.GridLayout5.ColumnWidth = {'1x', '1x', '1x', '1x'};
+            app.GridLayout5.RowHeight = {55, 220, 130, 90, 52};
+            app.GridLayout5.ColumnSpacing = 16;
+            app.GridLayout5.Padding = [24 18 24 18];
+
+            % Create ParameterFileGrid_2
+            app.ParameterFileGrid_2 = uigridlayout(app.GridLayout5);
+            app.ParameterFileGrid_2.ColumnWidth = {'1x', 126, 126};
+            app.ParameterFileGrid_2.RowHeight = {'1x'};
+            app.ParameterFileGrid_2.Padding = [0 6 0 0];
+            app.ParameterFileGrid_2.Layout.Row = 5;
+            app.ParameterFileGrid_2.Layout.Column = [3 4];
+
+            % Create Button2_4
+            app.Button2_4 = uibutton(app.ParameterFileGrid_2, 'push');
+            app.Button2_4.ButtonPushedFcn = createCallbackFcn(app, @LoadParameterButtonPushed, true);
+            app.Button2_4.Layout.Row = 1;
+            app.Button2_4.Layout.Column = 3;
+            app.Button2_4.Text = '加载参数文件';
+
+            % Create ThrusterPanel_3
+            app.ThrusterPanel_3 = uipanel(app.GridLayout5);
+            app.ThrusterPanel_3.Title = '推力器';
+            app.ThrusterPanel_3.Layout.Row = 3;
+            app.ThrusterPanel_3.Layout.Column = 2;
+
+            % Create ThrusterGrid_3
+            app.ThrusterGrid_3 = uigridlayout(app.ThrusterPanel_3);
+            app.ThrusterGrid_3.ColumnWidth = {67, 70, '1x'};
+            app.ThrusterGrid_3.RowHeight = {34, 34};
+
+            % Create Label24_28
+            app.Label24_28 = uilabel(app.ThrusterGrid_3);
+            app.Label24_28.Layout.Row = 2;
+            app.Label24_28.Layout.Column = 3;
+            app.Label24_28.Text = 's';
+
+            % Create Label24_27
+            app.Label24_27 = uilabel(app.ThrusterGrid_3);
+            app.Label24_27.Layout.Row = 1;
+            app.Label24_27.Layout.Column = 3;
+            app.Label24_27.Text = 'N';
+
+            % Create Label24_26
+            app.Label24_26 = uilabel(app.ThrusterGrid_3);
+            app.Label24_26.Layout.Row = 1;
+            app.Label24_26.Layout.Column = 3;
+            app.Label24_26.Text = '';
+
+            % Create Label49_3
+            app.Label49_3 = uilabel(app.ThrusterGrid_3);
+            app.Label49_3.Layout.Row = 1;
+            app.Label49_3.Layout.Column = 1;
+            app.Label49_3.Text = '标称推力F';
+
+            % Create FmaxField_3
+            app.FmaxField_3 = uieditfield(app.ThrusterGrid_3, 'numeric');
+            app.FmaxField_3.Limits = [0 Inf];
+            app.FmaxField_3.Layout.Row = 1;
+            app.FmaxField_3.Layout.Column = 2;
+            app.FmaxField_3.Value = 10;
+
+            % Create Label50_3
+            app.Label50_3 = uilabel(app.ThrusterGrid_3);
+            app.Label50_3.Layout.Row = 2;
+            app.Label50_3.Layout.Column = 1;
+            app.Label50_3.Text = '最小脉宽t';
+
+            % Create MinPulseField_3
+            app.MinPulseField_3 = uieditfield(app.ThrusterGrid_3, 'numeric');
+            app.MinPulseField_3.Limits = [0 Inf];
+            app.MinPulseField_3.Layout.Row = 2;
+            app.MinPulseField_3.Layout.Column = 2;
+            app.MinPulseField_3.Value = 0.02;
+
+            % Create TextArea
+            app.TextArea = uitextarea(app.GridLayout5);
+            app.TextArea.Layout.Row = [2 4];
+            app.TextArea.Layout.Column = [3 4];
+
+            % Create ParameterFileGrid
+            app.ParameterFileGrid = uigridlayout(app.GridLayout5);
+            app.ParameterFileGrid.ColumnWidth = {'1x', 126, 126};
+            app.ParameterFileGrid.RowHeight = {'1x'};
+            app.ParameterFileGrid.Padding = [0 6 0 0];
+            app.ParameterFileGrid.Layout.Row = 5;
+            app.ParameterFileGrid.Layout.Column = [1 2];
+
+            % Create Button2_2
+            app.Button2_2 = uibutton(app.ParameterFileGrid, 'push');
+            app.Button2_2.ButtonPushedFcn = createCallbackFcn(app, @ResetParameterButtonPushed, true);
+            app.Button2_2.Layout.Row = 1;
+            app.Button2_2.Layout.Column = 3;
+            app.Button2_2.Text = '恢复默认设置';
+
+            % Create Panel8
+            app.Panel8 = uipanel(app.GridLayout5);
+            app.Panel8.Title = '任务场景';
+            app.Panel8.Layout.Row = [2 4];
+            app.Panel8.Layout.Column = 1;
+
+            % Create GridLayout19
+            app.GridLayout19 = uigridlayout(app.Panel8);
+            app.GridLayout19.ColumnWidth = {'fit', 70, 'fit'};
+            app.GridLayout19.RowHeight = {34, 34, 34, 34, 34, 34, 34, 34, 34};
+
+            % Create MinPulseField_4
+            app.MinPulseField_4 = uieditfield(app.GridLayout19, 'numeric');
+            app.MinPulseField_4.Limits = [0 Inf];
+            app.MinPulseField_4.Layout.Row = 6;
+            app.MinPulseField_4.Layout.Column = 2;
+            app.MinPulseField_4.Value = 0.005;
+
+            % Create Label24_32
+            app.Label24_32 = uilabel(app.GridLayout19);
+            app.Label24_32.Layout.Row = 6;
+            app.Label24_32.Layout.Column = 3;
+            app.Label24_32.Text = 's';
+
+            % Create Label38_5
+            app.Label38_5 = uilabel(app.GridLayout19);
+            app.Label38_5.Layout.Row = 6;
+            app.Label38_5.Layout.Column = 1;
+            app.Label38_5.Text = '时间步长dt';
+
+            % Create Label24_31
+            app.Label24_31 = uilabel(app.GridLayout19);
+            app.Label24_31.Layout.Row = 9;
+            app.Label24_31.Layout.Column = 3;
+            app.Label24_31.Text = 'm^3/s^2';
+
+            % Create SimulationTimeField_4
+            app.SimulationTimeField_4 = uieditfield(app.GridLayout19, 'numeric');
+            app.SimulationTimeField_4.Limits = [1 Inf];
+            app.SimulationTimeField_4.Layout.Row = 9;
+            app.SimulationTimeField_4.Layout.Column = 2;
+            app.SimulationTimeField_4.Value = 398600000000000;
+
+            % Create Label38_4
+            app.Label38_4 = uilabel(app.GridLayout19);
+            app.Label38_4.Layout.Row = 9;
+            app.Label38_4.Layout.Column = 1;
+            app.Label38_4.Text = '引力常数mu';
+
+            % Create Label24_30
+            app.Label24_30 = uilabel(app.GridLayout19);
+            app.Label24_30.Layout.Row = 8;
+            app.Label24_30.Layout.Column = 3;
+            app.Label24_30.Text = 'm';
+
+            % Create SimulationTimeField_3
+            app.SimulationTimeField_3 = uieditfield(app.GridLayout19, 'numeric');
+            app.SimulationTimeField_3.Limits = [1 Inf];
+            app.SimulationTimeField_3.Layout.Row = 8;
+            app.SimulationTimeField_3.Layout.Column = 2;
+            app.SimulationTimeField_3.Value = 400000;
+
+            % Create Label38_3
+            app.Label38_3 = uilabel(app.GridLayout19);
+            app.Label38_3.Layout.Row = 8;
+            app.Label38_3.Layout.Column = 1;
+            app.Label38_3.Text = '轨道高度h';
+
+            % Create Label24_29
+            app.Label24_29 = uilabel(app.GridLayout19);
+            app.Label24_29.Layout.Row = 7;
+            app.Label24_29.Layout.Column = 3;
+            app.Label24_29.Text = 'm';
+
+            % Create SimulationTimeField_2
+            app.SimulationTimeField_2 = uieditfield(app.GridLayout19, 'numeric');
+            app.SimulationTimeField_2.Limits = [1 Inf];
+            app.SimulationTimeField_2.Layout.Row = 7;
+            app.SimulationTimeField_2.Layout.Column = 2;
+            app.SimulationTimeField_2.Value = 6371000;
+
+            % Create Label38_2
+            app.Label38_2 = uilabel(app.GridLayout19);
+            app.Label38_2.Layout.Row = 7;
+            app.Label38_2.Layout.Column = 1;
+            app.Label38_2.Text = '地球半径R';
+
+            % Create Label24_6
+            app.Label24_6 = uilabel(app.GridLayout19);
+            app.Label24_6.Layout.Row = 5;
+            app.Label24_6.Layout.Column = 3;
+            app.Label24_6.Text = 's';
+
+            % Create Label24_5
+            app.Label24_5 = uilabel(app.GridLayout19);
+            app.Label24_5.Layout.Row = 4;
+            app.Label24_5.Layout.Column = 3;
+            app.Label24_5.Text = 'deg';
+
+            % Create Label24_4
+            app.Label24_4 = uilabel(app.GridLayout19);
+            app.Label24_4.Layout.Row = 3;
+            app.Label24_4.Layout.Column = 3;
+            app.Label24_4.Text = 'deg';
+
+            % Create Label24_3
+            app.Label24_3 = uilabel(app.GridLayout19);
+            app.Label24_3.Layout.Row = 2;
+            app.Label24_3.Layout.Column = 3;
+            app.Label24_3.Text = 'm';
+
+            % Create Label24_2
+            app.Label24_2 = uilabel(app.GridLayout19);
+            app.Label24_2.Layout.Row = 1;
+            app.Label24_2.Layout.Column = 3;
+            app.Label24_2.Text = 'm';
+
+            % Create EditField4
+            app.EditField4 = uieditfield(app.GridLayout19, 'text');
+            app.EditField4.HorizontalAlignment = 'right';
+            app.EditField4.Layout.Row = 4;
+            app.EditField4.Layout.Column = 2;
+            app.EditField4.Value = '[5,25,35]';
+
+            % Create Label27
+            app.Label27 = uilabel(app.GridLayout19);
+            app.Label27.Layout.Row = 4;
+            app.Label27.Layout.Column = 1;
+            app.Label27.Text = '目标姿态et';
+
+            % Create EditField3
+            app.EditField3 = uieditfield(app.GridLayout19, 'text');
+            app.EditField3.HorizontalAlignment = 'right';
+            app.EditField3.Layout.Row = 3;
+            app.EditField3.Layout.Column = 2;
+            app.EditField3.Value = '[0,15,55]';
+
+            % Create Label26
+            app.Label26 = uilabel(app.GridLayout19);
+            app.Label26.Layout.Row = 3;
+            app.Label26.Layout.Column = 1;
+            app.Label26.Text = '初始姿态e0';
+
+            % Create EditField2
+            app.EditField2 = uieditfield(app.GridLayout19, 'text');
+            app.EditField2.HorizontalAlignment = 'right';
+            app.EditField2.Layout.Row = 2;
+            app.EditField2.Layout.Column = 2;
+            app.EditField2.Value = '[5,25,35]';
+
+            % Create Label25
+            app.Label25 = uilabel(app.GridLayout19);
+            app.Label25.Layout.Row = 2;
+            app.Label25.Layout.Column = 1;
+            app.Label25.Text = '目标位置rt';
+
+            % Create EditField1
+            app.EditField1 = uieditfield(app.GridLayout19, 'text');
+            app.EditField1.HorizontalAlignment = 'right';
+            app.EditField1.Layout.Row = 1;
+            app.EditField1.Layout.Column = 2;
+            app.EditField1.Value = '[0,15,55]';
+
+            % Create Label24
+            app.Label24 = uilabel(app.GridLayout19);
+            app.Label24.Layout.Row = 1;
+            app.Label24.Layout.Column = 1;
+            app.Label24.Text = '初始位置r0';
+
+            % Create SimulationTimeField
+            app.SimulationTimeField = uieditfield(app.GridLayout19, 'numeric');
+            app.SimulationTimeField.Limits = [1 Inf];
+            app.SimulationTimeField.Layout.Row = 5;
+            app.SimulationTimeField.Layout.Column = 2;
+            app.SimulationTimeField.Value = 2000;
+
+            % Create Label38
+            app.Label38 = uilabel(app.GridLayout19);
+            app.Label38.Layout.Row = 5;
+            app.Label38.Layout.Column = 1;
+            app.Label38.Text = '仿真时间Ts';
+
+            % Create SpacecraftPanel
+            app.SpacecraftPanel = uipanel(app.GridLayout5);
+            app.SpacecraftPanel.Title = '飞行器';
+            app.SpacecraftPanel.Layout.Row = 2;
+            app.SpacecraftPanel.Layout.Column = 2;
+
+            % Create SpacecraftGrid
+            app.SpacecraftGrid = uigridlayout(app.SpacecraftPanel);
+            app.SpacecraftGrid.ColumnWidth = {67, 70, '1x'};
+            app.SpacecraftGrid.RowHeight = {34, 34, 34, 34};
+
+            % Create Label24_10
+            app.Label24_10 = uilabel(app.SpacecraftGrid);
+            app.Label24_10.Layout.Row = 4;
+            app.Label24_10.Layout.Column = 3;
+            app.Label24_10.Text = 'kg·m^2';
+
+            % Create Label24_9
+            app.Label24_9 = uilabel(app.SpacecraftGrid);
+            app.Label24_9.Layout.Row = 3;
+            app.Label24_9.Layout.Column = 3;
+            app.Label24_9.Text = 'kg·m^2';
+
+            % Create Label24_8
+            app.Label24_8 = uilabel(app.SpacecraftGrid);
+            app.Label24_8.Layout.Row = 2;
+            app.Label24_8.Layout.Column = 3;
+            app.Label24_8.Text = 'kg·m^2';
+
+            % Create Label24_7
+            app.Label24_7 = uilabel(app.SpacecraftGrid);
+            app.Label24_7.Layout.Row = 1;
+            app.Label24_7.Layout.Column = 3;
+            app.Label24_7.Text = 'kg';
+
+            % Create Label43
+            app.Label43 = uilabel(app.SpacecraftGrid);
+            app.Label43.Layout.Row = 1;
+            app.Label43.Layout.Column = 1;
+            app.Label43.Text = '质量m';
+
+            % Create MassField
+            app.MassField = uieditfield(app.SpacecraftGrid, 'numeric');
+            app.MassField.Limits = [0 Inf];
+            app.MassField.ValueDisplayFormat = '%.0f';
+            app.MassField.Layout.Row = 1;
+            app.MassField.Layout.Column = 2;
+            app.MassField.Value = 3700;
+
+            % Create Label44
+            app.Label44 = uilabel(app.SpacecraftGrid);
+            app.Label44.Layout.Row = 2;
+            app.Label44.Layout.Column = 1;
+            app.Label44.Text = '主惯量Ixx';
+
+            % Create JxxField
+            app.JxxField = uieditfield(app.SpacecraftGrid, 'numeric');
+            app.JxxField.Limits = [0 Inf];
+            app.JxxField.ValueDisplayFormat = '%.0f';
+            app.JxxField.Layout.Row = 2;
+            app.JxxField.Layout.Column = 2;
+            app.JxxField.Value = 10000;
+
+            % Create Label45
+            app.Label45 = uilabel(app.SpacecraftGrid);
+            app.Label45.Layout.Row = 3;
+            app.Label45.Layout.Column = 1;
+            app.Label45.Text = '主惯量Iyy';
+
+            % Create JyyField
+            app.JyyField = uieditfield(app.SpacecraftGrid, 'numeric');
+            app.JyyField.Limits = [0 Inf];
+            app.JyyField.ValueDisplayFormat = '%.0f';
+            app.JyyField.Layout.Row = 3;
+            app.JyyField.Layout.Column = 2;
+            app.JyyField.Value = 6000;
+
+            % Create Label46
+            app.Label46 = uilabel(app.SpacecraftGrid);
+            app.Label46.Layout.Row = 4;
+            app.Label46.Layout.Column = 1;
+            app.Label46.Text = '主惯量Izz';
+
+            % Create JzzField
+            app.JzzField = uieditfield(app.SpacecraftGrid, 'numeric');
+            app.JzzField.Limits = [0 Inf];
+            app.JzzField.ValueDisplayFormat = '%.0f';
+            app.JzzField.Layout.Row = 4;
+            app.JzzField.Layout.Column = 2;
+            app.JzzField.Value = 13000;
+
+            % Create ControllerPanel
+            app.ControllerPanel = uipanel(app.GridLayout5);
+            app.ControllerPanel.Title = '控制器';
+            app.ControllerPanel.Layout.Row = 4;
+            app.ControllerPanel.Layout.Column = 2;
+
+            % Create ControllerGrid
+            app.ControllerGrid = uigridlayout(app.ControllerPanel);
+            app.ControllerGrid.ColumnWidth = {67, 70, '1x'};
+            app.ControllerGrid.RowHeight = {34};
+
+            % Create Label24_11
+            app.Label24_11 = uilabel(app.ControllerGrid);
+            app.Label24_11.Layout.Row = 1;
+            app.Label24_11.Layout.Column = 3;
+            app.Label24_11.Text = 's';
+
+            % Create Label47
+            app.Label47 = uilabel(app.ControllerGrid);
+            app.Label47.Layout.Row = 1;
+            app.Label47.Layout.Column = 1;
+            app.Label47.Text = '控制周期T';
+
+            % Create ControlPeriodField
+            app.ControlPeriodField = uieditfield(app.ControllerGrid, 'numeric');
+            app.ControlPeriodField.Limits = [0 Inf];
+            app.ControlPeriodField.Layout.Row = 1;
+            app.ControlPeriodField.Layout.Column = 2;
+            app.ControlPeriodField.Value = 0.4;
+
+            % Create Label4
+            app.Label4 = uilabel(app.GridLayout5);
+            app.Label4.FontSize = 22;
+            app.Label4.FontWeight = 'bold';
+            app.Label4.FontColor = [0.1 0.27 0.42];
+            app.Label4.Layout.Row = 1;
+            app.Label4.Layout.Column = 1;
+            app.Label4.Text = '输入条件设置';
 
             % Create OptimizationTab
             app.OptimizationTab = uitab(app.TabGroup);
@@ -3081,284 +3627,76 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.GridLayout7.RowHeight = {55, 260, 'fit'};
             app.GridLayout7.Padding = [22 18 22 18];
 
-            % Create Label7
-            app.Label7 = uilabel(app.GridLayout7);
-            app.Label7.FontSize = 22;
-            app.Label7.FontWeight = 'bold';
-            app.Label7.FontColor = [0.1 0.27 0.42];
-            app.Label7.Layout.Row = 1;
-            app.Label7.Layout.Column = 1;
-            app.Label7.Text = '布局优化设计';
+            % Create LayoutTemplateDropDown
+            app.LayoutTemplateDropDown = uidropdown(app.GridLayout7);
+            app.LayoutTemplateDropDown.Items = {'原布局'};
+            app.LayoutTemplateDropDown.ValueChangedFcn = createCallbackFcn(app, @LayoutTemplateDropDownValueChanged, true);
+            app.LayoutTemplateDropDown.Layout.Row = 1;
+            app.LayoutTemplateDropDown.Layout.Column = 5;
+            app.LayoutTemplateDropDown.Value = '原布局';
 
-            % Create ThrusterPanel_2
-            app.ThrusterPanel_2 = uipanel(app.GridLayout7);
-            app.ThrusterPanel_2.Title = '安装约束';
-            app.ThrusterPanel_2.Layout.Row = 2;
-            app.ThrusterPanel_2.Layout.Column = 1;
+            % Create DeleteLayoutButton
+            app.DeleteLayoutButton = uibutton(app.GridLayout7, 'push');
+            app.DeleteLayoutButton.ButtonPushedFcn = createCallbackFcn(app, @DeleteLayoutButtonPushed, true);
+            app.DeleteLayoutButton.Layout.Row = 1;
+            app.DeleteLayoutButton.Layout.Column = 4;
+            app.DeleteLayoutButton.Text = '删除布局';
 
-            % Create ThrusterGrid_2
-            app.ThrusterGrid_2 = uigridlayout(app.ThrusterPanel_2);
-            app.ThrusterGrid_2.ColumnWidth = {67, 70, '1x', 67, 70, '1x'};
-            app.ThrusterGrid_2.RowHeight = {34, 34, 34, 34, 34};
-
-            % Create Label34_4
-            app.Label34_4 = uilabel(app.ThrusterGrid_2);
-            app.Label34_4.Layout.Row = 3;
-            app.Label34_4.Layout.Column = 4;
-            app.Label34_4.Text = '安装边界W';
-
-            % Create NumericEditField2_4
-            app.NumericEditField2_4 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.NumericEditField2_4.Limits = [0 Inf];
-            app.NumericEditField2_4.ValueChangedFcn = createCallbackFcn(app, @LayoutBoundaryValueChanged, true);
-            app.NumericEditField2_4.Layout.Row = 3;
-            app.NumericEditField2_4.Layout.Column = 5;
-            app.NumericEditField2_4.Value = 0.6;
-
-            % Create Label33_2
-            app.Label33_2 = uilabel(app.ThrusterGrid_2);
-            app.Label33_2.Layout.Row = 2;
-            app.Label33_2.Layout.Column = 4;
-            app.Label33_2.Text = '安装边界L';
-
-            % Create NumericEditField1_2
-            app.NumericEditField1_2 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.NumericEditField1_2.Limits = [0 Inf];
-            app.NumericEditField1_2.ValueChangedFcn = createCallbackFcn(app, @LayoutBoundaryValueChanged, true);
-            app.NumericEditField1_2.Layout.Row = 2;
-            app.NumericEditField1_2.Layout.Column = 5;
-            app.NumericEditField1_2.Value = 0.6;
-
-            % Create FmaxField_2
-            app.FmaxField_2 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.FmaxField_2.Limits = [0 Inf];
-            app.FmaxField_2.Layout.Row = 1;
-            app.FmaxField_2.Layout.Column = 2;
-            app.FmaxField_2.Value = 12;
-
-            % Create Label49_2
-            app.Label49_2 = uilabel(app.ThrusterGrid_2);
-            app.Label49_2.Layout.Row = 1;
-            app.Label49_2.Layout.Column = 1;
-            app.Label49_2.Text = '总台数Num';
-
-            % Create Label24_19
-            app.Label24_19 = uilabel(app.ThrusterGrid_2);
-            app.Label24_19.Layout.Row = 1;
-            app.Label24_19.Layout.Column = 3;
-            app.Label24_19.Text = '';
-
-            % Create Label24_20
-            app.Label24_20 = uilabel(app.ThrusterGrid_2);
-            app.Label24_20.Layout.Row = 1;
-            app.Label24_20.Layout.Column = 3;
-            app.Label24_20.Text = '台';
-
-            % Create Label24_22
-            app.Label24_22 = uilabel(app.ThrusterGrid_2);
-            app.Label24_22.Layout.Row = 2;
-            app.Label24_22.Layout.Column = 6;
-            app.Label24_22.Text = 'm';
-
-            % Create Label24_23
-            app.Label24_23 = uilabel(app.ThrusterGrid_2);
-            app.Label24_23.Layout.Row = 3;
-            app.Label24_23.Layout.Column = 6;
-            app.Label24_23.Text = 'm';
-
-            % Create Label34_5
-            app.Label34_5 = uilabel(app.ThrusterGrid_2);
-            app.Label34_5.Layout.Row = 4;
-            app.Label34_5.Layout.Column = 4;
-            app.Label34_5.Text = '最小间距d';
-
-            % Create NumericEditField2_5
-            app.NumericEditField2_5 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.NumericEditField2_5.Limits = [0 Inf];
-            app.NumericEditField2_5.Layout.Row = 4;
-            app.NumericEditField2_5.Layout.Column = 5;
-
-            % Create Label24_24
-            app.Label24_24 = uilabel(app.ThrusterGrid_2);
-            app.Label24_24.Layout.Row = 4;
-            app.Label24_24.Layout.Column = 6;
-            app.Label24_24.Text = 'm';
-
-            % Create Label34_6
-            app.Label34_6 = uilabel(app.ThrusterGrid_2);
-            app.Label34_6.Layout.Row = 5;
-            app.Label34_6.Layout.Column = 4;
-            app.Label34_6.Text = '最小夹角θ';
-
-            % Create NumericEditField2_6
-            app.NumericEditField2_6 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.NumericEditField2_6.Limits = [0 Inf];
-            app.NumericEditField2_6.Layout.Row = 5;
-            app.NumericEditField2_6.Layout.Column = 5;
-
-            % Create Label24_25
-            app.Label24_25 = uilabel(app.ThrusterGrid_2);
-            app.Label24_25.Layout.Row = 5;
-            app.Label24_25.Layout.Column = 6;
-            app.Label24_25.Text = 'deg';
-
-            % Create Label49_4
-            app.Label49_4 = uilabel(app.ThrusterGrid_2);
-            app.Label49_4.Layout.Row = 1;
-            app.Label49_4.Layout.Column = 4;
-            app.Label49_4.Text = '安装面X';
-
-            % Create FmaxField_4
-            app.FmaxField_4 = uieditfield(app.ThrusterGrid_2, 'numeric');
-            app.FmaxField_4.Limits = [0 Inf];
-            app.FmaxField_4.Layout.Row = 1;
-            app.FmaxField_4.Layout.Column = 5;
-            app.FmaxField_4.Value = 2;
-
-            % Create Label24_33
-            app.Label24_33 = uilabel(app.ThrusterGrid_2);
-            app.Label24_33.Layout.Row = 1;
-            app.Label24_33.Layout.Column = 6;
-            app.Label24_33.Text = '面';
-
-            % Create Label33_3
-            app.Label33_3 = uilabel(app.ThrusterGrid_2);
-            app.Label33_3.Layout.Row = 2;
-            app.Label33_3.Layout.Column = 1;
-            app.Label33_3.Text = '位置参数a';
-
-            % Create Label24_34
-            app.Label24_34 = uilabel(app.ThrusterGrid_2);
-            app.Label24_34.Layout.Row = 2;
-            app.Label24_34.Layout.Column = 3;
-            app.Label24_34.Text = 'm';
-
-            % Create Label33_4
-            app.Label33_4 = uilabel(app.ThrusterGrid_2);
-            app.Label33_4.Layout.Row = 3;
-            app.Label33_4.Layout.Column = 1;
-            app.Label33_4.Text = '位置参数b';
-
-            % Create Label24_35
-            app.Label24_35 = uilabel(app.ThrusterGrid_2);
-            app.Label24_35.Layout.Row = 3;
-            app.Label24_35.Layout.Column = 3;
-            app.Label24_35.Text = 'm';
-
-            % Create Label33_5
-            app.Label33_5 = uilabel(app.ThrusterGrid_2);
-            app.Label33_5.Layout.Row = 4;
-            app.Label33_5.Layout.Column = 1;
-            app.Label33_5.Text = '方向参数α';
-
-            % Create Label24_36
-            app.Label24_36 = uilabel(app.ThrusterGrid_2);
-            app.Label24_36.Layout.Row = 4;
-            app.Label24_36.Layout.Column = 3;
-            app.Label24_36.Text = 'rad';
-
-            % Create Label33_6
-            app.Label33_6 = uilabel(app.ThrusterGrid_2);
-            app.Label33_6.Layout.Row = 5;
-            app.Label33_6.Layout.Column = 1;
-            app.Label33_6.Text = '方向参数β';
-
-            % Create Label24_37
-            app.Label24_37 = uilabel(app.ThrusterGrid_2);
-            app.Label24_37.Layout.Row = 5;
-            app.Label24_37.Layout.Column = 3;
-            app.Label24_37.Text = 'rad';
-
-            % Create EditField1_2
-            app.EditField1_2 = uieditfield(app.ThrusterGrid_2, 'text');
-            app.EditField1_2.HorizontalAlignment = 'right';
-            app.EditField1_2.Layout.Row = 2;
-            app.EditField1_2.Layout.Column = 2;
-            app.EditField1_2.Value = '[0,0.6]';
-
-            % Create EditField1_3
-            app.EditField1_3 = uieditfield(app.ThrusterGrid_2, 'text');
-            app.EditField1_3.HorizontalAlignment = 'right';
-            app.EditField1_3.Layout.Row = 3;
-            app.EditField1_3.Layout.Column = 2;
-            app.EditField1_3.Value = '[-0.6,0.6]';
-
-            % Create EditField1_4
-            app.EditField1_4 = uieditfield(app.ThrusterGrid_2, 'text');
-            app.EditField1_4.HorizontalAlignment = 'right';
-            app.EditField1_4.Layout.Row = 4;
-            app.EditField1_4.Layout.Column = 2;
-            app.EditField1_4.Value = '[0,2π]';
-
-            % Create EditField1_5
-            app.EditField1_5 = uieditfield(app.ThrusterGrid_2, 'text');
-            app.EditField1_5.HorizontalAlignment = 'right';
-            app.EditField1_5.Layout.Row = 5;
-            app.EditField1_5.Layout.Column = 2;
-            app.EditField1_5.Value = '[0,0.5π]';
-
-            % Create Panel10_3
-            app.Panel10_3 = uipanel(app.GridLayout7);
-            app.Panel10_3.Title = '遗传算法设置';
-            app.Panel10_3.Layout.Row = 3;
-            app.Panel10_3.Layout.Column = 1;
-
-            % Create GridLayout21_3
-            app.GridLayout21_3 = uigridlayout(app.Panel10_3);
-            app.GridLayout21_3.RowHeight = {26, 38, 26, 38};
-
-            % Create Label35_3
-            app.Label35_3 = uilabel(app.GridLayout21_3);
-            app.Label35_3.Layout.Row = 1;
-            app.Label35_3.Layout.Column = 1;
-            app.Label35_3.Text = '种群规模';
-
-            % Create PopulationField
-            app.PopulationField = uieditfield(app.GridLayout21_3, 'numeric');
-            app.PopulationField.Limits = [10 Inf];
-            app.PopulationField.HorizontalAlignment = 'left';
-            app.PopulationField.Layout.Row = 2;
-            app.PopulationField.Layout.Column = 1;
-            app.PopulationField.Value = 500;
-
-            % Create Label36_3
-            app.Label36_3 = uilabel(app.GridLayout21_3);
-            app.Label36_3.Layout.Row = 1;
-            app.Label36_3.Layout.Column = 2;
-            app.Label36_3.Text = '最大迭代次数';
-
-            % Create GenerationField_3
-            app.GenerationField_3 = uieditfield(app.GridLayout21_3, 'numeric');
-            app.GenerationField_3.Limits = [1 Inf];
-            app.GenerationField_3.HorizontalAlignment = 'left';
-            app.GenerationField_3.Layout.Row = 2;
-            app.GenerationField_3.Layout.Column = 2;
-            app.GenerationField_3.Value = 50;
-
-            % Create Label37
-            app.Label37 = uilabel(app.GridLayout21_3);
-            app.Label37.Layout.Row = 3;
-            app.Label37.Layout.Column = 1;
-            app.Label37.Text = '优化目标';
-
-            % Create DropDown1
-            app.DropDown1 = uidropdown(app.GridLayout21_3);
-            app.DropDown1.Items = {'控制能力优先', '综合评价优先', '能耗与控制能力折中'};
-            app.DropDown1.Layout.Row = 4;
-            app.DropDown1.Layout.Column = 1;
-            app.DropDown1.Value = '控制能力优先';
-
-            % Create StartOptimizationButton_3
-            app.StartOptimizationButton_3 = uibutton(app.GridLayout21_3, 'push');
-            app.StartOptimizationButton_3.ButtonPushedFcn = createCallbackFcn(app, @StartOptimizationButtonPushed, true);
-            app.StartOptimizationButton_3.Layout.Row = 4;
-            app.StartOptimizationButton_3.Layout.Column = 2;
-            app.StartOptimizationButton_3.Text = '开始优化';
+            % Create ApplyLayoutButton_2
+            app.ApplyLayoutButton_2 = uibutton(app.GridLayout7, 'push');
+            app.ApplyLayoutButton_2.ButtonPushedFcn = createCallbackFcn(app, @ImportLayoutButtonPushed, true);
+            app.ApplyLayoutButton_2.Layout.Row = 1;
+            app.ApplyLayoutButton_2.Layout.Column = 3;
+            app.ApplyLayoutButton_2.Text = '导入布局';
 
             % Create LayoutViewTabGroup
             app.LayoutViewTabGroup = uitabgroup(app.GridLayout7);
             app.LayoutViewTabGroup.Layout.Row = [2 3];
             app.LayoutViewTabGroup.Layout.Column = [2 5];
+
+            % Create Layout3DTab
+            app.Layout3DTab = uitab(app.LayoutViewTabGroup);
+            app.Layout3DTab.Title = '当前布局';
+
+            % Create Layout3DGrid
+            app.Layout3DGrid = uigridlayout(app.Layout3DTab);
+            app.Layout3DGrid.ColumnWidth = {'1x'};
+            app.Layout3DGrid.RowHeight = {'1x'};
+
+            % Create LayoutAxes
+            app.LayoutAxes = uiaxes(app.Layout3DGrid);
+            app.LayoutAxes.Layout.Row = 1;
+            app.LayoutAxes.Layout.Column = 1;
+            app.LayoutAxes.Visible = 'off';
+
+            % Create LayoutViewsTab
+            app.LayoutViewsTab = uitab(app.LayoutViewTabGroup);
+            app.LayoutViewsTab.Title = '三视图';
+
+            % Create LayoutViewsGrid
+            app.LayoutViewsGrid = uigridlayout(app.LayoutViewsTab);
+            app.LayoutViewsGrid.ColumnWidth = {'1x', '1x', '1x'};
+            app.LayoutViewsGrid.RowHeight = {'1x'};
+            app.LayoutViewsGrid.ColumnSpacing = 8;
+            app.LayoutViewsGrid.Padding = [8 8 8 8];
+
+            % Create LayoutXZAxes
+            app.LayoutXZAxes = uiaxes(app.LayoutViewsGrid);
+            app.LayoutXZAxes.Layout.Row = 1;
+            app.LayoutXZAxes.Layout.Column = 3;
+            app.LayoutXZAxes.Visible = 'off';
+
+            % Create LayoutXYAxes
+            app.LayoutXYAxes = uiaxes(app.LayoutViewsGrid);
+            app.LayoutXYAxes.Layout.Row = 1;
+            app.LayoutXYAxes.Layout.Column = 2;
+            app.LayoutXYAxes.Visible = 'off';
+
+            % Create LayoutYZAxes
+            app.LayoutYZAxes = uiaxes(app.LayoutViewsGrid);
+            app.LayoutYZAxes.Layout.Row = 1;
+            app.LayoutYZAxes.Layout.Column = 1;
+            app.LayoutYZAxes.Visible = 'off';
 
             % Create LayoutParametersTab
             app.LayoutParametersTab = uitab(app.LayoutViewTabGroup);
@@ -3379,704 +3717,1233 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.LayoutTable.Layout.Row = 1;
             app.LayoutTable.Layout.Column = 1;
 
-            % Create LayoutViewsTab
-            app.LayoutViewsTab = uitab(app.LayoutViewTabGroup);
-            app.LayoutViewsTab.Title = '三视图';
-
-            % Create LayoutViewsGrid
-            app.LayoutViewsGrid = uigridlayout(app.LayoutViewsTab);
-            app.LayoutViewsGrid.ColumnWidth = {'1x', '1x', '1x'};
-            app.LayoutViewsGrid.RowHeight = {'1x'};
-            app.LayoutViewsGrid.ColumnSpacing = 8;
-            app.LayoutViewsGrid.Padding = [8 8 8 8];
-
-            % Create LayoutYZAxes
-            app.LayoutYZAxes = uiaxes(app.LayoutViewsGrid);
-            app.LayoutYZAxes.Layout.Row = 1;
-            app.LayoutYZAxes.Layout.Column = 1;
-
-            % Create LayoutXYAxes
-            app.LayoutXYAxes = uiaxes(app.LayoutViewsGrid);
-            app.LayoutXYAxes.Layout.Row = 1;
-            app.LayoutXYAxes.Layout.Column = 2;
-
-            % Create LayoutXZAxes
-            app.LayoutXZAxes = uiaxes(app.LayoutViewsGrid);
-            app.LayoutXZAxes.Layout.Row = 1;
-            app.LayoutXZAxes.Layout.Column = 3;
-
-            % Create Layout3DTab
-            app.Layout3DTab = uitab(app.LayoutViewTabGroup);
-            app.Layout3DTab.Title = '当前布局';
-
-            % Create Layout3DGrid
-            app.Layout3DGrid = uigridlayout(app.Layout3DTab);
-            app.Layout3DGrid.ColumnWidth = {'1x'};
-            app.Layout3DGrid.RowHeight = {'1x'};
-
-            % Create LayoutAxes
-            app.LayoutAxes = uiaxes(app.Layout3DGrid);
-            app.LayoutAxes.Layout.Row = 1;
-            app.LayoutAxes.Layout.Column = 1;
-
-            % Create ApplyLayoutButton_2
-            app.ApplyLayoutButton_2 = uibutton(app.GridLayout7, 'push');
-            app.ApplyLayoutButton_2.ButtonPushedFcn = createCallbackFcn(app, @ImportLayoutButtonPushed, true);
-            app.ApplyLayoutButton_2.Layout.Row = 1;
-            app.ApplyLayoutButton_2.Layout.Column = 3;
-            app.ApplyLayoutButton_2.Text = '导入布局';
-
-            % Create DeleteLayoutButton
-            app.DeleteLayoutButton = uibutton(app.GridLayout7, 'push');
-            app.DeleteLayoutButton.ButtonPushedFcn = createCallbackFcn(app, @DeleteLayoutButtonPushed, true);
-            app.DeleteLayoutButton.Layout.Row = 1;
-            app.DeleteLayoutButton.Layout.Column = 4;
-            app.DeleteLayoutButton.Text = '删除布局';
-
-            % Create LayoutTemplateDropDown
-            app.LayoutTemplateDropDown = uidropdown(app.GridLayout7);
-            app.LayoutTemplateDropDown.Items = {'原布局'};
-            app.LayoutTemplateDropDown.ValueChangedFcn = createCallbackFcn(app, @LayoutTemplateDropDownValueChanged, true);
-            app.LayoutTemplateDropDown.Layout.Row = 1;
-            app.LayoutTemplateDropDown.Layout.Column = 5;
-            app.LayoutTemplateDropDown.Value = '原布局';
-
-            % Create ParameterTab
-            app.ParameterTab = uitab(app.TabGroup);
-            app.ParameterTab.Title = '输入条件';
-
-            % Create GridLayout5
-            app.GridLayout5 = uigridlayout(app.ParameterTab);
-            app.GridLayout5.ColumnWidth = {'1x', '1x', '1x', '1x'};
-            app.GridLayout5.RowHeight = {55, 220, 130, 90, 52};
-            app.GridLayout5.ColumnSpacing = 16;
-            app.GridLayout5.Padding = [24 18 24 18];
-
-            % Create Label4
-            app.Label4 = uilabel(app.GridLayout5);
-            app.Label4.FontSize = 22;
-            app.Label4.FontWeight = 'bold';
-            app.Label4.FontColor = [0.1 0.27 0.42];
-            app.Label4.Layout.Row = 1;
-            app.Label4.Layout.Column = 1;
-            app.Label4.Text = '输入条件设置';
-
-            % Create ControllerPanel
-            app.ControllerPanel = uipanel(app.GridLayout5);
-            app.ControllerPanel.Title = '控制器';
-            app.ControllerPanel.Layout.Row = 4;
-            app.ControllerPanel.Layout.Column = 2;
-
-            % Create ControllerGrid
-            app.ControllerGrid = uigridlayout(app.ControllerPanel);
-            app.ControllerGrid.ColumnWidth = {67, 70, '1x'};
-            app.ControllerGrid.RowHeight = {34};
-
-            % Create ControlPeriodField
-            app.ControlPeriodField = uieditfield(app.ControllerGrid, 'numeric');
-            app.ControlPeriodField.Limits = [0 Inf];
-            app.ControlPeriodField.Layout.Row = 1;
-            app.ControlPeriodField.Layout.Column = 2;
-            app.ControlPeriodField.Value = 0.4;
-
-            % Create Label47
-            app.Label47 = uilabel(app.ControllerGrid);
-            app.Label47.Layout.Row = 1;
-            app.Label47.Layout.Column = 1;
-            app.Label47.Text = '控制周期T';
-
-            % Create Label24_11
-            app.Label24_11 = uilabel(app.ControllerGrid);
-            app.Label24_11.Layout.Row = 1;
-            app.Label24_11.Layout.Column = 3;
-            app.Label24_11.Text = 's';
-
-            % Create SpacecraftPanel
-            app.SpacecraftPanel = uipanel(app.GridLayout5);
-            app.SpacecraftPanel.Title = '飞行器';
-            app.SpacecraftPanel.Layout.Row = 2;
-            app.SpacecraftPanel.Layout.Column = 2;
-
-            % Create SpacecraftGrid
-            app.SpacecraftGrid = uigridlayout(app.SpacecraftPanel);
-            app.SpacecraftGrid.ColumnWidth = {67, 70, '1x'};
-            app.SpacecraftGrid.RowHeight = {34, 34, 34, 34};
-
-            % Create JzzField
-            app.JzzField = uieditfield(app.SpacecraftGrid, 'numeric');
-            app.JzzField.Limits = [0 Inf];
-            app.JzzField.ValueDisplayFormat = '%.0f';
-            app.JzzField.Layout.Row = 4;
-            app.JzzField.Layout.Column = 2;
-            app.JzzField.Value = 13000;
-
-            % Create Label46
-            app.Label46 = uilabel(app.SpacecraftGrid);
-            app.Label46.Layout.Row = 4;
-            app.Label46.Layout.Column = 1;
-            app.Label46.Text = '主惯量Izz';
-
-            % Create JyyField
-            app.JyyField = uieditfield(app.SpacecraftGrid, 'numeric');
-            app.JyyField.Limits = [0 Inf];
-            app.JyyField.ValueDisplayFormat = '%.0f';
-            app.JyyField.Layout.Row = 3;
-            app.JyyField.Layout.Column = 2;
-            app.JyyField.Value = 6000;
-
-            % Create Label45
-            app.Label45 = uilabel(app.SpacecraftGrid);
-            app.Label45.Layout.Row = 3;
-            app.Label45.Layout.Column = 1;
-            app.Label45.Text = '主惯量Iyy';
-
-            % Create JxxField
-            app.JxxField = uieditfield(app.SpacecraftGrid, 'numeric');
-            app.JxxField.Limits = [0 Inf];
-            app.JxxField.ValueDisplayFormat = '%.0f';
-            app.JxxField.Layout.Row = 2;
-            app.JxxField.Layout.Column = 2;
-            app.JxxField.Value = 10000;
-
-            % Create Label44
-            app.Label44 = uilabel(app.SpacecraftGrid);
-            app.Label44.Layout.Row = 2;
-            app.Label44.Layout.Column = 1;
-            app.Label44.Text = '主惯量Ixx';
-
-            % Create MassField
-            app.MassField = uieditfield(app.SpacecraftGrid, 'numeric');
-            app.MassField.Limits = [0 Inf];
-            app.MassField.ValueDisplayFormat = '%.0f';
-            app.MassField.Layout.Row = 1;
-            app.MassField.Layout.Column = 2;
-            app.MassField.Value = 3700;
-
-            % Create Label43
-            app.Label43 = uilabel(app.SpacecraftGrid);
-            app.Label43.Layout.Row = 1;
-            app.Label43.Layout.Column = 1;
-            app.Label43.Text = '质量m';
-
-            % Create Label24_7
-            app.Label24_7 = uilabel(app.SpacecraftGrid);
-            app.Label24_7.Layout.Row = 1;
-            app.Label24_7.Layout.Column = 3;
-            app.Label24_7.Text = 'kg';
-
-            % Create Label24_8
-            app.Label24_8 = uilabel(app.SpacecraftGrid);
-            app.Label24_8.Layout.Row = 2;
-            app.Label24_8.Layout.Column = 3;
-            app.Label24_8.Text = 'kg·m^2';
-
-            % Create Label24_9
-            app.Label24_9 = uilabel(app.SpacecraftGrid);
-            app.Label24_9.Layout.Row = 3;
-            app.Label24_9.Layout.Column = 3;
-            app.Label24_9.Text = 'kg·m^2';
-
-            % Create Label24_10
-            app.Label24_10 = uilabel(app.SpacecraftGrid);
-            app.Label24_10.Layout.Row = 4;
-            app.Label24_10.Layout.Column = 3;
-            app.Label24_10.Text = 'kg·m^2';
-
-            % Create Panel8
-            app.Panel8 = uipanel(app.GridLayout5);
-            app.Panel8.Title = '任务场景';
-            app.Panel8.Layout.Row = [2 4];
-            app.Panel8.Layout.Column = 1;
-
-            % Create GridLayout19
-            app.GridLayout19 = uigridlayout(app.Panel8);
-            app.GridLayout19.ColumnWidth = {'fit', 70, 'fit'};
-            app.GridLayout19.RowHeight = {34, 34, 34, 34, 34, 34, 34, 34, 34};
-
-            % Create Label38
-            app.Label38 = uilabel(app.GridLayout19);
-            app.Label38.Layout.Row = 5;
-            app.Label38.Layout.Column = 1;
-            app.Label38.Text = '仿真时间Ts';
-
-            % Create SimulationTimeField
-            app.SimulationTimeField = uieditfield(app.GridLayout19, 'numeric');
-            app.SimulationTimeField.Limits = [1 Inf];
-            app.SimulationTimeField.Layout.Row = 5;
-            app.SimulationTimeField.Layout.Column = 2;
-            app.SimulationTimeField.Value = 2000;
-
-            % Create Label24
-            app.Label24 = uilabel(app.GridLayout19);
-            app.Label24.Layout.Row = 1;
-            app.Label24.Layout.Column = 1;
-            app.Label24.Text = '初始位置r0';
-
-            % Create EditField1
-            app.EditField1 = uieditfield(app.GridLayout19, 'text');
-            app.EditField1.HorizontalAlignment = 'right';
-            app.EditField1.Layout.Row = 1;
-            app.EditField1.Layout.Column = 2;
-            app.EditField1.Value = '[0,15,55]';
-
-            % Create Label25
-            app.Label25 = uilabel(app.GridLayout19);
-            app.Label25.Layout.Row = 2;
-            app.Label25.Layout.Column = 1;
-            app.Label25.Text = '目标位置rt';
-
-            % Create EditField2
-            app.EditField2 = uieditfield(app.GridLayout19, 'text');
-            app.EditField2.HorizontalAlignment = 'right';
-            app.EditField2.Layout.Row = 2;
-            app.EditField2.Layout.Column = 2;
-            app.EditField2.Value = '[5,25,35]';
-
-            % Create Label26
-            app.Label26 = uilabel(app.GridLayout19);
-            app.Label26.Layout.Row = 3;
-            app.Label26.Layout.Column = 1;
-            app.Label26.Text = '初始姿态e0';
-
-            % Create EditField3
-            app.EditField3 = uieditfield(app.GridLayout19, 'text');
-            app.EditField3.HorizontalAlignment = 'right';
-            app.EditField3.Layout.Row = 3;
-            app.EditField3.Layout.Column = 2;
-            app.EditField3.Value = '[0,15,55]';
-
-            % Create Label27
-            app.Label27 = uilabel(app.GridLayout19);
-            app.Label27.Layout.Row = 4;
-            app.Label27.Layout.Column = 1;
-            app.Label27.Text = '目标姿态et';
-
-            % Create EditField4
-            app.EditField4 = uieditfield(app.GridLayout19, 'text');
-            app.EditField4.HorizontalAlignment = 'right';
-            app.EditField4.Layout.Row = 4;
-            app.EditField4.Layout.Column = 2;
-            app.EditField4.Value = '[5,25,35]';
-
-            % Create Label24_2
-            app.Label24_2 = uilabel(app.GridLayout19);
-            app.Label24_2.Layout.Row = 1;
-            app.Label24_2.Layout.Column = 3;
-            app.Label24_2.Text = 'm';
-
-            % Create Label24_3
-            app.Label24_3 = uilabel(app.GridLayout19);
-            app.Label24_3.Layout.Row = 2;
-            app.Label24_3.Layout.Column = 3;
-            app.Label24_3.Text = 'm';
-
-            % Create Label24_4
-            app.Label24_4 = uilabel(app.GridLayout19);
-            app.Label24_4.Layout.Row = 3;
-            app.Label24_4.Layout.Column = 3;
-            app.Label24_4.Text = 'deg';
-
-            % Create Label24_5
-            app.Label24_5 = uilabel(app.GridLayout19);
-            app.Label24_5.Layout.Row = 4;
-            app.Label24_5.Layout.Column = 3;
-            app.Label24_5.Text = 'deg';
-
-            % Create Label24_6
-            app.Label24_6 = uilabel(app.GridLayout19);
-            app.Label24_6.Layout.Row = 5;
-            app.Label24_6.Layout.Column = 3;
-            app.Label24_6.Text = 's';
-
-            % Create Label38_2
-            app.Label38_2 = uilabel(app.GridLayout19);
-            app.Label38_2.Layout.Row = 7;
-            app.Label38_2.Layout.Column = 1;
-            app.Label38_2.Text = '地球半径R';
-
-            % Create SimulationTimeField_2
-            app.SimulationTimeField_2 = uieditfield(app.GridLayout19, 'numeric');
-            app.SimulationTimeField_2.Limits = [1 Inf];
-            app.SimulationTimeField_2.Layout.Row = 7;
-            app.SimulationTimeField_2.Layout.Column = 2;
-            app.SimulationTimeField_2.Value = 6371000;
-
-            % Create Label24_29
-            app.Label24_29 = uilabel(app.GridLayout19);
-            app.Label24_29.Layout.Row = 7;
-            app.Label24_29.Layout.Column = 3;
-            app.Label24_29.Text = 'm';
-
-            % Create Label38_3
-            app.Label38_3 = uilabel(app.GridLayout19);
-            app.Label38_3.Layout.Row = 8;
-            app.Label38_3.Layout.Column = 1;
-            app.Label38_3.Text = '轨道高度h';
-
-            % Create SimulationTimeField_3
-            app.SimulationTimeField_3 = uieditfield(app.GridLayout19, 'numeric');
-            app.SimulationTimeField_3.Limits = [1 Inf];
-            app.SimulationTimeField_3.Layout.Row = 8;
-            app.SimulationTimeField_3.Layout.Column = 2;
-            app.SimulationTimeField_3.Value = 400000;
-
-            % Create Label24_30
-            app.Label24_30 = uilabel(app.GridLayout19);
-            app.Label24_30.Layout.Row = 8;
-            app.Label24_30.Layout.Column = 3;
-            app.Label24_30.Text = 'm';
-
-            % Create Label38_4
-            app.Label38_4 = uilabel(app.GridLayout19);
-            app.Label38_4.Layout.Row = 9;
-            app.Label38_4.Layout.Column = 1;
-            app.Label38_4.Text = '引力常数mu';
-
-            % Create SimulationTimeField_4
-            app.SimulationTimeField_4 = uieditfield(app.GridLayout19, 'numeric');
-            app.SimulationTimeField_4.Limits = [1 Inf];
-            app.SimulationTimeField_4.Layout.Row = 9;
-            app.SimulationTimeField_4.Layout.Column = 2;
-            app.SimulationTimeField_4.Value = 398600000000000;
-
-            % Create Label24_31
-            app.Label24_31 = uilabel(app.GridLayout19);
-            app.Label24_31.Layout.Row = 9;
-            app.Label24_31.Layout.Column = 3;
-            app.Label24_31.Text = 'm^3/s^2';
-
-            % Create Label38_5
-            app.Label38_5 = uilabel(app.GridLayout19);
-            app.Label38_5.Layout.Row = 6;
-            app.Label38_5.Layout.Column = 1;
-            app.Label38_5.Text = '时间步长dt';
-
-            % Create Label24_32
-            app.Label24_32 = uilabel(app.GridLayout19);
-            app.Label24_32.Layout.Row = 6;
-            app.Label24_32.Layout.Column = 3;
-            app.Label24_32.Text = 's';
-
-            % Create MinPulseField_4
-            app.MinPulseField_4 = uieditfield(app.GridLayout19, 'numeric');
-            app.MinPulseField_4.Limits = [0 Inf];
-            app.MinPulseField_4.Layout.Row = 6;
-            app.MinPulseField_4.Layout.Column = 2;
-            app.MinPulseField_4.Value = 0.005;
-
-            % Create ParameterFileGrid
-            app.ParameterFileGrid = uigridlayout(app.GridLayout5);
-            app.ParameterFileGrid.ColumnWidth = {'1x', 126, 126};
-            app.ParameterFileGrid.RowHeight = {'1x'};
-            app.ParameterFileGrid.Padding = [0 6 0 0];
-            app.ParameterFileGrid.Layout.Row = 5;
-            app.ParameterFileGrid.Layout.Column = [1 2];
-
-            % Create Button2_2
-            app.Button2_2 = uibutton(app.ParameterFileGrid, 'push');
-            app.Button2_2.ButtonPushedFcn = createCallbackFcn(app, @ResetParameterButtonPushed, true);
-            app.Button2_2.Layout.Row = 1;
-            app.Button2_2.Layout.Column = 3;
-            app.Button2_2.Text = '恢复默认设置';
-
-            % Create TextArea
-            app.TextArea = uitextarea(app.GridLayout5);
-            app.TextArea.Layout.Row = [2 4];
-            app.TextArea.Layout.Column = [3 4];
-
-            % Create ThrusterPanel_3
-            app.ThrusterPanel_3 = uipanel(app.GridLayout5);
-            app.ThrusterPanel_3.Title = '推力器';
-            app.ThrusterPanel_3.Layout.Row = 3;
-            app.ThrusterPanel_3.Layout.Column = 2;
-
-            % Create ThrusterGrid_3
-            app.ThrusterGrid_3 = uigridlayout(app.ThrusterPanel_3);
-            app.ThrusterGrid_3.ColumnWidth = {67, 70, '1x'};
-            app.ThrusterGrid_3.RowHeight = {34, 34};
-
-            % Create MinPulseField_3
-            app.MinPulseField_3 = uieditfield(app.ThrusterGrid_3, 'numeric');
-            app.MinPulseField_3.Limits = [0 Inf];
-            app.MinPulseField_3.Layout.Row = 2;
-            app.MinPulseField_3.Layout.Column = 2;
-            app.MinPulseField_3.Value = 0.02;
-
-            % Create Label50_3
-            app.Label50_3 = uilabel(app.ThrusterGrid_3);
-            app.Label50_3.Layout.Row = 2;
-            app.Label50_3.Layout.Column = 1;
-            app.Label50_3.Text = '最小脉宽t';
-
-            % Create FmaxField_3
-            app.FmaxField_3 = uieditfield(app.ThrusterGrid_3, 'numeric');
-            app.FmaxField_3.Limits = [0 Inf];
-            app.FmaxField_3.Layout.Row = 1;
-            app.FmaxField_3.Layout.Column = 2;
-            app.FmaxField_3.Value = 10;
-
-            % Create Label49_3
-            app.Label49_3 = uilabel(app.ThrusterGrid_3);
-            app.Label49_3.Layout.Row = 1;
-            app.Label49_3.Layout.Column = 1;
-            app.Label49_3.Text = '标称推力F';
-
-            % Create Label24_26
-            app.Label24_26 = uilabel(app.ThrusterGrid_3);
-            app.Label24_26.Layout.Row = 1;
-            app.Label24_26.Layout.Column = 3;
-            app.Label24_26.Text = '';
-
-            % Create Label24_27
-            app.Label24_27 = uilabel(app.ThrusterGrid_3);
-            app.Label24_27.Layout.Row = 1;
-            app.Label24_27.Layout.Column = 3;
-            app.Label24_27.Text = 'N';
-
-            % Create Label24_28
-            app.Label24_28 = uilabel(app.ThrusterGrid_3);
-            app.Label24_28.Layout.Row = 2;
-            app.Label24_28.Layout.Column = 3;
-            app.Label24_28.Text = 's';
-
-            % Create ParameterFileGrid_2
-            app.ParameterFileGrid_2 = uigridlayout(app.GridLayout5);
-            app.ParameterFileGrid_2.ColumnWidth = {'1x', 126, 126};
-            app.ParameterFileGrid_2.RowHeight = {'1x'};
-            app.ParameterFileGrid_2.Padding = [0 6 0 0];
-            app.ParameterFileGrid_2.Layout.Row = 5;
-            app.ParameterFileGrid_2.Layout.Column = [3 4];
-
-            % Create Button2_4
-            app.Button2_4 = uibutton(app.ParameterFileGrid_2, 'push');
-            app.Button2_4.ButtonPushedFcn = createCallbackFcn(app, @LoadParameterButtonPushed, true);
-            app.Button2_4.Layout.Row = 1;
-            app.Button2_4.Layout.Column = 3;
-            app.Button2_4.Text = '加载参数文件';
-
-            % Create HomeTab
-            app.HomeTab = uitab(app.TabGroup);
-            app.HomeTab.Title = '项目首页';
-
-            % Create GridLayout4
-            app.GridLayout4 = uigridlayout(app.HomeTab);
-            app.GridLayout4.ColumnWidth = {'1x', '1x', '1x'};
-            app.GridLayout4.RowHeight = {80, 125, 125, 125};
-            app.GridLayout4.ColumnSpacing = 16;
-            app.GridLayout4.RowSpacing = 16;
-            app.GridLayout4.Padding = [26 20 26 20];
-
-            % Create Label3
-            app.Label3 = uilabel(app.GridLayout4);
-            app.Label3.HorizontalAlignment = 'center';
-            app.Label3.FontSize = 24;
-            app.Label3.FontWeight = 'bold';
-            app.Label3.FontColor = [0.1 0.27 0.42];
-            app.Label3.Layout.Row = 1;
-            app.Label3.Layout.Column = [1 3];
-            app.Label3.Text = {'机动飞行器姿轨耦合复用推力器'; '故障下的可重构性设计'};
-
-            % Create Panel2
-            app.Panel2 = uipanel(app.GridLayout4);
-            app.Panel2.BackgroundColor = [0.96 0.96 0.96];
-            app.Panel2.Layout.Row = 2;
-            app.Panel2.Layout.Column = 1;
-
-            % Create GridLayout13
-            app.GridLayout13 = uigridlayout(app.Panel2);
-            app.GridLayout13.ColumnWidth = {'1x'};
-            app.GridLayout13.RowHeight = {38, '1x'};
-            app.GridLayout13.Padding = [16 12 16 12];
-
-            % Create Label12
-            app.Label12 = uilabel(app.GridLayout13);
-            app.Label12.FontSize = 17;
-            app.Label12.FontWeight = 'bold';
-            app.Label12.FontColor = [0.1 0.27 0.42];
-            app.Label12.Layout.Row = 1;
-            app.Label12.Layout.Column = 1;
-            app.Label12.Text = '输入条件';
-
-            % Create Label13
-            app.Label13 = uilabel(app.GridLayout13);
-            app.Label13.FontSize = 13;
-            app.Label13.FontColor = [0.2 0.27 0.33];
-            app.Label13.Layout.Row = 2;
-            app.Label13.Layout.Column = 1;
-            app.Label13.Text = '任务场景｜参数设置';
-
-            % Create Panel3
-            app.Panel3 = uipanel(app.GridLayout4);
-            app.Panel3.BackgroundColor = [0.96 0.96 0.96];
-            app.Panel3.Layout.Row = 2;
-            app.Panel3.Layout.Column = 2;
-
-            % Create GridLayout14
-            app.GridLayout14 = uigridlayout(app.Panel3);
-            app.GridLayout14.ColumnWidth = {'1x'};
-            app.GridLayout14.RowHeight = {38, '1x'};
-            app.GridLayout14.Padding = [16 12 16 12];
-
-            % Create Label14
-            app.Label14 = uilabel(app.GridLayout14);
-            app.Label14.FontSize = 17;
-            app.Label14.FontWeight = 'bold';
-            app.Label14.FontColor = [0.1 0.27 0.42];
-            app.Label14.Layout.Row = 1;
-            app.Label14.Layout.Column = 1;
-            app.Label14.Text = '优化设计';
-
-            % Create Label15
-            app.Label15 = uilabel(app.GridLayout14);
-            app.Label15.FontSize = 13;
-            app.Label15.FontColor = [0.2 0.27 0.33];
-            app.Label15.Layout.Row = 2;
-            app.Label15.Layout.Column = 1;
-            app.Label15.Text = '安装约束｜优化算法｜布局显示';
-
-            % Create Panel5
-            app.Panel5 = uipanel(app.GridLayout4);
-            app.Panel5.BackgroundColor = [0.96 0.96 0.96];
-            app.Panel5.Layout.Row = 2;
-            app.Panel5.Layout.Column = 3;
-
-            % Create GridLayout16
-            app.GridLayout16 = uigridlayout(app.Panel5);
-            app.GridLayout16.ColumnWidth = {'1x'};
-            app.GridLayout16.RowHeight = {38, '1x'};
-            app.GridLayout16.Padding = [16 12 16 12];
-
-            % Create Label18
-            app.Label18 = uilabel(app.GridLayout16);
-            app.Label18.FontSize = 17;
-            app.Label18.FontWeight = 'bold';
-            app.Label18.FontColor = [0.1 0.27 0.42];
-            app.Label18.Layout.Row = 1;
-            app.Label18.Layout.Column = 1;
-            app.Label18.Text = '可重构判断';
-
-            % Create Label19
-            app.Label19 = uilabel(app.GridLayout16);
-            app.Label19.FontSize = 13;
-            app.Label19.FontColor = [0.2 0.27 0.33];
-            app.Label19.Layout.Row = 2;
-            app.Label19.Layout.Column = 1;
-            app.Label19.Text = '标况｜单台故障｜多台故障';
-
-            % Create Panel6
-            app.Panel6 = uipanel(app.GridLayout4);
-            app.Panel6.BackgroundColor = [0.96 0.96 0.96];
-            app.Panel6.Layout.Row = 3;
-            app.Panel6.Layout.Column = 1;
-
-            % Create GridLayout17
-            app.GridLayout17 = uigridlayout(app.Panel6);
-            app.GridLayout17.ColumnWidth = {'1x'};
-            app.GridLayout17.RowHeight = {38, '1x'};
-            app.GridLayout17.Padding = [16 12 16 12];
-
-            % Create Label20
-            app.Label20 = uilabel(app.GridLayout17);
-            app.Label20.FontSize = 17;
-            app.Label20.FontWeight = 'bold';
-            app.Label20.FontColor = [0.1 0.27 0.42];
-            app.Label20.Layout.Row = 1;
-            app.Label20.Layout.Column = 1;
-            app.Label20.Text = '可重构评价';
-
-            % Create Label21
-            app.Label21 = uilabel(app.GridLayout17);
-            app.Label21.WordWrap = 'on';
-            app.Label21.FontSize = 13;
-            app.Label21.FontColor = [0.2 0.27 0.33];
-            app.Label21.Layout.Row = 2;
-            app.Label21.Layout.Column = 1;
-            app.Label21.Text = '评价指标｜综合评价';
-
-            % Create Panel7
-            app.Panel7 = uipanel(app.GridLayout4);
-            app.Panel7.BackgroundColor = [0.96 0.96 0.96];
-            app.Panel7.Layout.Row = 3;
-            app.Panel7.Layout.Column = 2;
-
-            % Create GridLayout18
-            app.GridLayout18 = uigridlayout(app.Panel7);
-            app.GridLayout18.ColumnWidth = {'1x'};
-            app.GridLayout18.RowHeight = {38, '1x'};
-            app.GridLayout18.Padding = [16 12 16 12];
-
-            % Create Label22
-            app.Label22 = uilabel(app.GridLayout18);
-            app.Label22.FontSize = 17;
-            app.Label22.FontWeight = 'bold';
-            app.Label22.FontColor = [0.1 0.27 0.42];
-            app.Label22.Layout.Row = 1;
-            app.Label22.Layout.Column = 1;
-            app.Label22.Text = '调用策略';
-
-            % Create Label23
-            app.Label23 = uilabel(app.GridLayout18);
-            app.Label23.FontSize = 13;
-            app.Label23.FontColor = [0.2 0.27 0.33];
-            app.Label23.Layout.Row = 2;
-            app.Label23.Layout.Column = 1;
-            app.Label23.Text = '复用策略｜分配策略';
-
-            % Create HomeSimulationPanel
-            app.HomeSimulationPanel = uipanel(app.GridLayout4);
-            app.HomeSimulationPanel.BackgroundColor = [0.96 0.96 0.96];
-            app.HomeSimulationPanel.Layout.Row = 3;
-            app.HomeSimulationPanel.Layout.Column = 3;
-
-            % Create HomeSimulationGrid
-            app.HomeSimulationGrid = uigridlayout(app.HomeSimulationPanel);
-            app.HomeSimulationGrid.ColumnWidth = {'1x'};
-            app.HomeSimulationGrid.RowHeight = {38, '1x'};
-            app.HomeSimulationGrid.Padding = [16 12 16 12];
-
-            % Create HomeSimulationDesc
-            app.HomeSimulationDesc = uilabel(app.HomeSimulationGrid);
-            app.HomeSimulationDesc.FontSize = 13;
-            app.HomeSimulationDesc.FontColor = [0.2 0.27 0.33];
-            app.HomeSimulationDesc.Layout.Row = 2;
-            app.HomeSimulationDesc.Layout.Column = 1;
-            app.HomeSimulationDesc.Text = '位置响应｜姿态响应';
-
-            % Create HomeSimulationTitle
-            app.HomeSimulationTitle = uilabel(app.HomeSimulationGrid);
-            app.HomeSimulationTitle.FontSize = 17;
-            app.HomeSimulationTitle.FontWeight = 'bold';
-            app.HomeSimulationTitle.FontColor = [0.1 0.27 0.42];
-            app.HomeSimulationTitle.Layout.Row = 1;
-            app.HomeSimulationTitle.Layout.Column = 1;
-            app.HomeSimulationTitle.Text = '闭环仿真';
-
-            % Create Panel1
-            app.Panel1 = uipanel(app.RootGrid);
-            app.Panel1.BorderType = 'none';
-            app.Panel1.BackgroundColor = [0.9 0.93 0.95];
-            app.Panel1.Layout.Row = 3;
-            app.Panel1.Layout.Column = 1;
-
-            % Create GridLayout2
-            app.GridLayout2 = uigridlayout(app.Panel1);
-            app.GridLayout2.ColumnWidth = {'1x', 180};
-            app.GridLayout2.RowHeight = {'1x'};
-            app.GridLayout2.Padding = [18 2 12 2];
-
-            % Create StatusLabel
-            app.StatusLabel = uilabel(app.GridLayout2);
-            app.StatusLabel.Layout.Row = 1;
-            app.StatusLabel.Layout.Column = 1;
-            app.StatusLabel.Text = '就绪｜已载入默认参数';
-
-            % Create Label2
-            app.Label2 = uilabel(app.GridLayout2);
-            app.Label2.HorizontalAlignment = 'right';
-            app.Label2.FontColor = [0.38 0.46 0.53];
-            app.Label2.Layout.Row = 1;
-            app.Label2.Layout.Column = 2;
-            app.Label2.Text = '原型版本 0.1｜MATLAB R2023b';
+            % Create Panel10_3
+            app.Panel10_3 = uipanel(app.GridLayout7);
+            app.Panel10_3.Title = '遗传算法设置';
+            app.Panel10_3.Layout.Row = 3;
+            app.Panel10_3.Layout.Column = 1;
+
+            % Create GridLayout21_3
+            app.GridLayout21_3 = uigridlayout(app.Panel10_3);
+            app.GridLayout21_3.RowHeight = {26, 38, 26, 38};
+
+            % Create StartOptimizationButton_3
+            app.StartOptimizationButton_3 = uibutton(app.GridLayout21_3, 'push');
+            app.StartOptimizationButton_3.ButtonPushedFcn = createCallbackFcn(app, @StartOptimizationButtonPushed, true);
+            app.StartOptimizationButton_3.Layout.Row = 4;
+            app.StartOptimizationButton_3.Layout.Column = 2;
+            app.StartOptimizationButton_3.Text = '开始优化';
+
+            % Create DropDown1
+            app.DropDown1 = uidropdown(app.GridLayout21_3);
+            app.DropDown1.Items = {'控制能力优先', '综合评价优先', '能耗与控制能力折中'};
+            app.DropDown1.Layout.Row = 4;
+            app.DropDown1.Layout.Column = 1;
+            app.DropDown1.Value = '控制能力优先';
+
+            % Create Label37
+            app.Label37 = uilabel(app.GridLayout21_3);
+            app.Label37.Layout.Row = 3;
+            app.Label37.Layout.Column = 1;
+            app.Label37.Text = '优化目标';
+
+            % Create GenerationField_3
+            app.GenerationField_3 = uieditfield(app.GridLayout21_3, 'numeric');
+            app.GenerationField_3.Limits = [1 Inf];
+            app.GenerationField_3.HorizontalAlignment = 'left';
+            app.GenerationField_3.Layout.Row = 2;
+            app.GenerationField_3.Layout.Column = 2;
+            app.GenerationField_3.Value = 50;
+
+            % Create Label36_3
+            app.Label36_3 = uilabel(app.GridLayout21_3);
+            app.Label36_3.Layout.Row = 1;
+            app.Label36_3.Layout.Column = 2;
+            app.Label36_3.Text = '最大迭代次数';
+
+            % Create PopulationField
+            app.PopulationField = uieditfield(app.GridLayout21_3, 'numeric');
+            app.PopulationField.Limits = [10 Inf];
+            app.PopulationField.HorizontalAlignment = 'left';
+            app.PopulationField.Layout.Row = 2;
+            app.PopulationField.Layout.Column = 1;
+            app.PopulationField.Value = 500;
+
+            % Create Label35_3
+            app.Label35_3 = uilabel(app.GridLayout21_3);
+            app.Label35_3.Layout.Row = 1;
+            app.Label35_3.Layout.Column = 1;
+            app.Label35_3.Text = '种群规模';
+
+            % Create ThrusterPanel_2
+            app.ThrusterPanel_2 = uipanel(app.GridLayout7);
+            app.ThrusterPanel_2.Title = '安装约束';
+            app.ThrusterPanel_2.Layout.Row = 2;
+            app.ThrusterPanel_2.Layout.Column = 1;
+
+            % Create ThrusterGrid_2
+            app.ThrusterGrid_2 = uigridlayout(app.ThrusterPanel_2);
+            app.ThrusterGrid_2.ColumnWidth = {67, 70, '1x', 67, 70, '1x'};
+            app.ThrusterGrid_2.RowHeight = {34, 34, 34, 34, 34};
+
+            % Create EditField1_5
+            app.EditField1_5 = uieditfield(app.ThrusterGrid_2, 'text');
+            app.EditField1_5.HorizontalAlignment = 'right';
+            app.EditField1_5.Layout.Row = 5;
+            app.EditField1_5.Layout.Column = 2;
+            app.EditField1_5.Value = '[0,0.5π]';
+
+            % Create EditField1_4
+            app.EditField1_4 = uieditfield(app.ThrusterGrid_2, 'text');
+            app.EditField1_4.HorizontalAlignment = 'right';
+            app.EditField1_4.Layout.Row = 4;
+            app.EditField1_4.Layout.Column = 2;
+            app.EditField1_4.Value = '[0,2π]';
+
+            % Create EditField1_3
+            app.EditField1_3 = uieditfield(app.ThrusterGrid_2, 'text');
+            app.EditField1_3.HorizontalAlignment = 'right';
+            app.EditField1_3.Layout.Row = 3;
+            app.EditField1_3.Layout.Column = 2;
+            app.EditField1_3.Value = '[-0.6,0.6]';
+
+            % Create EditField1_2
+            app.EditField1_2 = uieditfield(app.ThrusterGrid_2, 'text');
+            app.EditField1_2.HorizontalAlignment = 'right';
+            app.EditField1_2.Layout.Row = 2;
+            app.EditField1_2.Layout.Column = 2;
+            app.EditField1_2.Value = '[0,0.6]';
+
+            % Create Label24_37
+            app.Label24_37 = uilabel(app.ThrusterGrid_2);
+            app.Label24_37.Layout.Row = 5;
+            app.Label24_37.Layout.Column = 3;
+            app.Label24_37.Text = 'rad';
+
+            % Create Label33_6
+            app.Label33_6 = uilabel(app.ThrusterGrid_2);
+            app.Label33_6.Layout.Row = 5;
+            app.Label33_6.Layout.Column = 1;
+            app.Label33_6.Text = '方向参数β';
+
+            % Create Label24_36
+            app.Label24_36 = uilabel(app.ThrusterGrid_2);
+            app.Label24_36.Layout.Row = 4;
+            app.Label24_36.Layout.Column = 3;
+            app.Label24_36.Text = 'rad';
+
+            % Create Label33_5
+            app.Label33_5 = uilabel(app.ThrusterGrid_2);
+            app.Label33_5.Layout.Row = 4;
+            app.Label33_5.Layout.Column = 1;
+            app.Label33_5.Text = '方向参数α';
+
+            % Create Label24_35
+            app.Label24_35 = uilabel(app.ThrusterGrid_2);
+            app.Label24_35.Layout.Row = 3;
+            app.Label24_35.Layout.Column = 3;
+            app.Label24_35.Text = 'm';
+
+            % Create Label33_4
+            app.Label33_4 = uilabel(app.ThrusterGrid_2);
+            app.Label33_4.Layout.Row = 3;
+            app.Label33_4.Layout.Column = 1;
+            app.Label33_4.Text = '位置参数b';
+
+            % Create Label24_34
+            app.Label24_34 = uilabel(app.ThrusterGrid_2);
+            app.Label24_34.Layout.Row = 2;
+            app.Label24_34.Layout.Column = 3;
+            app.Label24_34.Text = 'm';
+
+            % Create Label33_3
+            app.Label33_3 = uilabel(app.ThrusterGrid_2);
+            app.Label33_3.Layout.Row = 2;
+            app.Label33_3.Layout.Column = 1;
+            app.Label33_3.Text = '位置参数a';
+
+            % Create Label24_33
+            app.Label24_33 = uilabel(app.ThrusterGrid_2);
+            app.Label24_33.Layout.Row = 1;
+            app.Label24_33.Layout.Column = 6;
+            app.Label24_33.Text = '面';
+
+            % Create FmaxField_4
+            app.FmaxField_4 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.FmaxField_4.Limits = [0 Inf];
+            app.FmaxField_4.Layout.Row = 1;
+            app.FmaxField_4.Layout.Column = 5;
+            app.FmaxField_4.Value = 2;
+
+            % Create Label49_4
+            app.Label49_4 = uilabel(app.ThrusterGrid_2);
+            app.Label49_4.Layout.Row = 1;
+            app.Label49_4.Layout.Column = 4;
+            app.Label49_4.Text = '安装面X';
+
+            % Create Label24_25
+            app.Label24_25 = uilabel(app.ThrusterGrid_2);
+            app.Label24_25.Layout.Row = 5;
+            app.Label24_25.Layout.Column = 6;
+            app.Label24_25.Text = 'deg';
+
+            % Create NumericEditField2_6
+            app.NumericEditField2_6 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.NumericEditField2_6.Limits = [0 Inf];
+            app.NumericEditField2_6.Layout.Row = 5;
+            app.NumericEditField2_6.Layout.Column = 5;
+
+            % Create Label34_6
+            app.Label34_6 = uilabel(app.ThrusterGrid_2);
+            app.Label34_6.Layout.Row = 5;
+            app.Label34_6.Layout.Column = 4;
+            app.Label34_6.Text = '最小夹角θ';
+
+            % Create Label24_24
+            app.Label24_24 = uilabel(app.ThrusterGrid_2);
+            app.Label24_24.Layout.Row = 4;
+            app.Label24_24.Layout.Column = 6;
+            app.Label24_24.Text = 'm';
+
+            % Create NumericEditField2_5
+            app.NumericEditField2_5 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.NumericEditField2_5.Limits = [0 Inf];
+            app.NumericEditField2_5.Layout.Row = 4;
+            app.NumericEditField2_5.Layout.Column = 5;
+
+            % Create Label34_5
+            app.Label34_5 = uilabel(app.ThrusterGrid_2);
+            app.Label34_5.Layout.Row = 4;
+            app.Label34_5.Layout.Column = 4;
+            app.Label34_5.Text = '最小间距d';
+
+            % Create Label24_23
+            app.Label24_23 = uilabel(app.ThrusterGrid_2);
+            app.Label24_23.Layout.Row = 3;
+            app.Label24_23.Layout.Column = 6;
+            app.Label24_23.Text = 'm';
+
+            % Create Label24_22
+            app.Label24_22 = uilabel(app.ThrusterGrid_2);
+            app.Label24_22.Layout.Row = 2;
+            app.Label24_22.Layout.Column = 6;
+            app.Label24_22.Text = 'm';
+
+            % Create Label24_20
+            app.Label24_20 = uilabel(app.ThrusterGrid_2);
+            app.Label24_20.Layout.Row = 1;
+            app.Label24_20.Layout.Column = 3;
+            app.Label24_20.Text = '台';
+
+            % Create Label24_19
+            app.Label24_19 = uilabel(app.ThrusterGrid_2);
+            app.Label24_19.Layout.Row = 1;
+            app.Label24_19.Layout.Column = 3;
+            app.Label24_19.Text = '';
+
+            % Create Label49_2
+            app.Label49_2 = uilabel(app.ThrusterGrid_2);
+            app.Label49_2.Layout.Row = 1;
+            app.Label49_2.Layout.Column = 1;
+            app.Label49_2.Text = '总台数Num';
+
+            % Create FmaxField_2
+            app.FmaxField_2 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.FmaxField_2.Limits = [0 Inf];
+            app.FmaxField_2.Layout.Row = 1;
+            app.FmaxField_2.Layout.Column = 2;
+            app.FmaxField_2.Value = 12;
+
+            % Create NumericEditField1_2
+            app.NumericEditField1_2 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.NumericEditField1_2.Limits = [0 Inf];
+            app.NumericEditField1_2.ValueChangedFcn = createCallbackFcn(app, @LayoutBoundaryValueChanged, true);
+            app.NumericEditField1_2.Layout.Row = 2;
+            app.NumericEditField1_2.Layout.Column = 5;
+            app.NumericEditField1_2.Value = 0.6;
+
+            % Create Label33_2
+            app.Label33_2 = uilabel(app.ThrusterGrid_2);
+            app.Label33_2.Layout.Row = 2;
+            app.Label33_2.Layout.Column = 4;
+            app.Label33_2.Text = '安装边界L';
+
+            % Create NumericEditField2_4
+            app.NumericEditField2_4 = uieditfield(app.ThrusterGrid_2, 'numeric');
+            app.NumericEditField2_4.Limits = [0 Inf];
+            app.NumericEditField2_4.ValueChangedFcn = createCallbackFcn(app, @LayoutBoundaryValueChanged, true);
+            app.NumericEditField2_4.Layout.Row = 3;
+            app.NumericEditField2_4.Layout.Column = 5;
+            app.NumericEditField2_4.Value = 0.6;
+
+            % Create Label34_4
+            app.Label34_4 = uilabel(app.ThrusterGrid_2);
+            app.Label34_4.Layout.Row = 3;
+            app.Label34_4.Layout.Column = 4;
+            app.Label34_4.Text = '安装边界W';
+
+            % Create Label7
+            app.Label7 = uilabel(app.GridLayout7);
+            app.Label7.FontSize = 22;
+            app.Label7.FontWeight = 'bold';
+            app.Label7.FontColor = [0.1 0.27 0.42];
+            app.Label7.Layout.Row = 1;
+            app.Label7.Layout.Column = 1;
+            app.Label7.Text = '布局优化设计';
+
+            % Create EvaluationTab
+            app.EvaluationTab = uitab(app.TabGroup);
+            app.EvaluationTab.Title = '可重构判断';
+
+            % Create GridLayout8
+            app.GridLayout8 = uigridlayout(app.EvaluationTab);
+            app.GridLayout8.ColumnWidth = {200, '1x'};
+            app.GridLayout8.RowHeight = {55, 'fit', '1x'};
+            app.GridLayout8.Padding = [22 18 22 18];
+
+            % Create Panel10_2
+            app.Panel10_2 = uipanel(app.GridLayout8);
+            app.Panel10_2.Title = '故障设置';
+            app.Panel10_2.Layout.Row = 2;
+            app.Panel10_2.Layout.Column = [1 2];
+
+            % Create GridLayout21_2
+            app.GridLayout21_2 = uigridlayout(app.Panel10_2);
+            app.GridLayout21_2.ColumnWidth = {'1x', '1x', '1x', '1x'};
+            app.GridLayout21_2.RowHeight = {'fit', 38};
+
+            % Create FaultCountDropDown
+            app.FaultCountDropDown = uidropdown(app.GridLayout21_2);
+            app.FaultCountDropDown.Items = {'单台故障', '两台故障', '自定义故障组合'};
+            app.FaultCountDropDown.Layout.Row = 2;
+            app.FaultCountDropDown.Layout.Column = 1;
+            app.FaultCountDropDown.Value = '单台故障';
+
+            % Create StartOptimizationButton_2
+            app.StartOptimizationButton_2 = uibutton(app.GridLayout21_2, 'push');
+            app.StartOptimizationButton_2.ButtonPushedFcn = createCallbackFcn(app, @EvaluateButtonPushed, true);
+            app.StartOptimizationButton_2.Layout.Row = 2;
+            app.StartOptimizationButton_2.Layout.Column = 4;
+            app.StartOptimizationButton_2.Text = '可重构性判断';
+
+            % Create JudgmentLayoutDropDown
+            app.JudgmentLayoutDropDown = uidropdown(app.GridLayout21_2);
+            app.JudgmentLayoutDropDown.Items = {'原布局'};
+            app.JudgmentLayoutDropDown.Layout.Row = 2;
+            app.JudgmentLayoutDropDown.Layout.Column = 3;
+            app.JudgmentLayoutDropDown.Value = '原布局';
+
+            % Create GenerationField_2
+            app.GenerationField_2 = uieditfield(app.GridLayout21_2, 'text');
+            app.GenerationField_2.Layout.Row = 2;
+            app.GenerationField_2.Layout.Column = 2;
+            app.GenerationField_2.Value = '1';
+
+            % Create JudgmentLayoutLabel
+            app.JudgmentLayoutLabel = uilabel(app.GridLayout21_2);
+            app.JudgmentLayoutLabel.Layout.Row = 1;
+            app.JudgmentLayoutLabel.Layout.Column = 3;
+            app.JudgmentLayoutLabel.Text = '布局方案';
+
+            % Create Label36_2
+            app.Label36_2 = uilabel(app.GridLayout21_2);
+            app.Label36_2.Layout.Row = 1;
+            app.Label36_2.Layout.Column = 2;
+            app.Label36_2.Text = '故障编号';
+
+            % Create Label35_2
+            app.Label35_2 = uilabel(app.GridLayout21_2);
+            app.Label35_2.Layout.Row = 1;
+            app.Label35_2.Layout.Column = 1;
+            app.Label35_2.Text = '故障情况';
+
+            % Create JudgmentViewTabGroup
+            app.JudgmentViewTabGroup = uitabgroup(app.GridLayout8);
+            app.JudgmentViewTabGroup.Layout.Row = 3;
+            app.JudgmentViewTabGroup.Layout.Column = [1 2];
+
+            % Create JudgmentDetailTab
+            app.JudgmentDetailTab = uitab(app.JudgmentViewTabGroup);
+            app.JudgmentDetailTab.Title = '可重构性判断';
+
+            % Create JudgmentDetailGrid
+            app.JudgmentDetailGrid = uigridlayout(app.JudgmentDetailTab);
+            app.JudgmentDetailGrid.ColumnWidth = {'1x'};
+            app.JudgmentDetailGrid.RowHeight = {'1x'};
+
+            % Create EvaluationTable
+            app.EvaluationTable = uitable(app.JudgmentDetailGrid);
+            app.EvaluationTable.ColumnName = {'故障编号'; '力裕度JcF'; '力矩裕度JcT'; '六维裕度Jc'; '判断结果'};
+            app.EvaluationTable.RowName = {};
+            app.EvaluationTable.Layout.Row = 1;
+            app.EvaluationTable.Layout.Column = 1;
+
+            % Create JudgmentSummaryTab
+            app.JudgmentSummaryTab = uitab(app.JudgmentViewTabGroup);
+            app.JudgmentSummaryTab.Title = '不同布局对比';
+
+            % Create JudgmentSummaryGrid
+            app.JudgmentSummaryGrid = uigridlayout(app.JudgmentSummaryTab);
+            app.JudgmentSummaryGrid.ColumnWidth = {'1x'};
+            app.JudgmentSummaryGrid.RowHeight = {'1x'};
+
+            % Create JudgmentSummaryTable
+            app.JudgmentSummaryTable = uitable(app.JudgmentSummaryGrid);
+            app.JudgmentSummaryTable.ColumnName = {'布局方案'; '故障数量'; '故障状态'; '可重构数'; '不可重构数'};
+            app.JudgmentSummaryTable.RowName = {};
+            app.JudgmentSummaryTable.Layout.Row = 1;
+            app.JudgmentSummaryTable.Layout.Column = 1;
+
+            % Create Label8
+            app.Label8 = uilabel(app.GridLayout8);
+            app.Label8.FontSize = 22;
+            app.Label8.FontWeight = 'bold';
+            app.Label8.FontColor = [0.1 0.27 0.42];
+            app.Label8.Layout.Row = 1;
+            app.Label8.Layout.Column = 1;
+            app.Label8.Text = '可重构性判断';
+
+            % Create ReconfigDesignTab
+            app.ReconfigDesignTab = uitab(app.TabGroup);
+            app.ReconfigDesignTab.Title = '可重构评价';
+
+            % Create GridLayout25
+            app.GridLayout25 = uigridlayout(app.ReconfigDesignTab);
+            app.GridLayout25.ColumnWidth = {'1.1x', 200, 200};
+            app.GridLayout25.RowHeight = {55, '1x'};
+            app.GridLayout25.Padding = [22 18 22 18];
+
+            % Create MetricsEvaluateButton
+            app.MetricsEvaluateButton = uibutton(app.GridLayout25, 'push');
+            app.MetricsEvaluateButton.ButtonPushedFcn = createCallbackFcn(app, @MetricsEvaluateButtonPushed, true);
+            app.MetricsEvaluateButton.Layout.Row = 1;
+            app.MetricsEvaluateButton.Layout.Column = 3;
+            app.MetricsEvaluateButton.Text = '可重构性评价';
+
+            % Create Label41
+            app.Label41 = uilabel(app.GridLayout25);
+            app.Label41.FontSize = 22;
+            app.Label41.FontWeight = 'bold';
+            app.Label41.FontColor = [0.1 0.27 0.42];
+            app.Label41.Layout.Row = 1;
+            app.Label41.Layout.Column = 1;
+            app.Label41.Text = '可重构性评价指标';
+
+            % Create MetricsViewTabGroup
+            app.MetricsViewTabGroup = uitabgroup(app.GridLayout25);
+            app.MetricsViewTabGroup.Layout.Row = 2;
+            app.MetricsViewTabGroup.Layout.Column = [1 3];
+
+            % Create MetricsControlTab
+            app.MetricsControlTab = uitab(app.MetricsViewTabGroup);
+            app.MetricsControlTab.Title = '控制能力';
+
+            % Create MetricsControlGrid
+            app.MetricsControlGrid = uigridlayout(app.MetricsControlTab);
+            app.MetricsControlGrid.RowHeight = {'1x'};
+            app.MetricsControlGrid.Padding = [8 8 8 8];
+
+            % Create MetricsTorqueAxes
+            app.MetricsTorqueAxes = uiaxes(app.MetricsControlGrid);
+            app.MetricsTorqueAxes.Layout.Row = 1;
+            app.MetricsTorqueAxes.Layout.Column = 2;
+            app.MetricsTorqueAxes.Visible = 'off';
+
+            % Create MetricsForceAxes
+            app.MetricsForceAxes = uiaxes(app.MetricsControlGrid);
+            app.MetricsForceAxes.Layout.Row = 1;
+            app.MetricsForceAxes.Layout.Column = 1;
+            app.MetricsForceAxes.Visible = 'off';
+
+            % Create MetricsAnglesTab
+            app.MetricsAnglesTab = uitab(app.MetricsViewTabGroup);
+            app.MetricsAnglesTab.Title = '可诊断性';
+
+            % Create MetricsAnglesGrid
+            app.MetricsAnglesGrid = uigridlayout(app.MetricsAnglesTab);
+            app.MetricsAnglesGrid.ColumnWidth = {'1x'};
+            app.MetricsAnglesGrid.RowHeight = {'1x'};
+            app.MetricsAnglesGrid.Padding = [8 8 8 8];
+
+            % Create MetricsAngleAxes1
+            app.MetricsAngleAxes1 = uiaxes(app.MetricsAnglesGrid);
+            app.MetricsAngleAxes1.Layout.Row = 1;
+            app.MetricsAngleAxes1.Layout.Column = 1;
+            app.MetricsAngleAxes1.Visible = 'off';
+
+            % Create MetricsAngleAxes2
+            app.MetricsAngleAxes2 = uiaxes(app.MetricsAnglesGrid);
+            app.MetricsAngleAxes2.Layout.Row = 1;
+            app.MetricsAngleAxes2.Layout.Column = 1;
+            app.MetricsAngleAxes2.Visible = 'off';
+
+            % Create MetricsAngleAxes3
+            app.MetricsAngleAxes3 = uiaxes(app.MetricsAnglesGrid);
+            app.MetricsAngleAxes3.Layout.Row = 1;
+            app.MetricsAngleAxes3.Layout.Column = 1;
+            app.MetricsAngleAxes3.Visible = 'off';
+
+            % Create MetricsChartsTab
+            app.MetricsChartsTab = uitab(app.MetricsViewTabGroup);
+            app.MetricsChartsTab.Title = '归一化指标';
+
+            % Create MetricsChartsGrid
+            app.MetricsChartsGrid = uigridlayout(app.MetricsChartsTab);
+            app.MetricsChartsGrid.Padding = [8 8 8 8];
+
+            % Create MetricsJcAxes
+            app.MetricsJcAxes = uiaxes(app.MetricsChartsGrid);
+            app.MetricsJcAxes.Layout.Row = 1;
+            app.MetricsJcAxes.Layout.Column = 1;
+            app.MetricsJcAxes.Visible = 'off';
+
+            % Create MetricsJoAxes
+            app.MetricsJoAxes = uiaxes(app.MetricsChartsGrid);
+            app.MetricsJoAxes.Layout.Row = 1;
+            app.MetricsJoAxes.Layout.Column = 2;
+            app.MetricsJoAxes.Visible = 'off';
+
+            % Create MetricsJtAxes
+            app.MetricsJtAxes = uiaxes(app.MetricsChartsGrid);
+            app.MetricsJtAxes.Layout.Row = 2;
+            app.MetricsJtAxes.Layout.Column = 1;
+            app.MetricsJtAxes.Visible = 'off';
+
+            % Create MetricsJfAxes
+            app.MetricsJfAxes = uiaxes(app.MetricsChartsGrid);
+            app.MetricsJfAxes.Layout.Row = 2;
+            app.MetricsJfAxes.Layout.Column = 2;
+            app.MetricsJfAxes.Visible = 'off';
+
+            % Create MetricsSingleFaultTab
+            app.MetricsSingleFaultTab = uitab(app.MetricsViewTabGroup);
+            app.MetricsSingleFaultTab.Title = '综合评价';
+
+            % Create MetricsSingleFaultGrid
+            app.MetricsSingleFaultGrid = uigridlayout(app.MetricsSingleFaultTab);
+            app.MetricsSingleFaultGrid.ColumnWidth = {'1x'};
+            app.MetricsSingleFaultGrid.RowHeight = {44, '1x'};
+
+            % Create SingleFaultInfoLabel
+            app.SingleFaultInfoLabel = uilabel(app.MetricsSingleFaultGrid);
+            app.SingleFaultInfoLabel.Layout.Row = 1;
+            app.SingleFaultInfoLabel.Layout.Column = 1;
+            app.SingleFaultInfoLabel.Text = '';
+
+            % Create SingleFaultTable
+            app.SingleFaultTable = uitable(app.MetricsSingleFaultGrid);
+            app.SingleFaultTable.ColumnName = {'故障推力器编号'};
+            app.SingleFaultTable.RowName = {};
+            app.SingleFaultTable.Layout.Row = 2;
+            app.SingleFaultTable.Layout.Column = 1;
+
+            % Create AllocationTab
+            app.AllocationTab = uitab(app.TabGroup);
+            app.AllocationTab.Title = '调用策略';
+
+            % Create GridLayout9
+            app.GridLayout9 = uigridlayout(app.AllocationTab);
+            app.GridLayout9.RowHeight = {55, 'fit', '1x'};
+            app.GridLayout9.Padding = [22 18 22 18];
+
+            % Create Label9
+            app.Label9 = uilabel(app.GridLayout9);
+            app.Label9.FontSize = 22;
+            app.Label9.FontWeight = 'bold';
+            app.Label9.FontColor = [0.1 0.27 0.42];
+            app.Label9.Layout.Row = 1;
+            app.Label9.Layout.Column = 1;
+            app.Label9.Text = '推力器调用策略';
+
+            % Create AllocationViewTabGroup
+            app.AllocationViewTabGroup = uitabgroup(app.GridLayout9);
+            app.AllocationViewTabGroup.Layout.Row = 3;
+            app.AllocationViewTabGroup.Layout.Column = [1 2];
+
+            % Create AllocationStrategyTab
+            app.AllocationStrategyTab = uitab(app.AllocationViewTabGroup);
+            app.AllocationStrategyTab.Title = '六轴推力器分配';
+
+            % Create AllocationStrategyGrid
+            app.AllocationStrategyGrid = uigridlayout(app.AllocationStrategyTab);
+            app.AllocationStrategyGrid.ColumnWidth = {'1x'};
+            app.AllocationStrategyGrid.RowHeight = {'1x'};
+
+            % Create AllocationStrategyTable
+            app.AllocationStrategyTable = uitable(app.AllocationStrategyGrid);
+            app.AllocationStrategyTable.ColumnName = {'控制类型'; '轴向'; '标况主份'; '主份配对'; '故障下调用'; '故障关停/状态'};
+            app.AllocationStrategyTable.RowName = {};
+            app.AllocationStrategyTable.Layout.Row = 1;
+            app.AllocationStrategyTable.Layout.Column = 1;
+
+            % Create AllocationVerificationTab
+            app.AllocationVerificationTab = uitab(app.AllocationViewTabGroup);
+            app.AllocationVerificationTab.Title = '解耦验证';
+
+            % Create AllocationVerificationGrid
+            app.AllocationVerificationGrid = uigridlayout( ...
+                app.AllocationVerificationTab);
+            app.AllocationVerificationGrid.ColumnWidth = {'1x'};
+            app.AllocationVerificationGrid.RowHeight = {34, '1x'};
+            app.AllocationVerificationGrid.Padding = [12 12 12 12];
+
+            % Create AllocationVerificationSummaryLabel
+            app.AllocationVerificationSummaryLabel = uilabel( ...
+                app.AllocationVerificationGrid);
+            app.AllocationVerificationSummaryLabel.FontWeight = 'bold';
+            app.AllocationVerificationSummaryLabel.FontColor = [0.10 0.27 0.42];
+            app.AllocationVerificationSummaryLabel.Layout.Row = 1;
+            app.AllocationVerificationSummaryLabel.Layout.Column = 1;
+            app.AllocationVerificationSummaryLabel.Text = '等待生成调用策略';
+
+            % Create AllocationVerificationTable
+            app.AllocationVerificationTable = uitable( ...
+                app.AllocationVerificationGrid);
+            app.AllocationVerificationTable.ColumnName = {'工况'; '可重构'; ...
+                '姿控缩放'; '轨控缩放'; '平均轨控残余力矩'; ...
+                '平均姿控残余力'; '瞬时轨控残余力矩峰值'; ...
+                '瞬时姿控残余力峰值'; '周期平均解耦'; '最大脉宽'; '执行状态'};
+            app.AllocationVerificationTable.ColumnWidth = {90, 70, 75, 75, ...
+                125, 110, 150, 135, 100, 90, 220};
+            app.AllocationVerificationTable.RowName = {};
+            app.AllocationVerificationTable.Layout.Row = 2;
+            app.AllocationVerificationTable.Layout.Column = 1;
+
+            % Create Panel10_4
+            app.Panel10_4 = uipanel(app.GridLayout9);
+            app.Panel10_4.Title = '调用设置';
+            app.Panel10_4.Layout.Row = 2;
+            app.Panel10_4.Layout.Column = [1 2];
+
+            % Create GridLayout21_4
+            app.GridLayout21_4 = uigridlayout(app.Panel10_4);
+            app.GridLayout21_4.ColumnWidth = {'1x', '1x', '1x', '1x', '1x'};
+            app.GridLayout21_4.RowHeight = {'fit', 38};
+
+            % Create JudgmentLayoutDropDown_2
+            app.JudgmentLayoutDropDown_2 = uidropdown(app.GridLayout21_4);
+            app.JudgmentLayoutDropDown_2.Items = {'原布局'};
+            app.JudgmentLayoutDropDown_2.Layout.Row = 2;
+            app.JudgmentLayoutDropDown_2.Layout.Column = 4;
+            app.JudgmentLayoutDropDown_2.Value = '原布局';
+
+            % Create GenerationField_4
+            app.GenerationField_4 = uieditfield(app.GridLayout21_4, 'text');
+            app.GenerationField_4.Layout.Row = 2;
+            app.GenerationField_4.Layout.Column = 3;
+            app.GenerationField_4.Value = '1';
+
+            % Create JudgmentLayoutLabel_2
+            app.JudgmentLayoutLabel_2 = uilabel(app.GridLayout21_4);
+            app.JudgmentLayoutLabel_2.Layout.Row = 1;
+            app.JudgmentLayoutLabel_2.Layout.Column = 4;
+            app.JudgmentLayoutLabel_2.Text = '布局方案';
+
+            % Create Label36_4
+            app.Label36_4 = uilabel(app.GridLayout21_4);
+            app.Label36_4.Layout.Row = 1;
+            app.Label36_4.Layout.Column = 3;
+            app.Label36_4.Text = '故障编号';
+
+            % Create Label35_4
+            app.Label35_4 = uilabel(app.GridLayout21_4);
+            app.Label35_4.Layout.Row = 1;
+            app.Label35_4.Layout.Column = 1;
+            app.Label35_4.Text = '复用策略';
+
+            % Create AllocationModeDropDown
+            app.AllocationModeDropDown = uidropdown(app.GridLayout21_4);
+            app.AllocationModeDropDown.Items = {'异步分时复用', '同步分时复用', '联合优化复用'};
+            app.AllocationModeDropDown.Layout.Row = 2;
+            app.AllocationModeDropDown.Layout.Column = 1;
+            app.AllocationModeDropDown.Value = '同步分时复用';
+
+            % Create GenerateAllocationButton
+            app.GenerateAllocationButton = uibutton(app.GridLayout21_4, 'push');
+            app.GenerateAllocationButton.ButtonPushedFcn = createCallbackFcn(app, @GenerateAllocationButtonPushed, true);
+            app.GenerateAllocationButton.Layout.Row = 2;
+            app.GenerateAllocationButton.Layout.Column = 5;
+            app.GenerateAllocationButton.Text = '生成调用策略';
+
+            % Create Label35_5
+            app.Label35_5 = uilabel(app.GridLayout21_4);
+            app.Label35_5.Layout.Row = 1;
+            app.Label35_5.Layout.Column = 2;
+            app.Label35_5.Text = '分配策略';
+
+            % Create AllocationModeDropDown_2
+            app.AllocationModeDropDown_2 = uidropdown(app.GridLayout21_4);
+            app.AllocationModeDropDown_2.Items = {'最简主备分配'};
+            app.AllocationModeDropDown_2.Layout.Row = 2;
+            app.AllocationModeDropDown_2.Layout.Column = 2;
+            app.AllocationModeDropDown_2.Value = '最简主备分配';
+
+            % Create SimulationTab
+            app.SimulationTab = uitab(app.TabGroup);
+            app.SimulationTab.Title = '闭环仿真';
+
+            % Create GridLayout10
+            app.GridLayout10 = uigridlayout(app.SimulationTab);
+            app.GridLayout10.ColumnWidth = {180, '1x', '1x'};
+            app.GridLayout10.RowHeight = {55, 260, '1x'};
+            app.GridLayout10.Padding = [22 18 22 18];
+
+            % Create Label10
+            app.Label10 = uilabel(app.GridLayout10);
+            app.Label10.FontSize = 22;
+            app.Label10.FontWeight = 'bold';
+            app.Label10.FontColor = [0.1 0.27 0.42];
+            app.Label10.Layout.Row = 1;
+            app.Label10.Layout.Column = 1;
+            app.Label10.Text = '闭环仿真验证';
+
+            % Create SimulationViewTabGroup
+            app.SimulationViewTabGroup = uitabgroup(app.GridLayout10);
+            app.SimulationViewTabGroup.Layout.Row = [2 3];
+            app.SimulationViewTabGroup.Layout.Column = [2 3];
+
+            % Create SimulationPositionTab
+            app.SimulationPositionTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationPositionTab.Title = '状态响应';
+
+            % Create SimulationPositionGrid
+            app.SimulationPositionGrid = uigridlayout(app.SimulationPositionTab);
+            app.SimulationPositionGrid.Padding = [8 8 8 8];
+
+            % Create SimulationAxes
+            app.SimulationAxes = uiaxes(app.SimulationPositionGrid);
+            app.SimulationAxes.Layout.Row = 1;
+            app.SimulationAxes.Layout.Column = 1;
+            app.SimulationAxes.Visible = 'off';
+
+            % Create SimulationAttitudeAxes
+            app.SimulationAttitudeAxes = uiaxes(app.SimulationPositionGrid);
+            app.SimulationAttitudeAxes.Layout.Row = 1;
+            app.SimulationAttitudeAxes.Layout.Column = 2;
+            app.SimulationAttitudeAxes.Visible = 'off';
+
+            % Create SimulationPositionErrorAxes
+            app.SimulationPositionErrorAxes = uiaxes(app.SimulationPositionGrid);
+            app.SimulationPositionErrorAxes.Layout.Row = 2;
+            app.SimulationPositionErrorAxes.Layout.Column = 1;
+            app.SimulationPositionErrorAxes.Visible = 'off';
+
+            % Create SimulationAttitudeErrorAxes
+            app.SimulationAttitudeErrorAxes = uiaxes(app.SimulationPositionGrid);
+            app.SimulationAttitudeErrorAxes.Layout.Row = 2;
+            app.SimulationAttitudeErrorAxes.Layout.Column = 2;
+            app.SimulationAttitudeErrorAxes.Visible = 'off';
+
+            % Create SimulationFaultCompareTab
+            app.SimulationFaultCompareTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationFaultCompareTab.Title = '故障工况对比';
+
+            % Create SimulationFaultGrid
+            app.SimulationFaultGrid = uigridlayout(app.SimulationFaultCompareTab);
+            app.SimulationFaultGrid.ColumnWidth = {'1x', '1x', '1x'};
+            app.SimulationFaultGrid.Padding = [8 8 8 8];
+
+            % Create SimulationFaultPosXAxes
+            app.SimulationFaultPosXAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultPosXAxes.Layout.Row = 1;
+            app.SimulationFaultPosXAxes.Layout.Column = 1;
+            app.SimulationFaultPosXAxes.Visible = 'off';
+
+            % Create SimulationFaultPosYAxes
+            app.SimulationFaultPosYAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultPosYAxes.Layout.Row = 1;
+            app.SimulationFaultPosYAxes.Layout.Column = 2;
+            app.SimulationFaultPosYAxes.Visible = 'off';
+
+            % Create SimulationFaultPosZAxes
+            app.SimulationFaultPosZAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultPosZAxes.Layout.Row = 1;
+            app.SimulationFaultPosZAxes.Layout.Column = 3;
+            app.SimulationFaultPosZAxes.Visible = 'off';
+
+            % Create SimulationFaultAttXAxes
+            app.SimulationFaultAttXAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultAttXAxes.Layout.Row = 2;
+            app.SimulationFaultAttXAxes.Layout.Column = 1;
+            app.SimulationFaultAttXAxes.Visible = 'off';
+
+            % Create SimulationFaultAttYAxes
+            app.SimulationFaultAttYAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultAttYAxes.Layout.Row = 2;
+            app.SimulationFaultAttYAxes.Layout.Column = 2;
+            app.SimulationFaultAttYAxes.Visible = 'off';
+
+            % Create SimulationFaultAttZAxes
+            app.SimulationFaultAttZAxes = uiaxes(app.SimulationFaultGrid);
+            app.SimulationFaultAttZAxes.Layout.Row = 2;
+            app.SimulationFaultAttZAxes.Layout.Column = 3;
+            app.SimulationFaultAttZAxes.Visible = 'off';
+
+            % Create SimulationCommandTab
+            app.SimulationCommandTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationCommandTab.Title = '六维推力器实际输出';
+
+            % Create SimulationCommandGrid
+            app.SimulationCommandGrid = uigridlayout(app.SimulationCommandTab);
+            app.SimulationCommandGrid.ColumnWidth = {'1x'};
+            app.SimulationCommandGrid.RowHeight = {'1x'};
+            app.SimulationCommandGrid.Padding = [0 0 0 0];
+
+            % Create SimulationCommandCaseTabGroup
+            app.SimulationCommandCaseTabGroup = uitabgroup(app.SimulationCommandGrid);
+            app.SimulationCommandCaseTabGroup.Layout.Row = 1;
+            app.SimulationCommandCaseTabGroup.Layout.Column = 1;
+
+            % Create SimulationNominalCommandTab
+            app.SimulationNominalCommandTab = uitab(app.SimulationCommandCaseTabGroup);
+            app.SimulationNominalCommandTab.Title = '标况';
+
+            % Create SimulationNominalCommandGrid
+            app.SimulationNominalCommandGrid = uigridlayout(app.SimulationNominalCommandTab);
+            app.SimulationNominalCommandGrid.ColumnWidth = {'1x', '1x', '1x'};
+            app.SimulationNominalCommandGrid.RowHeight = {'1x', '1x'};
+            app.SimulationNominalCommandGrid.Padding = [8 8 8 8];
+
+            % Create SimulationForceXAxes
+            app.SimulationForceXAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationForceXAxes.Layout.Row = 1;
+            app.SimulationForceXAxes.Layout.Column = 1;
+            app.SimulationForceXAxes.Visible = 'off';
+
+            % Create SimulationForceYAxes
+            app.SimulationForceYAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationForceYAxes.Layout.Row = 1;
+            app.SimulationForceYAxes.Layout.Column = 2;
+            app.SimulationForceYAxes.Visible = 'off';
+
+            % Create SimulationForceZAxes
+            app.SimulationForceZAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationForceZAxes.Layout.Row = 1;
+            app.SimulationForceZAxes.Layout.Column = 3;
+            app.SimulationForceZAxes.Visible = 'off';
+
+            % Create SimulationTorqueXAxes
+            app.SimulationTorqueXAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationTorqueXAxes.Layout.Row = 2;
+            app.SimulationTorqueXAxes.Layout.Column = 1;
+            app.SimulationTorqueXAxes.Visible = 'off';
+
+            % Create SimulationTorqueYAxes
+            app.SimulationTorqueYAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationTorqueYAxes.Layout.Row = 2;
+            app.SimulationTorqueYAxes.Layout.Column = 2;
+            app.SimulationTorqueYAxes.Visible = 'off';
+
+            % Create SimulationTorqueZAxes
+            app.SimulationTorqueZAxes = uiaxes(app.SimulationNominalCommandGrid);
+            app.SimulationTorqueZAxes.Layout.Row = 2;
+            app.SimulationTorqueZAxes.Layout.Column = 3;
+            app.SimulationTorqueZAxes.Visible = 'off';
+
+            % Create SimulationFaultCommandTab
+            app.SimulationFaultCommandTab = uitab(app.SimulationCommandCaseTabGroup);
+            app.SimulationFaultCommandTab.Title = '单推力器故障';
+
+            % Create SimulationFaultCommandGrid
+            app.SimulationFaultCommandGrid = uigridlayout(app.SimulationFaultCommandTab);
+            app.SimulationFaultCommandGrid.ColumnWidth = {'1x', '1x', '1x'};
+            app.SimulationFaultCommandGrid.RowHeight = {'1x', '1x'};
+            app.SimulationFaultCommandGrid.Padding = [8 8 8 8];
+
+            % Create SimulationFaultForceXAxes
+            app.SimulationFaultForceXAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultForceXAxes.Layout.Row = 1;
+            app.SimulationFaultForceXAxes.Layout.Column = 1;
+            app.SimulationFaultForceXAxes.Visible = 'off';
+
+            % Create SimulationFaultForceYAxes
+            app.SimulationFaultForceYAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultForceYAxes.Layout.Row = 1;
+            app.SimulationFaultForceYAxes.Layout.Column = 2;
+            app.SimulationFaultForceYAxes.Visible = 'off';
+
+            % Create SimulationFaultForceZAxes
+            app.SimulationFaultForceZAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultForceZAxes.Layout.Row = 1;
+            app.SimulationFaultForceZAxes.Layout.Column = 3;
+            app.SimulationFaultForceZAxes.Visible = 'off';
+
+            % Create SimulationFaultTorqueXAxes
+            app.SimulationFaultTorqueXAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultTorqueXAxes.Layout.Row = 2;
+            app.SimulationFaultTorqueXAxes.Layout.Column = 1;
+            app.SimulationFaultTorqueXAxes.Visible = 'off';
+
+            % Create SimulationFaultTorqueYAxes
+            app.SimulationFaultTorqueYAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultTorqueYAxes.Layout.Row = 2;
+            app.SimulationFaultTorqueYAxes.Layout.Column = 2;
+            app.SimulationFaultTorqueYAxes.Visible = 'off';
+
+            % Create SimulationFaultTorqueZAxes
+            app.SimulationFaultTorqueZAxes = uiaxes(app.SimulationFaultCommandGrid);
+            app.SimulationFaultTorqueZAxes.Layout.Row = 2;
+            app.SimulationFaultTorqueZAxes.Layout.Column = 3;
+            app.SimulationFaultTorqueZAxes.Visible = 'off';
+
+            % Create SimulationTrajectoryTab
+            app.SimulationTrajectoryTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationTrajectoryTab.Title = '轨迹姿态视图';
+
+            % Create SimulationTrajectoryGrid
+            app.SimulationTrajectoryGrid = uigridlayout(app.SimulationTrajectoryTab);
+            app.SimulationTrajectoryGrid.ColumnWidth = {'1x'};
+            app.SimulationTrajectoryGrid.RowHeight = {'1x'};
+            app.SimulationTrajectoryGrid.Padding = [0 0 0 0];
+
+            % Create SimulationTrajectoryCaseTabGroup
+            app.SimulationTrajectoryCaseTabGroup = uitabgroup(app.SimulationTrajectoryGrid);
+            app.SimulationTrajectoryCaseTabGroup.Layout.Row = 1;
+            app.SimulationTrajectoryCaseTabGroup.Layout.Column = 1;
+
+            % Create SimulationNominalTrajectoryTab
+            app.SimulationNominalTrajectoryTab = uitab(app.SimulationTrajectoryCaseTabGroup);
+            app.SimulationNominalTrajectoryTab.Title = '标况';
+
+            % Create SimulationNominalTrajectoryGrid
+            app.SimulationNominalTrajectoryGrid = uigridlayout(app.SimulationNominalTrajectoryTab);
+            app.SimulationNominalTrajectoryGrid.ColumnWidth = {'1x', '1x'};
+            app.SimulationNominalTrajectoryGrid.RowHeight = {'1x', '1x'};
+            app.SimulationNominalTrajectoryGrid.Padding = [8 8 8 8];
+
+            % Create SimulationNominalTrajectory3DAxes
+            app.SimulationNominalTrajectory3DAxes = uiaxes(app.SimulationNominalTrajectoryGrid);
+            app.SimulationNominalTrajectory3DAxes.Layout.Row = 1;
+            app.SimulationNominalTrajectory3DAxes.Layout.Column = 1;
+            app.SimulationNominalTrajectory3DAxes.Visible = 'off';
+
+            % Create SimulationNominalTrajectoryXYAxes
+            app.SimulationNominalTrajectoryXYAxes = uiaxes(app.SimulationNominalTrajectoryGrid);
+            app.SimulationNominalTrajectoryXYAxes.Layout.Row = 1;
+            app.SimulationNominalTrajectoryXYAxes.Layout.Column = 2;
+            app.SimulationNominalTrajectoryXYAxes.Visible = 'off';
+
+            % Create SimulationNominalTrajectoryXZAxes
+            app.SimulationNominalTrajectoryXZAxes = uiaxes(app.SimulationNominalTrajectoryGrid);
+            app.SimulationNominalTrajectoryXZAxes.Layout.Row = 2;
+            app.SimulationNominalTrajectoryXZAxes.Layout.Column = 1;
+            app.SimulationNominalTrajectoryXZAxes.Visible = 'off';
+
+            % Create SimulationNominalTrajectoryYZAxes
+            app.SimulationNominalTrajectoryYZAxes = uiaxes(app.SimulationNominalTrajectoryGrid);
+            app.SimulationNominalTrajectoryYZAxes.Layout.Row = 2;
+            app.SimulationNominalTrajectoryYZAxes.Layout.Column = 2;
+            app.SimulationNominalTrajectoryYZAxes.Visible = 'off';
+
+            % Create SimulationFaultTrajectoryTab
+            app.SimulationFaultTrajectoryTab = uitab(app.SimulationTrajectoryCaseTabGroup);
+            app.SimulationFaultTrajectoryTab.Title = '单推力器故障';
+
+            % Create SimulationFaultTrajectoryGrid
+            app.SimulationFaultTrajectoryGrid = uigridlayout(app.SimulationFaultTrajectoryTab);
+            app.SimulationFaultTrajectoryGrid.ColumnWidth = {'1x', '1x'};
+            app.SimulationFaultTrajectoryGrid.RowHeight = {'1x', '1x'};
+            app.SimulationFaultTrajectoryGrid.Padding = [8 8 8 8];
+
+            % Create SimulationFaultTrajectory3DAxes
+            app.SimulationFaultTrajectory3DAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
+            app.SimulationFaultTrajectory3DAxes.Layout.Row = 1;
+            app.SimulationFaultTrajectory3DAxes.Layout.Column = 1;
+            app.SimulationFaultTrajectory3DAxes.Visible = 'off';
+
+            % Create SimulationFaultTrajectoryXYAxes
+            app.SimulationFaultTrajectoryXYAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
+            app.SimulationFaultTrajectoryXYAxes.Layout.Row = 1;
+            app.SimulationFaultTrajectoryXYAxes.Layout.Column = 2;
+            app.SimulationFaultTrajectoryXYAxes.Visible = 'off';
+
+            % Create SimulationFaultTrajectoryXZAxes
+            app.SimulationFaultTrajectoryXZAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
+            app.SimulationFaultTrajectoryXZAxes.Layout.Row = 2;
+            app.SimulationFaultTrajectoryXZAxes.Layout.Column = 1;
+            app.SimulationFaultTrajectoryXZAxes.Visible = 'off';
+
+            % Create SimulationFaultTrajectoryYZAxes
+            app.SimulationFaultTrajectoryYZAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
+            app.SimulationFaultTrajectoryYZAxes.Layout.Row = 2;
+            app.SimulationFaultTrajectoryYZAxes.Layout.Column = 2;
+            app.SimulationFaultTrajectoryYZAxes.Visible = 'off';
+
+            % Create SimulationPulseTab
+            app.SimulationPulseTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationPulseTab.Title = '各推力器脉宽';
+
+            % Create SimulationPulseGrid
+            app.SimulationPulseGrid = uigridlayout(app.SimulationPulseTab);
+            app.SimulationPulseGrid.ColumnWidth = {'1x'};
+            app.SimulationPulseGrid.RowHeight = {'1x'};
+            app.SimulationPulseGrid.Padding = [8 8 8 8];
+            app.SimulationPulseGrid.Scrollable = 'on';
+
+            % Create SimulationPulsePlaceholderAxes
+            app.SimulationPulsePlaceholderAxes = uiaxes(app.SimulationPulseGrid);
+            app.SimulationPulsePlaceholderAxes.Layout.Row = 1;
+            app.SimulationPulsePlaceholderAxes.Layout.Column = 1;
+            app.SimulationPulsePlaceholderAxes.Visible = 'off';
+
+            % Create SimulationScheduleTab
+            app.SimulationScheduleTab = uitab(app.SimulationViewTabGroup);
+            app.SimulationScheduleTab.Title = '调用时序';
+
+            % Create SimulationScheduleGrid
+            app.SimulationScheduleGrid = uigridlayout(app.SimulationScheduleTab);
+            app.SimulationScheduleGrid.ColumnWidth = {'1x'};
+            app.SimulationScheduleGrid.RowHeight = {34, '1x'};
+            app.SimulationScheduleGrid.Padding = [8 8 8 8];
+
+            % Create SimulationScheduleControlGrid
+            app.SimulationScheduleControlGrid = uigridlayout(app.SimulationScheduleGrid);
+            app.SimulationScheduleControlGrid.Layout.Row = 1;
+            app.SimulationScheduleControlGrid.Layout.Column = 1;
+            app.SimulationScheduleControlGrid.ColumnWidth = {'fit', 120, 'fit', 90, '1x'};
+            app.SimulationScheduleControlGrid.RowHeight = {'1x'};
+            app.SimulationScheduleControlGrid.Padding = [0 0 0 0];
+            app.SimulationScheduleControlGrid.ColumnSpacing = 10;
+
+            % Create SimulationScheduleStartTimeLabel
+            app.SimulationScheduleStartTimeLabel = uilabel(app.SimulationScheduleControlGrid);
+            app.SimulationScheduleStartTimeLabel.HorizontalAlignment = 'right';
+            app.SimulationScheduleStartTimeLabel.Text = '起始时间 / s';
+            app.SimulationScheduleStartTimeLabel.Layout.Row = 1;
+            app.SimulationScheduleStartTimeLabel.Layout.Column = 1;
+
+            % Create SimulationScheduleStartTimeField
+            app.SimulationScheduleStartTimeField = uieditfield(app.SimulationScheduleControlGrid, 'numeric');
+            app.SimulationScheduleStartTimeField.Limits = [0 Inf];
+            app.SimulationScheduleStartTimeField.ValueDisplayFormat = '%.3f';
+            app.SimulationScheduleStartTimeField.Tooltip = '仿真完成时自动定位至全周期脉宽最多的控制周期';
+            app.SimulationScheduleStartTimeField.Value = 0;
+            app.SimulationScheduleStartTimeField.Layout.Row = 1;
+            app.SimulationScheduleStartTimeField.Layout.Column = 2;
+
+            % Create SimulationScheduleCycleCountLabel
+            app.SimulationScheduleCycleCountLabel = uilabel(app.SimulationScheduleControlGrid);
+            app.SimulationScheduleCycleCountLabel.HorizontalAlignment = 'right';
+            app.SimulationScheduleCycleCountLabel.Text = '显示周期数';
+            app.SimulationScheduleCycleCountLabel.Layout.Row = 1;
+            app.SimulationScheduleCycleCountLabel.Layout.Column = 3;
+
+            % Create SimulationScheduleCycleCountField
+            app.SimulationScheduleCycleCountField = uieditfield(app.SimulationScheduleControlGrid, 'numeric');
+            app.SimulationScheduleCycleCountField.Limits = [1 Inf];
+            app.SimulationScheduleCycleCountField.ValueDisplayFormat = '%.0f';
+            app.SimulationScheduleCycleCountField.Tooltip = '显示的连续控制周期数量';
+            app.SimulationScheduleCycleCountField.Value = 5;
+            app.SimulationScheduleCycleCountField.Layout.Row = 1;
+            app.SimulationScheduleCycleCountField.Layout.Column = 4;
+
+            % Create SimulationScheduleAxes
+            app.SimulationScheduleAxes = uiaxes(app.SimulationScheduleGrid);
+            app.SimulationScheduleAxes.Layout.Row = 2;
+            app.SimulationScheduleAxes.Layout.Column = 1;
+            app.SimulationScheduleAxes.Visible = 'off';
+
+            % Create Panel10_5
+            app.Panel10_5 = uipanel(app.GridLayout10);
+            app.Panel10_5.Title = '故障设置';
+            app.Panel10_5.Layout.Row = 3;
+            app.Panel10_5.Layout.Column = 1;
+
+            % Create GridLayout21_5
+            app.GridLayout21_5 = uigridlayout(app.Panel10_5);
+            app.GridLayout21_5.ColumnWidth = {'1x', 'fit'};
+            app.GridLayout21_5.RowHeight = {'fit', 38, 'fit', 38, 'fit', 38, 38};
+
+            % Create RunSimulationButton
+            app.RunSimulationButton = uibutton(app.GridLayout21_5, 'push');
+            app.RunSimulationButton.ButtonPushedFcn = createCallbackFcn(app, @RunSimulationButtonPushed, true);
+            app.RunSimulationButton.Layout.Row = 7;
+            app.RunSimulationButton.Layout.Column = [1 2];
+            app.RunSimulationButton.Text = '运行闭环仿真';
+
+            % Create Label36_5
+            app.Label36_5 = uilabel(app.GridLayout21_5);
+            app.Label36_5.Layout.Row = 5;
+            app.Label36_5.Layout.Column = 1;
+            app.Label36_5.Text = '故障时刻';
+
+            % Create GenerationField_5
+            app.GenerationField_5 = uieditfield(app.GridLayout21_5, 'text');
+            app.GenerationField_5.Layout.Row = 6;
+            app.GenerationField_5.Layout.Column = 1;
+            app.GenerationField_5.Value = '1000';
+
+            % Create Label36_6
+            app.Label36_6 = uilabel(app.GridLayout21_5);
+            app.Label36_6.Layout.Row = 1;
+            app.Label36_6.Layout.Column = 1;
+            app.Label36_6.Text = '布局方案';
+
+            % Create SimulationLayoutDropDown
+            app.SimulationLayoutDropDown = uidropdown(app.GridLayout21_5);
+            app.SimulationLayoutDropDown.Items = {'原布局'};
+            app.SimulationLayoutDropDown.Layout.Row = 2;
+            app.SimulationLayoutDropDown.Layout.Column = [1 2];
+            app.SimulationLayoutDropDown.Value = '原布局';
+
+            % Create GenerationField_6
+            app.GenerationField_6 = uieditfield(app.GridLayout21_5, 'text');
+            app.GenerationField_6.Layout.Row = 4;
+            app.GenerationField_6.Layout.Column = [1 2];
+            app.GenerationField_6.Value = '1';
+
+            % Create Label36_7
+            app.Label36_7 = uilabel(app.GridLayout21_5);
+            app.Label36_7.Layout.Row = 3;
+            app.Label36_7.Layout.Column = 1;
+            app.Label36_7.Text = '故障编号';
+
+            % Create Label24_38
+            app.Label24_38 = uilabel(app.GridLayout21_5);
+            app.Label24_38.Layout.Row = 6;
+            app.Label24_38.Layout.Column = 2;
+            app.Label24_38.Text = 's';
+
+            % Create ControllerPanel_2
+            app.ControllerPanel_2 = uipanel(app.GridLayout10);
+            app.ControllerPanel_2.Title = '控制器参数';
+            app.ControllerPanel_2.Layout.Row = 2;
+            app.ControllerPanel_2.Layout.Column = 1;
+
+            % Create ControllerGrid_2
+            app.ControllerGrid_2 = uigridlayout(app.ControllerPanel_2);
+            app.ControllerGrid_2.ColumnWidth = {67, 70};
+            app.ControllerGrid_2.RowHeight = {34, 34, 34, 34, 34};
+
+            % Create Label47_2
+            app.Label47_2 = uilabel(app.ControllerGrid_2);
+            app.Label47_2.Layout.Row = 1;
+            app.Label47_2.Layout.Column = 1;
+            app.Label47_2.Text = '位置Kp';
+
+            % Create ControlPeriodField_2
+            app.ControlPeriodField_2 = uieditfield(app.ControllerGrid_2, 'numeric');
+            app.ControlPeriodField_2.Limits = [0 Inf];
+            app.ControlPeriodField_2.Layout.Row = 1;
+            app.ControlPeriodField_2.Layout.Column = 2;
+            app.ControlPeriodField_2.Value = 10;
+
+            % Create Label47_3
+            app.Label47_3 = uilabel(app.ControllerGrid_2);
+            app.Label47_3.Layout.Row = 2;
+            app.Label47_3.Layout.Column = 1;
+            app.Label47_3.Text = '位置Kd';
+
+            % Create ControlPeriodField_3
+            app.ControlPeriodField_3 = uieditfield(app.ControllerGrid_2, 'numeric');
+            app.ControlPeriodField_3.Limits = [0 Inf];
+            app.ControlPeriodField_3.Layout.Row = 2;
+            app.ControlPeriodField_3.Layout.Column = 2;
+            app.ControlPeriodField_3.Value = 300;
+
+            % Create Label47_4
+            app.Label47_4 = uilabel(app.ControllerGrid_2);
+            app.Label47_4.Layout.Row = 3;
+            app.Label47_4.Layout.Column = 1;
+            app.Label47_4.Text = '姿态Kp';
+
+            % Create ControlPeriodField_4
+            app.ControlPeriodField_4 = uieditfield(app.ControllerGrid_2, 'numeric');
+            app.ControlPeriodField_4.Limits = [0 Inf];
+            app.ControlPeriodField_4.Layout.Row = 3;
+            app.ControlPeriodField_4.Layout.Column = 2;
+            app.ControlPeriodField_4.Value = 400;
+
+            % Create Label47_5
+            app.Label47_5 = uilabel(app.ControllerGrid_2);
+            app.Label47_5.Layout.Row = 4;
+            app.Label47_5.Layout.Column = 1;
+            app.Label47_5.Text = '姿态Ki';
+
+            % Create ControlPeriodField_5
+            app.ControlPeriodField_5 = uieditfield(app.ControllerGrid_2, 'numeric');
+            app.ControlPeriodField_5.Limits = [0 Inf];
+            app.ControlPeriodField_5.Layout.Row = 4;
+            app.ControlPeriodField_5.Layout.Column = 2;
+            app.ControlPeriodField_5.Value = 20;
+
+            % Create Label47_6
+            app.Label47_6 = uilabel(app.ControllerGrid_2);
+            app.Label47_6.Layout.Row = 5;
+            app.Label47_6.Layout.Column = 1;
+            app.Label47_6.Text = '姿态Kd';
+
+            % Create ControlPeriodField_6
+            app.ControlPeriodField_6 = uieditfield(app.ControllerGrid_2, 'numeric');
+            app.ControlPeriodField_6.Limits = [0 Inf];
+            app.ControlPeriodField_6.Layout.Row = 5;
+            app.ControlPeriodField_6.Layout.Column = 2;
+            app.ControlPeriodField_6.Value = 3200;
+
+            % Create NavigationPanel
+            app.NavigationPanel = uipanel(app.BodyGrid);
+            app.NavigationPanel.Title = '功能导航';
+            app.NavigationPanel.BackgroundColor = [0.93 0.95 0.97];
+            app.NavigationPanel.Layout.Row = 1;
+            app.NavigationPanel.Layout.Column = 1;
+
+            % Create GridLayout3
+            app.GridLayout3 = uigridlayout(app.NavigationPanel);
+            app.GridLayout3.ColumnWidth = {'1x'};
+            app.GridLayout3.RowHeight = {'1x', 55};
+            app.GridLayout3.Padding = [8 12 8 8];
+
+            % Create Button1
+            app.Button1 = uibutton(app.GridLayout3, 'push');
+            app.Button1.ButtonPushedFcn = createCallbackFcn(app, @HelpButtonPushed, true);
+            app.Button1.Layout.Row = 2;
+            app.Button1.Layout.Column = 1;
+            app.Button1.Text = '使用说明';
+
+            % Create NavigationList
+            app.NavigationList = uilistbox(app.GridLayout3);
+            app.NavigationList.Items = {'项目首页', '输入条件', '优化设计', '可重构判断', '可重构评价', '调用策略', '闭环仿真'};
+            app.NavigationList.ValueChangedFcn = createCallbackFcn(app, @NavigationListValueChanged, true);
+            app.NavigationList.FontSize = 15;
+            app.NavigationList.Layout.Row = 1;
+            app.NavigationList.Layout.Column = 1;
+            app.NavigationList.Value = '项目首页';
+
+            % Create HeaderPanel
+            app.HeaderPanel = uipanel(app.RootGrid);
+            app.HeaderPanel.BorderType = 'none';
+            app.HeaderPanel.Layout.Row = 1;
+            app.HeaderPanel.Layout.Column = 1;
+
+            % Create GridLayout1
+            app.GridLayout1 = uigridlayout(app.HeaderPanel);
+            app.GridLayout1.ColumnWidth = {'1x', 104, 104, 104, 24};
+            app.GridLayout1.RowHeight = {'1x'};
+            app.GridLayout1.Padding = [20 10 12 10];
+            app.GridLayout1.BackgroundColor = [0.075 0.2 0.32];
+
+            % Create ImportButton
+            app.ImportButton = uibutton(app.GridLayout1, 'push');
+            app.ImportButton.ButtonPushedFcn = createCallbackFcn(app, @ImportButtonPushed, true);
+            app.ImportButton.Layout.Row = 1;
+            app.ImportButton.Layout.Column = 4;
+            app.ImportButton.Text = '导出布局';
+
+            % Create OpenButton
+            app.OpenButton = uibutton(app.GridLayout1, 'push');
+            app.OpenButton.ButtonPushedFcn = createCallbackFcn(app, @OpenButtonPushed, true);
+            app.OpenButton.Layout.Row = 1;
+            app.OpenButton.Layout.Column = 3;
+            app.OpenButton.Text = '导出参数';
+
+            % Create Label1
+            app.Label1 = uilabel(app.GridLayout1);
+            app.Label1.FontSize = 22;
+            app.Label1.FontWeight = 'bold';
+            app.Label1.FontColor = [1 1 1];
+            app.Label1.Layout.Row = 1;
+            app.Label1.Layout.Column = 1;
+            app.Label1.Text = 'RC-Designer  可重构性设计软件';
 
             % Stabilize the hidden main tab group before the first frame.
             app.resizeMainTabGroup();

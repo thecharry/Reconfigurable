@@ -51,11 +51,20 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.Pulse_Att_History = zeros(params.Num, max_ctrl);
     log.Pulse_Orbit_History = zeros(params.Num, max_ctrl);
     log.Pulse_6D_History = zeros(params.Num, max_ctrl);
+    log.Pulse_Schedule_History = cell(1, max_ctrl);
+    log.Scheduler_Peak_Torque_History = NaN(1, max_ctrl);
+    log.Scheduler_Peak_Force_History = NaN(1, max_ctrl);
+    log.Scheduler_Torque_Limit_History = NaN(1, max_ctrl);
+    log.Scheduler_Force_Suppressed_History = cell(1, max_ctrl);
+    log.Requested_Wrench_History = zeros(6, max_ctrl);
+    log.Commanded_Wrench_History = zeros(6, max_ctrl);
+    log.Actual_Wrench_History = zeros(6, max_ctrl);
     log.Attitude_Window_History = NaN(1, max_ctrl);
     log.Position_Window_History = NaN(1, max_ctrl);
     log.Alloc_Mode_History = strings(1, max_ctrl);
     log.Active_Diagnosis_History = zeros(1, max_ctrl);
     log.Control_Time = zeros(1, max_ctrl);
+    log.Control_Period = params.T;
     log.Total_Pulse = 0;% 整个任务累计总喷气时长
     log.Control_Count = 0;% 控制更新次数
     log.faulty_thrusters = [];
@@ -120,6 +129,35 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             log.Pulse_Att_History(:, log.Control_Count) = Prop_Att;
             log.Pulse_Orbit_History(:, log.Control_Count) = Prop_Orbit;
             log.Pulse_6D_History(:, log.Control_Count) = Prop_6D;
+            if isfield(alloc_info, 'schedule')
+                schedule_for_log = alloc_info.schedule;
+                if faulty_trig && ~isempty(true_faults)
+                    % The timing view represents physical firing, not the
+                    % pre-diagnosis command.  Failed thrusters therefore
+                    % disappear immediately at the fault instant.
+                    schedule_for_log = Remove_Faulty_Schedule( ...
+                        schedule_for_log, true_faults);
+                end
+                log.Pulse_Schedule_History{log.Control_Count} = ...
+                    schedule_for_log;
+            end
+            if isfield(alloc_info, 'scheduler')
+                scheduler_info = alloc_info.scheduler;
+                log.Scheduler_Peak_Torque_History(log.Control_Count) = ...
+                    scheduler_info.peak_orbit_torque;
+                log.Scheduler_Peak_Force_History(log.Control_Count) = ...
+                    scheduler_info.peak_attitude_force;
+                log.Scheduler_Torque_Limit_History(log.Control_Count) = ...
+                    scheduler_info.peak_torque_limit;
+                log.Scheduler_Force_Suppressed_History{ ...
+                    log.Control_Count} = scheduler_info.suppressed_force_axes;
+            end
+            log.Requested_Wrench_History(:, log.Control_Count) = ...
+                [F_body_req; T_body_req];
+            log.Commanded_Wrench_History(:, log.Control_Count) = ...
+                Matrix_conf * (Prop_Command / max(params.T, eps));
+            log.Actual_Wrench_History(:, log.Control_Count) = ...
+                Matrix_conf * (Prop_Actual / max(params.T, eps));
             log.Attitude_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'attitude_window', NaN);
             log.Position_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'position_window', NaN);
             log.Alloc_Mode_History(log.Control_Count) = string(Get_Info_Field(alloc_info, 'mode', 'unknown'));
@@ -129,7 +167,22 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             next_ctrl = next_ctrl + params.T;
         end
         time_in_cycle = t - (next_ctrl - params.T);
-        u_applied = params.F_max * (time_in_cycle < Prop_Actual);
+        use_scheduled_pulse = active_diag_thruster == 0 && ...
+            isfield(alloc_info, 'schedule') && ...
+            isfield(alloc_info.schedule, 'enabled') && ...
+            alloc_info.schedule.enabled;
+        if use_scheduled_pulse
+            thruster_on = Scheduled_Thruster_On( ...
+                alloc_info.schedule, time_in_cycle, params.Num);
+            if faulty_trig && ~isempty(true_faults)
+                thruster_on(true_faults) = false;
+            end
+            u_applied = params.F_max * double(thruster_on);
+        else
+            % 主动诊断会临时加入单台试探脉冲，未写入纯组时序表；该
+            % 周期退回连续起喷模型，避免遗漏诊断激励。
+            u_applied = params.F_max * (time_in_cycle < Prop_Actual);
+        end
         % 实际力和力矩
         W_total = B * u_applied;
         params.current_F = W_total(1:3);
@@ -154,6 +207,21 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.Pulse_Att_History = log.Pulse_Att_History(:, 1:log.Control_Count);
     log.Pulse_Orbit_History = log.Pulse_Orbit_History(:, 1:log.Control_Count);
     log.Pulse_6D_History = log.Pulse_6D_History(:, 1:log.Control_Count);
+    log.Pulse_Schedule_History = log.Pulse_Schedule_History(1:log.Control_Count);
+    log.Scheduler_Peak_Torque_History = ...
+        log.Scheduler_Peak_Torque_History(1:log.Control_Count);
+    log.Scheduler_Peak_Force_History = ...
+        log.Scheduler_Peak_Force_History(1:log.Control_Count);
+    log.Scheduler_Torque_Limit_History = ...
+        log.Scheduler_Torque_Limit_History(1:log.Control_Count);
+    log.Scheduler_Force_Suppressed_History = ...
+        log.Scheduler_Force_Suppressed_History(1:log.Control_Count);
+    log.Requested_Wrench_History = ...
+        log.Requested_Wrench_History(:, 1:log.Control_Count);
+    log.Commanded_Wrench_History = ...
+        log.Commanded_Wrench_History(:, 1:log.Control_Count);
+    log.Actual_Wrench_History = ...
+        log.Actual_Wrench_History(:, 1:log.Control_Count);
     log.Attitude_Window_History = log.Attitude_Window_History(1:log.Control_Count);
     log.Position_Window_History = log.Position_Window_History(1:log.Control_Count);
     log.Alloc_Mode_History = log.Alloc_Mode_History(1:log.Control_Count);
@@ -181,7 +249,9 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             sim_cfg.true_faults = [];
         end
         sim_cfg.residual_threshold = 1e-9;% 残差阈值
-        sim_cfg.active_diagnosis_enable = true;% 主动诊断激励开关
+        % 单台主动诊断喷气不经过纯轴向调用组，会刻意产生已知六维扰动。
+        % 因此默认关闭；需要诊断试验时可在 sim_cfg_override 中显式打开。
+        sim_cfg.active_diagnosis_enable = false;% 主动诊断激励开关
         sim_cfg.active_diagnosis_pulse = params.t_min;% 主动诊断最小脉宽
         sim_cfg.active_diagnosis_command_tol = 1e-12;% 已有指令判定阈值
         if isfield(params, 'active_diagnosis_enable') && ~isempty(params.active_diagnosis_enable)
@@ -229,7 +299,8 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
 
     %% 实际推力器输出脉宽
     function [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params)
-        [Prop_Command, alloc_info] = Thruster_invocation(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
+        [Prop_Command, alloc_info] = Thruster_allocator( ...
+            F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
     end
 
     function [Prop_Att, Prop_Orbit, Prop_6D] = Allocation_Ownership(alloc_info, Prop_Command, Prop_Actual)
@@ -294,6 +365,52 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
             value = info.(field_name);
         else
             value = default_value;
+        end
+    end
+
+    function thruster_on = Scheduled_Thruster_On( ...
+            schedule, time_in_cycle, thruster_count)
+        % 同一台推力器的所有调用组已由时序调度器排成不重叠区间。
+        % 在当前控制周期内，只要时刻落入任一时间段便输出满推力。
+        thruster_on = false(thruster_count, 1);
+        if ~isfield(schedule, 'intervals') || ...
+                numel(schedule.intervals) ~= thruster_count
+            return;
+        end
+        for thruster_idx = 1:thruster_count
+            intervals = schedule.intervals{thruster_idx};
+            if isempty(intervals)
+                continue;
+            end
+            thruster_on(thruster_idx) = any( ...
+                time_in_cycle >= intervals(:, 1) - 1e-12 & ...
+                time_in_cycle < intervals(:, 2) - 1e-12);
+        end
+    end
+
+    function schedule_out = Remove_Faulty_Schedule(schedule_in, faults)
+        schedule_out = schedule_in;
+        faults = unique(round(double(faults(:)')));
+        faults = faults(faults >= 1 & faults <= params.Num);
+        interval_fields = {'intervals', 'force_intervals', ...
+            'attitude_intervals', 'axis_intervals'};
+        for field_idx = 1:numel(interval_fields)
+            field_name = interval_fields{field_idx};
+            if ~isfield(schedule_out, field_name) || ...
+                    ~iscell(schedule_out.(field_name))
+                continue;
+            end
+            for thruster_idx = faults
+                schedule_out.(field_name){thruster_idx} = [];
+            end
+        end
+        pulse_fields = {'total_pulse', 'force_pulse', 'attitude_pulse'};
+        for field_idx = 1:numel(pulse_fields)
+            field_name = pulse_fields{field_idx};
+            if isfield(schedule_out, field_name) && ...
+                    numel(schedule_out.(field_name)) >= params.Num
+                schedule_out.(field_name)(faults) = 0;
+            end
         end
     end
 

@@ -13,7 +13,7 @@ layout_set = struct('name', {'原布局', '方案一', '方案二'}, ...
 % 闭环仿真
 % for i = 1:params.Num
         params.true_faults = [];
-        params.alloc_mode = 'task_book';% 统一使用任务书推力器复用策略
+        params.alloc_mode = 'synchronous_time_division';% 默认同步分时复用策略
         sim_cfg_override = struct('faulty_time', (0.2 + 0.6 * rand) * 2000);
         log_orig = Closedloop_sim(params,params.B_all,sim_cfg_override);
         log_opt1 = Closedloop_sim(params,data_1.B_opt,sim_cfg_override);

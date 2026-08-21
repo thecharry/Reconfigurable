@@ -441,6 +441,326 @@ classdef RCPlotter
             end
         end
 
+        function plotThrusterSchedule(ax, logData, options)
+        %PLOTTHRUSTERSCHEDULE Draw a selectable window of the firing timeline.
+        % Each horizontal segment is a physical pulse in one control cycle.
+        % Its colour is the six-axis group recorded by the allocator:
+        % Fx/Fy/Fz/Mx/My/Mz.  A dot at each row's cycle boundaries makes
+        % the available time window visible even when that thruster is off.
+            if nargin < 3 || isempty(options)
+                options = struct();
+            end
+            RCPlotter.validateAxes(ax);
+            required = {'Control_Time', 'Pulse_Schedule_History'};
+            if ~isstruct(logData) || ~all(cellfun( ...
+                    @(name)isfield(logData, name), required)) || ...
+                    isempty(logData.Control_Time)
+                error('RCPlotter:InvalidScheduleLog', ...
+                    '闭环仿真结果中缺少控制时刻或调用时序记录。');
+            end
+
+            control_count = min(numel(logData.Control_Time), ...
+                numel(logData.Pulse_Schedule_History));
+            if control_count < 1
+                error('RCPlotter:EmptyScheduleLog', '调用时序记录为空。');
+            end
+            cycle_start = double(logData.Control_Time(1:control_count));
+            control_period = RCPlotter.getStructField(logData, ...
+                'Control_Period', []);
+            if ~isscalar(control_period) || ~isfinite(control_period) || ...
+                    control_period <= 0
+                control_period = RCPlotter.getOption( ...
+                    options, 'ControlPeriod', []);
+            end
+            if ~isscalar(control_period) || ~isfinite(control_period) || ...
+                    control_period <= 0
+                if control_count > 1
+                    control_period = median(diff(cycle_start));
+                else
+                    control_period = 1;
+                end
+            end
+
+            % The viewing window always contains whole control periods, so
+            % every boundary dot and every scheduled pulse remains intact.
+            requested_start = RCPlotter.getOption(options, 'StartTime', ...
+                cycle_start(1));
+            if ~isscalar(requested_start) || ~isfinite(requested_start)
+                requested_start = cycle_start(1);
+            end
+            requested_count = RCPlotter.getOption(options, 'CycleCount', ...
+                control_count);
+            if ~isscalar(requested_count) || ~isfinite(requested_count)
+                requested_count = control_count;
+            end
+            requested_count = max(1, round(requested_count));
+            first_cycle = find(cycle_start >= requested_start - 1e-12, ...
+                1, 'first');
+            if isempty(first_cycle)
+                first_cycle = control_count;
+            end
+            last_cycle = min(control_count, first_cycle + requested_count - 1);
+            cycle_indices = first_cycle:last_cycle;
+            displayed_count = numel(cycle_indices);
+
+            thruster_count = RCPlotter.scheduleThrusterCount(logData, ...
+                control_count);
+            if thruster_count < 1
+                error('RCPlotter:InvalidScheduleLog', ...
+                    '调用时序记录中没有有效的推力器编号。');
+            end
+
+            % The palette is deliberately separated in brightness and hue
+            % so adjacent control groups remain distinguishable in a dense
+            % timeline. Index 7 is neutral gray for joint six-DOF pulses.
+            axis_labels = {'F_x', 'F_y', 'F_z', 'M_x', 'M_y', 'M_z'};
+            axis_colors = [ ...
+                0.05 0.42 0.72; ... % F_x
+                0.86 0.33 0.10; ... % F_y
+                0.23 0.60 0.28; ... % F_z
+                0.72 0.16 0.22; ... % M_x
+                0.35 0.24 0.61; ... % M_y
+                0.10 0.60 0.59];    % M_z
+            joint_color = [0.28 0.30 0.33];
+            line_width = RCPlotter.getOption(options, 'LineWidth', 1.8);
+
+            % Six entries per thruster and control period are sufficient:
+            % there is at most one scheduled task for each signed axis.
+            segments = zeros(thruster_count * displayed_count * 6, 4);
+            segment_count = 0;
+            boundary_x = zeros(thruster_count * displayed_count * 2, 1);
+            boundary_y = zeros(thruster_count * displayed_count * 2, 1);
+            boundary_count = 0;
+            uses_joint_segment = false;
+            for cycle_index = cycle_indices
+                schedule = logData.Pulse_Schedule_History{cycle_index};
+                for thruster_index = 1:thruster_count
+                    boundary_count = boundary_count + 1;
+                    boundary_x(boundary_count) = cycle_start(cycle_index);
+                    boundary_y(boundary_count) = thruster_index;
+                    boundary_count = boundary_count + 1;
+                    boundary_x(boundary_count) = cycle_start(cycle_index) + ...
+                        control_period;
+                    boundary_y(boundary_count) = thruster_index;
+
+                    intervals = RCPlotter.axisIntervalsForThruster( ...
+                        schedule, thruster_index);
+                    for interval_index = 1:size(intervals, 1)
+                        start_time = intervals(interval_index, 1);
+                        end_time = intervals(interval_index, 2);
+                        axis_id = round(intervals(interval_index, 3));
+                        if ~isfinite(start_time) || ~isfinite(end_time) || ...
+                                end_time <= start_time + 1e-12
+                            continue;
+                        end
+                        if axis_id < 1 || axis_id > 6
+                            axis_id = 0;
+                            uses_joint_segment = true;
+                        end
+                        segment_count = segment_count + 1;
+                        segments(segment_count, :) = [ ...
+                            cycle_start(cycle_index) + start_time, ...
+                            cycle_start(cycle_index) + end_time, ...
+                            thruster_index, axis_id];
+                    end
+                end
+            end
+            segments = segments(1:segment_count, :);
+            boundary_x = boundary_x(1:boundary_count);
+            boundary_y = boundary_y(1:boundary_count);
+
+            cla(ax, 'reset');
+            ax.Visible = 'on';
+            view(ax, 2);
+            hold(ax, 'on');
+            grid(ax, 'on');
+            box(ax, 'on');
+            handles = gobjects(6, 1);
+            for axis_index = 1:6
+                selected = segments(:, 4) == axis_index;
+                if any(selected)
+                    x_data = reshape([segments(selected, 1), ...
+                        segments(selected, 2), nan(sum(selected), 1)]', [], 1);
+                    y_data = reshape([segments(selected, 3), ...
+                        segments(selected, 3), nan(sum(selected), 1)]', [], 1);
+                    handles(axis_index) = plot(ax, x_data, y_data, ...
+                        'Color', axis_colors(axis_index, :), ...
+                        'LineWidth', line_width);
+                else
+                    handles(axis_index) = plot(ax, nan, nan, ...
+                        'Color', axis_colors(axis_index, :), ...
+                        'LineWidth', line_width);
+                end
+            end
+            joint_selected = segments(:, 4) == 0;
+            if any(joint_selected)
+                x_data = reshape([segments(joint_selected, 1), ...
+                    segments(joint_selected, 2), ...
+                    nan(sum(joint_selected), 1)]', [], 1);
+                y_data = reshape([segments(joint_selected, 3), ...
+                    segments(joint_selected, 3), ...
+                    nan(sum(joint_selected), 1)]', [], 1);
+                plot(ax, x_data, y_data, 'Color', joint_color, ...
+                    'LineWidth', line_width, 'HandleVisibility', 'off');
+            end
+            if ~isempty(boundary_x)
+                plot(ax, boundary_x, boundary_y, '.', 'Color', ...
+                    [0.30 0.33 0.36], 'MarkerSize', ...
+                    max(6, 4 * line_width), 'HandleVisibility', 'off');
+            end
+            RCPlotter.drawFaultLine(ax, {logData}, options);
+            xlabel(ax, '仿真时间 / s');
+            ylabel(ax, '推力器编号');
+            title(ax, RCPlotter.getOption(options, 'Title', '推力器调用时序'));
+            yticks(ax, 1:thruster_count);
+            ylim(ax, [0.5, thruster_count + 0.5]);
+            x_min = cycle_start(cycle_indices(1));
+            x_max = cycle_start(cycle_indices(end)) + control_period;
+            if x_max <= x_min
+                x_max = x_min + 1;
+            end
+            xlim(ax, [x_min, x_max]);
+            legend(ax, handles, axis_labels, 'Location', 'northeast', ...
+                'Box', 'on');
+            if uses_joint_segment
+                text(ax, 0.01, 0.02, '灰色：联合六维脉冲', ...
+                    'Units', 'normalized', 'Color', joint_color, ...
+                    'FontSize', 10, 'VerticalAlignment', 'bottom');
+            end
+            hold(ax, 'off');
+        end
+
+        function [startTime, startIndex] = ...
+                selectFullPeriodScheduleStart(logData)
+        %SELECTFULLPERIODSCHEDULESTART Find a cycle with full-period pulses.
+        %   A pulse equal to the control period is plotted especially
+        %   clearly: its line reaches both boundary dots.  The default
+        %   view therefore starts at the cycle containing the most such
+        %   actual pulses.  If there is no full-period pulse, it keeps the
+        %   conventional start at the first control cycle.
+            startTime = 0;
+            startIndex = 1;
+            required = {'Control_Time', 'Pulse_History'};
+            if ~isstruct(logData) || ~all(cellfun( ...
+                    @(name)isfield(logData, name), required)) || ...
+                    isempty(logData.Control_Time) || ...
+                    isempty(logData.Pulse_History)
+                return;
+            end
+
+            controlTime = double(logData.Control_Time(:)');
+            pulseHistory = double(logData.Pulse_History);
+            controlCount = min(numel(controlTime), size(pulseHistory, 2));
+            if isfield(logData, 'Pulse_Schedule_History')
+                controlCount = min(controlCount, ...
+                    numel(logData.Pulse_Schedule_History));
+            end
+            if controlCount < 1 || size(pulseHistory, 1) < 1
+                return;
+            end
+            controlTime = controlTime(1:controlCount);
+            pulseHistory = pulseHistory(:, 1:controlCount);
+            pulseHistory(~isfinite(pulseHistory)) = 0;
+            controlPeriod = RCPlotter.getStructField(logData, ...
+                'Control_Period', []);
+            if ~isscalar(controlPeriod) || ~isfinite(controlPeriod) || ...
+                    controlPeriod <= 0
+                return;
+            end
+            fullPulseTolerance = 1e-9 * max(1, controlPeriod);
+            fullPulseCount = sum(abs(pulseHistory - controlPeriod) ...
+                <= fullPulseTolerance, 1);
+            [maximumCount, startIndex] = max(fullPulseCount);
+            if maximumCount == 0
+                startIndex = 1;
+            end
+            startTime = controlTime(startIndex);
+        end
+
+        function plotBodyWrenchHistory(axesList, logData, label, options)
+        %PLOTBODYWRENCHHISTORY Plot one case's thruster-generated wrench.
+        %   The six panels follow the intent of Taheri and Assadian Fig. 14:
+        %   each trace is the average force/torque generated by the actual
+        %   thruster pulse allocation during one control period, namely
+        %   Matrix_conf * (Prop_Actual / control_period).
+            if nargin < 4 || isempty(options)
+                options = struct();
+            end
+            if numel(axesList) < 6
+                error('RCPlotter:InsufficientWrenchAxes', ...
+                    '六维推力器输出图需要6个坐标轴。');
+            end
+            wrench = RCPlotter.loggedWrench(logData);
+            sampleCount = min(numel(logData.Control_Time), ...
+                size(wrench, 2));
+            componentNames = {'F_x', 'F_y', 'F_z', 'M_x', 'M_y', 'M_z'};
+            componentUnits = {'N', 'N', 'N', 'N·m', 'N·m', 'N·m'};
+            lineColor = RCPlotter.getOption( ...
+                options, 'LineColor', [0.10, 0.42, 0.76]);
+            label = char(string(label));
+
+            for componentIndex = 1:6
+                ax = axesList(componentIndex);
+                RCPlotter.validateAxes(ax);
+                cla(ax, 'reset');
+                ax.Visible = 'on';
+                view(ax, 2);
+                hold(ax, 'on');
+                grid(ax, 'on');
+                box(ax, 'on');
+                stairs(ax, logData.Control_Time(1:sampleCount), ...
+                    wrench(componentIndex, 1:sampleCount), ...
+                    'Color', lineColor, 'LineWidth', 1.15);
+                RCPlotter.drawFaultLine(ax, {logData}, options);
+                title(ax, sprintf('%s｜%s 周期平均实际输出', ...
+                    label, componentNames{componentIndex}));
+                xlabel(ax, '时间 / s');
+                ylabel(ax, sprintf('%s / %s', ...
+                    componentNames{componentIndex}, ...
+                    componentUnits{componentIndex}));
+                hold(ax, 'off');
+            end
+        end
+
+        function plotTrajectoryViews(axesList, logData, label, options)
+        %PLOTTRAJECTORYVIEWS Draw 3-D, XY, XZ and YZ trajectory views.
+        %   Every view includes attitude silhouettes. The projected outline
+        %   is the convex hull of the rotated cuboid, while the +X front
+        %   face is thicker, following Taheri and Assadian Fig. 16.
+            if nargin < 4 || isempty(options)
+                options = struct();
+            end
+            if numel(axesList) < 4
+                error('RCPlotter:InsufficientTrajectoryAxes', ...
+                    '轨迹姿态页需要4个坐标轴。');
+            end
+            RCPlotter.validateSimulationLog(logData);
+            [actual, reference, sampleCount] = ...
+                RCPlotter.trajectorySeries(logData);
+            bodyHalfSize = RCPlotter.scaledTrajectoryBodyHalfSize( ...
+                actual, reference, options);
+            snapshotCount = max(2, round(RCPlotter.getOption( ...
+                options, 'SnapshotCount', 9)));
+            snapshotIndices = RCPlotter.trajectorySnapshotIndices( ...
+                actual, snapshotCount);
+            label = char(string(label));
+
+            RCPlotter.drawTrajectory3D(axesList(1), logData, ...
+                actual, reference, sampleCount, snapshotIndices, ...
+                bodyHalfSize, label);
+            viewDefinitions = struct( ...
+                'name', {'XY', 'XZ', 'YZ'}, ...
+                'indices', {[1, 2], [3, 1], [2, 3]}, ...
+                'xlabel', {'X / m', 'Z / m', 'Y / m'}, ...
+                'ylabel', {'Y / m', 'X / m', 'Z / m'});
+            for viewIndex = 1:numel(viewDefinitions)
+                RCPlotter.drawTrajectoryProjection(axesList(viewIndex + 1), ...
+                    logData, actual, reference, sampleCount, ...
+                    snapshotIndices, bodyHalfSize, label, ...
+                    viewDefinitions(viewIndex));
+            end
+        end
+
         function plotDirectionAngleMatrix(ax, B, faultyIndices, options)
         %PLOTDIRECTIONANGLEMATRIX Plot the six-dimensional vector angles.
             if nargin < 3 || isempty(faultyIndices)
@@ -650,7 +970,7 @@ classdef RCPlotter
             faultyThrusters = RCPlotter.validIndices( ...
                 faultyThrusters, thrusterCount);
             axisNames = {'X', 'Y', 'Z'};
-            rows = cell(12, 4);
+            rows = cell(12, 5);
             rowIndex = 0;
             for isOrbit = [true, false]
                 if isOrbit
@@ -663,7 +983,7 @@ classdef RCPlotter
                         rowIndex = rowIndex + 1;
                         nominal = RCPlotter.axisStrategyIndices(params, matrix, ...
                             [], axisIndex, direction, isOrbit);
-                        faulty = RCPlotter.axisStrategyIndices(params, matrix, ...
+                        [faulty, faultyDetail] = RCPlotter.axisStrategyIndices(params, matrix, ...
                             faultyThrusters, axisIndex, direction, isOrbit);
                         if direction > 0
                             directionText = '+';
@@ -673,12 +993,14 @@ classdef RCPlotter
                         rows(rowIndex, :) = {controlType, ...
                             [directionText, axisNames{axisIndex}], ...
                             RCPlotter.indexListText(nominal), ...
-                            RCPlotter.indexListText(faulty)};
+                            RCPlotter.indexListText(faulty), ...
+                            RCPlotter.faultSwitchText(faultyDetail)};
                     end
                 end
             end
             result = struct('Data', {rows}, 'ColumnNames', ...
-                {{'控制类型', '轴向', '标况下调用', '故障下调用'}});
+                {{'控制类型', '轴向', '标况最简主份', ...
+                  '故障下健康备份', '状态'}});
         end
 
         function result = reconfigSummaryData(params, layoutSet, faultNumbers)
@@ -774,6 +1096,310 @@ classdef RCPlotter
     end
 
     methods (Static, Access = private)
+        function count = scheduleThrusterCount(logData, controlCount)
+            count = 0;
+            if isfield(logData, 'Pulse_History') && ...
+                    ~isempty(logData.Pulse_History)
+                count = size(logData.Pulse_History, 1);
+            end
+            if count > 0
+                return;
+            end
+            for cycleIndex = 1:controlCount
+                schedule = logData.Pulse_Schedule_History{cycleIndex};
+                if ~isstruct(schedule)
+                    continue;
+                end
+                if isfield(schedule, 'axis_intervals') && ...
+                        iscell(schedule.axis_intervals)
+                    count = max(count, numel(schedule.axis_intervals));
+                elseif isfield(schedule, 'intervals') && ...
+                        iscell(schedule.intervals)
+                    count = max(count, numel(schedule.intervals));
+                end
+            end
+        end
+
+        function intervals = axisIntervalsForThruster(schedule, thrusterIndex)
+            intervals = zeros(0, 3);
+            if ~isstruct(schedule)
+                return;
+            end
+            if isfield(schedule, 'axis_intervals') && ...
+                    iscell(schedule.axis_intervals) && ...
+                    numel(schedule.axis_intervals) >= thrusterIndex
+                tagged = schedule.axis_intervals{thrusterIndex};
+                if isnumeric(tagged) && size(tagged, 2) >= 3
+                    intervals = tagged(:, 1:3);
+                    return;
+                end
+            end
+            % Logs generated before axis tagging remain readable.  They are
+            % shown as neutral segments rather than being mislabelled as a
+            % particular pure-control group.
+            if isfield(schedule, 'intervals') && ...
+                    iscell(schedule.intervals) && ...
+                    numel(schedule.intervals) >= thrusterIndex
+                total = schedule.intervals{thrusterIndex};
+                if isnumeric(total) && size(total, 2) >= 2
+                    intervals = [total(:, 1:2), zeros(size(total, 1), 1)];
+                end
+            end
+        end
+
+        function wrench = loggedWrench(logData)
+            if ~isstruct(logData) || ...
+                    ~isfield(logData, 'Actual_Wrench_History') || ...
+                    isempty(logData.Actual_Wrench_History) || ...
+                    size(logData.Actual_Wrench_History, 1) < 6 || ...
+                    ~isfield(logData, 'Control_Time') || ...
+                    isempty(logData.Control_Time)
+                error('RCPlotter:MissingWrenchHistory', ...
+                    '仿真结果缺少六维推力器实际输出历史。');
+            end
+            wrench = double(logData.Actual_Wrench_History(1:6, :));
+        end
+
+        function [actual, reference, sampleCount] = trajectorySeries(logData)
+            sampleCount = min([size(logData.Y, 2), size(logData.R, 2), ...
+                size(logData.Y_euler, 2), numel(logData.Time)]);
+            if sampleCount < 1
+                error('RCPlotter:EmptyTrajectory', ...
+                    '仿真结果中没有可绘制的轨迹数据。');
+            end
+            actual = double(logData.Y(1:3, 1:sampleCount));
+            reference = double(logData.R(1:3, 1:sampleCount));
+        end
+
+        function bodyHalfSize = scaledTrajectoryBodyHalfSize( ...
+                actual, reference, options)
+            bodyHalfSize = double(RCPlotter.getOption( ...
+                options, 'BodyHalfSize', [2, 0.6, 0.6]));
+            bodyHalfSize = bodyHalfSize(:)';
+            if numel(bodyHalfSize) ~= 3 || any(~isfinite(bodyHalfSize)) || ...
+                    any(bodyHalfSize <= 0)
+                bodyHalfSize = [2, 0.6, 0.6];
+            end
+            if ~RCPlotter.getOption(options, 'AutoScaleBody', true)
+                return;
+            end
+            allPositions = [actual, reference];
+            trajectoryExtent = max(allPositions, [], 2) - ...
+                min(allPositions, [], 2);
+            trajectoryScale = norm(trajectoryExtent);
+            bodyDiameter = 2 * norm(bodyHalfSize);
+            if isfinite(trajectoryScale) && trajectoryScale > 1e-9 && ...
+                    bodyDiameter > 1e-12
+                maximumBodyDiameter = 0.16 * trajectoryScale;
+                scaleFactor = min(1, maximumBodyDiameter / bodyDiameter);
+                bodyHalfSize = bodyHalfSize * max(scaleFactor, 0.02);
+            end
+        end
+
+        function vertices = trajectoryBodyVertices(bodyHalfSize)
+            x = bodyHalfSize(1);
+            y = bodyHalfSize(2);
+            z = bodyHalfSize(3);
+            vertices = [ ...
+                -x, -y, -z;  x, -y, -z;  x,  y, -z; -x,  y, -z; ...
+                -x, -y,  z;  x, -y,  z;  x,  y,  z; -x,  y,  z]';
+        end
+
+        function drawTrajectory3D(ax, logData, actual, reference, ...
+                sampleCount, snapshotIndices, bodyHalfSize, label)
+            RCPlotter.validateAxes(ax);
+            cla(ax, 'reset');
+            ax.Visible = 'on';
+            hold(ax, 'on');
+            grid(ax, 'on');
+            box(ax, 'on');
+            referenceHandle = plot3(ax, reference(1, :), reference(2, :), ...
+                reference(3, :), '--', 'Color', [0.48, 0.52, 0.56], ...
+                'LineWidth', 1.1);
+            actualHandle = plot3(ax, actual(1, :), actual(2, :), ...
+                actual(3, :), '-', 'Color', [0.05, 0.43, 0.73], ...
+                'LineWidth', 1.7);
+            startHandle = plot3(ax, actual(1, 1), actual(2, 1), ...
+                actual(3, 1), 'o', 'MarkerFaceColor', [0.20, 0.68, 0.40], ...
+                'MarkerEdgeColor', 'none', 'MarkerSize', 6);
+            targetHandle = plot3(ax, reference(1, end), reference(2, end), ...
+                reference(3, end), 'p', ...
+                'MarkerFaceColor', [0.94, 0.56, 0.10], ...
+                'MarkerEdgeColor', 'none', 'MarkerSize', 8);
+
+            baseVertices = RCPlotter.trajectoryBodyVertices(bodyHalfSize);
+            edges = [1 2; 2 3; 3 4; 4 1; 5 6; 6 7; ...
+                7 8; 8 5; 1 5; 2 6; 3 7; 4 8];
+            frontEdges = [2 3; 3 7; 7 6; 6 2];
+            for snapshotIndex = snapshotIndices
+                rotation = RCPlotter.eulerRotationMatrix( ...
+                    logData.Y_euler(:, snapshotIndex));
+                vertices = rotation * baseVertices + actual(:, snapshotIndex);
+                plot3(ax, actual(1, snapshotIndex), ...
+                    actual(2, snapshotIndex), actual(3, snapshotIndex), ...
+                    'o', 'Color', [0.36, 0.42, 0.47], ...
+                    'MarkerSize', 3, 'HandleVisibility', 'off');
+                for edgeIndex = 1:size(edges, 1)
+                    edge = edges(edgeIndex, :);
+                    plot3(ax, vertices(1, edge), vertices(2, edge), ...
+                        vertices(3, edge), '-', ...
+                        'Color', [0.45, 0.52, 0.58], ...
+                        'LineWidth', 0.65, 'HandleVisibility', 'off');
+                end
+                for edgeIndex = 1:size(frontEdges, 1)
+                    edge = frontEdges(edgeIndex, :);
+                    plot3(ax, vertices(1, edge), vertices(2, edge), ...
+                        vertices(3, edge), '-', ...
+                        'Color', [0.08, 0.10, 0.12], ...
+                        'LineWidth', 2.0, 'HandleVisibility', 'off');
+                end
+            end
+            faultSample = RCPlotter.trajectoryFaultSample( ...
+                logData, sampleCount);
+            if ~isempty(faultSample)
+                plot3(ax, actual(1, faultSample), actual(2, faultSample), ...
+                    actual(3, faultSample), 'd', ...
+                    'MarkerFaceColor', [0.86, 0.12, 0.16], ...
+                    'MarkerEdgeColor', 'w', 'MarkerSize', 7, ...
+                    'HandleVisibility', 'off');
+            end
+            xlabel(ax, 'X / m');
+            ylabel(ax, 'Y / m');
+            zlabel(ax, 'Z / m');
+            title(ax, [label, '｜3D轨迹与姿态']);
+            axis(ax, 'equal');
+            view(ax, 35, 25);
+            legend(ax, [actualHandle, referenceHandle, ...
+                startHandle, targetHandle], ...
+                {'实际轨迹', '参考轨迹', '起点', '目标点'}, ...
+                'Location', 'best');
+            hold(ax, 'off');
+        end
+
+        function drawTrajectoryProjection(ax, logData, actual, reference, ...
+                sampleCount, snapshotIndices, bodyHalfSize, label, definition)
+            RCPlotter.validateAxes(ax);
+            axesIndices = definition.indices;
+            cla(ax, 'reset');
+            ax.Visible = 'on';
+            view(ax, 2);
+            hold(ax, 'on');
+            grid(ax, 'on');
+            box(ax, 'on');
+            plot(ax, reference(axesIndices(1), :), ...
+                reference(axesIndices(2), :), '--', ...
+                'Color', [0.48, 0.52, 0.56], 'LineWidth', 1.1);
+            plot(ax, actual(axesIndices(1), :), ...
+                actual(axesIndices(2), :), '-', ...
+                'Color', [0.05, 0.43, 0.73], 'LineWidth', 1.7);
+            plot(ax, actual(axesIndices(1), 1), ...
+                actual(axesIndices(2), 1), 'o', ...
+                'MarkerFaceColor', [0.20, 0.68, 0.40], ...
+                'MarkerEdgeColor', 'none', 'MarkerSize', 6);
+            plot(ax, reference(axesIndices(1), end), ...
+                reference(axesIndices(2), end), 'p', ...
+                'MarkerFaceColor', [0.94, 0.56, 0.10], ...
+                'MarkerEdgeColor', 'none', 'MarkerSize', 8);
+
+            baseVertices = RCPlotter.trajectoryBodyVertices(bodyHalfSize);
+            frontFace = [2, 3, 7, 6, 2];
+            for snapshotIndex = snapshotIndices
+                rotation = RCPlotter.eulerRotationMatrix( ...
+                    logData.Y_euler(:, snapshotIndex));
+                vertices = rotation * baseVertices + actual(:, snapshotIndex);
+                projected = vertices(axesIndices, :);
+                uniquePoints = unique(projected', 'rows', 'stable');
+                if size(uniquePoints, 1) >= 3
+                    hull = convhull(uniquePoints(:, 1), uniquePoints(:, 2));
+                    patch(ax, uniquePoints(hull, 1), uniquePoints(hull, 2), ...
+                        [0.68, 0.76, 0.83], 'FaceAlpha', 0.06, ...
+                        'EdgeColor', [0.45, 0.52, 0.58], ...
+                        'LineWidth', 0.75, 'HandleVisibility', 'off');
+                end
+                plot(ax, projected(1, frontFace), ...
+                    projected(2, frontFace), '-', ...
+                    'Color', [0.08, 0.10, 0.12], ...
+                    'LineWidth', 2.0, 'HandleVisibility', 'off');
+                plot(ax, actual(axesIndices(1), snapshotIndex), ...
+                    actual(axesIndices(2), snapshotIndex), 'o', ...
+                    'Color', [0.36, 0.42, 0.47], 'MarkerSize', 3, ...
+                    'HandleVisibility', 'off');
+            end
+            faultSample = RCPlotter.trajectoryFaultSample( ...
+                logData, sampleCount);
+            if ~isempty(faultSample)
+                plot(ax, actual(axesIndices(1), faultSample), ...
+                    actual(axesIndices(2), faultSample), 'd', ...
+                    'MarkerFaceColor', [0.86, 0.12, 0.16], ...
+                    'MarkerEdgeColor', 'w', 'MarkerSize', 7, ...
+                    'HandleVisibility', 'off');
+            end
+            xlabel(ax, definition.xlabel);
+            ylabel(ax, definition.ylabel);
+            title(ax, [label, '｜', definition.name, '轨迹与姿态']);
+            axis(ax, 'equal');
+            hold(ax, 'off');
+        end
+
+        function sampleIndex = trajectoryFaultSample(logData, sampleCount)
+            sampleIndex = [];
+            if isfield(logData, 'faulty_thrusters') && ...
+                    ~isempty(logData.faulty_thrusters) && ...
+                    isfield(logData, 'faulty_time') && ...
+                    isnumeric(logData.faulty_time) && ...
+                    isscalar(logData.faulty_time) && ...
+                    isfinite(logData.faulty_time)
+                [~, sampleIndex] = min(abs( ...
+                    double(logData.Time(1:sampleCount)) - ...
+                    double(logData.faulty_time)));
+            end
+        end
+
+        function indices = trajectorySnapshotIndices(position, count)
+            sampleCount = size(position, 2);
+            if sampleCount <= count
+                indices = 1:sampleCount;
+                return;
+            end
+            increments = vecnorm(diff(position, 1, 2), 2, 1);
+            distance = [0, cumsum(increments)];
+            totalDistance = distance(end);
+            if ~isfinite(totalDistance) || totalDistance <= 1e-12
+                indices = unique(round(linspace(1, sampleCount, count)), ...
+                    'stable');
+                return;
+            end
+            targets = linspace(0, totalDistance, count);
+            indices = zeros(1, count);
+            for targetIndex = 1:count
+                [~, indices(targetIndex)] = min(abs( ...
+                    distance - targets(targetIndex)));
+            end
+            indices = unique(indices, 'stable');
+        end
+
+        function rotation = eulerRotationMatrix(euler)
+            euler = double(euler(:));
+            if numel(euler) < 3 || any(~isfinite(euler(1:3)))
+                rotation = eye(3);
+                return;
+            end
+            phi = euler(1);
+            theta = euler(2);
+            psi = euler(3);
+            cPhi = cos(phi); sPhi = sin(phi);
+            cTheta = cos(theta); sTheta = sin(theta);
+            cPsi = cos(psi); sPsi = sin(psi);
+            rotation = [ ...
+                cPsi*cTheta, ...
+                cPsi*sTheta*sPhi - sPsi*cPhi, ...
+                cPsi*sTheta*cPhi + sPsi*sPhi; ...
+                sPsi*cTheta, ...
+                sPsi*sTheta*sPhi + cPsi*cPhi, ...
+                sPsi*sTheta*cPhi - cPsi*sPhi; ...
+                -sTheta, cTheta*sPhi, cTheta*cPhi];
+        end
+
         function selected = selectedFaultMetricCase(comparison, faultyIndices)
             if ~isstruct(comparison) || ...
                     ~isfield(comparison, 'Evaluations') || ...
@@ -1200,8 +1826,9 @@ classdef RCPlotter
             end
         end
 
-        function indices = axisStrategyIndices(params, matrix, faultyThrusters, ...
+        function [indices, detail] = axisStrategyIndices(params, matrix, faultyThrusters, ...
                 axisIndex, direction, isOrbit)
+            detail = struct('status', 'unknown', 'reconfigured', false);
             forceCommand = zeros(3, 1);
             torqueCommand = zeros(3, 1);
             if isOrbit
@@ -1213,26 +1840,83 @@ classdef RCPlotter
             end
             if level <= 1e-12
                 indices = [];
+                detail.status = 'no_axis_authority';
                 return;
             end
             layoutParams = params;
             layoutParams.Num = size(matrix, 2);
             faultyThrusters = RCPlotter.validIndices( ...
                 faultyThrusters, layoutParams.Num);
-            % 主备选择属于轴向分配层。即使上层选择六维联合复用，
-            % 六轴策略表仍按主用组合及故障后的备份组合进行展示。
-            if isfield(layoutParams, 'allocation_strategy') && ...
-                    strcmpi(layoutParams.allocation_strategy, 'primary_backup')
-                layoutParams.alloc_mode = 'task_book';
-            end
-            [propFinal, info] = Thruster_invocation(forceCommand, torqueCommand, ...
-                matrix, faultyThrusters, layoutParams);
-            if isfield(info, 'mode') && strcmpi(info.mode, 'joint_6d')
-                indices = find(propFinal > 1e-12)';
-            elseif isOrbit
+            [~, info] = Thruster_allocator( ...
+                forceCommand, torqueCommand, matrix, ...
+                faultyThrusters, layoutParams);
+            if isOrbit
                 indices = find(info.Prop_F > 1e-12)';
             else
                 indices = find(info.Prop_T > 1e-12)';
+            end
+            if isempty(indices) && isfield(info, 'Prop_6D') && ...
+                    any(info.Prop_6D > 1e-12)
+                indices = find(info.Prop_6D > 1e-12)';
+                detail.status = 'joint_optimization';
+            end
+            if isfield(info, 'axis_strategy')
+                if isOrbit
+                    strategy = info.axis_strategy{1, axisIndex};
+                else
+                    strategy = info.axis_strategy{2, axisIndex};
+                end
+                if isstruct(strategy)
+                    if isfield(strategy, 'status')
+                        detail.status = strategy.status;
+                    end
+                    if isfield(strategy, 'reconfigured')
+                        detail.reconfigured = strategy.reconfigured;
+                    end
+                end
+            end
+        end
+
+        function text = faultSwitchText(detail)
+            text = RCPlotter.allocationStatusText(detail.status);
+        end
+
+        function text = allocationStatusText(status)
+            switch char(string(status))
+                case 'below_minimum_pulse'
+                    text = '低于最小脉宽';
+                case 'attitude_priority_suppressed'
+                    text = '姿控饱和，本周期暂停轨控';
+                case 'peak_constraint_suppressed'
+                    text = '瞬时耦合超限，已停用该轨控轴';
+                case 'no_axis_authority'
+                    text = '该轴无控制能力';
+                case 'nominal_paired_instantaneous_group'
+                    text = '使用标况最简成对瞬时纯控制组';
+                case 'nominal_even_average_group'
+                    text = '使用标况完整偶数平均纯控制组';
+                case 'fault_paired_backup_group'
+                    text = '故障主份整组退出，切换成对瞬时备份';
+                case 'fault_even_average_backup'
+                    text = '故障主份整组退出，切换完整偶数备份';
+                case 'fault_impulse_margin_backup'
+                    text = '故障主份整组退出，使用冲量裕度备用';
+                case 'impulse_margin_unavailable'
+                    text = '反向控制冲量储备不足，备用组未执行';
+                case 'command_paired_backup_group'
+                    text = '切换成对瞬时备用组';
+                case 'command_even_average_backup'
+                    text = '切换完整偶数平均备用组';
+                case 'pulse_limited_group'
+                    text = '受最小/最大脉宽限制';
+                case 'unreconfigurable_fault'
+                    text = '该故障下无完整成对瞬时备份';
+                case 'empty'
+                    text = '无指令';
+                case 'joint_optimization'
+                    text = '联合六维优化分配';
+                otherwise
+                    text = char(string(status));
             end
         end
 
