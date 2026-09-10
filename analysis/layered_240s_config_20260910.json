@@ -1,0 +1,41 @@
+{
+  "lower": [
+    0,
+    -0.6,
+    0,
+    0,
+    0,
+    -0.6,
+    0,
+    0,
+    0,
+    -0.6,
+    0,
+    0
+  ],
+  "upper": [
+    0.6,
+    0.6,
+    6.283185307179586,
+    1.5707963267948966,
+    0.6,
+    0.6,
+    6.283185307179586,
+    1.5707963267948966,
+    0.6,
+    0.6,
+    6.283185307179586,
+    1.5707963267948966
+  ],
+  "x_face": 2,
+  "min_axis_capacity": 1e-05,
+  "pure_tolerance": 1e-09,
+  "max_group_size": 6,
+  "min_install_distance": 0,
+  "min_install_angle_deg": 0,
+  "max_time": 240,
+  "diagnostic_stage_time": 60,
+  "diagnostic_compare": true,
+  "diagnostic_artifact_dir": "analysis/layered_240s_20260910",
+  "seed": 18
+}

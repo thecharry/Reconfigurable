@@ -1,0 +1,12 @@
+{
+  "scope": "Default full domain, exact geometry, 36 representative requirements",
+  "continuous_variables": 24,
+  "boolean_variables": 396,
+  "nonlinear_physical_equalities": 12,
+  "ideal_formula": "/Users/charry/Desktop/\u79d1\u7814\u9879\u76ee/\u536b\u661f\u9879\u76ee/\u4eff\u771f\u7a0b\u5e8f/Reconfigurable/analysis/strict_layout_ideal_20260909.smt2",
+  "tolerant_formula": "/Users/charry/Desktop/\u79d1\u7814\u9879\u76ee/\u536b\u661f\u9879\u76ee/\u4eff\u771f\u7a0b\u5e8f/Reconfigurable/analysis/strict_layout_tolerant_20260909.smt2",
+  "ideal_run": {
+    "status": "not_run",
+    "reason": "Not run: both isolated Z3 package downloads failed SHA256 verification. Installation rejected, no verification bypass. SMT formulas exported but not solver-validated."
+  }
+}

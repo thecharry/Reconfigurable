@@ -17,10 +17,32 @@ function build_rcdesigner_mlapp
 
     originalPath = path;
     pathCleanup = onCleanup(@()path(originalPath)); %#ok<NASGU>
-    addpath(sourceDir, '-begin');
+    % App Designer regenerates the public constructor without DesignBuild.
+    % Suppress registration in a disposable build copy, while saving the
+    % untouched source code into the application archive below.
+    buildDir = tempname;
+    mkdir(buildDir);
+    buildCleanup = onCleanup(@()rmdir(buildDir, 's')); %#ok<NASGU>
+    sourceText = fileread(sourceFile);
+    registration = 'registerApp(app, app.UIFigure)';
+    if count(string(sourceText), registration) ~= 1
+        error('RCDesigner:BuildRegistration', '无法唯一定位应用注册语句。');
+    end
+    buildText = strrep(sourceText, registration, '% Registration omitted for serialization.');
+    buildFile = fullfile(buildDir, 'RCDesignerPrototype.m');
+    fileId = fopen(buildFile, 'w', 'n', 'UTF-8');
+    if fileId < 0, error('RCDesigner:BuildSourceWrite', '无法写入临时构建源码。'); end
+    fprintf(fileId, '%s', buildText);
+    fclose(fileId);
+    addpath(buildDir, '-begin');
     clear RCDesignerPrototype
     rehash;
 
+    % Build from an unregistered design instance. A normal App Designer
+    % instance is registered with AppManagementService, which attaches a
+    % destruction listener that captures the AppBase object. Serializing
+    % that runtime figure writes the app instance into appModel.mat and
+    % makes Design View report components with internal errors.
     app = RCDesignerPrototype;
     appCleanup = onCleanup(@()deleteIfValid(app)); %#ok<NASGU>
     drawnow;
@@ -37,6 +59,7 @@ function build_rcdesigner_mlapp
     % fails while deserializing the axes. Replace plotted axes with clean
     % axes in the same grid cells before serializing the design model.
     replaceRuntimeAxes(app);
+    removeRuntimeOnlyComponents(app);
     stabilizeMainTabGroup(app);
 
     callbackNames = registeredCallbackNames();
@@ -76,6 +99,26 @@ function build_rcdesigner_mlapp
     deleteIfValid(app);
     clear appCleanup app
     clear pathCleanup
+    clear RCDesignerPrototype
+    clear buildCleanup
+end
+
+function removeRuntimeOnlyComponents(app)
+    % startupFcn creates this results tab for a running app. It must not be
+    % written into the Design View model, or a later UI-only save turns the
+    % runtime component into generated design code and breaks source/model
+    % synchronization.
+    if ~isprop(app, 'SimulationViewTabGroup') || ...
+            isempty(app.SimulationViewTabGroup) || ...
+            ~isvalid(app.SimulationViewTabGroup)
+        return;
+    end
+    tabs = app.SimulationViewTabGroup.Children;
+    for tabIndex = numel(tabs):-1:1
+        if strcmp(char(string(tabs(tabIndex).Title)), '实际调用效果验证')
+            delete(tabs(tabIndex));
+        end
+    end
 end
 
 function stabilizeMainTabGroup(app)
@@ -252,7 +295,13 @@ function setSupportedCallbacks(components, supported)
     for componentIndex = 1:numel(components)
         component = components(componentIndex);
         propertyNames = properties(component);
-        callbackNames = propertyNames(endsWith(propertyNames, 'Fcn'));
+        % Most UI components use *Fcn callback properties, while UITable
+        % uses names such as CellEditCallback. Leaving either form as a
+        % createCallbackFcn handle captures the AppBase instance inside the
+        % serialized component tree and corrupts Design View loading.
+        callbackNames = propertyNames( ...
+            endsWith(propertyNames, 'Fcn') | ...
+            endsWith(propertyNames, 'Callback'));
         for callbackIndex = 1:numel(callbackNames)
             propertyName = callbackNames{callbackIndex};
             try
@@ -313,6 +362,11 @@ function names = registeredCallbackNames()
     % Only callbacks directly associated with components belong in the
     % App Designer callback collection.  Other callable methods are kept
     % in the editable helper-method section.
+    %
+    % UITable.CellEditCallback is deliberately runtime-only. R2023b can
+    % save that property as a closure which captures the complete AppBase
+    % instance, making the next Design View open fail. wireCallbacks()
+    % installs ApplyLayoutButtonPushed when the app actually starts.
     names = {'NavigationListValueChanged', ...
         'PageHostPanelSizeChanged', ...
         'LoadParameterButtonPushed', 'OpenButtonPushed', ...
@@ -320,13 +374,14 @@ function names = registeredCallbackNames()
         'HelpButtonPushed', 'ResetParameterButtonPushed', ...
         'LayoutBoundaryValueChanged', ...
         'LayoutTemplateDropDownValueChanged', ...
-        'AllocationModeDropDownValueChanged', ...
         'SimulationScheduleWindowValueChanged', ...
-        'ApplyLayoutButtonPushed', 'ImportLayoutButtonPushed', ...
+        'ImportLayoutButtonPushed', ...
         'DeleteLayoutButtonPushed', ...
         'StartOptimizationButtonPushed', ...
         'EvaluateButtonPushed', 'MetricsEvaluateButtonPushed', ...
-        'GenerateAllocationButtonPushed', 'RunSimulationButtonPushed'};
+        'GenerateAllocationButtonPushed', 'RunSimulationButtonPushed', ...
+        'NavigateToParameterButtonPushed', ...
+        'NavigateToOptimizationButtonPushed'};
 end
 
 function [callbacks, startupCallback, editableSectionCode] = ...

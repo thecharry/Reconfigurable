@@ -1,0 +1,89 @@
+{
+  "status": "timelimit",
+  "has_solution": false,
+  "x": [],
+  "groups": [],
+  "nodes": 1997,
+  "solution_count": 0,
+  "method": "topology_linear_certificates_v1",
+  "search_goal": "first_feasible",
+  "resume_note": "new_topologies",
+  "search_state": {
+    "version": 3,
+    "method": "topology_linear_certificates_v1",
+    "signature": "07a93186d19554548704a99ce7f344917f9a14dc8325b6e7ee1a4547128d730c",
+    "conflicts": [
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      }
+    ],
+    "pending": [],
+    "processed": 0,
+    "master_calls": 6,
+    "master_numerically_exhausted": false,
+    "seeded": true,
+    "next_stage": "geometry",
+    "best_coverage": 152,
+    "best_x": [
+      0.2,
+      0.0,
+      0.0,
+      0.7853981633974483,
+      0.6,
+      -0.2,
+      1.5707963267948966,
+      0.7853981633974483,
+      0.6,
+      0.2,
+      4.71238898038469,
+      0.7853981633974483
+    ],
+    "history": []
+  },
+  "representative_faults": [
+    1,
+    5,
+    9
+  ],
+  "candidates": [
+    [
+      0.2,
+      0.0,
+      0.0,
+      0.7853981633974483,
+      0.6,
+      -0.2,
+      1.5707963267948966,
+      0.7853981633974483,
+      0.6,
+      0.2,
+      4.71238898038469,
+      0.7853981633974483
+    ]
+  ],
+  "solve_time": 30.00049925,
+  "conflict_count": 1,
+  "topology_count": 0,
+  "geometry_calls": 0,
+  "master_calls": 6,
+  "checkpoint_file": "analysis/topology_linear_smoke_checkpoint_20260910.json"
+}

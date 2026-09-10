@@ -1,0 +1,1185 @@
+Fixed directions 1: force_direction_infeasible, verified coverage 0/156
+Fixed directions 2: force_direction_infeasible, verified coverage 0/156
+Fixed directions 3: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 4: force_direction_infeasible, verified coverage 0/156
+Fixed directions 5: force_direction_infeasible, verified coverage 0/156
+Fixed directions 6: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 7: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 8: force_direction_infeasible, verified coverage 0/156
+Fixed directions 9: force_direction_infeasible, verified coverage 0/156
+Fixed directions 10: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 11: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 12: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 13: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 14: force_direction_infeasible, verified coverage 0/156
+Fixed directions 15: force_direction_infeasible, verified coverage 0/156
+Fixed directions 16: force_direction_infeasible, verified coverage 0/156
+Fixed directions 17: force_direction_infeasible, verified coverage 0/156
+Fixed directions 18: force_direction_infeasible, verified coverage 0/156
+Fixed directions 19: force_direction_infeasible, verified coverage 0/156
+Fixed directions 20: force_direction_infeasible, verified coverage 0/156
+Fixed directions 21: force_direction_infeasible, verified coverage 0/156
+Fixed directions 22: force_direction_infeasible, verified coverage 0/156
+Fixed directions 23: force_direction_infeasible, verified coverage 0/156
+Fixed directions 24: force_direction_infeasible, verified coverage 0/156
+Fixed directions 25: force_direction_infeasible, verified coverage 0/156
+Fixed directions 26: force_direction_infeasible, verified coverage 0/156
+Fixed directions 27: force_direction_infeasible, verified coverage 0/156
+Fixed directions 28: force_direction_infeasible, verified coverage 0/156
+Fixed directions 29: force_direction_infeasible, verified coverage 0/156
+Fixed directions 30: force_direction_infeasible, verified coverage 0/156
+Fixed directions 31: force_direction_infeasible, verified coverage 0/156
+Fixed directions 32: force_direction_infeasible, verified coverage 0/156
+Fixed directions 33: force_direction_infeasible, verified coverage 0/156
+Fixed directions 34: force_direction_infeasible, verified coverage 0/156
+Fixed directions 35: force_direction_infeasible, verified coverage 0/156
+Fixed directions 36: force_direction_infeasible, verified coverage 0/156
+Fixed directions 37: force_direction_infeasible, verified coverage 0/156
+Fixed directions 38: force_direction_infeasible, verified coverage 0/156
+Fixed directions 39: force_direction_infeasible, verified coverage 0/156
+Fixed directions 40: force_direction_infeasible, verified coverage 0/156
+Fixed directions 41: force_direction_infeasible, verified coverage 0/156
+Fixed directions 42: force_direction_infeasible, verified coverage 0/156
+Fixed directions 43: force_direction_infeasible, verified coverage 0/156
+Fixed directions 44: force_direction_infeasible, verified coverage 0/156
+Fixed directions 45: force_direction_infeasible, verified coverage 0/156
+Fixed directions 46: force_direction_infeasible, verified coverage 0/156
+Fixed directions 47: force_direction_infeasible, verified coverage 0/156
+Fixed directions 48: force_direction_infeasible, verified coverage 0/156
+Fixed directions 49: force_direction_infeasible, verified coverage 0/156
+Fixed directions 50: force_direction_infeasible, verified coverage 0/156
+Fixed directions 51: force_direction_infeasible, verified coverage 0/156
+Fixed directions 52: force_direction_infeasible, verified coverage 0/156
+Fixed directions 53: force_direction_infeasible, verified coverage 0/156
+Fixed directions 54: force_direction_infeasible, verified coverage 0/156
+Fixed directions 55: force_direction_infeasible, verified coverage 0/156
+Fixed directions 56: force_direction_infeasible, verified coverage 0/156
+Fixed directions 57: force_direction_infeasible, verified coverage 0/156
+Fixed directions 58: force_direction_infeasible, verified coverage 0/156
+Fixed directions 59: force_direction_infeasible, verified coverage 0/156
+Fixed directions 60: force_direction_infeasible, verified coverage 0/156
+Fixed directions 61: force_direction_infeasible, verified coverage 0/156
+Fixed directions 62: force_direction_infeasible, verified coverage 0/156
+Fixed directions 63: force_direction_infeasible, verified coverage 0/156
+Fixed directions 64: force_direction_infeasible, verified coverage 0/156
+Fixed directions 65: force_direction_infeasible, verified coverage 0/156
+Fixed directions 66: force_direction_infeasible, verified coverage 0/156
+Fixed directions 67: force_direction_infeasible, verified coverage 0/156
+Fixed directions 68: force_direction_infeasible, verified coverage 0/156
+Fixed directions 69: force_direction_infeasible, verified coverage 0/156
+Fixed directions 70: force_direction_infeasible, verified coverage 0/156
+Fixed directions 71: force_direction_infeasible, verified coverage 0/156
+Fixed directions 72: force_direction_infeasible, verified coverage 0/156
+Fixed directions 73: force_direction_infeasible, verified coverage 0/156
+Fixed directions 74: force_direction_infeasible, verified coverage 0/156
+Fixed directions 75: force_direction_infeasible, verified coverage 0/156
+Fixed directions 76: force_direction_infeasible, verified coverage 0/156
+Fixed directions 77: force_direction_infeasible, verified coverage 0/156
+Fixed directions 78: force_direction_infeasible, verified coverage 0/156
+Fixed directions 79: force_direction_infeasible, verified coverage 0/156
+Fixed directions 80: force_direction_infeasible, verified coverage 0/156
+Fixed directions 81: force_direction_infeasible, verified coverage 0/156
+Fixed directions 82: force_direction_infeasible, verified coverage 0/156
+Fixed directions 83: force_direction_infeasible, verified coverage 0/156
+Fixed directions 84: force_direction_infeasible, verified coverage 0/156
+Fixed directions 85: force_direction_infeasible, verified coverage 0/156
+Fixed directions 86: force_direction_infeasible, verified coverage 0/156
+Fixed directions 87: force_direction_infeasible, verified coverage 0/156
+Fixed directions 88: force_direction_infeasible, verified coverage 0/156
+Fixed directions 89: force_direction_infeasible, verified coverage 0/156
+Fixed directions 90: force_direction_infeasible, verified coverage 0/156
+Fixed directions 91: force_direction_infeasible, verified coverage 0/156
+Fixed directions 92: force_direction_infeasible, verified coverage 0/156
+Fixed directions 93: force_direction_infeasible, verified coverage 0/156
+Fixed directions 94: force_direction_infeasible, verified coverage 0/156
+Fixed directions 95: force_direction_infeasible, verified coverage 0/156
+Fixed directions 96: force_direction_infeasible, verified coverage 0/156
+Fixed directions 97: force_direction_infeasible, verified coverage 0/156
+Fixed directions 98: force_direction_infeasible, verified coverage 0/156
+Fixed directions 99: force_direction_infeasible, verified coverage 0/156
+Fixed directions 100: force_direction_infeasible, verified coverage 0/156
+Fixed directions 101: force_direction_infeasible, verified coverage 0/156
+Fixed directions 102: force_direction_infeasible, verified coverage 0/156
+Fixed directions 103: force_direction_infeasible, verified coverage 0/156
+Fixed directions 104: force_direction_infeasible, verified coverage 0/156
+Fixed directions 105: force_direction_infeasible, verified coverage 0/156
+Fixed directions 106: force_direction_infeasible, verified coverage 0/156
+Fixed directions 107: force_direction_infeasible, verified coverage 0/156
+Fixed directions 108: force_direction_infeasible, verified coverage 0/156
+Fixed directions 109: force_direction_infeasible, verified coverage 0/156
+Fixed directions 110: force_direction_infeasible, verified coverage 0/156
+Fixed directions 111: force_direction_infeasible, verified coverage 0/156
+Fixed directions 112: force_direction_infeasible, verified coverage 0/156
+Fixed directions 113: force_direction_infeasible, verified coverage 0/156
+Fixed directions 114: force_direction_infeasible, verified coverage 0/156
+Fixed directions 115: force_direction_infeasible, verified coverage 0/156
+Fixed directions 116: force_direction_infeasible, verified coverage 0/156
+Fixed directions 117: force_direction_infeasible, verified coverage 0/156
+Fixed directions 118: force_direction_infeasible, verified coverage 0/156
+Fixed directions 119: force_direction_infeasible, verified coverage 0/156
+Fixed directions 120: force_direction_infeasible, verified coverage 0/156
+Fixed directions 121: force_direction_infeasible, verified coverage 0/156
+Fixed directions 122: force_direction_infeasible, verified coverage 0/156
+Fixed directions 123: force_direction_infeasible, verified coverage 0/156
+Fixed directions 124: force_direction_infeasible, verified coverage 0/156
+Fixed directions 125: force_direction_infeasible, verified coverage 0/156
+Fixed directions 126: force_direction_infeasible, verified coverage 0/156
+Fixed directions 127: force_direction_infeasible, verified coverage 0/156
+Fixed directions 128: force_direction_infeasible, verified coverage 0/156
+Fixed directions 129: force_direction_infeasible, verified coverage 0/156
+Fixed directions 130: force_direction_infeasible, verified coverage 0/156
+Fixed directions 131: force_direction_infeasible, verified coverage 0/156
+Fixed directions 132: force_direction_infeasible, verified coverage 0/156
+Fixed directions 133: force_direction_infeasible, verified coverage 0/156
+Fixed directions 134: force_direction_infeasible, verified coverage 0/156
+Fixed directions 135: force_direction_infeasible, verified coverage 0/156
+Fixed directions 136: force_direction_infeasible, verified coverage 0/156
+Fixed directions 137: force_direction_infeasible, verified coverage 0/156
+Fixed directions 138: force_direction_infeasible, verified coverage 0/156
+Fixed directions 139: force_direction_infeasible, verified coverage 0/156
+Fixed directions 140: force_direction_infeasible, verified coverage 0/156
+Fixed directions 141: force_direction_infeasible, verified coverage 0/156
+Fixed directions 142: force_direction_infeasible, verified coverage 0/156
+Fixed directions 143: force_direction_infeasible, verified coverage 0/156
+Fixed directions 144: force_direction_infeasible, verified coverage 0/156
+Fixed directions 145: force_direction_infeasible, verified coverage 0/156
+Fixed directions 146: force_direction_infeasible, verified coverage 0/156
+Fixed directions 147: force_direction_infeasible, verified coverage 0/156
+Fixed directions 148: force_direction_infeasible, verified coverage 0/156
+Fixed directions 149: force_direction_infeasible, verified coverage 0/156
+Fixed directions 150: force_direction_infeasible, verified coverage 0/156
+Fixed directions 151: force_direction_infeasible, verified coverage 0/156
+Fixed directions 152: force_direction_infeasible, verified coverage 0/156
+Fixed directions 153: force_direction_infeasible, verified coverage 0/156
+Fixed directions 154: force_direction_infeasible, verified coverage 0/156
+Fixed directions 155: force_direction_infeasible, verified coverage 0/156
+Fixed directions 156: force_direction_infeasible, verified coverage 0/156
+Fixed directions 157: force_direction_infeasible, verified coverage 0/156
+Fixed directions 158: force_direction_infeasible, verified coverage 0/156
+Fixed directions 159: force_direction_infeasible, verified coverage 0/156
+Fixed directions 160: force_direction_infeasible, verified coverage 0/156
+Fixed directions 161: force_direction_infeasible, verified coverage 0/156
+Fixed directions 162: force_direction_infeasible, verified coverage 0/156
+Fixed directions 163: force_direction_infeasible, verified coverage 0/156
+Fixed directions 164: force_direction_infeasible, verified coverage 0/156
+Fixed directions 165: force_direction_infeasible, verified coverage 0/156
+Fixed directions 166: force_direction_infeasible, verified coverage 0/156
+Fixed directions 167: force_direction_infeasible, verified coverage 0/156
+Fixed directions 168: force_direction_infeasible, verified coverage 0/156
+Fixed directions 169: force_direction_infeasible, verified coverage 0/156
+Fixed directions 170: force_direction_infeasible, verified coverage 0/156
+Fixed directions 171: force_direction_infeasible, verified coverage 0/156
+Fixed directions 172: force_direction_infeasible, verified coverage 0/156
+Fixed directions 173: force_direction_infeasible, verified coverage 0/156
+Fixed directions 174: force_direction_infeasible, verified coverage 0/156
+Fixed directions 175: force_direction_infeasible, verified coverage 0/156
+Fixed directions 176: force_direction_infeasible, verified coverage 0/156
+Fixed directions 177: force_direction_infeasible, verified coverage 0/156
+Fixed directions 178: force_direction_infeasible, verified coverage 0/156
+Fixed directions 179: force_direction_infeasible, verified coverage 0/156
+Fixed directions 180: force_direction_infeasible, verified coverage 0/156
+Fixed directions 181: force_direction_infeasible, verified coverage 0/156
+Fixed directions 182: force_direction_infeasible, verified coverage 0/156
+Fixed directions 183: force_direction_infeasible, verified coverage 0/156
+Fixed directions 184: force_direction_infeasible, verified coverage 0/156
+Fixed directions 185: force_direction_infeasible, verified coverage 0/156
+Fixed directions 186: force_direction_infeasible, verified coverage 0/156
+Fixed directions 187: force_direction_infeasible, verified coverage 0/156
+Fixed directions 188: force_direction_infeasible, verified coverage 0/156
+Fixed directions 189: force_direction_infeasible, verified coverage 0/156
+Fixed directions 190: force_direction_infeasible, verified coverage 0/156
+Fixed directions 191: force_direction_infeasible, verified coverage 0/156
+Fixed directions 192: force_direction_infeasible, verified coverage 0/156
+Fixed directions 193: force_direction_infeasible, verified coverage 0/156
+Fixed directions 194: force_direction_infeasible, verified coverage 0/156
+Fixed directions 195: force_direction_infeasible, verified coverage 0/156
+Fixed directions 196: force_direction_infeasible, verified coverage 0/156
+Fixed directions 197: force_direction_infeasible, verified coverage 0/156
+Fixed directions 198: force_direction_infeasible, verified coverage 0/156
+Fixed directions 199: force_direction_infeasible, verified coverage 0/156
+Fixed directions 200: force_direction_infeasible, verified coverage 0/156
+Fixed directions 201: force_direction_infeasible, verified coverage 0/156
+Fixed directions 202: force_direction_infeasible, verified coverage 0/156
+Fixed directions 203: force_direction_infeasible, verified coverage 0/156
+Fixed directions 204: force_direction_infeasible, verified coverage 0/156
+Fixed directions 205: force_direction_infeasible, verified coverage 0/156
+Fixed directions 206: force_direction_infeasible, verified coverage 0/156
+Fixed directions 207: force_direction_infeasible, verified coverage 0/156
+Fixed directions 208: force_direction_infeasible, verified coverage 0/156
+Fixed directions 209: force_direction_infeasible, verified coverage 0/156
+Fixed directions 210: force_direction_infeasible, verified coverage 0/156
+Fixed directions 211: force_direction_infeasible, verified coverage 0/156
+Fixed directions 212: force_direction_infeasible, verified coverage 0/156
+Fixed directions 213: force_direction_infeasible, verified coverage 0/156
+Fixed directions 214: force_direction_infeasible, verified coverage 0/156
+Fixed directions 215: force_direction_infeasible, verified coverage 0/156
+Fixed directions 216: force_direction_infeasible, verified coverage 0/156
+Fixed directions 217: force_direction_infeasible, verified coverage 0/156
+Fixed directions 218: force_direction_infeasible, verified coverage 0/156
+Fixed directions 219: force_direction_infeasible, verified coverage 0/156
+Fixed directions 220: force_direction_infeasible, verified coverage 0/156
+Fixed directions 221: force_direction_infeasible, verified coverage 0/156
+Fixed directions 222: force_direction_infeasible, verified coverage 0/156
+Fixed directions 223: force_direction_infeasible, verified coverage 0/156
+Fixed directions 224: force_direction_infeasible, verified coverage 0/156
+Fixed directions 225: force_direction_infeasible, verified coverage 0/156
+Fixed directions 226: force_direction_infeasible, verified coverage 0/156
+Fixed directions 227: force_direction_infeasible, verified coverage 0/156
+Fixed directions 228: force_direction_infeasible, verified coverage 0/156
+Fixed directions 229: force_direction_infeasible, verified coverage 0/156
+Fixed directions 230: force_direction_infeasible, verified coverage 0/156
+Fixed directions 231: force_direction_infeasible, verified coverage 0/156
+Fixed directions 232: force_direction_infeasible, verified coverage 0/156
+Fixed directions 233: force_direction_infeasible, verified coverage 0/156
+Fixed directions 234: force_direction_infeasible, verified coverage 0/156
+Fixed directions 235: force_direction_infeasible, verified coverage 0/156
+Fixed directions 236: force_direction_infeasible, verified coverage 0/156
+Fixed directions 237: force_direction_infeasible, verified coverage 0/156
+Fixed directions 238: force_direction_infeasible, verified coverage 0/156
+Fixed directions 239: force_direction_infeasible, verified coverage 0/156
+Fixed directions 240: force_direction_infeasible, verified coverage 0/156
+Fixed directions 241: force_direction_infeasible, verified coverage 0/156
+Fixed directions 242: force_direction_infeasible, verified coverage 0/156
+Fixed directions 243: force_direction_infeasible, verified coverage 0/156
+Fixed directions 244: force_direction_infeasible, verified coverage 0/156
+Fixed directions 245: force_direction_infeasible, verified coverage 0/156
+Fixed directions 246: force_direction_infeasible, verified coverage 0/156
+Fixed directions 247: force_direction_infeasible, verified coverage 0/156
+Fixed directions 248: force_direction_infeasible, verified coverage 0/156
+Fixed directions 249: force_direction_infeasible, verified coverage 0/156
+Fixed directions 250: force_direction_infeasible, verified coverage 0/156
+Fixed directions 251: force_direction_infeasible, verified coverage 0/156
+Fixed directions 252: force_direction_infeasible, verified coverage 0/156
+Fixed directions 253: force_direction_infeasible, verified coverage 0/156
+Fixed directions 254: force_direction_infeasible, verified coverage 0/156
+Fixed directions 255: force_direction_infeasible, verified coverage 0/156
+Fixed directions 256: force_direction_infeasible, verified coverage 0/156
+Fixed directions 257: force_direction_infeasible, verified coverage 0/156
+Fixed directions 258: force_direction_infeasible, verified coverage 0/156
+Fixed directions 259: force_direction_infeasible, verified coverage 0/156
+Fixed directions 260: force_direction_infeasible, verified coverage 0/156
+Fixed directions 261: force_direction_infeasible, verified coverage 0/156
+Fixed directions 262: force_direction_infeasible, verified coverage 0/156
+Fixed directions 263: force_direction_infeasible, verified coverage 0/156
+Fixed directions 264: force_direction_infeasible, verified coverage 0/156
+Fixed directions 265: force_direction_infeasible, verified coverage 0/156
+Fixed directions 266: force_direction_infeasible, verified coverage 0/156
+Fixed directions 267: force_direction_infeasible, verified coverage 0/156
+Fixed directions 268: force_direction_infeasible, verified coverage 0/156
+Fixed directions 269: force_direction_infeasible, verified coverage 0/156
+Fixed directions 270: force_direction_infeasible, verified coverage 0/156
+Fixed directions 271: force_direction_infeasible, verified coverage 0/156
+Fixed directions 272: force_direction_infeasible, verified coverage 0/156
+Fixed directions 273: force_direction_infeasible, verified coverage 0/156
+Fixed directions 274: force_direction_infeasible, verified coverage 0/156
+Fixed directions 275: force_direction_infeasible, verified coverage 0/156
+Fixed directions 276: force_direction_infeasible, verified coverage 0/156
+Fixed directions 277: force_direction_infeasible, verified coverage 0/156
+Fixed directions 278: force_direction_infeasible, verified coverage 0/156
+Fixed directions 279: force_direction_infeasible, verified coverage 0/156
+Fixed directions 280: force_direction_infeasible, verified coverage 0/156
+Fixed directions 281: force_direction_infeasible, verified coverage 0/156
+Fixed directions 282: force_direction_infeasible, verified coverage 0/156
+Fixed directions 283: force_direction_infeasible, verified coverage 0/156
+Fixed directions 284: force_direction_infeasible, verified coverage 0/156
+Fixed directions 285: force_direction_infeasible, verified coverage 0/156
+Fixed directions 286: force_direction_infeasible, verified coverage 0/156
+Fixed directions 287: force_direction_infeasible, verified coverage 0/156
+Fixed directions 288: force_direction_infeasible, verified coverage 0/156
+Fixed directions 289: force_direction_infeasible, verified coverage 0/156
+Fixed directions 290: force_direction_infeasible, verified coverage 0/156
+Fixed directions 291: force_direction_infeasible, verified coverage 0/156
+Fixed directions 292: force_direction_infeasible, verified coverage 0/156
+Fixed directions 293: force_direction_infeasible, verified coverage 0/156
+Fixed directions 294: force_direction_infeasible, verified coverage 0/156
+Fixed directions 295: force_direction_infeasible, verified coverage 0/156
+Fixed directions 296: force_direction_infeasible, verified coverage 0/156
+Fixed directions 297: force_direction_infeasible, verified coverage 0/156
+Fixed directions 298: force_direction_infeasible, verified coverage 0/156
+Fixed directions 299: force_direction_infeasible, verified coverage 0/156
+Fixed directions 300: force_direction_infeasible, verified coverage 0/156
+Fixed directions 301: force_direction_infeasible, verified coverage 0/156
+Fixed directions 302: force_direction_infeasible, verified coverage 0/156
+Fixed directions 303: force_direction_infeasible, verified coverage 0/156
+Fixed directions 304: force_direction_infeasible, verified coverage 0/156
+Fixed directions 305: force_direction_infeasible, verified coverage 0/156
+Fixed directions 306: force_direction_infeasible, verified coverage 0/156
+Fixed directions 307: force_direction_infeasible, verified coverage 0/156
+Fixed directions 308: force_direction_infeasible, verified coverage 0/156
+Fixed directions 309: force_direction_infeasible, verified coverage 0/156
+Fixed directions 310: force_direction_infeasible, verified coverage 0/156
+Fixed directions 311: force_direction_infeasible, verified coverage 0/156
+Fixed directions 312: force_direction_infeasible, verified coverage 0/156
+Fixed directions 313: force_direction_infeasible, verified coverage 0/156
+Fixed directions 314: force_direction_infeasible, verified coverage 0/156
+Fixed directions 315: force_direction_infeasible, verified coverage 0/156
+Fixed directions 316: force_direction_infeasible, verified coverage 0/156
+Fixed directions 317: force_direction_infeasible, verified coverage 0/156
+Fixed directions 318: force_direction_infeasible, verified coverage 0/156
+Fixed directions 319: force_direction_infeasible, verified coverage 0/156
+Fixed directions 320: force_direction_infeasible, verified coverage 0/156
+Fixed directions 321: force_direction_infeasible, verified coverage 0/156
+Fixed directions 322: force_direction_infeasible, verified coverage 0/156
+Fixed directions 323: force_direction_infeasible, verified coverage 0/156
+Fixed directions 324: force_direction_infeasible, verified coverage 0/156
+Fixed directions 325: force_direction_infeasible, verified coverage 0/156
+Fixed directions 326: force_direction_infeasible, verified coverage 0/156
+Fixed directions 327: force_direction_infeasible, verified coverage 0/156
+Fixed directions 328: force_direction_infeasible, verified coverage 0/156
+Fixed directions 329: force_direction_infeasible, verified coverage 0/156
+Fixed directions 330: force_direction_infeasible, verified coverage 0/156
+Fixed directions 331: force_direction_infeasible, verified coverage 0/156
+Fixed directions 332: force_direction_infeasible, verified coverage 0/156
+Fixed directions 333: force_direction_infeasible, verified coverage 0/156
+Fixed directions 334: force_direction_infeasible, verified coverage 0/156
+Fixed directions 335: force_direction_infeasible, verified coverage 0/156
+Fixed directions 336: force_direction_infeasible, verified coverage 0/156
+Fixed directions 337: force_direction_infeasible, verified coverage 0/156
+Fixed directions 338: force_direction_infeasible, verified coverage 0/156
+Fixed directions 339: force_direction_infeasible, verified coverage 0/156
+Fixed directions 340: force_direction_infeasible, verified coverage 0/156
+Fixed directions 341: force_direction_infeasible, verified coverage 0/156
+Fixed directions 342: force_direction_infeasible, verified coverage 0/156
+Fixed directions 343: force_direction_infeasible, verified coverage 0/156
+Fixed directions 344: force_direction_infeasible, verified coverage 0/156
+Fixed directions 345: force_direction_infeasible, verified coverage 0/156
+Fixed directions 346: force_direction_infeasible, verified coverage 0/156
+Fixed directions 347: force_direction_infeasible, verified coverage 0/156
+Fixed directions 348: force_direction_infeasible, verified coverage 0/156
+Fixed directions 349: force_direction_infeasible, verified coverage 0/156
+Fixed directions 350: force_direction_infeasible, verified coverage 0/156
+Fixed directions 351: force_direction_infeasible, verified coverage 0/156
+Fixed directions 352: force_direction_infeasible, verified coverage 0/156
+Fixed directions 353: force_direction_infeasible, verified coverage 0/156
+Fixed directions 354: force_direction_infeasible, verified coverage 0/156
+Fixed directions 355: force_direction_infeasible, verified coverage 0/156
+Fixed directions 356: force_direction_infeasible, verified coverage 0/156
+Fixed directions 357: force_direction_infeasible, verified coverage 0/156
+Fixed directions 358: force_direction_infeasible, verified coverage 0/156
+Fixed directions 359: force_direction_infeasible, verified coverage 0/156
+Fixed directions 360: force_direction_infeasible, verified coverage 0/156
+Fixed directions 361: force_direction_infeasible, verified coverage 0/156
+Fixed directions 362: force_direction_infeasible, verified coverage 0/156
+Fixed directions 363: force_direction_infeasible, verified coverage 0/156
+Fixed directions 364: force_direction_infeasible, verified coverage 0/156
+Fixed directions 365: force_direction_infeasible, verified coverage 0/156
+Fixed directions 366: force_direction_infeasible, verified coverage 0/156
+Fixed directions 367: force_direction_infeasible, verified coverage 0/156
+Fixed directions 368: force_direction_infeasible, verified coverage 0/156
+Fixed directions 369: force_direction_infeasible, verified coverage 0/156
+Fixed directions 370: force_direction_infeasible, verified coverage 0/156
+Fixed directions 371: force_direction_infeasible, verified coverage 0/156
+Fixed directions 372: force_direction_infeasible, verified coverage 0/156
+Fixed directions 373: force_direction_infeasible, verified coverage 0/156
+Fixed directions 374: force_direction_infeasible, verified coverage 0/156
+Fixed directions 375: force_direction_infeasible, verified coverage 0/156
+Fixed directions 376: force_direction_infeasible, verified coverage 0/156
+Fixed directions 377: force_direction_infeasible, verified coverage 0/156
+Fixed directions 378: force_direction_infeasible, verified coverage 0/156
+Fixed directions 379: force_direction_infeasible, verified coverage 0/156
+Fixed directions 380: force_direction_infeasible, verified coverage 0/156
+Fixed directions 381: force_direction_infeasible, verified coverage 0/156
+Fixed directions 382: force_direction_infeasible, verified coverage 0/156
+Fixed directions 383: force_direction_infeasible, verified coverage 0/156
+Fixed directions 384: force_direction_infeasible, verified coverage 0/156
+Fixed directions 385: force_direction_infeasible, verified coverage 0/156
+Fixed directions 386: force_direction_infeasible, verified coverage 0/156
+Fixed directions 387: force_direction_infeasible, verified coverage 0/156
+Fixed directions 388: force_direction_infeasible, verified coverage 0/156
+Fixed directions 389: force_direction_infeasible, verified coverage 0/156
+Fixed directions 390: force_direction_infeasible, verified coverage 0/156
+Fixed directions 391: force_direction_infeasible, verified coverage 0/156
+Fixed directions 392: force_direction_infeasible, verified coverage 0/156
+Fixed directions 393: force_direction_infeasible, verified coverage 0/156
+Fixed directions 394: force_direction_infeasible, verified coverage 0/156
+Fixed directions 395: force_direction_infeasible, verified coverage 0/156
+Fixed directions 396: force_direction_infeasible, verified coverage 0/156
+Fixed directions 397: force_direction_infeasible, verified coverage 0/156
+Fixed directions 398: force_direction_infeasible, verified coverage 0/156
+Fixed directions 399: force_direction_infeasible, verified coverage 0/156
+Fixed directions 400: force_direction_infeasible, verified coverage 0/156
+Fixed directions 401: force_direction_infeasible, verified coverage 0/156
+Fixed directions 402: force_direction_infeasible, verified coverage 0/156
+Fixed directions 403: force_direction_infeasible, verified coverage 0/156
+Fixed directions 404: force_direction_infeasible, verified coverage 0/156
+Fixed directions 405: force_direction_infeasible, verified coverage 0/156
+Fixed directions 406: force_direction_infeasible, verified coverage 0/156
+Fixed directions 407: force_direction_infeasible, verified coverage 0/156
+Fixed directions 408: force_direction_infeasible, verified coverage 0/156
+Fixed directions 409: force_direction_infeasible, verified coverage 0/156
+Fixed directions 410: force_direction_infeasible, verified coverage 0/156
+Fixed directions 411: force_direction_infeasible, verified coverage 0/156
+Fixed directions 412: force_direction_infeasible, verified coverage 0/156
+Fixed directions 413: force_direction_infeasible, verified coverage 0/156
+Fixed directions 414: force_direction_infeasible, verified coverage 0/156
+Fixed directions 415: force_direction_infeasible, verified coverage 0/156
+Fixed directions 416: force_direction_infeasible, verified coverage 0/156
+Fixed directions 417: force_direction_infeasible, verified coverage 0/156
+Fixed directions 418: force_direction_infeasible, verified coverage 0/156
+Fixed directions 419: force_direction_infeasible, verified coverage 0/156
+Fixed directions 420: force_direction_infeasible, verified coverage 0/156
+Fixed directions 421: force_direction_infeasible, verified coverage 0/156
+Fixed directions 422: force_direction_infeasible, verified coverage 0/156
+Fixed directions 423: force_direction_infeasible, verified coverage 0/156
+Fixed directions 424: force_direction_infeasible, verified coverage 0/156
+Fixed directions 425: force_direction_infeasible, verified coverage 0/156
+Fixed directions 426: force_direction_infeasible, verified coverage 0/156
+Fixed directions 427: force_direction_infeasible, verified coverage 0/156
+Fixed directions 428: force_direction_infeasible, verified coverage 0/156
+Fixed directions 429: force_direction_infeasible, verified coverage 0/156
+Fixed directions 430: force_direction_infeasible, verified coverage 0/156
+Fixed directions 431: force_direction_infeasible, verified coverage 0/156
+Fixed directions 432: force_direction_infeasible, verified coverage 0/156
+Fixed directions 433: force_direction_infeasible, verified coverage 0/156
+Fixed directions 434: force_direction_infeasible, verified coverage 0/156
+Fixed directions 435: force_direction_infeasible, verified coverage 0/156
+Fixed directions 436: force_direction_infeasible, verified coverage 0/156
+Fixed directions 437: force_direction_infeasible, verified coverage 0/156
+Fixed directions 438: force_direction_infeasible, verified coverage 0/156
+Fixed directions 439: force_direction_infeasible, verified coverage 0/156
+Fixed directions 440: force_direction_infeasible, verified coverage 0/156
+Fixed directions 441: force_direction_infeasible, verified coverage 0/156
+Fixed directions 442: force_direction_infeasible, verified coverage 0/156
+Fixed directions 443: force_direction_infeasible, verified coverage 0/156
+Fixed directions 444: force_direction_infeasible, verified coverage 0/156
+Fixed directions 445: force_direction_infeasible, verified coverage 0/156
+Fixed directions 446: force_direction_infeasible, verified coverage 0/156
+Fixed directions 447: force_direction_infeasible, verified coverage 0/156
+Fixed directions 448: force_direction_infeasible, verified coverage 0/156
+Fixed directions 449: force_direction_infeasible, verified coverage 0/156
+Fixed directions 450: force_direction_infeasible, verified coverage 0/156
+Fixed directions 451: force_direction_infeasible, verified coverage 0/156
+Fixed directions 452: force_direction_infeasible, verified coverage 0/156
+Fixed directions 453: force_direction_infeasible, verified coverage 0/156
+Fixed directions 454: force_direction_infeasible, verified coverage 0/156
+Fixed directions 455: force_direction_infeasible, verified coverage 0/156
+Fixed directions 456: force_direction_infeasible, verified coverage 0/156
+Fixed directions 457: force_direction_infeasible, verified coverage 0/156
+Fixed directions 458: force_direction_infeasible, verified coverage 0/156
+Fixed directions 459: force_direction_infeasible, verified coverage 0/156
+Fixed directions 460: force_direction_infeasible, verified coverage 0/156
+Fixed directions 461: force_direction_infeasible, verified coverage 0/156
+Fixed directions 462: force_direction_infeasible, verified coverage 0/156
+Fixed directions 463: force_direction_infeasible, verified coverage 0/156
+Fixed directions 464: force_direction_infeasible, verified coverage 0/156
+Fixed directions 465: force_direction_infeasible, verified coverage 0/156
+Fixed directions 466: force_direction_infeasible, verified coverage 0/156
+Fixed directions 467: force_direction_infeasible, verified coverage 0/156
+Fixed directions 468: force_direction_infeasible, verified coverage 0/156
+Fixed directions 469: force_direction_infeasible, verified coverage 0/156
+Fixed directions 470: force_direction_infeasible, verified coverage 0/156
+Fixed directions 471: force_direction_infeasible, verified coverage 0/156
+Fixed directions 472: force_direction_infeasible, verified coverage 0/156
+Fixed directions 473: force_direction_infeasible, verified coverage 0/156
+Fixed directions 474: force_direction_infeasible, verified coverage 0/156
+Fixed directions 475: force_direction_infeasible, verified coverage 0/156
+Fixed directions 476: force_direction_infeasible, verified coverage 0/156
+Fixed directions 477: force_direction_infeasible, verified coverage 0/156
+Fixed directions 478: force_direction_infeasible, verified coverage 0/156
+Fixed directions 479: force_direction_infeasible, verified coverage 0/156
+Fixed directions 480: force_direction_infeasible, verified coverage 0/156
+Fixed directions 481: force_direction_infeasible, verified coverage 0/156
+Fixed directions 482: force_direction_infeasible, verified coverage 0/156
+Fixed directions 483: force_direction_infeasible, verified coverage 0/156
+Fixed directions 484: force_direction_infeasible, verified coverage 0/156
+Fixed directions 485: force_direction_infeasible, verified coverage 0/156
+Fixed directions 486: force_direction_infeasible, verified coverage 0/156
+Fixed directions 487: force_direction_infeasible, verified coverage 0/156
+Fixed directions 488: force_direction_infeasible, verified coverage 0/156
+Fixed directions 489: force_direction_infeasible, verified coverage 0/156
+Fixed directions 490: force_direction_infeasible, verified coverage 0/156
+Fixed directions 491: force_direction_infeasible, verified coverage 0/156
+Fixed directions 492: force_direction_infeasible, verified coverage 0/156
+Fixed directions 493: force_direction_infeasible, verified coverage 0/156
+Fixed directions 494: force_direction_infeasible, verified coverage 0/156
+Fixed directions 495: force_direction_infeasible, verified coverage 0/156
+Fixed directions 496: force_direction_infeasible, verified coverage 0/156
+Fixed directions 497: force_direction_infeasible, verified coverage 0/156
+Fixed directions 498: force_direction_infeasible, verified coverage 0/156
+Fixed directions 499: force_direction_infeasible, verified coverage 0/156
+Fixed directions 500: force_direction_infeasible, verified coverage 0/156
+Fixed directions 501: force_direction_infeasible, verified coverage 0/156
+Fixed directions 502: force_direction_infeasible, verified coverage 0/156
+Fixed directions 503: force_direction_infeasible, verified coverage 0/156
+Fixed directions 504: force_direction_infeasible, verified coverage 0/156
+Fixed directions 505: force_direction_infeasible, verified coverage 0/156
+Fixed directions 506: force_direction_infeasible, verified coverage 0/156
+Fixed directions 507: force_direction_infeasible, verified coverage 0/156
+Fixed directions 508: force_direction_infeasible, verified coverage 0/156
+Fixed directions 509: force_direction_infeasible, verified coverage 0/156
+Fixed directions 510: force_direction_infeasible, verified coverage 0/156
+Fixed directions 511: force_direction_infeasible, verified coverage 0/156
+Fixed directions 512: force_direction_infeasible, verified coverage 0/156
+Fixed directions 513: force_direction_infeasible, verified coverage 0/156
+Fixed directions 514: force_direction_infeasible, verified coverage 0/156
+Fixed directions 515: force_direction_infeasible, verified coverage 0/156
+Fixed directions 516: force_direction_infeasible, verified coverage 0/156
+Fixed directions 517: force_direction_infeasible, verified coverage 0/156
+Fixed directions 518: force_direction_infeasible, verified coverage 0/156
+Fixed directions 519: force_direction_infeasible, verified coverage 0/156
+Fixed directions 520: force_direction_infeasible, verified coverage 0/156
+Fixed directions 521: force_direction_infeasible, verified coverage 0/156
+Fixed directions 522: force_direction_infeasible, verified coverage 0/156
+Fixed directions 523: force_direction_infeasible, verified coverage 0/156
+Fixed directions 524: force_direction_infeasible, verified coverage 0/156
+Fixed directions 525: force_direction_infeasible, verified coverage 0/156
+Fixed directions 526: force_direction_infeasible, verified coverage 0/156
+Fixed directions 527: force_direction_infeasible, verified coverage 0/156
+Fixed directions 528: force_direction_infeasible, verified coverage 0/156
+Fixed directions 529: force_direction_infeasible, verified coverage 0/156
+Fixed directions 530: force_direction_infeasible, verified coverage 0/156
+Fixed directions 531: force_direction_infeasible, verified coverage 0/156
+Fixed directions 532: force_direction_infeasible, verified coverage 0/156
+Fixed directions 533: force_direction_infeasible, verified coverage 0/156
+Fixed directions 534: force_direction_infeasible, verified coverage 0/156
+Fixed directions 535: force_direction_infeasible, verified coverage 0/156
+Fixed directions 536: force_direction_infeasible, verified coverage 0/156
+Fixed directions 537: force_direction_infeasible, verified coverage 0/156
+Fixed directions 538: force_direction_infeasible, verified coverage 0/156
+Fixed directions 539: force_direction_infeasible, verified coverage 0/156
+Fixed directions 540: force_direction_infeasible, verified coverage 0/156
+Fixed directions 541: force_direction_infeasible, verified coverage 0/156
+Fixed directions 542: force_direction_infeasible, verified coverage 0/156
+Fixed directions 543: force_direction_infeasible, verified coverage 0/156
+Fixed directions 544: force_direction_infeasible, verified coverage 0/156
+Fixed directions 545: force_direction_infeasible, verified coverage 0/156
+Fixed directions 546: force_direction_infeasible, verified coverage 0/156
+Fixed directions 547: force_direction_infeasible, verified coverage 0/156
+Fixed directions 548: force_direction_infeasible, verified coverage 0/156
+Fixed directions 549: force_direction_infeasible, verified coverage 0/156
+Fixed directions 550: force_direction_infeasible, verified coverage 0/156
+Fixed directions 551: force_direction_infeasible, verified coverage 0/156
+Fixed directions 552: force_direction_infeasible, verified coverage 0/156
+Fixed directions 553: force_direction_infeasible, verified coverage 0/156
+Fixed directions 554: force_direction_infeasible, verified coverage 0/156
+Fixed directions 555: force_direction_infeasible, verified coverage 0/156
+Fixed directions 556: force_direction_infeasible, verified coverage 0/156
+Fixed directions 557: force_direction_infeasible, verified coverage 0/156
+Fixed directions 558: force_direction_infeasible, verified coverage 0/156
+Fixed directions 559: force_direction_infeasible, verified coverage 0/156
+Fixed directions 560: force_direction_infeasible, verified coverage 0/156
+Fixed directions 561: force_direction_infeasible, verified coverage 0/156
+Fixed directions 562: force_direction_infeasible, verified coverage 0/156
+Fixed directions 563: force_direction_infeasible, verified coverage 0/156
+Fixed directions 564: force_direction_infeasible, verified coverage 0/156
+Fixed directions 565: force_direction_infeasible, verified coverage 0/156
+Fixed directions 566: force_direction_infeasible, verified coverage 0/156
+Fixed directions 567: force_direction_infeasible, verified coverage 0/156
+Fixed directions 568: force_direction_infeasible, verified coverage 0/156
+Fixed directions 569: force_direction_infeasible, verified coverage 0/156
+Fixed directions 570: force_direction_infeasible, verified coverage 0/156
+Fixed directions 571: force_direction_infeasible, verified coverage 0/156
+Fixed directions 572: force_direction_infeasible, verified coverage 0/156
+Fixed directions 573: force_direction_infeasible, verified coverage 0/156
+Fixed directions 574: force_direction_infeasible, verified coverage 0/156
+Fixed directions 575: force_direction_infeasible, verified coverage 0/156
+Fixed directions 576: force_direction_infeasible, verified coverage 0/156
+Fixed directions 577: force_direction_infeasible, verified coverage 0/156
+Fixed directions 578: force_direction_infeasible, verified coverage 0/156
+Fixed directions 579: force_direction_infeasible, verified coverage 0/156
+Fixed directions 580: force_direction_infeasible, verified coverage 0/156
+Fixed directions 581: force_direction_infeasible, verified coverage 0/156
+Fixed directions 582: force_direction_infeasible, verified coverage 0/156
+Fixed directions 583: force_direction_infeasible, verified coverage 0/156
+Fixed directions 584: force_direction_infeasible, verified coverage 0/156
+Fixed directions 585: force_direction_infeasible, verified coverage 0/156
+Fixed directions 586: force_direction_infeasible, verified coverage 0/156
+Fixed directions 587: force_direction_infeasible, verified coverage 0/156
+Fixed directions 588: force_direction_infeasible, verified coverage 0/156
+Fixed directions 589: force_direction_infeasible, verified coverage 0/156
+Fixed directions 590: force_direction_infeasible, verified coverage 0/156
+Fixed directions 591: force_direction_infeasible, verified coverage 0/156
+Fixed directions 592: force_direction_infeasible, verified coverage 0/156
+Fixed directions 593: force_direction_infeasible, verified coverage 0/156
+Fixed directions 594: force_direction_infeasible, verified coverage 0/156
+Fixed directions 595: force_direction_infeasible, verified coverage 0/156
+Fixed directions 596: force_direction_infeasible, verified coverage 0/156
+Fixed directions 597: force_direction_infeasible, verified coverage 0/156
+Fixed directions 598: force_direction_infeasible, verified coverage 0/156
+Fixed directions 599: force_direction_infeasible, verified coverage 0/156
+Fixed directions 600: timelimit, verified coverage 148/156
+Fixed directions 601: timelimit, verified coverage 130/156
+Fixed directions 602: timelimit, verified coverage 130/156
+Fixed directions 603: timelimit, verified coverage 152/156
+Fixed directions 604: timelimit, verified coverage 148/156
+Fixed directions 605: timelimit, verified coverage 130/156
+Fixed directions 606: timelimit, verified coverage 152/156
+Fixed directions 607: timelimit, verified coverage 152/156
+Fixed directions 608: timelimit, verified coverage 130/156
+Fixed directions 609: timelimit, verified coverage 130/156
+Fixed directions 610: timelimit, verified coverage 130/156
+Fixed directions 611: timelimit, verified coverage 152/156
+Fixed directions 612: timelimit, verified coverage 148/156
+Fixed directions 613: timelimit, verified coverage 124/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 614: timelimit, verified coverage 132/156
+Fixed directions 615: timelimit, verified coverage 124/156
+Fixed directions 616: timelimit, verified coverage 148/156
+Fixed directions 617: timelimit, verified coverage 148/156
+Fixed directions 618: timelimit, verified coverage 152/156
+Fixed directions 619: timelimit, verified coverage 152/156
+Fixed directions 620: timelimit, verified coverage 148/156
+Fixed directions 621: timelimit, verified coverage 148/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 622: optimal, verified coverage 152/156
+Fixed directions 623: timelimit, verified coverage 144/156
+Fixed directions 624: timelimit, verified coverage 148/156
+Fixed directions 625: timelimit, verified coverage 148/156
+Fixed directions 626: timelimit, verified coverage 152/156
+Fixed directions 627: timelimit, verified coverage 152/156
+Fixed directions 628: timelimit, verified coverage 152/156
+Fixed directions 629: timelimit, verified coverage 128/156
+Fixed directions 630: timelimit, verified coverage 132/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 631: timelimit, verified coverage 132/156
+Fixed directions 632: optimal, verified coverage 148/156
+Fixed directions 633: timelimit, verified coverage 148/156
+Fixed directions 634: optimal, verified coverage 152/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 635: timelimit, verified coverage 130/156
+Fixed directions 636: optimal, verified coverage 148/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 637: timelimit, verified coverage 148/156
+Fixed directions 638: optimal, verified coverage 152/156
+Fixed directions 639: timelimit, verified coverage 152/156
+Fixed directions 640: optimal, verified coverage 148/156
+Fixed directions 641: timelimit, verified coverage 148/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 642: optimal, verified coverage 152/156
+Fixed directions 643: timelimit, verified coverage 122/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 644: optimal, verified coverage 152/156
+Fixed directions 645: timelimit, verified coverage 132/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 646: timelimit, verified coverage 132/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 647: timelimit, verified coverage 114/156
+Fixed directions 648: optimal, verified coverage 148/156
+Fixed directions 649: optimal, verified coverage 148/156
+Fixed directions 650: optimal, verified coverage 152/156
+Fixed directions 651: optimal, verified coverage 152/156
+Fixed directions 652: optimal, verified coverage 148/156
+Fixed directions 653: optimal, verified coverage 148/156
+Fixed directions 654: optimal, verified coverage 152/156
+Fixed directions 655: timelimit, verified coverage 152/156
+Fixed directions 656: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 657: optimal, verified coverage 148/156
+Fixed directions 658: optimal, verified coverage 152/156
+Fixed directions 659: optimal, verified coverage 152/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 660: optimal, verified coverage 152/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 661: timelimit, verified coverage 130/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 662: timelimit, verified coverage 124/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 663: timelimit, verified coverage 132/156
+Fixed directions 664: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 665: optimal, verified coverage 148/156
+Fixed directions 666: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 667: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 668: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 669: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 670: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 671: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 672: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 673: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 674: optimal, verified coverage 152/156
+Fixed directions 675: optimal, verified coverage 152/156
+Fixed directions 676: optimal, verified coverage 148/156
+Fixed directions 677: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 678: timelimit, verified coverage 136/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 679: optimal, verified coverage 136/156
+Fixed directions 680: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 681: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 682: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 683: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 684: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 685: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 686: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 687: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 688: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 689: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 690: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 691: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 692: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 693: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 694: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 695: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 696: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 697: force_direction_infeasible, verified coverage 0/156
+Fixed directions 698: force_direction_infeasible, verified coverage 0/156
+Fixed directions 699: force_direction_infeasible, verified coverage 0/156
+Fixed directions 700: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 701: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 702: force_direction_infeasible, verified coverage 0/156
+Fixed directions 703: force_direction_infeasible, verified coverage 0/156
+Fixed directions 704: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 705: force_direction_infeasible, verified coverage 0/156
+Fixed directions 706: force_direction_infeasible, verified coverage 0/156
+Fixed directions 707: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 708: force_direction_infeasible, verified coverage 0/156
+Fixed directions 709: optimal, verified coverage 130/156
+Fixed directions 710: force_direction_infeasible, verified coverage 0/156
+Fixed directions 711: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 712: force_direction_infeasible, verified coverage 0/156
+Fixed directions 713: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 714: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 715: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 716: force_direction_infeasible, verified coverage 0/156
+Fixed directions 717: force_direction_infeasible, verified coverage 0/156
+Fixed directions 718: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 719: force_direction_infeasible, verified coverage 0/156
+Fixed directions 720: force_direction_infeasible, verified coverage 0/156
+Fixed directions 721: force_direction_infeasible, verified coverage 0/156
+Fixed directions 722: force_direction_infeasible, verified coverage 0/156
+Fixed directions 723: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 724: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 725: force_direction_infeasible, verified coverage 0/156
+Fixed directions 726: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 727: force_direction_infeasible, verified coverage 0/156
+Fixed directions 728: force_direction_infeasible, verified coverage 0/156
+Fixed directions 729: force_direction_infeasible, verified coverage 0/156
+Fixed directions 730: force_direction_infeasible, verified coverage 0/156
+Fixed directions 731: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 732: force_direction_infeasible, verified coverage 0/156
+Fixed directions 733: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 734: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 735: force_direction_infeasible, verified coverage 0/156
+Fixed directions 736: force_direction_infeasible, verified coverage 0/156
+Fixed directions 737: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 738: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 739: force_direction_infeasible, verified coverage 0/156
+Fixed directions 740: force_direction_infeasible, verified coverage 0/156
+Fixed directions 741: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 742: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 743: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 744: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 745: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 746: force_direction_infeasible, verified coverage 0/156
+Fixed directions 747: force_direction_infeasible, verified coverage 0/156
+Fixed directions 748: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 749: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 750: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 751: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 752: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 753: force_direction_infeasible, verified coverage 0/156
+Fixed directions 754: force_direction_infeasible, verified coverage 0/156
+Fixed directions 755: force_direction_infeasible, verified coverage 0/156
+Fixed directions 756: force_direction_infeasible, verified coverage 0/156
+Fixed directions 757: force_direction_infeasible, verified coverage 0/156
+Fixed directions 758: force_direction_infeasible, verified coverage 0/156
+Fixed directions 759: force_direction_infeasible, verified coverage 0/156
+Fixed directions 760: optimal, verified coverage 132/156
+Fixed directions 761: force_direction_infeasible, verified coverage 0/156
+Fixed directions 762: force_direction_infeasible, verified coverage 0/156
+Fixed directions 763: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 764: force_direction_infeasible, verified coverage 0/156
+Fixed directions 765: force_direction_infeasible, verified coverage 0/156
+Fixed directions 766: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 767: force_direction_infeasible, verified coverage 0/156
+Fixed directions 768: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 769: force_direction_infeasible, verified coverage 0/156
+Fixed directions 770: force_direction_infeasible, verified coverage 0/156
+Fixed directions 771: force_direction_infeasible, verified coverage 0/156
+Fixed directions 772: force_direction_infeasible, verified coverage 0/156
+Fixed directions 773: force_direction_infeasible, verified coverage 0/156
+Fixed directions 774: force_direction_infeasible, verified coverage 0/156
+Fixed directions 775: force_direction_infeasible, verified coverage 0/156
+Fixed directions 776: direction_or_position_bounds_infeasible, verified coverage 0/156
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Fixed directions 777: timelimit, verified coverage 132/156
+Fixed directions 778: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 779: force_direction_infeasible, verified coverage 0/156
+Fixed directions 780: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 781: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 782: force_direction_infeasible, verified coverage 0/156
+Fixed directions 783: force_direction_infeasible, verified coverage 0/156
+Fixed directions 784: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 785: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 786: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 787: force_direction_infeasible, verified coverage 0/156
+Fixed directions 788: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 789: force_direction_infeasible, verified coverage 0/156
+Fixed directions 790: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 791: force_direction_infeasible, verified coverage 0/156
+Fixed directions 792: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 793: optimal, verified coverage 130/156
+Fixed directions 794: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 795: force_direction_infeasible, verified coverage 0/156
+Fixed directions 796: force_direction_infeasible, verified coverage 0/156
+Fixed directions 797: force_direction_infeasible, verified coverage 0/156
+Fixed directions 798: force_direction_infeasible, verified coverage 0/156
+Fixed directions 799: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 800: force_direction_infeasible, verified coverage 0/156
+Fixed directions 801: force_direction_infeasible, verified coverage 0/156
+Fixed directions 802: force_direction_infeasible, verified coverage 0/156
+Fixed directions 803: force_direction_infeasible, verified coverage 0/156
+Fixed directions 804: force_direction_infeasible, verified coverage 0/156
+Fixed directions 805: force_direction_infeasible, verified coverage 0/156
+Fixed directions 806: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 807: force_direction_infeasible, verified coverage 0/156
+Fixed directions 808: force_direction_infeasible, verified coverage 0/156
+Fixed directions 809: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 810: force_direction_infeasible, verified coverage 0/156
+Fixed directions 811: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 812: force_direction_infeasible, verified coverage 0/156
+Fixed directions 813: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 814: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 815: force_direction_infeasible, verified coverage 0/156
+Fixed directions 816: force_direction_infeasible, verified coverage 0/156
+Fixed directions 817: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 818: force_direction_infeasible, verified coverage 0/156
+Fixed directions 819: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 820: force_direction_infeasible, verified coverage 0/156
+Fixed directions 821: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 822: force_direction_infeasible, verified coverage 0/156
+Fixed directions 823: force_direction_infeasible, verified coverage 0/156
+Fixed directions 824: force_direction_infeasible, verified coverage 0/156
+Fixed directions 825: force_direction_infeasible, verified coverage 0/156
+Fixed directions 826: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 827: force_direction_infeasible, verified coverage 0/156
+Fixed directions 828: force_direction_infeasible, verified coverage 0/156
+Fixed directions 829: force_direction_infeasible, verified coverage 0/156
+Fixed directions 830: force_direction_infeasible, verified coverage 0/156
+Fixed directions 831: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 832: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 833: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 834: force_direction_infeasible, verified coverage 0/156
+Fixed directions 835: force_direction_infeasible, verified coverage 0/156
+Fixed directions 836: force_direction_infeasible, verified coverage 0/156
+Fixed directions 837: force_direction_infeasible, verified coverage 0/156
+Fixed directions 838: force_direction_infeasible, verified coverage 0/156
+Fixed directions 839: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 840: force_direction_infeasible, verified coverage 0/156
+Fixed directions 841: force_direction_infeasible, verified coverage 0/156
+Fixed directions 842: force_direction_infeasible, verified coverage 0/156
+Fixed directions 843: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 844: force_direction_infeasible, verified coverage 0/156
+Fixed directions 845: force_direction_infeasible, verified coverage 0/156
+Fixed directions 846: force_direction_infeasible, verified coverage 0/156
+Fixed directions 847: force_direction_infeasible, verified coverage 0/156
+Fixed directions 848: force_direction_infeasible, verified coverage 0/156
+Fixed directions 849: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 850: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 851: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 852: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 853: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 854: force_direction_infeasible, verified coverage 0/156
+Fixed directions 855: force_direction_infeasible, verified coverage 0/156
+Fixed directions 856: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 857: force_direction_infeasible, verified coverage 0/156
+Fixed directions 858: force_direction_infeasible, verified coverage 0/156
+Fixed directions 859: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 860: force_direction_infeasible, verified coverage 0/156
+Fixed directions 861: force_direction_infeasible, verified coverage 0/156
+Fixed directions 862: optimal, verified coverage 130/156
+Fixed directions 863: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 864: force_direction_infeasible, verified coverage 0/156
+Fixed directions 865: force_direction_infeasible, verified coverage 0/156
+Fixed directions 866: force_direction_infeasible, verified coverage 0/156
+Fixed directions 867: force_direction_infeasible, verified coverage 0/156
+Fixed directions 868: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 869: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 870: force_direction_infeasible, verified coverage 0/156
+Fixed directions 871: force_direction_infeasible, verified coverage 0/156
+Fixed directions 872: force_direction_infeasible, verified coverage 0/156
+Fixed directions 873: force_direction_infeasible, verified coverage 0/156
+Fixed directions 874: force_direction_infeasible, verified coverage 0/156
+Fixed directions 875: force_direction_infeasible, verified coverage 0/156
+Fixed directions 876: force_direction_infeasible, verified coverage 0/156
+Fixed directions 877: force_direction_infeasible, verified coverage 0/156
+Fixed directions 878: force_direction_infeasible, verified coverage 0/156
+Fixed directions 879: force_direction_infeasible, verified coverage 0/156
+Fixed directions 880: force_direction_infeasible, verified coverage 0/156
+Fixed directions 881: force_direction_infeasible, verified coverage 0/156
+Fixed directions 882: force_direction_infeasible, verified coverage 0/156
+Fixed directions 883: force_direction_infeasible, verified coverage 0/156
+Fixed directions 884: force_direction_infeasible, verified coverage 0/156
+Fixed directions 885: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 886: force_direction_infeasible, verified coverage 0/156
+Fixed directions 887: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 888: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 889: force_direction_infeasible, verified coverage 0/156
+Fixed directions 890: force_direction_infeasible, verified coverage 0/156
+Fixed directions 891: force_direction_infeasible, verified coverage 0/156
+Fixed directions 892: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 893: optimal, verified coverage 124/156
+Fixed directions 894: force_direction_infeasible, verified coverage 0/156
+Fixed directions 895: force_direction_infeasible, verified coverage 0/156
+Fixed directions 896: force_direction_infeasible, verified coverage 0/156
+Fixed directions 897: force_direction_infeasible, verified coverage 0/156
+Fixed directions 898: force_direction_infeasible, verified coverage 0/156
+Fixed directions 899: force_direction_infeasible, verified coverage 0/156
+Fixed directions 900: force_direction_infeasible, verified coverage 0/156
+Fixed directions 901: force_direction_infeasible, verified coverage 0/156
+Fixed directions 902: force_direction_infeasible, verified coverage 0/156
+Fixed directions 903: force_direction_infeasible, verified coverage 0/156
+Fixed directions 904: force_direction_infeasible, verified coverage 0/156
+Fixed directions 905: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 906: force_direction_infeasible, verified coverage 0/156
+Fixed directions 907: force_direction_infeasible, verified coverage 0/156
+Fixed directions 908: force_direction_infeasible, verified coverage 0/156
+Fixed directions 909: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 910: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 911: force_direction_infeasible, verified coverage 0/156
+Fixed directions 912: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 913: force_direction_infeasible, verified coverage 0/156
+Fixed directions 914: force_direction_infeasible, verified coverage 0/156
+Fixed directions 915: force_direction_infeasible, verified coverage 0/156
+Fixed directions 916: force_direction_infeasible, verified coverage 0/156
+Fixed directions 917: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 918: force_direction_infeasible, verified coverage 0/156
+Fixed directions 919: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 920: force_direction_infeasible, verified coverage 0/156
+Fixed directions 921: force_direction_infeasible, verified coverage 0/156
+Fixed directions 922: force_direction_infeasible, verified coverage 0/156
+Fixed directions 923: force_direction_infeasible, verified coverage 0/156
+Fixed directions 924: force_direction_infeasible, verified coverage 0/156
+Fixed directions 925: force_direction_infeasible, verified coverage 0/156
+Fixed directions 926: force_direction_infeasible, verified coverage 0/156
+Fixed directions 927: force_direction_infeasible, verified coverage 0/156
+Fixed directions 928: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 929: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 930: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 931: force_direction_infeasible, verified coverage 0/156
+Fixed directions 932: force_direction_infeasible, verified coverage 0/156
+Fixed directions 933: force_direction_infeasible, verified coverage 0/156
+Fixed directions 934: force_direction_infeasible, verified coverage 0/156
+Fixed directions 935: force_direction_infeasible, verified coverage 0/156
+Fixed directions 936: force_direction_infeasible, verified coverage 0/156
+Fixed directions 937: force_direction_infeasible, verified coverage 0/156
+Fixed directions 938: force_direction_infeasible, verified coverage 0/156
+Fixed directions 939: force_direction_infeasible, verified coverage 0/156
+Fixed directions 940: force_direction_infeasible, verified coverage 0/156
+Fixed directions 941: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 942: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 943: force_direction_infeasible, verified coverage 0/156
+Fixed directions 944: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 945: force_direction_infeasible, verified coverage 0/156
+Fixed directions 946: force_direction_infeasible, verified coverage 0/156
+Fixed directions 947: force_direction_infeasible, verified coverage 0/156
+Fixed directions 948: force_direction_infeasible, verified coverage 0/156
+Fixed directions 949: optimal, verified coverage 124/156
+Fixed directions 950: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 951: force_direction_infeasible, verified coverage 0/156
+Fixed directions 952: force_direction_infeasible, verified coverage 0/156
+Fixed directions 953: force_direction_infeasible, verified coverage 0/156
+Fixed directions 954: force_direction_infeasible, verified coverage 0/156
+Fixed directions 955: force_direction_infeasible, verified coverage 0/156
+Fixed directions 956: force_direction_infeasible, verified coverage 0/156
+Fixed directions 957: force_direction_infeasible, verified coverage 0/156
+Fixed directions 958: force_direction_infeasible, verified coverage 0/156
+Fixed directions 959: force_direction_infeasible, verified coverage 0/156
+Fixed directions 960: force_direction_infeasible, verified coverage 0/156
+Fixed directions 961: force_direction_infeasible, verified coverage 0/156
+Fixed directions 962: direction_or_position_bounds_infeasible, verified coverage 0/156
+Fixed directions 963: force_direction_infeasible, verified coverage 0/156
+Fixed directions 964: force_direction_infeasible, verified coverage 0/156
+Fixed directions 965: force_direction_infeasible, verified coverage 0/156
+Fixed directions 966: force_direction_infeasible, verified coverage 0/156
+Fixed directions 967: force_direction_infeasible, verified coverage 0/156
+Fixed directions 968: force_direction_infeasible, verified coverage 0/156
+Fixed directions 969: force_direction_infeasible, verified coverage 0/156
+Fixed directions 970: force_direction_infeasible, verified coverage 0/156
+Fixed directions 971: force_direction_infeasible, verified coverage 0/156
+Fixed directions 972: force_direction_infeasible, verified coverage 0/156
+Fixed directions 973: force_direction_infeasible, verified coverage 0/156
+Fixed directions 974: force_direction_infeasible, verified coverage 0/156
+Fixed directions 975: force_direction_infeasible, verified coverage 0/156
+WARNING: ignore partial solution (0) because unknown rate is too large (0.991632 > 0.85)
+WARNING: ignore partial solution (1) because unknown rate is too large (0.991632 > 0.85)
+WARNING: ignore partial solution (2) because unknown rate is too large (0.991632 > 0.85)
+WARNING: ignore partial solution (3) because unknown rate is too large (0.991632 > 0.85)
+presolving:
+(round 1, fast)       36 del vars, 396 del conss, 0 add conss, 3 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 2, fast)       36 del vars, 396 del conss, 0 add conss, 36 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 3, exhaustive) 36 del vars, 396 del conss, 0 add conss, 36 chg bounds, 0 chg sides, 33 chg coeffs, 4392 upgd conss, 0 impls, 0 clqs, 0 implints
+   (0.1s) probing cycle finished: starting next cycle
+(round 4, exhaustive) 36 del vars, 396 del conss, 0 add conss, 399 chg bounds, 0 chg sides, 33 chg coeffs, 4392 upgd conss, 4356 impls, 0 clqs, 0 implints
+(round 5, fast)       36 del vars, 396 del conss, 0 add conss, 399 chg bounds, 0 chg sides, 396 chg coeffs, 4392 upgd conss, 4356 impls, 0 clqs, 0 implints
+   (0.1s) probing: 50/396 (12.6%) - 0 fixings, 0 aggregations, 0 implications, 363 bound changes
+   (0.1s) probing aborted: 50/50 successive totally useless probings
+   (0.1s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (0.1s) no symmetry present (symcode time: 0.00)
+presolving (6 rounds: 6 fast, 3 medium, 3 exhaustive):
+ 36 deleted vars, 396 deleted constraints, 0 added constraints, 399 tightened bounds, 0 added holes, 0 changed sides, 396 changed coefficients
+ 4356 implications, 0 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)
+presolved problem has 2832 variables (396 bin, 36 int, 2400 cont) and 9374 constraints
+   4356 constraints of type <varbound>
+     36 constraints of type <xor>
+   4970 constraints of type <linear>
+     12 constraints of type <nonlinear>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 0.07
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  0.2s|     1 |     0 |  6807 |     - |    44M |   0 |2865 |9390 |9419 |   0 |  0 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  1.2s|     1 |     0 | 17219 |     - |    46M |   0 |2865 |9390 |9426 |   7 |  1 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  1.2s|     1 |     0 | 17349 |     - |    50M |   0 |2865 |9390 |9437 |  18 |  2 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  1.2s|     1 |     0 | 17621 |     - |    54M |   0 |2865 |9390 |9445 |  26 |  3 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  1.2s|     1 |     0 | 17808 |     - |    56M |   0 |2865 |9390 |9453 |  34 |  4 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  1.3s|     1 |     0 | 18148 |     - |    60M |   0 |2865 |9390 |9461 |  42 |  5 |  16 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+  7.3s|     1 |     2 | 63991 |     - |    61M |   0 |2865 |9397 |9461 |  42 |  5 |  23 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 10.3s|   100 |    44 |106590 | 931.8 |    66M |  68 |2865 |9551 |9609 | 339 |  0 | 177 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 11.3s|   200 |    90 |127713 | 569.7 |    66M | 102 |2865 |9654 |9649 | 408 |  1 | 286 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+Cannot set feasibility tolerance to small value 1e-12 without GMP - using 1e-10.
+ 21.8s|   300 |   108 |145996 | 440.3 |    67M | 102 |2865 |9707 |9531 | 593 |  0 | 349 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 22.4s|   400 |   106 |157147 | 357.9 |    67M | 102 |2865 |9828 |9536 | 652 |  0 | 501 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 23.2s|   500 |   101 |171849 | 315.6 |    67M | 102 |2865 |9925 |9523 | 715 |  0 | 642 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 24.0s|   600 |    98 |185456 | 285.7 |    67M | 102 |2865 |  10k|9515 | 788 |  0 | 781 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 25.3s|   700 |   112 |204101 | 271.5 |    67M | 102 |2865 |  10k|9546 | 956 |  1 | 864 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 26.6s|   800 |   111 |224109 | 262.5 |    67M | 102 |2865 |  10k|9553 |1095 |  1 | 962 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+ 28.0s|   900 |   110 |245604 | 257.2 |    67M | 102 |2865 |  10k|9544 |1261 |  0 |1086 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 29.0s|  1000 |   106 |261261 | 247.2 |    67M | 102 |2865 |  10k|9544 |1353 |  0 |1216 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 30.2s|  1100 |   108 |283501 | 244.9 |    67M | 102 |2865 |  10k|9536 |1554 |  1 |1297 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 31.3s|  1200 |   109 |300405 | 238.6 |    67M | 102 |2865 |  10k|9532 |1743 |  1 |1335 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 32.1s|  1300 |   108 |312982 | 229.9 |    67M | 102 |2865 |  10k|9536 |1851 |  1 |1446 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 33.0s|  1400 |   110 |329471 | 225.3 |    67M | 102 |2865 |  10k|9535 |2030 |  1 |1515 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 33.5s|  1500 |   109 |339281 | 216.8 |    68M | 102 |2865 |  10k|9535 |2078 |  1 |1643 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 34.1s|  1600 |   111 |349879 | 209.8 |    68M | 102 |2865 |  10k|9528 |2134 |  1 |1764 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 34.8s|  1700 |   105 |361473 | 204.3 |    68M | 102 |2865 |  10k|9527 |2217 |  1 |1944 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 35.3s|  1800 |   107 |372050 | 198.8 |    68M | 102 |2865 |  10k|9527 |2273 |  1 |2058 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 36.4s|  1900 |    99 |390839 | 198.3 |    68M | 102 |2865 |  10k|9531 |2363 |  1 |2137 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 37.2s|  2000 |   116 |405428 | 195.6 |    69M | 102 |2865 |  10k|9546 |2416 |  1 |2248 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 37.8s|  2100 |   193 |414669 | 190.7 |    70M | 125 |2865 |  11k|   0 |2493 |  0 |2313 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 39.5s|  2200 |   192 |450986 | 198.6 |    72M | 125 |2865 |  11k|9534 |2642 |  1 |2404 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 41.2s|  2300 |   185 |480560 | 202.8 |    73M | 125 |2865 |  11k|9544 |2800 |  0 |2508 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+ 42.5s|  2400 |   185 |504979 | 204.5 |    73M | 125 |2865 |  11k|9543 |2956 |  1 |2594 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 43.9s|  2500 |   222 |529346 | 206.1 |    74M | 125 |2865 |  11k|9540 |3117 |  1 |2669 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 45.3s|  2600 |   223 |557019 | 208.8 |    74M | 125 |2865 |  11k|9555 |3327 |  0 |2757 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 46.5s|  2700 |   218 |582347 | 210.4 |    74M | 125 |2865 |  11k|9542 |3454 |  1 |2902 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 47.5s|  2800 |   230 |601058 | 209.6 |    75M | 125 |2865 |  11k|9553 |3558 |  1 |3026 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 48.1s|  2900 |   231 |616498 | 207.7 |    76M | 125 |2865 |  11k|9554 |3594 |  0 |3166 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 49.0s|  3000 |   227 |633515 | 206.5 |    76M | 125 |2865 |  11k|9553 |3657 |  1 |3337 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 49.8s|  3100 |   225 |649524 | 205.0 |    76M | 125 |2865 |  11k|9551 |3710 |  0 |3516 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 50.4s|  3200 |   225 |666706 | 203.9 |    76M | 125 |2865 |  11k|9556 |3744 |  1 |3670 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 51.4s|  3300 |   228 |690306 | 204.9 |    76M | 125 |2865 |  12k|9556 |3842 |  1 |3840 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 52.1s|  3400 |   226 |708832 | 204.3 |    77M | 125 |2865 |  12k|9556 |3905 |  1 |4009 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 53.2s|  3500 |   223 |733865 | 205.6 |    78M | 125 |2865 |  12k|9565 |4008 |  0 |4167 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 54.1s|  3600 |   221 |757586 | 206.5 |    79M | 125 |2865 |  12k|9566 |4052 |  0 |4346 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 55.4s|  3700 |   220 |791749 | 210.2 |    80M | 125 |2865 |  12k|9552 |4289 |  1 |4507 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 56.7s|  3800 |   223 |829067 | 214.5 |    82M | 125 |2865 |  12k|9589 |4449 |  0 |4658 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+ 58.4s|  3900 |   228 |878406 | 221.6 |    84M | 125 |2865 |  12k|9597 |4632 |  0 |4905 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 61.4s|  4000 |   226 |954981 | 235.2 |    86M | 125 |2865 |  12k|9554 |4921 |  1 |5175 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 63.9s|  4100 |   228 |  1014k| 244.0 |    87M | 125 |2865 |  13k|9564 |5059 |  1 |5354 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 64.7s|  4200 |   283 |  1034k| 242.9 |    88M | 125 |2865 |  13k|9587 |5112 |  1 |5437 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 67.4s|  4300 |   259 |  1128k| 259.1 |    88M | 139 |2865 |  13k|9586 |5140 |  1 |5834 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 70.7s|  4400 |   254 |  1249k| 280.8 |    89M | 139 |2865 |  13k|9588 |5181 |  0 |6429 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 71.2s|  4500 |   309 |  1263k| 277.8 |    89M | 139 |2865 |  13k|9590 |5204 |  1 |6552 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 71.7s|  4600 |   273 |  1282k| 275.8 |    90M | 167 |2865 |  13k|9586 |5234 |  0 |6690 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 74.7s|  4700 |   272 |  1405k| 296.1 |    91M | 167 |2865 |  13k|9586 |5254 |  1 |7471 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 77.6s|  4800 |   270 |  1528k| 315.5 |    92M | 167 |2865 |  13k|9586 |5262 |  0 |8212 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+ 80.3s|  4900 |   270 |  1644k| 332.7 |    92M | 167 |2865 |  14k|9586 |5294 |  1 |8808 |  19 | 0.000000e+00 |      --      |    Inf | unknown
+
+SCIP Status        : solving was interrupted [time limit reached]
+Solving Time (sec) : 80.99
+Solving Nodes      : 4922
+Primal Bound       : +1.00000000000000e+20 (0 solutions)
+Dual Bound         : +0.00000000000000e+00
+Gap                : infinite

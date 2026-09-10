@@ -1,0 +1,867 @@
+{
+  "config": {
+    "lower": [
+      0,
+      -0.6,
+      0,
+      0,
+      0,
+      -0.6,
+      0,
+      0,
+      0,
+      -0.6,
+      0,
+      0
+    ],
+    "upper": [
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966,
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966,
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966
+    ],
+    "x_face": 2,
+    "min_axis_capacity": 1e-05,
+    "pure_tolerance": 1e-09,
+    "max_group_size": 6,
+    "min_install_distance": 0,
+    "min_install_angle_deg": 0
+  },
+  "witness": {
+    "layer": "force",
+    "scope_signature": "e04b11e245a3890a12b9c790b54c35f80ae92c4d1af518e814da91a88ed5a0e6",
+    "coefficients": [
+      [
+        "1/2",
+        "1/2",
+        "1/2"
+      ],
+      [
+        "1/2",
+        "1/2",
+        "-1/2"
+      ],
+      [
+        "1/2",
+        "1/2",
+        "-1/2"
+      ]
+    ],
+    "masks": [
+      48,
+      12,
+      130,
+      20,
+      66,
+      36,
+      3,
+      12,
+      130,
+      65,
+      66,
+      129,
+      3,
+      12,
+      130,
+      65,
+      66,
+      129
+    ]
+  },
+  "verification": {
+    "valid": true,
+    "arithmetic": "fractions",
+    "checked_requirements": 78,
+    "full_fault_groups": [
+      {
+        "fault": 0,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 0,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 0,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 0,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 0,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 0,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 1,
+        "thrusters": [
+          5,
+          6
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 4,
+        "thrusters": [
+          3,
+          5
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 1,
+        "label": 6,
+        "thrusters": [
+          3,
+          6
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 1,
+        "thrusters": [
+          5,
+          6
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 3,
+        "thrusters": [
+          4,
+          6
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 5,
+        "thrusters": [
+          4,
+          5
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 2,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 2,
+        "thrusters": [
+          7,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 3,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 2,
+        "thrusters": [
+          7,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 4,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 5,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 6,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 4,
+        "thrusters": [
+          1,
+          11
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 5,
+        "thrusters": [
+          2,
+          11
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 7,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 3,
+        "thrusters": [
+          2,
+          12
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 8,
+        "label": 6,
+        "thrusters": [
+          1,
+          12
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 9,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 10,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 11,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 1,
+        "thrusters": [
+          1,
+          2
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 2,
+        "thrusters": [
+          3,
+          4
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 3,
+        "thrusters": [
+          2,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 4,
+        "thrusters": [
+          1,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 5,
+        "thrusters": [
+          2,
+          7
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      },
+      {
+        "fault": 12,
+        "label": 6,
+        "thrusters": [
+          1,
+          8
+        ],
+        "target": "1",
+        "max_off_axis": "0"
+      }
+    ],
+    "physical_layout_verified": false
+  }
+}

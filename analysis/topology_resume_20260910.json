@@ -1,0 +1,3664 @@
+{
+  "status": "timelimit",
+  "has_solution": false,
+  "x": [],
+  "groups": [],
+  "nodes": 233,
+  "solution_count": 0,
+  "method": "topology_linear_certificates_v1",
+  "search_goal": "first_feasible",
+  "resume_note": "resumed_topologies",
+  "search_state": {
+    "version": 3,
+    "method": "topology_linear_certificates_v1",
+    "signature": "07a93186d19554548704a99ce7f344917f9a14dc8325b6e7ee1a4547128d730c",
+    "conflicts": [
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1040
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            3760
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            2000
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            9,
+            320
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            9,
+            2080
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            9,
+            3040
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            9,
+            3440
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          17
+        ],
+        "weights": [
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            17,
+            2755
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            2620
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2620
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          20
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            20,
+            640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            1475
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          17
+        ],
+        "weights": [
+          "1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            17,
+            2755
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          20
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            20,
+            655
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            16,
+            1475
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            640
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            1040
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            3760
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            2000
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            9,
+            320
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            9,
+            2080
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            9,
+            3040
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            9,
+            3440
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          17
+        ],
+        "weights": [
+          "-1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            17,
+            2755
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            2620
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2620
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          20
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            20,
+            640
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            16,
+            1475
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          17
+        ],
+        "weights": [
+          "-1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            17,
+            2755
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          20
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            20,
+            655
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            16,
+            1475
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1360
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 4,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            4,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            2720
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 4,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            4,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          17
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            17,
+            2720
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 17,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            17,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          5
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            5,
+            1360
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 5,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            5,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          5
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            5,
+            2720
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 5,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            5,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          16
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            16,
+            2720
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 16,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            2720
+          ],
+          [
+            16,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1360
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 4,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            4,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            2720
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 4,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            4,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          17
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            17,
+            2720
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 17,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            17,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          5
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            5,
+            1360
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 5,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            5,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          5
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            5,
+            2720
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 5,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            5,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          16
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            16,
+            2720
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 2,
+        "target_case": 16,
+        "basis_cases": [
+          3
+        ],
+        "weights": [
+          "-1"
+        ],
+        "assignments": [
+          [
+            3,
+            1360
+          ],
+          [
+            16,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "-2",
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1596
+          ],
+          [
+            9,
+            320
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "1",
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            1680
+          ],
+          [
+            9,
+            2364
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            21,
+            320
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          20
+        ],
+        "weights": [
+          "1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1680
+          ],
+          [
+            20,
+            1731
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            21,
+            320
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "-2",
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1596
+          ],
+          [
+            9,
+            2080
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "-2",
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1596
+          ],
+          [
+            9,
+            3040
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "-2",
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            1596
+          ],
+          [
+            9,
+            3440
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 5,
+        "target_case": 11,
+        "basis_cases": [
+          8,
+          9
+        ],
+        "weights": [
+          "-2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            8,
+            1596
+          ],
+          [
+            9,
+            2400
+          ],
+          [
+            11,
+            2448
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            21,
+            335
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            21,
+            2080
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            21,
+            2095
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            21,
+            3040
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          28
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            28,
+            3235
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            21,
+            335
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            21,
+            2080
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            21,
+            2095
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          21
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            21,
+            3040
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          28
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1340
+          ],
+          [
+            28,
+            3235
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            8,
+            700
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 6,
+        "basis_cases": [
+          0,
+          1,
+          8
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            6,
+            780
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 7,
+        "basis_cases": [
+          0,
+          8
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            7,
+            60
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 18,
+        "basis_cases": [
+          0,
+          1,
+          8
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            18,
+            780
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 19,
+        "basis_cases": [
+          0,
+          8
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            19,
+            195
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 30,
+        "basis_cases": [
+          0,
+          1,
+          8
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            30,
+            3075
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 31,
+        "basis_cases": [
+          0,
+          8
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            8,
+            700
+          ],
+          [
+            31,
+            60
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            9,
+            380
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 6,
+        "basis_cases": [
+          0,
+          1,
+          9
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            6,
+            780
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 7,
+        "basis_cases": [
+          0,
+          9
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            7,
+            60
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 18,
+        "basis_cases": [
+          0,
+          1,
+          9
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            18,
+            780
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 19,
+        "basis_cases": [
+          0,
+          9
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            19,
+            195
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 30,
+        "basis_cases": [
+          0,
+          1,
+          9
+        ],
+        "weights": [
+          "3/2",
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            30,
+            3075
+          ]
+        ],
+        "capacity_upper": "9/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 31,
+        "basis_cases": [
+          0,
+          9
+        ],
+        "weights": [
+          "-1/2",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            9,
+            380
+          ],
+          [
+            31,
+            60
+          ]
+        ],
+        "capacity_upper": "3/2000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 6,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            6,
+            780
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 7,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            7,
+            60
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 18,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            18,
+            780
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 19,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            19,
+            195
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 30,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            30,
+            3075
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 31,
+        "basis_cases": [
+          0,
+          1,
+          4
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            4,
+            1520
+          ],
+          [
+            31,
+            60
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 6,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            6,
+            780
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 7,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            7,
+            60
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 18,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            18,
+            780
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 19,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            19,
+            195
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 30,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "2",
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            30,
+            3075
+          ]
+        ],
+        "capacity_upper": "1/250000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 3,
+        "target_case": 31,
+        "basis_cases": [
+          0,
+          1,
+          5
+        ],
+        "weights": [
+          "-1",
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            0,
+            816
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            31,
+            60
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "-2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            2720
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          8
+        ],
+        "weights": [
+          "-2"
+        ],
+        "assignments": [
+          [
+            8,
+            700
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          9
+        ],
+        "weights": [
+          "2"
+        ],
+        "assignments": [
+          [
+            9,
+            380
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "1",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            5,
+            860
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-2"
+        ],
+        "assignments": [
+          [
+            4,
+            1440
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            940
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "2",
+          "1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            5,
+            2640
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          5
+        ],
+        "weights": [
+          "-1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            940
+          ],
+          [
+            5,
+            2800
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "1",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            3235
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "1/500000000"
+      },
+      {
+        "kind": "rational_span_bound",
+        "axis": 1,
+        "target_case": 3,
+        "basis_cases": [
+          4,
+          16
+        ],
+        "weights": [
+          "2",
+          "-1"
+        ],
+        "assignments": [
+          [
+            4,
+            1520
+          ],
+          [
+            16,
+            1440
+          ],
+          [
+            3,
+            1360
+          ]
+        ],
+        "capacity_upper": "3/1000000000"
+      }
+    ],
+    "pending": [],
+    "processed": 0,
+    "master_calls": 7,
+    "master_numerically_exhausted": false,
+    "seeded": true,
+    "next_stage": "geometry",
+    "best_coverage": 152,
+    "best_x": [
+      0.2,
+      0.0,
+      0.0,
+      0.7853981633974483,
+      0.6,
+      -0.2,
+      1.5707963267948966,
+      0.7853981633974483,
+      0.6,
+      0.2,
+      4.71238898038469,
+      0.7853981633974483
+    ],
+    "history": [],
+    "seed_topologies_checked": 485
+  },
+  "representative_faults": [
+    1,
+    5,
+    9
+  ],
+  "candidates": [
+    [
+      0.2,
+      0.0,
+      0.0,
+      0.7853981633974483,
+      0.6,
+      -0.2,
+      1.5707963267948966,
+      0.7853981633974483,
+      0.6,
+      0.2,
+      4.71238898038469,
+      0.7853981633974483
+    ]
+  ],
+  "solve_time": 30.001178041000003,
+  "conflict_count": 137,
+  "topology_count": 0,
+  "geometry_calls": 0,
+  "master_calls": 7,
+  "checkpoint_file": "analysis/topology_resume_checkpoint_20260910.json"
+}

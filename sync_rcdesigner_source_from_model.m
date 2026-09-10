@@ -119,7 +119,18 @@ function block = createComponentsBlock(components)
 end
 
 function codeLine = convertCallbackLine(codeLine)
-    expression = ['app\.(\w+)\.(\w+Fcn) = ', ...
+    % Keep UITable.CellEditCallback out of generated component code.
+    % MATLAB R2023b can serialize this callback as a closure that captures
+    % the complete AppBase object, after which Design View can no longer
+    % reopen the MLAPP. wireCallbacks() restores it only at runtime.
+    if contains(codeLine, '.CellEditCallback =')
+        codeLine = '';
+        return;
+    end
+
+    % Other supported callback forms can safely be restored as ordinary
+    % runtime callback handles.
+    expression = ['app\.(\w+)\.(\w+(?:Fcn|Callback)) = ', ...
         '''([A-Za-z]\w*)'';'];
     replacement = 'app.$1.$2 = createCallbackFcn(app, @$3, true);';
     codeLine = regexprep(codeLine, expression, replacement);

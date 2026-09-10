@@ -1,0 +1,7 @@
+{
+  "package": "z3-solver",
+  "version": "5.1.0.0",
+  "url": "https://files.pythonhosted.org/packages/01/9a/cdb6db09d6aff6a803a94505aa24666db5e47df7aad0f2b1b0ddcb52ed12/z3_solver-5.1.0.0-py3-none-macosx_13_0_arm64.whl",
+  "sha256": "399a38a85d784105e5df5a05c04a581481bfdb80af7424779cf76fa843b4e66c",
+  "wheel": "/Users/charry/Library/Caches/RCDesigner/exact-diagnostic-wheels/z3_solver-5.1.0.0-py3-none-macosx_13_0_arm64.whl"
+}

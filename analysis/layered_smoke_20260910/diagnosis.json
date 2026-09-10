@@ -1,0 +1,220 @@
+{
+  "method": "layered_rational_diagnosis_v1",
+  "status": "diagnostic_unknown",
+  "has_solution": false,
+  "x": [],
+  "groups": [],
+  "candidates": [],
+  "search_goal": "necessary_conditions_only",
+  "nodes": 0,
+  "solution_count": 0,
+  "layers": [
+    {
+      "layer": "force",
+      "status": "unknown",
+      "real_variables": 9,
+      "representative_requirements": 18,
+      "bounds": [
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ]
+      ],
+      "runs": [
+        {
+          "engine": "z3",
+          "version": "5.1.0",
+          "status": "unknown",
+          "budget_seconds": 5.0,
+          "exact_arithmetic": true,
+          "independent_unsat_proof_verified": false,
+          "formula_sha256": "ef3c3a68160df9c3058549a438ed15a6fbe195aa9eb47898ca1169a2c1654c53",
+          "formula_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/layered_smoke_20260910/force.smt2",
+          "solver_status": "unknown",
+          "reason": "timeout",
+          "elapsed_seconds": 5.018844709
+        }
+      ]
+    },
+    {
+      "layer": "wrench",
+      "status": "unknown",
+      "real_variables": 18,
+      "representative_requirements": 36,
+      "bounds": [
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ]
+      ],
+      "runs": [
+        {
+          "engine": "z3",
+          "version": "5.1.0",
+          "status": "unknown",
+          "budget_seconds": 5.0,
+          "exact_arithmetic": true,
+          "independent_unsat_proof_verified": false,
+          "formula_sha256": "2367a232ffa1317758c193f850dfe6d784114166e8eef1597a0cb8a0756a86c4",
+          "formula_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/layered_smoke_20260910/wrench.smt2",
+          "solver_status": "unknown",
+          "reason": "timeout",
+          "elapsed_seconds": 5.021741457999999
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "lower": [
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0"
+    ],
+    "upper": [
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000"
+    ],
+    "x_face": "2",
+    "pure_tolerance": "1/1000000000",
+    "min_axis_capacity": "1/100000",
+    "max_group_size": 6,
+    "min_install_distance": "0",
+    "min_install_angle_deg": "0"
+  },
+  "scope_signature": "e04b11e245a3890a12b9c790b54c35f80ae92c4d1af518e814da91a88ed5a0e6",
+  "physical_layout_verified": false,
+  "original_problem_infeasibility_verified": false,
+  "solve_time": 10.04533475,
+  "diagnostic_report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/layered_smoke_20260910/diagnosis.json"
+}

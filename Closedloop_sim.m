@@ -59,6 +59,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
     log.Requested_Wrench_History = zeros(6, max_ctrl);
     log.Commanded_Wrench_History = zeros(6, max_ctrl);
     log.Actual_Wrench_History = zeros(6, max_ctrl);
+    log.Raw_Max_Pulse_History = NaN(1, max_ctrl);
     log.Attitude_Window_History = NaN(1, max_ctrl);
     log.Position_Window_History = NaN(1, max_ctrl);
     log.Alloc_Mode_History = strings(1, max_ctrl);
@@ -158,6 +159,8 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
                 Matrix_conf * (Prop_Command / max(params.T, eps));
             log.Actual_Wrench_History(:, log.Control_Count) = ...
                 Matrix_conf * (Prop_Actual / max(params.T, eps));
+            log.Raw_Max_Pulse_History(log.Control_Count) = ...
+                Get_Info_Field(alloc_info, 'max_raw_pulse', max(Prop_Command));
             log.Attitude_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'attitude_window', NaN);
             log.Position_Window_History(log.Control_Count) = Get_Info_Field(alloc_info, 'position_window', NaN);
             log.Alloc_Mode_History(log.Control_Count) = string(Get_Info_Field(alloc_info, 'mode', 'unknown'));
@@ -222,6 +225,8 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
         log.Commanded_Wrench_History(:, 1:log.Control_Count);
     log.Actual_Wrench_History = ...
         log.Actual_Wrench_History(:, 1:log.Control_Count);
+    log.Raw_Max_Pulse_History = ...
+        log.Raw_Max_Pulse_History(1:log.Control_Count);
     log.Attitude_Window_History = log.Attitude_Window_History(1:log.Control_Count);
     log.Position_Window_History = log.Position_Window_History(1:log.Control_Count);
     log.Alloc_Mode_History = log.Alloc_Mode_History(1:log.Control_Count);
@@ -299,7 +304,7 @@ function log = Closedloop_sim(params, B, sim_cfg_override)
 
     %% 实际推力器输出脉宽
     function [Prop_Command, alloc_info] = Invoke_Thruster_Allocator(F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params)
-        [Prop_Command, alloc_info] = Thruster_allocator( ...
+        [Prop_Command, alloc_info] = Thruster_invocation( ...
             F_cmd, T_cmd, Matrix_conf, faulty_thrusters, params);
     end
 

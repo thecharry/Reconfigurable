@@ -1,0 +1,1640 @@
+[
+  {
+    "file": "analysis/layered_240s_20260910/diagnosis.json",
+    "sha256": "174c50eceb1a2441b965bbdfabef5fe372c299e9ef2815e9f04ab4419416d022",
+    "verification": {
+      "valid": false,
+      "layers": [
+        {
+          "layer": "force",
+          "valid": true,
+          "arithmetic": "fractions",
+          "checked_requirements": 78,
+          "full_fault_groups": [
+            {
+              "fault": 0,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 0,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 0,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 3,
+              "thrusters": [
+                3,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 5,
+              "thrusters": [
+                3,
+                4,
+                6,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 2,
+              "label": 4,
+              "thrusters": [
+                4,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 2,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 6,
+              "thrusters": [
+                3,
+                4,
+                5,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 3,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 3,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 5,
+              "thrusters": [
+                1,
+                2,
+                8,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 4,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 4,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 6,
+              "thrusters": [
+                1,
+                2,
+                7,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 1,
+              "thrusters": [
+                1,
+                2,
+                9,
+                10
+              ],
+              "target": "9997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 1,
+              "thrusters": [
+                1,
+                2,
+                9,
+                10
+              ],
+              "target": "9997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 6,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 6,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 2,
+              "thrusters": [
+                2,
+                4,
+                8,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 2,
+              "thrusters": [
+                1,
+                3,
+                7,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 9,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 9,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 10,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 10,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 11,
+              "label": 4,
+              "thrusters": [
+                4,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 11,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 3,
+              "thrusters": [
+                3,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 12,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 12,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            }
+          ],
+          "physical_layout_verified": false
+        },
+        {
+          "layer": "wrench",
+          "valid": null,
+          "reason": "no_independently_checkable_conclusion"
+        }
+      ]
+    }
+  },
+  {
+    "file": "analysis/layered_resume_150s_20260910/diagnosis.json",
+    "sha256": "8d6c4464e11761addde986285273cca59f8f705ae337328577f43013603f3ae9",
+    "verification": {
+      "valid": false,
+      "layers": [
+        {
+          "layer": "force",
+          "valid": true,
+          "arithmetic": "fractions",
+          "checked_requirements": 78,
+          "full_fault_groups": [
+            {
+              "fault": 0,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 0,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 0,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 0,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 1,
+              "label": 3,
+              "thrusters": [
+                3,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 5,
+              "thrusters": [
+                3,
+                4,
+                6,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 1,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 2,
+              "label": 4,
+              "thrusters": [
+                4,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 2,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 2,
+              "label": 6,
+              "thrusters": [
+                3,
+                4,
+                5,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 3,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 3,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 5,
+              "thrusters": [
+                1,
+                2,
+                8,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 3,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 4,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 4,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 4,
+              "label": 6,
+              "thrusters": [
+                1,
+                2,
+                7,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 1,
+              "thrusters": [
+                1,
+                2,
+                9,
+                10
+              ],
+              "target": "9997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 5,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 5,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 1,
+              "thrusters": [
+                1,
+                2,
+                9,
+                10
+              ],
+              "target": "9997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 6,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 6,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 6,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 2,
+              "thrusters": [
+                2,
+                4,
+                8,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 7,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 7,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 2,
+              "thrusters": [
+                1,
+                3,
+                7,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 8,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 8,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 9,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 9,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 9,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 10,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 10,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 10,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 3,
+              "thrusters": [
+                1,
+                12
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 11,
+              "label": 4,
+              "thrusters": [
+                4,
+                9
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 11,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 11,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 1,
+              "thrusters": [
+                5,
+                6
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 2,
+              "thrusters": [
+                7,
+                8
+              ],
+              "target": "14997/500000000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 3,
+              "thrusters": [
+                3,
+                10
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 12,
+              "label": 4,
+              "thrusters": [
+                2,
+                11
+              ],
+              "target": "9999/1000000000",
+              "max_off_axis": "1/1000000000"
+            },
+            {
+              "fault": 12,
+              "label": 5,
+              "thrusters": [
+                1,
+                3
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            },
+            {
+              "fault": 12,
+              "label": 6,
+              "thrusters": [
+                2,
+                4
+              ],
+              "target": "1/100000",
+              "max_off_axis": "0"
+            }
+          ],
+          "physical_layout_verified": false
+        },
+        {
+          "layer": "wrench",
+          "valid": null,
+          "reason": "no_independently_checkable_conclusion"
+        }
+      ]
+    }
+  }
+]
