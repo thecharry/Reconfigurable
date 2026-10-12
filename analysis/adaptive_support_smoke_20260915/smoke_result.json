@@ -1,0 +1,15 @@
+{
+  "status": "timelimit",
+  "support_visits": 481,
+  "best_coverage": 152,
+  "search_metrics": {
+    "legacy_visits": 480,
+    "nodes_since_upgrade": 4122,
+    "direct_calls": 1,
+    "direct_evaluations": 8169,
+    "candidate_checks": 23,
+    "geometry_calls_since_upgrade": 0,
+    "new_conflicts_since_upgrade": 0
+  },
+  "solve_time": 40.056624959
+}

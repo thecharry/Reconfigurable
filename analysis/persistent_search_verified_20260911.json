@@ -1,0 +1,26 @@
+{
+  "report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_134107_004_tpc32b0e52_bf02_4df9_8f32_c75f2f53898c/diagnosis.json",
+  "status": "diagnostic_unknown",
+  "force_requirements": 78,
+  "queue_verification": {
+    "valid": true,
+    "progress": {
+      "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+      "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+      "reviewed_later_assignments": "0",
+      "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+      "certified_fraction": "345/847",
+      "certified_percent": 40.731995277449826,
+      "pending_branches": 167,
+      "review_branches": 0,
+      "closed_branches": 170,
+      "conflicts": 1068,
+      "solver_calls": 9,
+      "splits": 336
+    },
+    "whole_domain_unsat": false
+  },
+  "mlapp_source_matches": true,
+  "physical_layout_found": false,
+  "whole_domain_unsat": false
+}

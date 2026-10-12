@@ -1,0 +1,1 @@
+{"search_state": {"version": 3, "method": "topology_linear_certificates_v1", "signature": "9412ab312cce1bfa8d3a1a3b028ea77d916fc62aa19c7134bdf4d58a8fef85a9", "conflicts": [], "pending": [], "processed": 0, "master_calls": 1, "master_numerically_exhausted": false, "seeded": true, "next_stage": "geometry", "best_coverage": 0, "best_x": [], "history": []}, "search_seeds": []}

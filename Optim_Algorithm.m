@@ -497,6 +497,14 @@ function result = Optim_Algorithm(params, opt_cfg)
         opt_cfg = struct();
     end
     [cfg, lower, upper] = Search_Config(params, opt_cfg);
+    if ismember(cfg.solver,["structural","patterns"])
+        cfg.max_group_size = 6;
+        result = Run_Joint_Solver(cfg,lower,upper,cfg.max_time,[]);
+        if ~isfield(result,'message')
+            error('RCDesigner:StructuralScreenFailed','解析筛选失败：%s',jsonencode(result));
+        end
+        return;
+    end
     if cfg.solver == "diagnostic"
         result = Run_Feasibility_Diagnosis(params,cfg,lower,upper);
         return;
@@ -534,7 +542,7 @@ function result = Optim_Algorithm(params, opt_cfg)
     local_limit = min(cfg.local_max_time,cfg.max_time);
     if cfg.solver == "native"
         local_limit = cfg.max_time;
-    elseif cfg.solver == "scip"
+    elseif ismember(cfg.solver,["scip","supports"])
         local_limit = 0;
     end
     try
@@ -594,6 +602,9 @@ function result = Optim_Algorithm(params, opt_cfg)
                             break;
                         end
                         retry_cfg = cfg;
+                        if cfg.solver == "supports"
+                            retry_cfg.rejected_support_x=result.solver_evidence.x(:)';
+                        end
                         retry_cfg.search_state = result.solver_evidence.search_state;
                         retry_timer = tic;
                         result.solver_evidence = Run_Joint_Solver(retry_cfg,lower,upper,cfg.max_time-toc(timer),seeds);
@@ -687,6 +698,16 @@ function result = Optim_Algorithm(params, opt_cfg)
             otherwise
                 result.message = sprintf("本轮搜索结束，尝试%d个初值，最高覆盖%d/156项；未找到布局，不代表无解。",result.starts_attempted,result.best_coverage);
         end
+    end
+    if cfg.solver == "supports" && isfield(result.solver_evidence,'support_total')
+        e=result.solver_evidence;
+        if isfield(e,'search_metrics')
+            m=e.search_metrics;
+            result.message=result.message+sprintf("｜升级后：直接几何%d次、计算%d次、候选检查%d次、节点%d", ...
+                m.direct_calls,m.direct_evaluations,m.candidate_checks,m.nodes_since_upgrade);
+        end
+        result.message=result.message+sprintf("｜拓扑已访问%d/%d，累计%d次轮转；队列：%s", ...
+            e.support_seen,e.support_total,e.support_visits,e.checkpoint_file);
     end
     result = Save_Search_Report(result,params);
     fprintf('[%s] %s\n',result.status,result.message);
@@ -884,7 +905,7 @@ function [cfg, lower, upper] = Search_Config(params, cfg)
             error('RCDesigner:InvalidOptimizationRange', '%s 必须是有限且递增的二元素范围。', name{1});
         end
     end
-    for name = {'x_face','y_max','z_max','start_count','max_iterations','inner_iterations','max_time','local_max_time','min_axis_capacity','pure_tolerance','fixed_direction_time','master_time','geometry_time','diagnostic_stage_time'}
+    for name = {'x_face','y_max','z_max','start_count','max_iterations','inner_iterations','max_time','local_max_time','min_axis_capacity','pure_tolerance','fixed_direction_time','master_time','geometry_time','diagnostic_stage_time','diagnostic_branch_time'}
         value = cfg.(name{1});
         if ~isnumeric(value) || ~isscalar(value) || ~isfinite(value) || value <= 0
             error('RCDesigner:InvalidSearchConfig', '%s 必须为正有限标量。', name{1});
@@ -918,13 +939,13 @@ function [cfg, lower, upper] = Search_Config(params, cfg)
         error('RCDesigner:InvalidSeed', '随机种子须为0至2^32-1之间的整数。');
     end
     cfg.solver = string(cfg.solver);
-    if ~ismember(cfg.solver,["diagnostic","decomposed","patterns","fair","native","hybrid","scip"])
+    if ~ismember(cfg.solver,["supports","structural","diagnostic","decomposed","patterns","fair","native","hybrid","scip"])
         error('RCDesigner:UnknownLayoutSolver', 'solver须为diagnostic、decomposed、patterns、fair、native、hybrid或scip。');
     end
     if ~isscalar(cfg.diagnostic_compare) || ~ismember(cfg.diagnostic_compare,[false,true])
         error('RCDesigner:InvalidSearchConfig','diagnostic_compare须为逻辑标量。');
     end
-    if cfg.solver ~= "diagnostic" && exist('lsqnonlin','file') ~= 2
+    if ~ismember(cfg.solver,["structural","patterns","diagnostic"]) && exist('lsqnonlin','file') ~= 2
         error('RCDesigner:MissingOptimizationToolbox', '固定组配平需要 MATLAB Optimization Toolbox 的 lsqnonlin。');
     end
     if ~isempty(cfg.initial_x) && (size(cfg.initial_x,2) ~= 12 || any(~isfinite(cfg.initial_x),'all') || ...
@@ -1058,6 +1079,8 @@ function residual = Installation_Residual(B,r,cfg)
     residual = zeros(0,1);
     for first = 1:11
         for second = first+1:12
+            % Keep residual dimension fixed while rejecting exact coincidence.
+            residual(end+1,1) = double(all(r(:,first)==r(:,second)));
             if cfg.min_install_distance > 0
                 residual(end+1,1) = (cfg.min_install_distance-norm(r(:,first)-r(:,second)))/cfg.x_face; %#ok<AGROW>
             end
@@ -1233,6 +1256,8 @@ function evidence = Run_Joint_Solver(cfg, lower, upper, remaining_time, seeds)
     data.fixed_direction_search = cfg.solver == "hybrid";
     data.fair_search = cfg.solver == "fair";
     data.pattern_search = cfg.solver == "patterns";
+    data.structural_search = ismember(cfg.solver,["structural","patterns"]);
+    data.support_search = cfg.solver == "supports";
     data.decomposition_search = cfg.solver == "decomposed";
     data.diagnostic_search = cfg.solver == "diagnostic";
     if (data.fair_search || data.pattern_search || data.decomposition_search) && ~isfield(data,'search_state') && strlength(cfg.resume_file) > 0 && isfile(cfg.resume_file)
@@ -1295,6 +1320,13 @@ function evidence = Run_Joint_Solver(cfg, lower, upper, remaining_time, seeds)
             if isfile(progress_path)
                 detail = jsondecode(fileread(progress_path));
                 progress.Stage = char(detail.stage);
+                if isfield(detail,'support_total')
+                    progress.SupportTotal=detail.support_total;
+                    progress.SupportSeen=detail.support_seen;
+                    progress.SupportVisits=detail.support_visits;
+                    progress.SupportCurrent=detail.support_current;
+                    if isfield(detail,'search_metrics'), progress.SearchMetrics=detail.search_metrics; end
+                end
                 progress.Coverage = detail.coverage;
                 progress.EvaluationCount = detail.attempt;
                 if isfield(detail,'branch_progress')
@@ -1388,7 +1420,12 @@ function result = Save_Search_Report(result,params)
     end
     if isfield(result.solver_evidence,'search_state')
         state = result.solver_evidence.search_state;
-        if isfield(state,'conflicts')
+        if isfield(state,'entries')
+            lines(end+1)=sprintf("严格拓扑轮转：%d种模式，累计%d次访问；数值失败不排除模式，严格非零区域逐步扩展。",numel(state.entries),state.visits);
+            if isfield(state,'metrics')
+                lines(end+1)="升级后有效进展统计（旧节点数未知）："+string(jsonencode(state.metrics));
+            end
+        elseif isfield(state,'conflicts')
             lines(end+1) = sprintf("组选与几何分解：累计几何检查%d次，已登记%d个待解拓扑，保存%d条可复核冲突，主问题求解%d次。",state.processed,numel(state.pending),numel(state.conflicts),state.master_calls);
             lines(end+1) = "仅精确有理数证据永久排除组合；数值不可行和超时的几何区域均保留。检查点不包含求解器内部完整搜索树。";
         else

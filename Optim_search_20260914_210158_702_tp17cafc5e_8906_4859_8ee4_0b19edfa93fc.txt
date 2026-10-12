@@ -1,0 +1,30 @@
+严格主备布局：首个可行解搜索诊断
+状态代码：time_limit
+结论：搜索达到时限，最高覆盖152/156项，未找到全部约束可行布局；不代表无解。｜拓扑已访问115/115，累计120次轮转；队列：/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_support_queue_de5ec30395b82d2d.json
+说明：以下缺失项只描述本轮候选，不构成整个连续空间无解的证明。
+归一化：力/F_max，力矩/(F_max*x_face)；故障编号0表示标况。
+单轴严格控制组：2:2:6台；未通过候选允许导入查看，不代表可行布局。
+F_max=10 N，x_face=2 m，非零能力判据=1.0000000000000001e-05，纯组容差=1e-09
+总耗时=3600.549 s，本地=0.000 s，联合=3599.888 s，候选精修=0.000 s，独立复核=0.000 s
+初值已尝试/已完成=0/0，固定组选配调用=0，内层函数评价=0
+最高覆盖=152/156，最佳配平残差范数=1.9999999999653619e-05，随机种子=18
+本轮恢复来源：
+终止阶段：joint_minlp
+联合求解器状态：timelimit
+MATLAB：23.2.0.2365128 (R2023b)
+运行架构：MACI64
+完整参数设置（实际初值另存于MAT中的saved.initial_points）：
+{"optimization_target":"首个可行布局","x_face":2,"start_count":16,"max_time":3600,"min_axis_capacity":1E-5,"pure_tolerance":1E-9,"max_group_size":6,"y_max":0.6,"z_max":0.6,"min_install_distance":0,"min_install_angle_deg":0,"save_result":true,"output_dir":"/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable","position_a_range":[0,0.6],"position_b_range":[-0.6,0.6],"alpha_range":[0,6.2831853071795862],"beta_range":[0,1.5707963267948966],"solver":"supports","support_slice_seconds":30,"max_iterations":120,"inner_iterations":8,"local_max_time":60,"initial_x":[],"resume_file":"","seed":18,"fixed_direction_time":8,"fixed_direction_fraction":0.85,"node_time":5,"master_time":30,"geometry_time":15,"diagnostic_stage_time":60,"diagnostic_compare":true,"diagnostic_persistent":true,"diagnostic_branch_time":30,"python_executable":"/Users/charry/Library/Caches/RCDesigner/strict-solver-venv/bin/python"}
+覆盖率最佳候选x：[0.20000000000000001 0 0 0.78539816339744828 0.59999999999999998 0.20000000000000001 4.7123889803846897 0.78539816339744828 0.59999999999999998 -0.20000000000000001 1.5707963267948966 0.78539816339744828]
+残差最佳候选x：[0.20000000000000001 0 0 0.78539816339744828 0.59999999999999998 0.20000000000000001 4.7123889803846897 0.78539816339744828 0.59999999999999998 -0.20000000000000001 1.5707963267948966 0.78539816339744828]
+自动回读历史布局与候选：/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260910_163643_862_tpc545d236_46da_4862_91be_f8e90711b03d.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260910_130827_598_tp65dbe22e_1a16_4313_af30_e6bae909c70d.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260909_222735_234_tpa11783eb_91f2_45b1_95b4_baad0fba9a5a.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260909_141150_395_tp8e88f17b_993b_4dae_822b_29c397b485c5.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260907_230425_623_tpd38eca90_8060_4f5d_a398_5ffc0146f015.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260907_210337_685_tp3edbeb06_2f79_42c0_99e1_133f1ff3e6e3.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260904_161814_topology.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260904_161733_topology.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260907_112651_358_tp9ce2572c_cb54_477c_b31b_76bea429b4ae.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260907_133214_880_tp7b90b8c2_a5ed_4a13_aa78_e44aff047952.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260907_111548_391_tpfae01c1f_e125_42d1_b722_5c91ec1485b6.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260902_220228_app.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260901_152310_app.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20250101_010101_unknown.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260603_161805_2jzm.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260603_150553_3jztlq.mat；/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_data_20260614_154028.mat
+联合求解节点数=0，候选解数=0；常数目标的上下界不代表控制能力上下界。
+严格拓扑轮转：115种模式，累计120次访问；数值失败不排除模式，严格非零区域逐步扩展。
+队列恢复：new_supports
+中断续跑检查点：/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_support_queue_de5ec30395b82d2d.json
+覆盖率最佳候选：安装违反量最大值=0，变量越界量=0
+缺失需求：以下最近配平组不一定就是严格纯组；能力与耦合量均已归一化。
+故障=1，轴=+Fy，最近组=[6 8 10 12]，目标能力=1.73191211e-16，非目标最大分量=0，能力缺口=1e-05，严格纯组最大能力=1.73191211e-16；该候选没有正向有效的严格纯组
+故障=2，轴=-Fy，最近组=[5 7 9 11]，目标能力=1.73191211e-16，非目标最大分量=0，能力缺口=1e-05，严格纯组最大能力=1.73191211e-16；该候选没有正向有效的严格纯组
+故障=3，轴=+Fy，最近组=[6 8 10 12]，目标能力=1.73191211e-16，非目标最大分量=0，能力缺口=1e-05，严格纯组最大能力=1.73191211e-16；该候选没有正向有效的严格纯组
+故障=4，轴=-Fy，最近组=[5 7 9 11]，目标能力=1.73191211e-16，非目标最大分量=0，能力缺口=1e-05，严格纯组最大能力=1.73191211e-16；该候选没有正向有效的严格纯组

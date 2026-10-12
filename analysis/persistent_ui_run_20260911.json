@@ -1,0 +1,44 @@
+[
+  {
+    "status": "diagnostic_unknown",
+    "progress": {
+      "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+      "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+      "reviewed_later_assignments": "0",
+      "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+      "certified_fraction": "345/847",
+      "certified_percent": 40.731995277449826,
+      "pending_branches": 161,
+      "review_branches": 0,
+      "closed_branches": 170,
+      "conflicts": 1068,
+      "solver_calls": 3,
+      "splits": 330
+    },
+    "report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_133656_297_tpa12d0603_ae55_4379_b772_7200e66090b4/diagnosis.json",
+    "ui_status": "仅力配平已通过（78项）｜完整组选必要条件尚未找到，可点击“继续查找”",
+    "button_text": "继续查找",
+    "button_enabled": "on"
+  },
+  {
+    "status": "diagnostic_unknown",
+    "progress": {
+      "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+      "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+      "reviewed_later_assignments": "0",
+      "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+      "certified_fraction": "345/847",
+      "certified_percent": 40.731995277449826,
+      "pending_branches": 164,
+      "review_branches": 0,
+      "closed_branches": 170,
+      "conflicts": 1068,
+      "solver_calls": 6,
+      "splits": 333
+    },
+    "report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_133727_119_tpd153e2ea_97a8_4b45_a67f_30f0861ae399/diagnosis.json",
+    "ui_status": "仅力配平已通过（78项）｜完整组选必要条件尚未找到，可点击“继续查找”",
+    "button_text": "继续查找",
+    "button_enabled": "on"
+  }
+]

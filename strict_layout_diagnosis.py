@@ -362,6 +362,8 @@ def diagnose(config):
             left=maximum-(time.monotonic()-started)
             if left>0:
                 branch_config=dict(config,_diagnostic_queue_callback=receive_queue,_diagnostic_previous_report=previous)
+                if output['resume_note']=='method_or_constraints_changed_diagnosis_reset':
+                    branch_config.pop('resume_file',None)
                 run=solve_persistent(branch_config,left,folder)
                 item['runs'].append(run)
                 item['status']=run['status']
@@ -394,6 +396,12 @@ def diagnose(config):
         if item['status']=='solver_disagreement':
             output['status']='diagnostic_solver_disagreement';break
         if layer=='wrench' and item['status']=='sat_verified':
+            if layer in reused and 'branch_queue_file' in output:
+                from strict_layout_branch_queue import prepare_queue,branch_progress
+                state=json.loads(Path(output['branch_queue_file']).read_text())
+                checked,domain,_,note=prepare_queue(config,state)
+                if note!='resumed_branch_queue': raise ValueError('Saved queue does not match the verified witness scope.')
+                output['branch_progress']=branch_progress(checked,domain)
             output['status']='necessary_conditions_sat'
             supported=all(0<=config['lower'][4*m+3]<=config['upper'][4*m+3]<=math.pi/2 for m in range(3))
             output['geometry_handoff_supported']=supported
@@ -429,7 +437,11 @@ def verify_report(path):
             else: result=dict(valid=verify_zero_certificate(cert,config,layer['layer']))
         else: result=dict(valid=None,reason='no_independently_checkable_conclusion')
         results.append(dict(layer=layer['layer'],**result))
-    return dict(valid=all(r['valid'] is True for r in results) if results else False,layers=results)
+    proven_unsat=any(item['status']=='unsat_verified' and check['valid'] is True
+                     for item,check in zip(report['layers'],results))
+    valid=bool(results) and all(r['valid'] is not False for r in results) and (
+        proven_unsat or all(r['valid'] is True for r in results))
+    return dict(valid=valid,layers=results,original_problem_infeasibility_verified=proven_unsat)
 
 
 def main():

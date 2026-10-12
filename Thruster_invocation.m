@@ -1,5 +1,9 @@
 %% 最简主份/单故障备份推力器调用策略
 % 为六维控制指令生成最简主备调用组、同步时序及完整诊断信息。
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%     if strcmpi(reuse_mode, 'asynchronous_time_division') || strcmpi(reuse_mode, 'task_book')
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%     min_duty = params.t_min / params.T;
 function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, faulty_thrusters, params)
     % Matrix_sub(:,i) 为第 i 台推力器满占空比产生的六维控制效率：
     %   Matrix_sub = [F_x; F_y; F_z; M_x; M_y; M_z].
@@ -35,16 +39,30 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
     if isfield(params, 'allocation_strategy') && ~isempty(params.allocation_strategy)
         allocation_mode = char(string(params.allocation_strategy));
     end
+    % 连续能力只读取分配规则，不进入脉宽、周期或调度执行层。
+    capability_only = isfield(params,'continuous_capability_only') && params.continuous_capability_only;
+    if capability_only && (strcmpi(reuse_mode,'joint_optimization') || strcmpi(allocation_mode,'joint_optimization'))
+        Prop_Final = [];
+        info = struct('mode',reuse_mode,'allocation_domain','independent_continuous', ...
+            'healthy',setdiff(1:N,faulty_thrusters),'groups',[]);
+        return;
+    end
     if strcmpi(reuse_mode, 'joint_optimization') || strcmpi(allocation_mode, 'joint_optimization')
         [Prop_Final, info] = Joint_Optimization();
         return;
     end
-    if strcmpi(reuse_mode, 'asynchronous_time_division') || strcmpi(reuse_mode, 'task_book')
+    % 原分支保留：if strcmpi(reuse_mode, 'asynchronous_time_division') || strcmpi(reuse_mode, 'task_book')
+    if ~capability_only && (strcmpi(reuse_mode, 'asynchronous_time_division') || strcmpi(reuse_mode, 'task_book'))
         [Prop_Final, info] = Asynchronous_Reuse();
         return;
     end
 
-    min_duty = params.t_min / params.T;
+    % 原执行口径：min_duty = params.t_min / params.T;
+    if capability_only
+        min_duty = 0;
+    else
+        min_duty = params.t_min / params.T;
+    end
     row_scale = max(abs(Matrix_sub), [], 2);
     row_scale(row_scale < 1e-12) = 1;
     % 严格纯控制组允许使用全部健康推力器中的任意偶数台；冲量裕度
@@ -165,6 +183,12 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
             fault_idx = numel(strategy_cache(cache_idx).fault_banks);
         end
         active_bank = strategy_cache(cache_idx).fault_banks{fault_idx};
+    end
+
+    if capability_only
+        Prop_Final=[];
+        info=Continuous_Allocation_Domain();
+        return;
     end
 
     % 先为每一个有指令的轴保存一整组“纯轴向”占空比模板。这里不做
@@ -309,6 +333,35 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
         info.max_raw_pulse = max(Prop_F + Prop_T);
         info.attitude_window = NaN;
         info.position_window = NaN;
+    end
+
+    function ccInfo=Continuous_Allocation_Domain()
+        % 与执行路径隔离局部变量，避免 MATLAB 嵌套工作区共享 entry/candidate。
+        % 固定主/备组选 preferred_idx；需在线评分的备用组保留其候选库并集。
+        % 不执行冲量裕度评分：它引入本视图排除的时序限制。
+        ccGroups=repmat(struct('axis',0,'direction',0,'thrusters',[], ...
+            'ratio',[],'endpoint',zeros(6,1),'backup_candidates',false),0,1);
+        for ccAxis=1:6
+            for ccDirection=1:2
+                ccEntry=active_bank{ccAxis,ccDirection};
+                if isempty(ccEntry.candidates), continue; end
+                if ccEntry.preferred_idx>0
+                    ccIndices=ccEntry.preferred_idx;
+                else
+                    ccIndices=1:numel(ccEntry.candidates);
+                end
+                for ccIndex=ccIndices
+                    ccCandidate=ccEntry.candidates(ccIndex);
+                    ccRatio=ccCandidate.unit_duty(:)/max(ccCandidate.unit_duty);
+                    ccEndpoint=Matrix_sub(:,ccCandidate.group)*ccRatio;
+                    ccGroups(end+1,1)=struct('axis',ccAxis,'direction',2*ccDirection-3, ...
+                        'thrusters',ccCandidate.group,'ratio',ccRatio,'endpoint',ccEndpoint, ...
+                        'backup_candidates',ccEntry.uses_impulse_margin_fallback); %#ok<AGROW>
+                end
+            end
+        end
+        ccInfo=struct('mode',reuse_mode,'allocation_domain','fixed_ratio_union', ...
+            'healthy',setdiff(1:N,faulty_thrusters),'groups',ccGroups);
     end
 
     % 为无故障工况建立最简主份调用库并记录推力器复用次数。
@@ -649,6 +702,8 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
     end
 
     % 在周期平均备用候选中选取冲量裕度消耗最小的一组。
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             if any(pulse < min_duty - config.duty_tol)
     function [selected_idx, selected_margin] = Select_Impulse_Margin_Candidate(candidates, row_idx, command_scale, bank)
         % 对周期平均纯控制候选，按实际共同起喷后的累计干扰冲量评分：
         %
@@ -663,7 +718,7 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
             candidate = candidates(candidate_idx);
             duty = command_scale * candidate.unit_duty;
             pulse = duty * params.T;
-            if any(pulse < min_duty - config.duty_tol)
+            if any(pulse < params.t_min - config.duty_tol * params.T)
                 continue;
             end
 
@@ -1032,6 +1087,8 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
     end
 
     % 直接求健康推力器的有界六维最小二乘占空比。
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%         result_info = struct('mode', 'joint_optimization', 'reuse_strategy', 'joint_optimization', 'allocation_strategy', 'joint_optimization', 'solver', 'bounded_projected_gradient_weighted_least_squares', 'fault_policy', 'remove_faulty_columns_before_optimization', 'strict_paired_mode', false, 'uses_impulse_margin_fallback', false, 'nominal_reuse_count', zeros(N, 1), 'structurally_reconfigurable', relative_residual <= 5e-3, 'strictly_reconfigurable', relative_residual <= 5e-3, 'Prop_F', zeros(N, 1), 'Prop_T', zeros(N, 1), 'Prop_F_used', zeros(N, 1), 'Prop_T_used', zeros(N, 1), 'Prop_F_axis', zeros(N, 3), 'Prop_T_axis', zeros(N, 3), 'Prop_F_axis_raw', zeros(N, 3), 'Prop_T_axis_raw', zeros(N, 3), 'Prop_6D', output_pulse, 'Prop_Final', output_pulse, 'schedule', schedule_out, 'scheduler', struct('peak_orbit_torque', NaN, 'peak_attitude_force', NaN, 'peak_torque_limit', NaN, 'peak_force_limit', NaN, 'peak_constraint_met', true, 'suppressed_force_axes', [], 'force_axis_pulse', zeros(N, 3), 'attitude_axis_pulse', zeros(N, 3), 'time_scale', 1, 'status', 'joint_optimization'), 'scheduler_force_axis_suppressed', [], 'axis_strategy', {joint_strategy}, 'impulse_margin_unavailable_axes', [], 'force_scale', NaN, 'attitude_scale', NaN, 'force_scale_reason', 'not_separated_in_joint_optimization', 'attitude_scale_reason', 'not_separated_in_joint_optimization', 'orbit_wrench_raw', NaN(6, 1), 'attitude_wrench_raw', NaN(6, 1), 'orbit_wrench', NaN(6, 1), 'attitude_wrench', NaN(6, 1), 'orbit_cross_torque', NaN, 'attitude_cross_force', NaN, 'period_average_decoupled', false, 'duty', duty, 'command', command, 'actual', actual, 'residual', command - actual, 'relative_residual', relative_residual, 'iterations', iterations, 'healthy_thrusters', healthy, 'faulty_thrusters', faulty_thrusters, 'reuse_scale', ones(N, 1), 'orbit_keep_ratio', NaN, 'att_keep_ratio', NaN, 'max_raw_pulse', max(output_pulse), 'attitude_window', NaN, 'position_window', NaN);
     function [output_pulse, result_info] = Joint_Optimization()
         healthy = setdiff(1:N, faulty_thrusters);
         joint_scale = max(abs(Matrix_sub), [], 2);
@@ -1067,7 +1124,9 @@ function [Prop_Final, info] = Thruster_invocation(v_cmd1, v_cmd2, Matrix_sub, fa
         end
         actual = Matrix_sub * duty;
         relative_residual = norm((command - actual) ./ joint_scale) / (norm(command ./ joint_scale) + eps);
-        result_info = struct('mode', 'joint_optimization', 'reuse_strategy', 'joint_optimization', 'allocation_strategy', 'joint_optimization', 'solver', 'bounded_projected_gradient_weighted_least_squares', 'fault_policy', 'remove_faulty_columns_before_optimization', 'strict_paired_mode', false, 'uses_impulse_margin_fallback', false, 'nominal_reuse_count', zeros(N, 1), 'structurally_reconfigurable', relative_residual <= 5e-3, 'strictly_reconfigurable', relative_residual <= 5e-3, 'Prop_F', zeros(N, 1), 'Prop_T', zeros(N, 1), 'Prop_F_used', zeros(N, 1), 'Prop_T_used', zeros(N, 1), 'Prop_F_axis', zeros(N, 3), 'Prop_T_axis', zeros(N, 3), 'Prop_F_axis_raw', zeros(N, 3), 'Prop_T_axis_raw', zeros(N, 3), 'Prop_6D', output_pulse, 'Prop_Final', output_pulse, 'schedule', schedule_out, 'scheduler', struct('peak_orbit_torque', NaN, 'peak_attitude_force', NaN, 'peak_torque_limit', NaN, 'peak_force_limit', NaN, 'peak_constraint_met', true, 'suppressed_force_axes', [], 'force_axis_pulse', zeros(N, 3), 'attitude_axis_pulse', zeros(N, 3), 'time_scale', 1, 'status', 'joint_optimization'), 'scheduler_force_axis_suppressed', [], 'axis_strategy', {joint_strategy}, 'impulse_margin_unavailable_axes', [], 'force_scale', NaN, 'attitude_scale', NaN, 'force_scale_reason', 'not_separated_in_joint_optimization', 'attitude_scale_reason', 'not_separated_in_joint_optimization', 'orbit_wrench_raw', NaN(6, 1), 'attitude_wrench_raw', NaN(6, 1), 'orbit_wrench', NaN(6, 1), 'attitude_wrench', NaN(6, 1), 'orbit_cross_torque', NaN, 'attitude_cross_force', NaN, 'period_average_decoupled', false, 'duty', duty, 'command', command, 'actual', actual, 'residual', command - actual, 'relative_residual', relative_residual, 'iterations', iterations, 'healthy_thrusters', healthy, 'faulty_thrusters', faulty_thrusters, 'reuse_scale', ones(N, 1), 'orbit_keep_ratio', NaN, 'att_keep_ratio', NaN, 'max_raw_pulse', max(output_pulse), 'attitude_window', NaN, 'position_window', NaN);
+        % 单条指令的拟合误差不能证明12向可重构，更不能证明瞬时纯控制。
+        % 全工况结论由Reconfig_eval复核，false在这里表示尚未取得该证明。
+        result_info = struct('mode', 'joint_optimization', 'reuse_strategy', 'joint_optimization', 'allocation_strategy', 'joint_optimization', 'solver', 'bounded_projected_gradient_weighted_least_squares', 'fault_policy', 'remove_faulty_columns_before_optimization', 'strict_paired_mode', false, 'uses_impulse_margin_fallback', false, 'nominal_reuse_count', zeros(N, 1), 'structurally_reconfigurable', false, 'strictly_reconfigurable', false, 'reconfigurability_status', 'not_evaluated', 'command_tracking_met', relative_residual <= 5e-3, 'Prop_F', zeros(N, 1), 'Prop_T', zeros(N, 1), 'Prop_F_used', zeros(N, 1), 'Prop_T_used', zeros(N, 1), 'Prop_F_axis', zeros(N, 3), 'Prop_T_axis', zeros(N, 3), 'Prop_F_axis_raw', zeros(N, 3), 'Prop_T_axis_raw', zeros(N, 3), 'Prop_6D', output_pulse, 'Prop_Final', output_pulse, 'schedule', schedule_out, 'scheduler', struct('peak_orbit_torque', NaN, 'peak_attitude_force', NaN, 'peak_torque_limit', NaN, 'peak_force_limit', NaN, 'peak_constraint_met', true, 'suppressed_force_axes', [], 'force_axis_pulse', zeros(N, 3), 'attitude_axis_pulse', zeros(N, 3), 'time_scale', 1, 'status', 'joint_optimization'), 'scheduler_force_axis_suppressed', [], 'axis_strategy', {joint_strategy}, 'impulse_margin_unavailable_axes', [], 'force_scale', NaN, 'attitude_scale', NaN, 'force_scale_reason', 'not_separated_in_joint_optimization', 'attitude_scale_reason', 'not_separated_in_joint_optimization', 'orbit_wrench_raw', NaN(6, 1), 'attitude_wrench_raw', NaN(6, 1), 'orbit_wrench', NaN(6, 1), 'attitude_wrench', NaN(6, 1), 'orbit_cross_torque', NaN, 'attitude_cross_force', NaN, 'period_average_decoupled', false, 'duty', duty, 'command', command, 'actual', actual, 'residual', command - actual, 'relative_residual', relative_residual, 'iterations', iterations, 'healthy_thrusters', healthy, 'faulty_thrusters', faulty_thrusters, 'reuse_scale', ones(N, 1), 'orbit_keep_ratio', NaN, 'att_keep_ratio', NaN, 'max_raw_pulse', max(output_pulse), 'attitude_window', NaN, 'position_window', NaN);
     end
 
     % 用投影梯度法求解不依赖工具箱的有界最小二乘问题。

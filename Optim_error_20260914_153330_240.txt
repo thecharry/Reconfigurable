@@ -1,0 +1,92 @@
+未识别类 'RCDesignerSearchTestApp' 的方法、属性或字段 'ProgressGauge'。
+
+出错 RCDesignerSearchTestApp/StartOptimizationButtonPushed (第 2960 行)
+                    app.ProgressGauge.Value=100;
+
+出错 test_persistent_search_ui>testStructuralStageExecutesWithoutGeometryOrDiagnosticWitness (第 51 行)
+    app.StartOptimizationButtonPushed([]);
+
+出错 matlab.unittest.TestRunner/evaluateMethodCore (第 1003 行)
+                    func(content);
+
+出错 matlab.unittest.TestRunner/evaluateMethodsOnTestContent (第 944 行)
+                    runner.evaluateMethodCore(method, content, arguments);
+
+出错 matlab.unittest.TestRunner/runTestMethodCore (第 1114 行)
+            runner.evaluateMethodsOnTestContent(method, testCase);
+
+出错 matlab.unittest.TestRunner/runTestCore (第 1088 行)
+                    runner.runTestMethodCore;
+
+出错 matlab.unittest.TestRunner/repeatTest (第 561 行)
+                    runner.runTestCore;
+
+出错 matlab.unittest.TestRunner/runSharedTestCase (第 502 行)
+                    runner.repeatTest(usePlugins);
+
+出错 matlab.unittest.TestRunner/runTestClass (第 1379 行)
+                runner.runSharedTestCase(runner.PluginData.runSharedTestCase);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runTestClass (第 430 行)
+            nextOperator.runTestClass(pluginData);
+
+出错 matlab.unittest.plugins.testrunprogress.ConciseProgressPlugin/runTestClass (第 68 行)
+            runTestClass@matlab.unittest.plugins.TestRunnerPlugin(plugin, pluginData);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runTestClass (第 430 行)
+            nextOperator.runTestClass(pluginData);
+
+出错 sltest.plugins.TestManagerResultsPlugin/runTestClass (第 146 行)
+            plugin.runTestClass@matlab.unittest.plugins.TestRunnerPlugin(pluginData);
+
+出错 matlab.unittest.TestRunner/runTestSuite (第 1304 行)
+                    plugin.runTestClass(runner.PluginData.runTestClass);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runTestSuite (第 265 行)
+            nextOperator.runTestSuite(pluginData);
+
+出错 matlab.unittest.plugins.DiagnosticsOutputPlugin/runTestSuite (第 161 行)
+            runTestSuite@matlab.unittest.plugins.TestRunnerPlugin(plugin, pluginData);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runTestSuite (第 265 行)
+            nextOperator.runTestSuite(pluginData);
+
+出错 matlab.unittest.plugins.DiagnosticsRecordingPlugin/runTestSuite (第 208 行)
+            plugin.runTestSuite@matlab.unittest.plugins.TestRunnerPlugin(pluginData);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runTestSuite (第 265 行)
+            nextOperator.runTestSuite(pluginData);
+
+出错 sltest.plugins.TestManagerResultsPlugin/runTestSuite (第 132 行)
+            plugin.runTestSuite@matlab.unittest.plugins.TestRunnerPlugin(pluginData);
+
+出错 matlab.unittest.TestRunner/evaluateMethodOnPlugins (第 425 行)
+                [varargout{1:nargout}] = plugin.(methodName)(pluginData);
+
+出错 matlab.unittest.internal.SerialTestRunStrategy/runTestSuite (第 36 行)
+            runner.evaluateMethodOnPlugins("runTestSuite", pluginData); 
+
+出错 matlab.unittest.internal.SerialTestRunStrategy/runSession (第 16 行)
+            strategy.runTestSuite(runner,testSuiteRunPluginData);
+
+出错 matlab.unittest.TestRunner/runSession (第 1260 行)
+            runner.TestRunStrategy.runSession(runner,pluginData);
+
+出错 matlab.unittest.plugins.TestRunnerPlugin/runSession (第 228 行)
+            nextOperator.runSession(pluginData);
+
+出错 sltest.plugins.TestManagerResultsPlugin/runSession (第 121 行)
+            plugin.runSession@matlab.unittest.plugins.TestRunnerPlugin(pluginData);
+
+出错 matlab.unittest.TestRunner/evaluateMethodOnPlugins (第 425 行)
+                [varargout{1:nargout}] = plugin.(methodName)(pluginData);
+
+出错 matlab.unittest.TestRunner/doRunWithFcn (第 413 行)
+            runner.evaluateMethodOnPlugins(methodName, pluginData);
+
+出错 matlab.unittest.TestRunner/run (第 297 行)
+            result = doRunWithFcn(runner, "runSession", pluginData);
+
+出错 runtests (第 113 行)
+testResults = runFcn(runner, suite);
+输入设置：{"optimization_target":"首个可行布局","x_face":2,"start_count":16,"max_time":600,"min_axis_capacity":1E-5,"pure_tolerance":1E-9,"max_group_size":6,"y_max":0.6,"z_max":0.6,"min_install_distance":0,"min_install_angle_deg":0,"save_result":true,"output_dir":"/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable","position_a_range":[0,0.6],"position_b_range":[-0.6,0.6],"alpha_range":[0,6.2831853071795862],"beta_range":[0,1.5707963267948966],"solver":"structural"}

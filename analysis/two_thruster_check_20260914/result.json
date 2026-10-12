@@ -1,0 +1,49 @@
+{
+  "config": {
+    "lower": [
+      0,
+      -0.6,
+      0,
+      0,
+      0,
+      -0.6,
+      0,
+      0,
+      0,
+      -0.6,
+      0,
+      0
+    ],
+    "upper": [
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966,
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966,
+      0.6,
+      0.6,
+      6.283185307179586,
+      1.5707963267948966
+    ],
+    "x_face": 2,
+    "min_axis_capacity": 1e-05,
+    "pure_tolerance": 1e-09,
+    "max_group_size": 2
+  },
+  "result": {
+    "engine": "z3",
+    "version": "5.1.0",
+    "status": "unknown",
+    "budget_seconds": 60,
+    "exact_arithmetic": true,
+    "independent_unsat_proof_verified": false,
+    "formula_sha256": "debc190283aabc67cb3f203a5a3b0bef58ca7a1189f2a15eb9538383711de33b",
+    "formula_file": "/Users/charry/Desktop/\u79d1\u7814\u9879\u76ee/\u536b\u661f\u9879\u76ee/\u4eff\u771f\u7a0b\u5e8f/Reconfigurable/analysis/two_thruster_check_20260914/wrench.smt2",
+    "solver_status": "unknown",
+    "reason": "timeout",
+    "elapsed_seconds": 60.109061792
+  }
+}

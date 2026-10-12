@@ -1,0 +1,13 @@
+{
+  "pattern": "100111111111",
+  "job": "0:0",
+  "seconds": 30.000685,
+  "wall_seconds": 30.088835209,
+  "status": "timelimit",
+  "nodes": 5609,
+  "solutions": 0,
+  "lp_iterations": 165575,
+  "variables": 2695,
+  "constraints": 11787,
+  "conflicts_loaded": 423
+}

@@ -5,6 +5,45 @@ classdef RCPlotter
 %   or directly in an App Designer page.
 
     methods (Static)
+        function evaluation = reconfigStatus(evaluation)
+        % A score or angle cannot certify directional/command feasibility.
+            % 新判断独立于下面保留的历史时序指标与参考指令通过率。
+            structural=[];
+            if isfield(evaluation,'ContinuousJudgment')
+                structural=evaluation.ContinuousJudgment;
+            elseif isfield(evaluation,'JudgmentModel') && strcmp(evaluation.JudgmentModel,'continuous_origin_interior')
+                structural=evaluation;
+            end
+            if ~isempty(structural)
+                evaluation.IsReconfig=reshape([structural.Invocation.origin_interior],[],1);
+                evaluation.Status=repmat("不可重构：原点不在实际六维包络内部",numel(structural.FaultSets),1);
+                evaluation.Status(evaluation.IsReconfig)="可重构：原点在实际六维包络内部";
+                % 旧综合分数的指令质量有效性独立处理，不参与可重构判断。
+                if isfield(evaluation,'Score') && isfield(evaluation,'Invocation') && isfield(evaluation.Invocation,'reference_commands_callable')
+                    evaluation.Score(~[evaluation.Invocation.reference_commands_callable])=NaN;
+                end
+                return;
+            end
+            count=numel(evaluation.FaultSets);
+            evaluation.IsReconfig=false(count,1);
+            evaluation.Status=repmat("策略12向未证实",count,1);
+            if ~isfield(evaluation,'Invocation'), return; end
+            for row=1:count
+                v=evaluation.Invocation(row);
+                evaluation.IsReconfig(row)=v.policy_reconfigurable;
+                if v.policy_reconfigurable && v.reference_commands_callable
+                    evaluation.Status(row)="12向及参考指令通过";
+                elseif v.policy_reconfigurable
+                    evaluation.Status(row)="12向可用；参考指令未全通过";
+                elseif isfield(evaluation,'Hardware') && ~evaluation.Hardware(row).reconfigurable
+                    evaluation.Status(row)="硬件纯轴能力不足";
+                end
+                if isfield(evaluation,'Score') && ~v.reference_commands_callable
+                    evaluation.Score(row)=NaN;
+                end
+            end
+        end
+
         function plotLayout3D(ax, B, r, options)
         %PLOTLAYOUT3D Draw one thruster layout in three dimensions.
             if nargin < 4 || isempty(options)
@@ -272,8 +311,12 @@ classdef RCPlotter
                         lineStyles{min(layoutIndex, numel(lineStyles))}, ...
                         'Color', componentColors(componentIndex, :), ...
                         'LineWidth', lineWidths(min(layoutIndex, numel(lineWidths))));
-                    legendText{handleIndex} = ...
-                        [labels{layoutIndex}, '-', componentNames{componentIndex}];
+                    if isempty(labels{layoutIndex})
+                        legendText{handleIndex} = componentNames{componentIndex};
+                    else
+                        legendText{handleIndex} = ...
+                            [labels{layoutIndex}, '-', componentNames{componentIndex}];
+                    end
                 end
             end
             RCPlotter.drawFaultLine(ax, logs, options);
@@ -287,7 +330,7 @@ classdef RCPlotter
         end
 
         function plotErrorNorm(ax, logData, labels, dataType, options)
-        %PLOTERRORNORM Plot position or attitude error norms.
+        %PLOTERRORNORM Plot the absolute tracking error of each axis.
             if nargin < 5 || isempty(options)
                 options = struct();
             end
@@ -299,29 +342,44 @@ classdef RCPlotter
             view(ax, 2);
             hold(ax, 'on');
             grid(ax, 'on');
+            componentColors = lines(3);
             lineStyles = {'-', '--', ':', '-.'};
             lineWidths = [1.2, 1.3, 1.7, 1.3];
-            handles = gobjects(1, numel(logs));
+            if strcmpi(dataType, 'att') || strcmpi(dataType, 'attitude')
+                componentNames = {'phi', 'theta', 'psi'};
+                defaultTitle = '姿态三轴误差范数';
+                defaultYLabel = '|e_{phi}|, |e_{theta}|, |e_{psi}| / rad';
+            else
+                componentNames = {'x', 'y', 'z'};
+                defaultTitle = '位置三轴误差范数';
+                defaultYLabel = '|e_x|, |e_y|, |e_z| / m';
+            end
+            handles = gobjects(1, numel(logs) * 3);
+            legendText = cell(1, numel(handles));
+            handleIndex = 0;
             for layoutIndex = 1:numel(logs)
                 errorData = RCPlotter.errorData(logs{layoutIndex}, dataType);
-                handles(layoutIndex) = plot(ax, logs{layoutIndex}.Time, ...
-                    vecnorm(errorData, 2, 1), ...
-                    lineStyles{min(layoutIndex, numel(lineStyles))}, ...
-                    'LineWidth', lineWidths(min(layoutIndex, numel(lineWidths))));
+                for componentIndex = 1:3
+                    handleIndex = handleIndex + 1;
+                    handles(handleIndex) = plot(ax, logs{layoutIndex}.Time, ...
+                        abs(errorData(componentIndex, :)), ...
+                        lineStyles{min(layoutIndex, numel(lineStyles))}, ...
+                        'Color', componentColors(componentIndex, :), ...
+                        'LineWidth', lineWidths(min(layoutIndex, numel(lineWidths))));
+                    if isempty(labels{layoutIndex})
+                        legendText{handleIndex} = componentNames{componentIndex};
+                    else
+                        legendText{handleIndex} = ...
+                            [labels{layoutIndex}, '-', componentNames{componentIndex}];
+                    end
+                end
             end
             RCPlotter.drawFaultLine(ax, logs, options);
-            if strcmpi(dataType, 'att')
-                defaultTitle = '姿态误差范数';
-                defaultYLabel = '||e_e|| / rad';
-            else
-                defaultTitle = '位置误差范数';
-                defaultYLabel = '||e_r|| / m';
-            end
             title(ax, RCPlotter.getOption(options, 'Title', defaultTitle));
             xlabel(ax, '时间 / s');
             ylabel(ax, RCPlotter.getOption(options, 'YLabel', defaultYLabel));
             if RCPlotter.getOption(options, 'ShowLegend', true)
-                legend(ax, handles, labels, 'Location', 'best');
+                legend(ax, handles, legendText, 'Location', 'best');
             end
             hold(ax, 'off');
         end
@@ -698,6 +756,9 @@ classdef RCPlotter
             lineColor = RCPlotter.getOption( ...
                 options, 'LineColor', [0.10, 0.42, 0.76]);
             label = char(string(label));
+            if RCPlotter.getOption(options, 'HideCasePrefix', false)
+                label = '';
+            end
 
             for componentIndex = 1:6
                 ax = axesList(componentIndex);
@@ -712,8 +773,9 @@ classdef RCPlotter
                     wrench(componentIndex, 1:sampleCount), ...
                     'Color', lineColor, 'LineWidth', 1.15);
                 RCPlotter.drawFaultLine(ax, {logData}, options);
-                title(ax, sprintf('%s｜%s 周期平均实际输出', ...
-                    label, componentNames{componentIndex}));
+                title(ax, RCPlotter.caseTitle(label, ...
+                    sprintf('%s 周期平均实际输出', ...
+                    componentNames{componentIndex})));
                 xlabel(ax, '时间 / s');
                 ylabel(ax, sprintf('%s / %s', ...
                     componentNames{componentIndex}, ...
@@ -744,6 +806,9 @@ classdef RCPlotter
             snapshotIndices = RCPlotter.trajectorySnapshotIndices( ...
                 actual, snapshotCount);
             label = char(string(label));
+            if RCPlotter.getOption(options, 'HideCasePrefix', false)
+                label = '';
+            end
 
             RCPlotter.drawTrajectory3D(axesList(1), logData, ...
                 actual, reference, sampleCount, snapshotIndices, ...
@@ -761,6 +826,8 @@ classdef RCPlotter
             end
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             matrix = B(:, healthy);
         function plotDirectionAngleMatrix(ax, B, faultyIndices, options)
         %PLOTDIRECTIONANGLEMATRIX Plot the six-dimensional vector angles.
             if nargin < 3 || isempty(faultyIndices)
@@ -772,7 +839,8 @@ classdef RCPlotter
             RCPlotter.validateAxes(ax);
             healthy = setdiff(1:size(B, 2), ...
                 RCPlotter.validIndices(faultyIndices, size(B, 2)));
-            matrix = B(:, healthy);
+            referenceLength = RCPlotter.getOption(options, 'ReferenceLength', 2);
+            matrix = B(:, healthy)./[ones(3,1);referenceLength*ones(3,1)];
             matrix = matrix ./ max(vecnorm(matrix, 2, 1), 1e-12);
             cosine = min(max(matrix' * matrix, -1), 1);
             angleMatrix = acosd(cosine);
@@ -793,38 +861,101 @@ classdef RCPlotter
                 '6维控制向量夹角 / deg'));
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             metricNames = {'控制能力 J_c', '可诊断性 J_o', ...
+%                 '控制指令 J_t', '能量消耗 J_f'};
         function plotMetricBars(ax, comparison, metricIndex, options)
         %PLOTMETRICBARS Plot one normalized reconfigurability metric.
             if nargin < 4 || isempty(options)
                 options = struct();
             end
             RCPlotter.validateAxes(ax);
-            metricNames = {'控制能力 J_c', '可诊断性 J_o', ...
-                '控制指令 J_t', '能量消耗 J_f'};
+            metricNames = {'时序验证能力 J_c', '硬件向量夹角代理 J_o', ...
+                '参考指令跟踪 J_t', '完成同任务的耗量 J_f'};
             if metricIndex < 1 || metricIndex > numel(metricNames)
                 error('RCPlotter:InvalidMetric', '评价指标索引必须为1至4。');
             end
             cla(ax, 'reset');
             view(ax, 2);
             values = comparison.MetricValues(:, :, metricIndex);
-            handles = bar(ax, values, 'grouped');
             colors = [0.42, 0.72, 0.46; 0.92, 0.43, 0.39; ...
                 0.36, 0.58, 0.86; 0.65, 0.48, 0.78];
-            for index = 1:min(numel(handles), size(colors, 1))
-                handles(index).FaceColor = colors(index, :);
-                handles(index).EdgeColor = [0.35, 0.35, 0.35];
+            singleCase = size(values, 1) == 1;
+            if singleCase
+                handles = bar(ax, 1:numel(values), values, ...
+                    'FaceColor', 'flat', 'EdgeColor', [0.35, 0.35, 0.35]);
+                colorIndices = mod(0:numel(values) - 1, size(colors, 1)) + 1;
+                handles.CData = colors(colorIndices, :);
+                xticks(ax, 1:numel(comparison.LayoutNames));
+                xticklabels(ax, comparison.LayoutNames);
+            else
+                handles = bar(ax, values, 'grouped');
+                for index = 1:min(numel(handles), size(colors, 1))
+                    handles(index).FaceColor = colors(index, :);
+                    handles(index).EdgeColor = [0.35, 0.35, 0.35];
+                end
+                xticks(ax, 1:numel(comparison.FaultLabels));
+                xticklabels(ax, comparison.FaultLabels);
+                legend(ax, handles, comparison.LayoutNames, 'Location', 'best');
             end
             grid(ax, 'on');
             ylim(ax, [0, 1.05]);
-            xticks(ax, 1:numel(comparison.FaultLabels));
-            xticklabels(ax, comparison.FaultLabels);
             xtickangle(ax, 45);
             ylabel(ax, '归一化值');
             title(ax, RCPlotter.getOption(options, 'Title', ...
                 metricNames{metricIndex}));
-            legend(ax, comparison.LayoutNames, 'Location', 'best');
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 if isempty(healthy)
+%                     error('RCPlotter:NoHealthyThruster', ...
+%                         '布局“%s”在所选故障下没有可用推力器。', ...
+%                         char(string(comparisonSet(layoutIndex).name)));
+%                 end
+%                 if isempty(healthy)
+%                     error('RCPlotter:NoHealthyThruster', ...
+%                         '布局“%s”在所选故障下没有可用推力器。', ...
+%                         char(string(comparisonSet(layoutIndex).name)));
+%                 end
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                 comparisonSet(layoutIndex).name = [char(string(layoutSet(layoutIndex).name)), ' 硬件投影'];
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                 evaluation=Reconfig_eval(params,layoutSet(k).B,numel(faultyIndices));
+%                 row=RCPlotter.findFaultRow(evaluation.FaultSets,faultyIndices,size(layoutSet(k).B,2));
+%                 inv=evaluation.Invocation(row); samples=inv.envelope_points;
+%                 for j=1:numel(inv.axis_witness)
+%                     witness=inv.axis_witness{j};
+%                     if ~isempty(witness), samples(end+1,:)=witness.actual'; end %#ok<AGROW>
+%                 end
+%                 samples=unique([zeros(1,6);samples],'rows');
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                     ax=axesList(kind); hold(ax,'on');
+%                     points=unique(samples(:,(1:3)+3*(kind-1)),'rows');
+%                     name=[char(string(layoutSet(k).name)),' 策略样本包络'];
+%                     if size(points,1)>=4 && rank(points-mean(points,1),1e-9)>=3
+%                         faces=convhulln(points);
+%                         patch(ax,'Vertices',points,'Faces',faces, ...
+%                             'FaceColor',colors(k,:),'FaceAlpha',0.30, ...
+%                             'EdgeColor',colors(k,:),'LineStyle','--', ...
+%                             'LineWidth',1.2,'DisplayName',name,'Tag','PolicySampleEnvelope');
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                     scatter3(ax,points(:,1),points(:,2),points(:,3),22,colors(k,:), ...
+%                         'filled','DisplayName',[char(string(layoutSet(k).name)),' 已验证点'], ...
+%                         'Tag','PolicyVerifiedPoints');
+%                     subtitle(ax,{'硬件：独立连续占空比的投影（允许伴随其他分量）', ...
+%                         '策略：当前时序已验证点；样本凸包内部不保证可达'},'FontSize',9);
+% 原单方向并集绘制保留（改为多轴联动）：
+%                         ends=RCPlotter.continuousUnionEndpoints(capability.Endpoints(rows,:));
+%                         % 每个固定比例组选是 {alpha*w: 0<=alpha<=1}。
+%                         % 同向线段仅保留最长者；不同方向之间使用 NaN 断开。
+%                         xyz=nan(3,3*size(ends,2));
+%                         xyz(:,1:3:end)=0; xyz(:,2:3:end)=ends;
+%                         if isempty(ends), xyz=zeros(3,1); end
+%                         handle=plot3(ax,xyz(1,:),xyz(2,:),xyz(3,:), ...
+%                             'Color',color,'LineWidth',3,'DisplayName',name, ...
+%                             'Tag','ActualContinuousEnvelope');
+%                         if isempty(ends), set(handle,'Marker','o'); end
+%                         note='固定比例连续变化：各方向集合取并集；线段间不填面';
         function plotControlEnvelopeComparison(forceAxes, torqueAxes, ...
                 params, layoutSet, faultyIndices)
         %PLOTCONTROLENVELOPECOMPARISON Compare fault-specific force/torque spaces.
@@ -841,13 +972,9 @@ classdef RCPlotter
                 thrusterCount = size(comparisonSet(layoutIndex).B, 2);
                 faulty = RCPlotter.validIndices(faultyIndices, thrusterCount);
                 healthy = setdiff(1:thrusterCount, faulty);
-                if isempty(healthy)
-                    error('RCPlotter:NoHealthyThruster', ...
-                        '布局“%s”在所选故障下没有可用推力器。', ...
-                        char(string(comparisonSet(layoutIndex).name)));
-                end
                 comparisonSet(layoutIndex).B = ...
                     comparisonSet(layoutIndex).B(:, healthy);
+                comparisonSet(layoutIndex).name = [char(string(layoutSet(layoutIndex).name)), ' 理论控制能力'];
             end
             conditionText = RCPlotter.faultLabel(faultyIndices);
             colors = lines(numel(layoutSet));
@@ -857,7 +984,103 @@ classdef RCPlotter
             RCPlotter.drawControlEnvelopeAxis(torqueAxes, params, comparisonSet, ...
                 4:6, colors, [conditionText, '：力矩空间包络对比'], ...
                 {'M_x / (N·m)', 'M_y / (N·m)', 'M_z / (N·m)'});
+            axesList=[forceAxes,torqueAxes];
+            for k=1:numel(layoutSet)
+                capability=Reconfig_eval('continuous_capability',params,layoutSet(k).B,faultyIndices);
+                for kind=1:2
+                    ax=axesList(kind); rows=(1:3)+3*(kind-1); hold(ax,'on');
+                    name=[char(string(layoutSet(k).name)),' 实际控制能力'];
+                    color=0.7*colors(k,:);
+                    if strcmp(capability.Model,'independent_continuous')
+                        points=RCPlotter.controlEnvelopePoints(capability.TheoryGenerators(rows,:));
+                        if size(points,1)>=4 && rank(points-mean(points,1),1e-9)>=3
+                            faces=convhulln(points);
+                            handle=patch(ax,'Vertices',points,'Faces',faces, ...
+                                'FaceColor','none','EdgeColor',color,'LineWidth',1.2, ...
+                                'LineStyle','--','DisplayName',[name,'（与理论重合）'], ...
+                                'Tag','ActualContinuousEnvelope');
+                        else
+                            handle=scatter3(ax,points(:,1),points(:,2),points(:,3),25,color, ...
+                                'filled','DisplayName',[name,'（与理论重合）'], ...
+                                'Tag','ActualContinuousEnvelope');
+                        end
+                        note='独立连续分配：实际控制能力与理论控制能力重合';
+                    else
+                        projection=Reconfig_eval('continuous_projection',capability,rows);
+                        handle=RCPlotter.drawContinuousPieces(ax,projection.Pieces,color,name);
+                        handle.UserData=projection;
+                        if projection.Convex
+                            note='多轴固定比例联动；共用推力器的总占空比不超过1';
+                        else
+                            note='多轴联动分区包络；备用组选互斥，不跨分区填补空隙';
+                        end
+                    end
+                    setappdata(handle,'ContinuousCapability',capability);
+                    subtitle(ax,{'连续占空比；不计最小脉宽和调度时间',note},'FontSize',9);
+                    legend(ax,'show','Location','best');
+                    axis(ax,'equal'); view(ax,3); hold(ax,'off');
+                end
+            end
         end
+
+        % 旧样本凸包绘制停用，保留实现供追溯（不再作为控制能力显示）。
+%             axesList=[forceAxes,torqueAxes];
+%             for k=1:numel(layoutSet)
+%                 evaluation=Reconfig_eval(params,layoutSet(k).B,numel(faultyIndices));
+%                 row=RCPlotter.findFaultRow(evaluation.FaultSets,faultyIndices,size(layoutSet(k).B,2));
+%                 inv=evaluation.Invocation(row); samples=inv.envelope_points;
+%                 for j=1:numel(inv.axis_witness)
+%                     witness=inv.axis_witness{j};
+%                     if ~isempty(witness), samples(end+1,:)=witness.actual'; end %#ok<AGROW>
+%                 end
+%                 samples=unique([zeros(1,6);samples],'rows');
+%                 for kind=1:2
+%                     ax=axesList(kind); hold(ax,'on');
+%                     points=unique(samples(:,(1:3)+3*(kind-1)),'rows');
+%                     name=[char(string(layoutSet(k).name)),' 策略样本包络'];
+%                     if size(points,1)>=4 && rank(points-mean(points,1),1e-9)>=3
+%                         faces=convhulln(points);
+%                         patch(ax,'Vertices',points,'Faces',faces, ...
+%                             'FaceColor',colors(k,:),'FaceAlpha',0.30, ...
+%                             'EdgeColor',colors(k,:),'LineStyle','--', ...
+%                             'LineWidth',1.2,'DisplayName',name,'Tag','PolicySampleEnvelope');
+%                     end
+%                     scatter3(ax,points(:,1),points(:,2),points(:,3),22,colors(k,:), ...
+%                         'filled','DisplayName',[char(string(layoutSet(k).name)),' 已验证点'], ...
+%                         'Tag','PolicyVerifiedPoints');
+%                     subtitle(ax,{'硬件：独立连续占空比的投影（允许伴随其他分量）', ...
+%                         '策略：当前时序已验证点；样本凸包内部不保证可达'},'FontSize',9);
+%                     legend(ax,'show','Location','best');
+%                     axis(ax,'equal'); view(ax,3); hold(ax,'off');
+%                 end
+%             end
+%         end
+%
+
+        % 上一版柱状图实现停用，保留供追溯。
+%         function plotControlEnvelopeComparison(forceAxes, torqueAxes, params, layoutSet, faultyIndices)
+%         % Compare six pure-axis endpoints; never convexify finite-pulse policy samples.
+%             if nargin<5, faultyIndices=[]; end
+%             values=zeros(12,2*numel(layoutSet)); labels=cell(1,2*numel(layoutSet));
+%             for k=1:numel(layoutSet)
+%                 evaluation=Reconfig_eval(params,layoutSet(k).B,numel(faultyIndices));
+%                 row=RCPlotter.findFaultRow(evaluation.FaultSets,faultyIndices,size(layoutSet(k).B,2));
+%                 values(:,2*k-1)=reshape(evaluation.Hardware(row).axis_capacity',[],1);
+%                 values(:,2*k)=reshape(evaluation.Invocation(row).axis_capacity',[],1);
+%                 labels(2*k-1:2*k)={[char(string(layoutSet(k).name)),' 硬件上限'], ...
+%                     [char(string(layoutSet(k).name)),' 策略已验证']};
+%             end
+%             axesList=[forceAxes,torqueAxes]; units={'N','N·m'};
+%             for kind=1:2
+%                 ax=axesList(kind); cla(ax,'reset'); view(ax,2);
+%                 bar(ax,values((1:6)+6*(kind-1),:),'grouped');
+%                 xticks(ax,1:6); xticklabels(ax,{'−X','+X','−Y','+Y','−Z','+Z'});
+%                 ylabel(ax,units{kind}); grid(ax,'on');
+%                 title(ax,[RCPlotter.faultLabel(faultyIndices),'：纯轴能力（非连续包络）']);
+%                 legend(ax,labels,'Location','best');
+%             end
+%         end
+%
 
         function plotControlCommandComparison(qualityAxes, errorAxes, ...
                 comparison, faultyIndices)
@@ -896,12 +1119,21 @@ classdef RCPlotter
                 '归一化 J_f', true);
         end
 
-        function comparison = metricComparisonData(params, layoutSet, faultNumber)
+        function comparison = metricComparisonData(params, layoutSet, faultNumber, exactFaultSet)
         %METRICCOMPARISONDATA Build normalized plot_2 metric data.
-            faultNumber = max(1, min(round(faultNumber), params.Num));
+        %   Optional exactFaultSet restricts plotted cases; [] means nominal.
+            faultNumber = max(0, min(round(faultNumber), params.Num));
+            if nargin >= 4
+                exactFaultSet = RCPlotter.normalizeFaultSet( ...
+                    exactFaultSet, params.Num);
+                faultNumber = numel(exactFaultSet);
+            end
             [evalGrid, ~] = RCPlotter.evaluateGrid(params, layoutSet, faultNumber);
             evalSet = evalGrid(:, 1);
             referenceFaults = evalSet{1}.FaultSets;
+            if nargin >= 4
+                referenceFaults = {exactFaultSet};
+            end
             caseCount = numel(referenceFaults);
             metricValues = zeros(caseCount, numel(layoutSet), 4);
             faultLabels = cell(1, caseCount);
@@ -959,18 +1191,35 @@ classdef RCPlotter
                 {{'布局方案', '控制类型', '轴向', '调用推力器', '台数'}});
         end
 
-        function result = allocationComparisonData(params, layout, faultyThrusters)
+        function result = allocationComparisonData(params, layoutSet, faultyThrusters)
         %ALLOCATIONCOMPARISONDATA Compare nominal and faulty six-axis calls.
-            if numel(layout) ~= 1 || ~isfield(layout, 'B') || isempty(layout.B)
+        %   The original layout comes first; an optional second layout adds
+        %   three comparison columns. FaultRows marks affected complete rows.
+            if isempty(layoutSet) || numel(layoutSet) > 2 || ...
+                    ~isstruct(layoutSet) || ~isfield(layoutSet, 'B') || ...
+                    any(arrayfun(@(layout)isempty(layout.B), layoutSet))
                 error('RCPlotter:InvalidAllocationLayout', ...
-                    '调用策略比较需要一个有效的布局方案。');
+                    '调用策略比较需要原布局及最多一个其他有效布局方案。');
             end
-            matrix = params.F_max * layout.B;
-            thrusterCount = size(matrix, 2);
-            faultyThrusters = RCPlotter.validIndices( ...
-                faultyThrusters, thrusterCount);
             axisNames = {'X', 'Y', 'Z'};
-            rows = cell(12, 5);
+            rows = cell(12, 1 + 3 * numel(layoutSet));
+            faultRows = false(12, 1);
+            columnNames = {'控制类型'};
+            for layoutIndex = 1:numel(layoutSet)
+                if layoutIndex == 1
+                    layoutName = '原布局';
+                else
+                    layoutName = char(string(layoutSet(layoutIndex).name));
+                    layoutName = regexprep(strtrim(layoutName), '(布局){2,}', '布局');
+                    if ~contains(layoutName, '布局')
+                        layoutName = sprintf('%s布局', layoutName);
+                    end
+                end
+                columnNames = [columnNames, ...
+                    {['标况下调用（', layoutName, '）'], ...
+                     ['故障下调用（', layoutName, '）'], ...
+                     ['调用状态（', layoutName, '）']}]; %#ok<AGROW>
+            end
             rowIndex = 0;
             for isOrbit = [true, false]
                 if isOrbit
@@ -981,35 +1230,60 @@ classdef RCPlotter
                 for axisIndex = 1:3
                     for direction = [1, -1]
                         rowIndex = rowIndex + 1;
-                        nominal = RCPlotter.axisStrategyIndices(params, matrix, ...
-                            [], axisIndex, direction, isOrbit);
-                        [faulty, faultyDetail] = RCPlotter.axisStrategyIndices(params, matrix, ...
-                            faultyThrusters, axisIndex, direction, isOrbit);
                         if direction > 0
                             directionText = '+';
                         else
                             directionText = '-';
                         end
-                        rows(rowIndex, :) = {controlType, ...
-                            [directionText, axisNames{axisIndex}], ...
-                            RCPlotter.indexListText(nominal), ...
-                            RCPlotter.indexListText(faulty), ...
-                            RCPlotter.faultSwitchText(faultyDetail)};
+                        rows{rowIndex, 1} = ...
+                            [controlType, directionText, axisNames{axisIndex}];
+                        for layoutIndex = 1:numel(layoutSet)
+                            matrix = params.F_max * layoutSet(layoutIndex).B;
+                            layoutFaults = RCPlotter.validIndices( ...
+                                faultyThrusters, size(matrix, 2));
+                            nominal = RCPlotter.axisStrategyIndices(params, matrix, ...
+                                [], axisIndex, direction, isOrbit);
+                            [faulty, faultyDetail] = RCPlotter.axisStrategyIndices( ...
+                                params, matrix, layoutFaults, axisIndex, direction, isOrbit);
+                            columns = (2:4) + 3 * (layoutIndex - 1);
+                            rows(rowIndex, columns) = { ...
+                                RCPlotter.indexListText(nominal), ...
+                                RCPlotter.indexListText(faulty), ...
+                                RCPlotter.faultSwitchText(faultyDetail)};
+                            faultRows(rowIndex) = faultRows(rowIndex) || ...
+                                any(ismember([nominal(:); faulty(:)], layoutFaults));
+                        end
                     end
                 end
             end
-            result = struct('Data', {rows}, 'ColumnNames', ...
-                {{'控制类型', '轴向', '标况最简主份', ...
-                  '故障下健康备份', '状态'}});
+            result = struct('Data', {rows}, 'ColumnNames', {columnNames}, ...
+                'FaultRows', faultRows);
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 '可重构数', '不可重构数'};
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         rows = [];
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         status = '完全可重构';
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         status = '不可重构';
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         status = '部分可重构';
         function result = reconfigSummaryData(params, layoutSet, faultNumbers)
         %RECONFIGSUMMARYDATA Build the plot_7 fault-count summary table.
             faultNumbers = unique(round(faultNumbers(:)'));
-            faultNumbers = faultNumbers(faultNumbers >= 1 & faultNumbers <= params.Num);
-            [evalGrid, ~] = RCPlotter.evaluateGrid(params, layoutSet, faultNumbers);
+            faultNumbers = faultNumbers(faultNumbers >= 0 & faultNumbers <= params.Num);
+% 原时序评价入口保留：[evalGrid, ~] = RCPlotter.evaluateGrid(params, layoutSet, faultNumbers);
+            evalGrid=cell(numel(layoutSet),numel(faultNumbers));
+            p=params; p.evaluation_model='continuous_judgment';
+            for i=1:numel(layoutSet)
+                for j=1:numel(faultNumbers)
+                    evalGrid{i,j}=Reconfig_eval(p,layoutSet(i).B,faultNumbers(j));
+                end
+            end
             columnNames = {'布局方案', '故障数量', '故障状态', ...
-                '可重构数', '不可重构数'};
+                '连续包络可重构数', '不可重构数'};
             data = cell(numel(layoutSet) * numel(faultNumbers), 5);
             rowIndex = 0;
             for layoutIndex = 1:numel(layoutSet)
@@ -1018,14 +1292,19 @@ classdef RCPlotter
                     evaluation = RCPlotter.applyReconfigStatus( ...
                         evalGrid{layoutIndex, faultIndex});
                     rows = 2:numel(evaluation.FaultSets);
+                    if faultNumbers(faultIndex) == 0
+                        rows = 1;
+                    end
                     reconfigurable = sum(evaluation.IsReconfig(rows));
                     nonreconfigurable = numel(rows) - reconfigurable;
-                    if nonreconfigurable == 0
-                        status = '完全可重构';
+                    if faultNumbers(faultIndex) == 0
+                        status = '标况';
+                    elseif nonreconfigurable == 0
+                        status = '全部工况连续可重构';
                     elseif reconfigurable == 0
-                        status = '不可重构';
+                        status = '全部工况连续不可重构';
                     else
-                        status = '部分可重构';
+                        status = '部分工况连续可重构';
                     end
                     rowIndex = rowIndex + 1;
                     data(rowIndex, :) = {layoutName, faultNumbers(faultIndex), ...
@@ -1036,12 +1315,162 @@ classdef RCPlotter
                 'Evaluations', {evalGrid});
         end
 
-        function result = singleFaultEvaluationData(params, layoutSet)
+        function handle=drawContinuousPieces(ax,pieces,color,name)
+        % 每个互斥组选分区独立绘制，只有数学上已知为凸时才合成一个凸包。
+            vertices=zeros(0,3); faces=zeros(0,3); segments=zeros(0,3);
+            for k=1:numel(pieces)
+                points=pieces{k}; centered=points-mean(points,1);
+                dimension=rank(centered,1e-8);
+                if dimension>=3
+                    triangles=convhulln(points);
+                elseif dimension==2
+                    [~,~,basis]=svd(centered,0); projected=centered*basis(:,1:2);
+                    boundary=convhull(projected(:,1),projected(:,2)); boundary(end)=[];
+                    triangles=[repmat(boundary(1),numel(boundary)-2,1),boundary(2:end-1),boundary(3:end)];
+                else
+                    if dimension==1
+                        [~,~,basis]=svd(centered,0); coordinate=centered*basis(:,1);
+                        [~,lo]=min(coordinate); [~,hi]=max(coordinate);
+                        segments=[segments;points(lo,:);points(hi,:);nan(1,3)]; %#ok<AGROW>
+                    else
+                        segments=[segments;points;nan(1,3)]; %#ok<AGROW>
+                    end
+                    continue;
+                end
+                faces=[faces;triangles+size(vertices,1)]; vertices=[vertices;points]; %#ok<AGROW>
+            end
+            if ~isempty(faces)
+                % 合并重复顶点及重复三角面；非凸分区保留边界，不制造额外空间。
+                tol=1e-9*max(1,max(abs(vertices),[],'all'));
+                [vertices,~,indices]=unique(round(vertices/tol)*tol,'rows');
+                faces=reshape(indices(faces),size(faces));
+                [~,uniqueFaces]=unique(sort(faces,2),'rows'); faces=faces(uniqueFaces,:);
+                handle=patch(ax,'Vertices',vertices,'Faces',faces, ...
+                    'FaceColor',color,'FaceAlpha',0.24,'EdgeColor',color, ...
+                    'LineWidth',1.1,'DisplayName',name,'Tag','ActualContinuousEnvelope');
+                if ~isempty(segments)
+                    plot3(ax,segments(:,1),segments(:,2),segments(:,3),'Color',color, ...
+                        'LineWidth',2,'HandleVisibility','off');
+                end
+            else
+                if isempty(segments), segments=zeros(1,3); end
+                handle=plot3(ax,segments(:,1),segments(:,2),segments(:,3), ...
+                    'Color',color,'LineWidth',2,'Marker','.', ...
+                    'DisplayName',name,'Tag','ActualContinuousEnvelope');
+            end
+        end
+
+        function endpoints=continuousUnionEndpoints(endpoints)
+        % 去掉投影数值噪声和同向重叠线段；绝不跨方向构造凸包。
+            if isempty(endpoints), return; end
+            tolerance=1e-9*max(1,max(abs(endpoints),[],'all'));
+            endpoints(abs(endpoints)<tolerance)=0;
+            lengths=vecnorm(endpoints);
+            endpoints=endpoints(:,lengths>tolerance); lengths=lengths(lengths>tolerance);
+            if isempty(endpoints), return; end
+            directions=endpoints./lengths;
+            [~,~,classes]=unique(round(directions'/1e-8),'rows');
+            selected=zeros(1,max(classes));
+            for j=1:max(classes)
+                indices=find(classes==j); [~,longest]=max(lengths(indices));
+                selected(j)=indices(longest);
+            end
+            endpoints=endpoints(:,selected);
+        end
+
+        function label = policyModeLabel(mode)
+            switch char(mode)
+                case 'joint_optimization', label='联合优化复用';
+                case {'asynchronous_time_division','task_book'}, label='异步分时复用';
+                otherwise, label='同步分时复用';
+            end
+        end
+
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%             columns={'布局','故障','调用策略','硬件纯力/N','硬件纯矩/Nm', ...
+%                 '策略力/N','策略力矩/Nm','策略方向/12','瞬时纯方向/12', ...
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                 '干扰力一阶矩/Ns²','干扰矩一阶矩/Nms²','平均总脉宽/s','耗量可比'};
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                         v.cross_torque_first_moment,z.Jf(f),v.energy_valid};
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%             order=[1,2,3,8,11,9,10,6,4,7,5,12:19];
+        function result = policyComparisonData(params, layoutSet, faultCases)
+        % 姿轨干扰页：三种调用策略始终并列，保留旧明细方法供追溯。
+            columns={'布局','故障','调用策略','干扰力峰值/N','干扰力矩峰值/Nm', ...
+                '力干扰/反向能力/%','力矩干扰/反向能力/%','力干扰是否超限','力矩干扰是否超限', ...
+                '周期末干扰冲量/Ns','周期末干扰角冲量/Nms'};
+            data=cell(3*numel(layoutSet)*numel(faultCases),numel(columns));
+            evaluations=cell(numel(layoutSet),numel(faultCases)); row=0;
+            for k=1:numel(layoutSet)
+                for f=1:numel(faultCases)
+                    report=Reconfig_eval('interference_comparison',params,layoutSet(k).B,faultCases{f});
+                    evaluations{k,f}=report;
+                    for strategy=1:3
+                        v=report.Modes(strategy); row=row+1;
+                        data(row,:)={char(string(layoutSet(k).name)),RCPlotter.faultLabel(faultCases{f}), ...
+                            RCPlotter.policyModeLabel(v.Mode),v.ForcePeak,v.TorquePeak, ...
+                            100*v.ForceRatio,100*v.TorqueRatio,v.ForceJudgment,v.TorqueJudgment, ...
+                            v.EndForceImpulse,v.EndTorqueImpulse};
+                    end
+                end
+            end
+            % 峰值和超限判断优先显示；比值与周期末冲量保留在右侧。
+            order=[1:5,8,9,6,7,10,11]; columns=columns(order); data=data(:,order);
+            result=struct('Data',{data},'ColumnNames',{columns},'Evaluations',{evaluations});
+        end
+
+        function result = legacyPolicyComparisonData(params, layoutSet, faultCases)
+            [evalSet,~]=RCPlotter.evaluationCasesData(params,layoutSet,faultCases);
+            columns={'布局','故障','调用策略','理论单轴力/N','理论单轴力矩/Nm', ...
+                '时序验证力/N','时序验证力矩/Nm','时序验证方向/12','瞬时纯方向/12', ...
+                '等脉宽2/4/6方向/12','参考通过/%','干扰力峰值/N', ...
+                '干扰矩峰值/Nm','末端干扰冲量/Ns','末端干扰角冲量/Nms', ...
+                '干扰力一阶矩/Ns²','干扰矩一阶矩/Nms²','平均总脉宽/s','耗量可比','实际单轴力/N','实际单轴力矩/Nm'};
+            data=cell(numel(layoutSet)*numel(faultCases),numel(columns)); row=0;
+            for k=1:numel(layoutSet)
+                z=evalSet{k};
+                for f=1:numel(faultCases)
+                    row=row+1; v=z.Invocation(f); h=z.Hardware(f);
+                    continuous=Reconfig_eval('continuous_capability',params,layoutSet(k).B,faultCases{f});
+                    data(row,:)={char(string(layoutSet(k).name)),RCPlotter.faultLabel(faultCases{f}), ...
+                        RCPlotter.policyModeLabel(z.PolicyMode),h.force_capacity,h.torque_capacity,v.force_capacity, ...
+                        v.torque_capacity,nnz(v.axis_callable),nnz(v.strict_axis), ...
+                        nnz(v.strict_equal_axis),100*v.reference_pass_rate, ...
+                        v.peak_cross_force,v.peak_cross_torque,v.end_cross_force_impulse, ...
+                        v.end_cross_torque_impulse,v.cross_force_first_moment, ...
+                        v.cross_torque_first_moment,z.Jf(f),v.energy_valid, ...
+                        continuous.ForceCapacity,continuous.TorqueCapacity};
+                end
+            end
+            order=[1,2,3,20,4,21,5,8,11,9,10,6,7,12:19];
+            columns=columns(order); data=data(:,order);
+            result=struct('Data',{data},'ColumnNames',{columns},'Evaluations',{evalSet});
+        end
+
+        function result = singleFaultEvaluationData(params, layoutSet, faultCases)
         %SINGLEFAULTEVALUATIONDATA Build the plot_8 score table.
-            [evalGrid, raw] = RCPlotter.evaluateGrid(params, layoutSet, 1);
+        %   Optional faultCases selects nominal/specific fault cases. Use a
+        %   cell array for combined faults, e.g. {[], [1 2]}; numeric 0 means
+        %   nominal and numeric [0 1 2] means nominal plus two single faults.
+            if nargin < 3
+                faultCases = [{[]}, num2cell(1:params.Num)];
+                [evalGrid, raw] = RCPlotter.evaluateGrid(params, layoutSet, 1);
+                evalSet = evalGrid(:, 1);
+            else
+                if ~iscell(faultCases)
+                    faultCases = num2cell(faultCases(:)');
+                end
+                if isempty(faultCases)
+                    faultCases = {[]};
+                end
+                faultCases = cellfun(@(item)RCPlotter.normalizeFaultSet( ...
+                    item, params.Num), faultCases(:)', 'UniformOutput', false);
+                [evalSet, raw] = RCPlotter.evaluationCasesData( ...
+                    params, layoutSet, faultCases);
+            end
             weights = RCPlotter.combinedWeight(raw, ...
                 RCPlotter.ahpWeight(params, 4), RCPlotter.entropyWeight(raw));
-            evalSet = evalGrid(:, 1);
             for layoutIndex = 1:numel(evalSet)
                 evaluation = evalSet{layoutIndex};
                 evaluation.Score = evaluation.MetricRaw * weights;
@@ -1055,18 +1484,19 @@ classdef RCPlotter
                 columnNames{end + 1} = ...
                     [char(string(layoutSet(layoutIndex).name)), '-综合评价']; %#ok<AGROW>
             end
-            faultLabels = 0:params.Num;
-            data = cell(numel(faultLabels) + 1, numel(columnNames));
+            data = cell(numel(faultCases) + 1, numel(columnNames));
             averages = zeros(1, numel(layoutSet));
             for layoutIndex = 1:numel(layoutSet)
                 averages(layoutIndex) = mean(evalSet{layoutIndex}.Score, 'omitnan');
             end
-            for rowIndex = 1:numel(faultLabels)
-                fault = faultLabels(rowIndex);
-                data{rowIndex, 1} = uint32(fault);
-                target = [];
-                if fault > 0
-                    target = fault;
+            for rowIndex = 1:numel(faultCases)
+                target = faultCases{rowIndex};
+                if isempty(target)
+                    data{rowIndex, 1} = uint32(0);
+                elseif numel(target) == 1
+                    data{rowIndex, 1} = uint32(target);
+                else
+                    data{rowIndex, 1} = RCPlotter.indexListText(target);
                 end
                 for layoutIndex = 1:numel(layoutSet)
                     row = RCPlotter.findFaultRow( ...
@@ -1077,7 +1507,7 @@ classdef RCPlotter
                     end
                 end
             end
-            averageRow = numel(faultLabels) + 1;
+            averageRow = numel(faultCases) + 1;
             data{averageRow, 1} = '平均值';
             for layoutIndex = 1:numel(layoutSet)
                 data{averageRow, layoutIndex + 1} = averages(layoutIndex);
@@ -1155,7 +1585,7 @@ classdef RCPlotter
                     ~isfield(logData, 'Control_Time') || ...
                     isempty(logData.Control_Time)
                 error('RCPlotter:MissingWrenchHistory', ...
-                    '仿真结果缺少六维推力器实际输出历史。');
+                    '仿真结果缺少推力器实际输出历史。');
             end
             wrench = double(logData.Actual_Wrench_History(1:6, :));
         end
@@ -1266,7 +1696,7 @@ classdef RCPlotter
             xlabel(ax, 'X / m');
             ylabel(ax, 'Y / m');
             zlabel(ax, 'Z / m');
-            title(ax, [label, '｜3D轨迹与姿态']);
+            title(ax, RCPlotter.caseTitle(label, '3D轨迹与姿态'));
             axis(ax, 'equal');
             view(ax, 35, 25);
             legend(ax, [actualHandle, referenceHandle, ...
@@ -1336,7 +1766,8 @@ classdef RCPlotter
             end
             xlabel(ax, definition.xlabel);
             ylabel(ax, definition.ylabel);
-            title(ax, [label, '｜', definition.name, '轨迹与姿态']);
+            title(ax, RCPlotter.caseTitle(label, ...
+                [definition.name, '轨迹与姿态']));
             axis(ax, 'equal');
             hold(ax, 'off');
         end
@@ -1525,6 +1956,7 @@ classdef RCPlotter
 
         function points = controlEnvelopePoints(matrix)
             thrusterCount = size(matrix, 2);
+            if thrusterCount == 0, points=zeros(1,size(matrix,1)); return; end
             if thrusterCount <= 16
                 states = dec2bin(0:(2^thrusterCount - 1)) - '0';
                 points = (matrix * states')';
@@ -1614,15 +2046,89 @@ classdef RCPlotter
             end
         end
 
+        function titleText = caseTitle(label, plotTitle)
+            if isempty(label)
+                titleText = plotTitle;
+            else
+                titleText = [label, '｜', plotTitle];
+            end
+        end
+
+        function [evalSet, raw] = evaluationCasesData(params, layoutSet, faultCases)
+            faultNumbers = unique(cellfun(@numel, faultCases));
+            if any(faultNumbers > 0)
+                faultNumbers = faultNumbers(faultNumbers > 0);
+            end
+            [evalGrid, ~] = RCPlotter.evaluateGrid(params, layoutSet, faultNumbers);
+            evalSet = cell(numel(layoutSet), 1);
+            caseCount = numel(faultCases);
+            for layoutIndex = 1:numel(layoutSet)
+                original = zeros(caseCount, 6);
+                controlSix = zeros(caseCount, 1);
+                pickedInv=cell(caseCount,1); pickedHardware=cell(caseCount,1);
+                pickedContinuous=cell(caseCount,1);
+                for caseIndex = 1:caseCount
+                    target = faultCases{caseIndex};
+                    faultIndex = find(faultNumbers == numel(target), 1);
+                    if isempty(target)
+                        faultIndex = 1;
+                    end
+                    evaluation = evalGrid{layoutIndex, faultIndex};
+                    row = RCPlotter.findFaultRow( ...
+                        evaluation.FaultSets, target, params.Num);
+                    if isempty(row)
+                        error('RCPlotter:MissingFaultCase', ...
+                            '布局“%s”缺少%s评价。', ...
+                            char(string(layoutSet(layoutIndex).name)), ...
+                            RCPlotter.faultLabel(target));
+                    end
+                    original(caseIndex, :) = evaluation.MetricOriginal(row, :);
+                    pickedInv{caseIndex}=evaluation.Invocation(row);
+                    pickedHardware{caseIndex}=evaluation.Hardware(row);
+                    pickedContinuous{caseIndex}=evaluation.ContinuousJudgment.Invocation(row);
+                    if isfield(evaluation, 'Jc6')
+                        controlSix(caseIndex) = evaluation.Jc6(row);
+                    end
+                end
+                selected = struct();
+                selected.FaultSets = faultCases(:);
+                selected.Jc = original(:, 1:2);
+                selected.Jo = original(:, 3);
+                selected.Jt = original(:, 4);
+                selected.Jf = original(:, 5);
+                selected.Jc6 = controlSix;
+                selected.Invocation=vertcat(pickedInv{:});
+                selected.Hardware=vertcat(pickedHardware{:});
+                selected.ContinuousJudgment=struct('FaultSets',{faultCases(:)}, ...
+                    'Invocation',vertcat(pickedContinuous{:}));
+                selected.PolicyMode=evaluation.PolicyMode;
+                selected.ReferenceScale=evaluation.ReferenceScale;
+                selected.Raw = struct('JcForce', original(:, 1), ...
+                    'JcTorque', original(:, 2), 'JoAngle', original(:, 3), ...
+                    'JtQuality', original(:, 4), 'JfPulse', original(:, 5), ...
+                    'JtError', original(:, 6));
+                evalSet{layoutIndex} = selected;
+            end
+            [evalSet, raw] = RCPlotter.normalizeEvalSet(evalSet, params.Num);
+        end
+
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                     elseif faultNumber == layoutParams.Num
+%                         evaluation = struct('FaultSets', {{[], 1:layoutParams.Num}}, ...
+%                             'Jc', zeros(2, 2), 'Jo', zeros(2, 1), ...
+%                             'Jt', zeros(2, 1), 'Jf', zeros(2, 1), ...
+%                             'Jc6', zeros(2, 1));
+%                     else
+%                         evaluation = Reconfig_eval(layoutParams, matrix, faultNumber);
         function [evalGrid, raw] = evaluateGrid(params, layoutSet, faultNumbers)
             if isempty(layoutSet)
                 error('RCPlotter:EmptyLayoutSet', '至少需要一个布局方案。');
             end
             faultNumbers = unique(round(faultNumbers(:)'));
-            faultNumbers = faultNumbers(faultNumbers >= 1 & faultNumbers <= params.Num);
+            faultNumbers = faultNumbers(faultNumbers >= 0 & faultNumbers <= params.Num);
             if isempty(faultNumbers)
                 error('RCPlotter:InvalidFaultNumber', ...
-                    '故障数量必须在1至推力器总数之间。');
+                    '故障数量必须在0至推力器总数之间。');
             end
 
             evalGrid = cell(numel(layoutSet), numel(faultNumbers));
@@ -1638,14 +2144,8 @@ classdef RCPlotter
                         error('RCPlotter:FaultNumberTooLarge', ...
                             '故障数量不能大于布局“%s”的推力器总数。', ...
                             char(string(layoutSet(layoutIndex).name)));
-                    elseif faultNumber == layoutParams.Num
-                        evaluation = struct('FaultSets', {{[], 1:layoutParams.Num}}, ...
-                            'Jc', zeros(2, 2), 'Jo', zeros(2, 1), ...
-                            'Jt', zeros(2, 1), 'Jf', zeros(2, 1), ...
-                            'Jc6', zeros(2, 1));
-                    else
-                        evaluation = Reconfig_eval(layoutParams, matrix, faultNumber);
                     end
+                    evaluation = Reconfig_eval(layoutParams, matrix, faultNumber);
                     evalSet{layoutIndex} = evaluation;
                 end
                 [evalSet, rawNormalized] = RCPlotter.normalizeEvalSet(evalSet, params.Num);
@@ -1662,6 +2162,8 @@ classdef RCPlotter
             end
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 allOriginal = [allOriginal; evalList{layoutIndex}.MetricOriginal]; %#ok<AGROW>
         function [evalSet, raw] = normalizeEvalSet(evalSet, maximumIndex)
             originalSize = size(evalSet);
             evalList = evalSet(:);
@@ -1679,7 +2181,11 @@ classdef RCPlotter
 
             allOriginal = zeros(0, 6);
             for layoutIndex = 1:numel(evalList)
-                allOriginal = [allOriginal; evalList{layoutIndex}.MetricOriginal]; %#ok<AGROW>
+                rows=evalList{layoutIndex}.MetricOriginal;
+                if isfield(evalList{layoutIndex},'Invocation')
+                    rows(~[evalList{layoutIndex}.Invocation.energy_valid],5)=NaN;
+                end
+                allOriginal = [allOriginal; rows]; %#ok<AGROW>
             end
             forceRef = RCPlotter.bestBenefitRef(allOriginal(:, 1));
             torqueRef = RCPlotter.bestBenefitRef(allOriginal(:, 2));
@@ -1705,15 +2211,17 @@ classdef RCPlotter
                         RCPlotter.normalizeBenefit(original(3), diagnosticRef), ...
                         RCPlotter.normalizeBenefit(original(4), trackingRef), ...
                         RCPlotter.normalizeCost(original(5), energyRef)];
+                    if isfield(evaluation,'Invocation') && ~evaluation.Invocation(row).energy_valid
+                        evaluation.MetricRaw(row,4)=0;
+                    end
                     evalList{layoutIndex} = evaluation;
                 end
             end
 
             raw = zeros(0, 4);
             for layoutIndex = 1:numel(evalList)
-                if size(evalList{layoutIndex}.MetricRaw, 1) > 1
-                    raw = [raw; evalList{layoutIndex}.MetricRaw(2:end, :)]; %#ok<AGROW>
-                end
+                faultRows = ~cellfun(@isempty, evalList{layoutIndex}.FaultSets);
+                raw = [raw; evalList{layoutIndex}.MetricRaw(faultRows, :)]; %#ok<AGROW>
             end
             evalSet = reshape(evalList, originalSize);
         end
@@ -1929,16 +2437,17 @@ classdef RCPlotter
             end
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             rowCount = size(evaluation.MetricRaw, 1);
+%             evaluation.IsReconfig = false(rowCount, 1);
+%             rows = ~cellfun(@isempty, evaluation.FaultSets);
+%             evaluation.IsReconfig(rows) = ...
+%                 all(evaluation.MetricRaw(rows, :) > eps, 2);
+%             evaluation.Status = repmat("不可重构", rowCount, 1);
+%             evaluation.Status(evaluation.IsReconfig) = "可重构";
+%             evaluation.Status(~rows) = "标况";
         function evaluation = applyReconfigStatus(evaluation)
-            rowCount = size(evaluation.MetricRaw, 1);
-            evaluation.IsReconfig = false(rowCount, 1);
-            if rowCount >= 2
-                rows = 2:rowCount;
-                evaluation.IsReconfig(rows) = ...
-                    all(evaluation.MetricRaw(rows, :) > eps, 2);
-            end
-            evaluation.Status = repmat("不可重构", rowCount, 1);
-            evaluation.Status(evaluation.IsReconfig) = "可重构";
+            evaluation = RCPlotter.reconfigStatus(evaluation);
         end
 
         function weights = ahpWeight(params, count)

@@ -843,20 +843,22 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
     end
 
     %% 三个布局的样本组合函数
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 if fault_num >= params.Num
+%                     Eval = struct('FaultSets', {{[], 1:params.Num}}, ...
+%                                   'Jc', zeros(2, 1), 'Jo', zeros(2, 1), ...
+%                                   'Jt', zeros(2, 1), 'Jf', zeros(2, 1), ...
+%                                   'Jc6', zeros(2, 1));
+%                 else
+%                     Eval = Reconfig_eval(params, layout_set(layout_idx).B, fault_num);
+%                 end
     function [Eval_grid, Raw] = samples_combin(layout_set, fault_nums)
         Eval_grid = cell(numel(layout_set), numel(fault_nums));
         Raw = zeros(0, 4);
         for fault_idx = 1:numel(fault_nums)
             fault_num = fault_nums(fault_idx);
             for layout_idx = 1:numel(layout_set)
-                if fault_num >= params.Num
-                    Eval = struct('FaultSets', {{[], 1:params.Num}}, ...
-                                  'Jc', zeros(2, 1), 'Jo', zeros(2, 1), ...
-                                  'Jt', zeros(2, 1), 'Jf', zeros(2, 1), ...
-                                  'Jc6', zeros(2, 1));
-                else
-                    Eval = Reconfig_eval(params, layout_set(layout_idx).B, fault_num);
-                end
+                Eval = Reconfig_eval(params, layout_set(layout_idx).B, fault_num);
                 Eval.MetricOriginal = [];
                 Eval.MetricRaw = [];
                 Eval.Score = nan(size(Eval.MetricRaw, 1), 1);
@@ -901,6 +903,9 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
         raw_all = zeros(0, 5);
         for layout_idx = 1:layout_num
             metric_original = Eval_list{layout_idx}.MetricOriginal;
+            if isfield(Eval_list{layout_idx},'Invocation')
+                metric_original(~[Eval_list{layout_idx}.Invocation.energy_valid],5)=NaN;
+            end
             raw_all = [raw_all; metric_original]; %#ok<AGROW>
         end
         global_force_ref = Best_Benefit_Ref(raw_all(:, 1));
@@ -957,6 +962,9 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
                 metric_norm(4) = Normalize_Cost(raw(5), jf_ref);
 
                 Eval = Eval_list{layout_idx};
+                if isfield(Eval,'Invocation') && ~Eval.Invocation(row_idx_list(layout_idx)).energy_valid
+                    metric_norm(4)=0;
+                end
                 Eval.MetricRaw(row_idx_list(layout_idx), :) = metric_norm;
                 Eval_list{layout_idx} = Eval;
             end
@@ -1080,22 +1088,24 @@ function Plot_results(log_orig, log_opt, log_opt1, params, B_opt, r_opt, layout_
     end
 
     %% 可重构状态判定函数
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%         positive_eps = eps;
+%         rows = 2:size(Eval.MetricRaw, 1);
+%         jc6 = zeros(size(Eval.MetricRaw, 1), 1);
+%         if isfield(Eval, 'Jc6') && ~isempty(Eval.Jc6)
+%             jc6_count = min(numel(jc6), numel(Eval.Jc6));
+%             jc6(1:jc6_count) = Eval.Jc6(1:jc6_count);
+%         end
+%         Eval.Jc6 = jc6;
+%
+%         Eval.IsReconfig(:) = false;
+%         % Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2) & ...
+%         %                         jc6(rows) > positive_eps;
+%         Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
+%         Eval.Status(:) = "不可重构";
+%         Eval.Status(Eval.IsReconfig) = "可重构";
     function Eval = Apply_Reconfig_Status(Eval)
-        positive_eps = eps;
-        rows = 2:size(Eval.MetricRaw, 1);
-        jc6 = zeros(size(Eval.MetricRaw, 1), 1);
-        if isfield(Eval, 'Jc6') && ~isempty(Eval.Jc6)
-            jc6_count = min(numel(jc6), numel(Eval.Jc6));
-            jc6(1:jc6_count) = Eval.Jc6(1:jc6_count);
-        end
-        Eval.Jc6 = jc6;
-
-        Eval.IsReconfig(:) = false;
-        % Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2) & ...
-        %                         jc6(rows) > positive_eps;
-        Eval.IsReconfig(rows) = all(Eval.MetricRaw(rows, :) > positive_eps, 2);
-        Eval.Status(:) = "不可重构";
-        Eval.Status(Eval.IsReconfig) = "可重构";
+        Eval = RCPlotter.reconfigStatus(Eval);
     end
 
     %% AHP赋权函数

@@ -1,0 +1,2 @@
+# Additional dependency in the existing strict-solver-venv; Python 3.9 compatible.
+scipy==1.13.1

@@ -36,12 +36,6 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         SimulationTrajectoryTab         matlab.ui.container.Tab
         SimulationTrajectoryGrid        matlab.ui.container.GridLayout
         SimulationTrajectoryCaseTabGroup  matlab.ui.container.TabGroup
-        SimulationFaultTrajectoryTab    matlab.ui.container.Tab
-        SimulationFaultTrajectoryGrid   matlab.ui.container.GridLayout
-        SimulationFaultTrajectoryYZAxes  matlab.ui.control.UIAxes
-        SimulationFaultTrajectoryXZAxes  matlab.ui.control.UIAxes
-        SimulationFaultTrajectoryXYAxes  matlab.ui.control.UIAxes
-        SimulationFaultTrajectory3DAxes  matlab.ui.control.UIAxes
         SimulationNominalTrajectoryTab  matlab.ui.container.Tab
         SimulationNominalTrajectoryGrid  matlab.ui.container.GridLayout
         SimulationNominalTrajectoryYZAxes  matlab.ui.control.UIAxes
@@ -51,14 +45,6 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         SimulationCommandTab            matlab.ui.container.Tab
         SimulationCommandGrid           matlab.ui.container.GridLayout
         SimulationCommandCaseTabGroup   matlab.ui.container.TabGroup
-        SimulationFaultCommandTab       matlab.ui.container.Tab
-        SimulationFaultCommandGrid      matlab.ui.container.GridLayout
-        SimulationFaultTorqueZAxes      matlab.ui.control.UIAxes
-        SimulationFaultTorqueYAxes      matlab.ui.control.UIAxes
-        SimulationFaultTorqueXAxes      matlab.ui.control.UIAxes
-        SimulationFaultForceZAxes       matlab.ui.control.UIAxes
-        SimulationFaultForceYAxes       matlab.ui.control.UIAxes
-        SimulationFaultForceXAxes       matlab.ui.control.UIAxes
         SimulationNominalCommandTab     matlab.ui.container.Tab
         SimulationNominalCommandGrid    matlab.ui.container.GridLayout
         SimulationTorqueZAxes           matlab.ui.control.UIAxes
@@ -67,14 +53,15 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         SimulationForceZAxes            matlab.ui.control.UIAxes
         SimulationForceYAxes            matlab.ui.control.UIAxes
         SimulationForceXAxes            matlab.ui.control.UIAxes
-        SimulationFaultCompareTab       matlab.ui.container.Tab
-        SimulationFaultGrid             matlab.ui.container.GridLayout
-        SimulationFaultAttZAxes         matlab.ui.control.UIAxes
-        SimulationFaultAttYAxes         matlab.ui.control.UIAxes
-        SimulationFaultAttXAxes         matlab.ui.control.UIAxes
-        SimulationFaultPosZAxes         matlab.ui.control.UIAxes
-        SimulationFaultPosYAxes         matlab.ui.control.UIAxes
-        SimulationFaultPosXAxes         matlab.ui.control.UIAxes
+        SimulationPositionCaseTabGroup matlab.ui.container.TabGroup
+        SimulationNominalPositionTab matlab.ui.container.Tab
+        SimulationPositionHostGrid matlab.ui.container.GridLayout
+        SimulationPulseCaseTabGroup matlab.ui.container.TabGroup
+        SimulationNominalPulseTab matlab.ui.container.Tab
+        SimulationPulseHostGrid matlab.ui.container.GridLayout
+        SimulationScheduleCaseTabGroup matlab.ui.container.TabGroup
+        SimulationNominalScheduleTab matlab.ui.container.Tab
+        SimulationNominalScheduleGrid matlab.ui.container.GridLayout
         SimulationPositionTab           matlab.ui.container.Tab
         SimulationPositionGrid          matlab.ui.container.GridLayout
         SimulationAttitudeErrorAxes     matlab.ui.control.UIAxes
@@ -97,6 +84,10 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         StartOptimizationButton_7       matlab.ui.control.Button
         StartOptimizationButton_6       matlab.ui.control.Button
         MetricsViewTabGroup             matlab.ui.container.TabGroup
+        MetricsPolicyTab                matlab.ui.container.Tab
+        MetricsPolicyGrid               matlab.ui.container.GridLayout
+        PolicyDetailTable               matlab.ui.control.Table
+        PolicyInfoLabel                 matlab.ui.control.Label
         MetricsSingleFaultTab           matlab.ui.container.Tab
         MetricsSingleFaultGrid          matlab.ui.container.GridLayout
         SingleFaultTable                matlab.ui.control.Table
@@ -327,6 +318,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         ReconfigJudgmentResult
         EvaluationResult
         SimulationLog
+        SimulationCaseViews = struct('Tab', {}, 'Grid', {}, 'Axes', {}, 'Rendered', {})
+        AllocationFaultRows = []
         % Runtime-only results tab. It is intentionally not part of the
         % App Designer component model and is recreated by startupFcn.
         SimulationActualVerificationTab       matlab.ui.container.Tab
@@ -484,6 +477,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.ReconfigJudgmentResult = [];
             app.EvaluationResult = [];
             app.SimulationLog = [];
+            app.resetSimulationComparisonViews();
             if ~isempty(app.SimulationPulseDynamicAxes)
                 delete(app.SimulationPulseDynamicAxes( ...
                     isgraphics(app.SimulationPulseDynamicAxes)));
@@ -511,6 +505,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         end
 
         function populateParameterControls(app)
+            app.resetMetricsComparisonTabs();
             params = app.CurrentParams;
             app.MassField.Value = params.m;
             app.JxxField.Value = params.J(1, 1);
@@ -563,6 +558,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             params.F_max = app.FmaxField_3.Value;
             params.T = app.ControlPeriodField.Value;
             params.t_min = app.MinPulseField_3.Value;
+            params.alloc_mode = app.mapAllocationMode(app.AllocationModeDropDown_2.Value);
+            params.allocation_strategy = 'primary_backup';
+            params.evaluation_reference_length = 2;
             params.R_earth = app.paramOrDefault(params, 'R_earth', 6371000);
             params.h_orbit = app.paramOrDefault(params, 'h_orbit', 400000);
             params.mu = app.paramOrDefault(params, 'mu', 3.986e14);
@@ -894,6 +892,23 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 'B', app.LayoutEntries(index).B, 'r', app.LayoutEntries(index).r);
         end
 
+        function layoutSet = buildComparisonLayoutSet(app, selectedLayout)
+            layoutSet = struct('name', '原布局', 'B', app.ReferenceB, 'r', app.ReferenceR);
+            if ~strcmp(selectedLayout.name, '原布局')
+                layoutSet(end + 1) = selectedLayout;
+            end
+        end
+
+        function label = comparisonCaseLabel(app, layoutName, faultSet)
+            if isempty(faultSet)
+                condition = '标况';
+            else
+                condition = ['故障', app.faultSetText(faultSet)];
+            end
+            if ~contains(layoutName, '布局'), layoutName = [layoutName, '布局']; end
+            label = sprintf('%s（%s）', condition, layoutName);
+        end
+
         function layout = selectedSimulationLayout(app)
             selectedName = app.selectedLayoutName('LayoutTemplateDropDown');
             index = find(strcmp({app.LayoutEntries.Name}, selectedName), 1, 'first');
@@ -1131,9 +1146,15 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             simCfg.Kd_att = app.FmaxField_11.Value;
             simCfg.T_sim = app.SimulationTimeField.Value;
             simCfg.faulty_time = app.MinPulseField_5.Value;
-            if ~isfinite(simCfg.faulty_time) || simCfg.faulty_time < 0 || ...
-                    simCfg.faulty_time > simCfg.T_sim
+            % 零故障时不触发故障事件；故障时刻可以保留在输入框中，
+            % 但不能因为它落在仿真区间之外而阻止标况仿真。
+            noFaultCase = app.requestedFaultCount() == 0;
+            if ~noFaultCase && (~isfinite(simCfg.faulty_time) || simCfg.faulty_time < 0 || ...
+                    simCfg.faulty_time > simCfg.T_sim)
                 error('故障时刻应为0至仿真时间 %.3g s之间的数值。', simCfg.T_sim);
+            end
+            if noFaultCase
+                simCfg.faulty_time = Inf;
             end
             simCfg.dt = max(eps, app.MinPulseField_4.Value);
             simCfg.true_faults = app.parseIndexList(app.FmaxField_6.Value);
@@ -1321,7 +1342,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 case '两台故障'
                     faultCondition = '2';
                 case '自定义故障组合'
-                    faultCondition = string(max(1, numel( ...
+                    faultCondition = string(max(0, numel( ...
                         app.parseIndexList(app.FmaxField_6.Value))));
             end
             app.setFaultCountControlValue(faultCondition);
@@ -1538,12 +1559,23 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             if nargin < 3
                 faultValue = app.FmaxField_6.Value;
             end
+            if nargin < 4 || isempty(faultCount)
+                faultCount = app.requestedFaultCount(params.Num);
+            end
+            % 零台故障优先于故障编号，旧编号不会影响标况计算。
+            if faultCount == 0
+                faultSets = {[]};
+                return;
+            end
+            rawFaults = app.parseVector(faultValue, []);
+            % 编号 0 表示标况和每一台单故障，与故障台数无关。
+            if isscalar(rawFaults) && rawFaults == 0
+                faultSets = [{[]}, num2cell(1:params.Num)];
+                return;
+            end
             typedFaults = app.parseIndexList(faultValue);
             if any(typedFaults > params.Num)
                 error('故障编号不能大于当前布局的推力器总数 %d。', params.Num);
-            end
-            if nargin < 4 || isempty(faultCount)
-                faultCount = app.requestedFaultCount(params.Num);
             end
 
             if numel(typedFaults) == faultCount
@@ -1558,12 +1590,26 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             faultSets = mat2cell(combs, ones(size(combs, 1), 1), faultCount);
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 'PolicyReconfigurable', false, 'Conclusion', '');
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                     isReconfig = forceMargin > 1e-8 && torqueMargin > 1e-8 && ...
+%                         jointMargin > 1e-8 && policyReconfigurable;
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                     if isReconfig
+%                         item.Conclusion = '可重构';
+%                     elseif forceMargin > 1e-8 && torqueMargin > 1e-8 && jointMargin > 1e-8
+%                         item.Conclusion = '调用策略不可重构';
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         item.Conclusion = '不可重构';
         function results = evaluateReconfigJudgment(app, layoutName, B, params, faultSets)
             layoutParams = params;
             layoutParams.Num = size(B, 2);
+            layoutParams.evaluation_model = 'continuous_judgment';
             template = struct('LayoutName', '', 'FaultSet', '', ...
                 'JcForce', NaN, 'JcTorque', NaN, 'Jc6D', NaN, ...
-                'PolicyReconfigurable', false, 'Conclusion', '');
+                'PolicyReconfigurable', false, 'HardwareForce',0,'HardwareTorque',0, ...
+                'AxisCount',0,'StrictCount',0,'ReferencePass',0,'Conclusion', '');
             results = repmat(template, 0, 1);
             faultCounts = unique(cellfun(@numel, faultSets));
 
@@ -1582,8 +1628,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     jointMargin = Jc(row);
                     policyReconfigurable = isfield(Z, 'Invocation') && ...
                         Z.Invocation(row).policy_reconfigurable;
-                    isReconfig = forceMargin > 1e-8 && torqueMargin > 1e-8 && ...
-                        jointMargin > 1e-8 && policyReconfigurable;
+                    isReconfig = policyReconfigurable;
                     item = template;
                     item.LayoutName = char(layoutName);
                     item.FaultSet = app.faultSetText(faultSet);
@@ -1591,12 +1636,26 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     item.JcTorque = torqueMargin;
                     item.Jc6D = jointMargin;
                     item.PolicyReconfigurable = policyReconfigurable;
+                    item.HardwareForce = Z.Hardware(row).force_capacity;
+                    item.HardwareTorque = Z.Hardware(row).torque_capacity;
+                    item.AxisCount = nnz(Z.Invocation(row).axis_callable);
+%                     item.StrictCount = nnz(Z.Invocation(row).strict_equal_axis);
+%                     item.ReferencePass = 100*Z.Invocation(row).reference_pass_rate;
+%                     if isReconfig && Z.Invocation(row).reference_commands_callable
+%                         item.Conclusion = '12向及参考指令通过';
+%                     elseif isReconfig
+%                         item.Conclusion = '12向可用；参考指令未全通过';
+%                     elseif Z.Hardware(row).reconfigurable
+%                         item.Conclusion = '硬件可用；策略12向未证实';
+%                     else
+%                         item.Conclusion = '硬件纯轴能力不足';
+%                     end
                     if isReconfig
-                        item.Conclusion = '可重构';
-                    elseif forceMargin > 1e-8 && torqueMargin > 1e-8 && jointMargin > 1e-8
-                        item.Conclusion = '调用策略不可重构';
+                        item.Conclusion = '可重构：原点在实际六维包络内部';
+                    elseif Z.Hardware(row).reconfigurable
+                        item.Conclusion = '不可重构：原点不在实际六维包络内部';
                     else
-                        item.Conclusion = '不可重构';
+                        item.Conclusion = '不可重构：理论六维包络也无原点内邻域';
                     end
                     results(end + 1, 1) = item; %#ok<AGROW>
                 end
@@ -1622,18 +1681,30 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             end
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             % The current judgment table has five visible columns. Keep
+%             % text values as character vectors because R2023b UITable does
+%             % not accept string scalars inside a mixed cell array.
+%             data = cell(numel(results), 5);
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 data(index, :) = {results(index).FaultSet, ...
+%                     results(index).JcForce, results(index).JcTorque, ...
+%                     results(index).Jc6D, results(index).Conclusion};
         function data = judgmentToCell(app, results)
-            % The current judgment table has five visible columns. Keep
-            % text values as character vectors because R2023b UITable does
-            % not accept string scalars inside a mixed cell array.
-            data = cell(numel(results), 5);
+% 原十列表格保留：data = cell(numel(results), 10);
+            data = cell(numel(results), 8);
             for index = 1:numel(results)
-                data(index, :) = {results(index).FaultSet, ...
-                    results(index).JcForce, results(index).JcTorque, ...
-                    results(index).Jc6D, results(index).Conclusion};
+                r = results(index);
+% 原列保留：r.HardwareForce,r.HardwareTorque,r.AxisCount,r.StrictCount,r.ReferencePass,r.Conclusion
+                data(index,:) = {r.FaultSet,r.JcForce,r.JcTorque,r.Jc6D, ...
+                    r.HardwareForce,r.HardwareTorque,r.AxisCount,r.Conclusion};
             end
         end
 
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 rowNumbers = find(contains(conclusions, "不可重构"));
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%         function result = evaluateLayoutSummary(app, name, B, params, faultLevel)
         function highlightUnreconfigurableRows(app, results)
             % 每次判断后重新生成样式，避免切换故障条件时旧行仍被标红。
             try
@@ -1642,7 +1713,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     return;
                 end
                 conclusions = string({results.Conclusion});
-                rowNumbers = find(contains(conclusions, "不可重构"));
+% 原判据：rowNumbers = find(~strcmp(conclusions, "12向及参考指令通过"));
+                rowNumbers = find(~[results.PolicyReconfigurable]);
                 if isempty(rowNumbers)
                     return;
                 end
@@ -1656,13 +1728,26 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             end
         end
 
-        function result = evaluateLayoutSummary(app, name, B, params, faultLevel)
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             [~, Jc1, ~, Jc, Jo, Jt, Jf] = Reconfig_eval(layoutParams, B, faultLevel);
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             result.Score = result.Jc + 0.1 * result.Jo + result.Jt - 0.01 * result.Jf;
+        function result = evaluateLayoutSummary(app, name, B, params, faultLevel, faultCases)
             layoutParams = params;
             layoutParams.Num = size(B, 2);
             if faultLevel > layoutParams.Num
                 error('故障数量不能大于布局“%s”的推力器总数。', char(name));
             end
-            [~, Jc1, ~, Jc, Jo, Jt, Jf] = Reconfig_eval(layoutParams, B, faultLevel);
+            [Z, Jc1, ~, Jc, Jo, Jt, Jf] = Reconfig_eval(layoutParams, B, faultLevel);
+            rows=1:numel(Z.FaultSets);
+            if nargin>=6
+                rows=[];
+                for i=1:numel(faultCases)
+                    rows(end+1)=app.findFaultSetRow(Z.FaultSets,faultCases{i}); %#ok<AGROW>
+                end
+            end
+            Jc=Jc(rows); Jc1=Jc1(rows,:); Jo=Jo(rows); Jt=Jt(rows); Jf=Jf(rows);
+            Z.SelectedRows=rows;
             result = struct();
             result.Name = char(name);
             result.Jc = min(Jc);
@@ -1671,7 +1756,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             result.Jo = min(Jo);
             result.Jt = mean(Jt);
             result.Jf = mean(Jf);
-            result.Score = result.Jc + 0.1 * result.Jo + result.Jt - 0.01 * result.Jf;
+            result.Score = NaN; % 不同量纲相加不是可重构判据。
+            result.PolicyEvaluation = Z;
         end
 
         function data = summaryToCell(app, summaries)
@@ -1685,202 +1771,220 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
         function updateAllocationStrategyTable(app, strategy)
             if isempty(strategy)
-                axesText = {'+X'; '-X'; '+Y'; '-Y'; '+Z'; '-Z'; ...
-                    '+X'; '-X'; '+Y'; '-Y'; '+Z'; '-Z'};
-                controlType = [repmat({'轨道控制'}, 6, 1); ...
-                    repmat({'姿态控制'}, 6, 1)];
-                app.AllocationStrategyTable.ColumnName = ...
-                    {'控制类型', '轴向', '标况主份', '主份配对', ...
-                     '故障下调用', '故障关停/状态'};
-                app.AllocationStrategyTable.Data = [controlType, axesText, ...
-                    repmat({'等待生成'}, 12, 4)];
-                app.applyAllocationControlColors();
-                return;
+                axesText = repmat({'+X'; '-X'; '+Y'; '-Y'; '+Z'; '-Z'}, 2, 1);
+                types = [repmat({'轨道控制'}, 6, 1); repmat({'姿态控制'}, 6, 1)];
+                strategy.ColumnNames = {'控制类型', '标况下调用（原布局）', ...
+                    '故障下调用（原布局）', '调用状态（原布局）'};
+                strategy.Data = [cellstr(strcat(string(types), string(axesText))), ...
+                    repmat({'等待生成'}, 12, 3)];
+                strategy.FaultRows = false(12, 1);
+            end
+            if ~isfield(strategy, 'FaultRows')
+                strategy.FaultRows = false(size(strategy.Data, 1), 1);
             end
             app.AllocationStrategyTable.ColumnName = strategy.ColumnNames;
+            app.AllocationStrategyTable.ColumnWidth = ...
+                [{130}, repmat({'auto'}, 1, numel(strategy.ColumnNames) - 1)];
             app.AllocationStrategyTable.Data = strategy.Data;
+            app.AllocationFaultRows = strategy.FaultRows;
             app.applyAllocationControlColors();
         end
 
-        function strategy = buildAllocationStrategyComparison(app, params, ...
-                layout, faultCases)
-            if ~iscell(faultCases)
-                faultCases = {faultCases};
-            end
-            if numel(faultCases) == 1
-                strategy = RCPlotter.allocationComparisonData( ...
-                    params, layout, faultCases{1});
-                return;
-            end
-
-            rowsPerCase = 12;
-            allRows = {};
-            baseColumnNames = {};
+        function strategy = buildAllocationStrategyComparison(app, params, layoutSet, faultCases)
+            if ~iscell(faultCases), faultCases = {faultCases}; end
+            strategy = [];
             for caseIndex = 1:numel(faultCases)
-                app.StatusLabel.Text = sprintf( ...
-                    '正在生成全部单故障调用策略｜%d/%d', ...
-                    caseIndex, numel(faultCases));
-                drawnow limitrate nocallbacks;
-                caseResult = RCPlotter.allocationComparisonData( ...
-                    params, layout, faultCases{caseIndex});
-                if isempty(baseColumnNames)
-                    baseColumnNames = caseResult.ColumnNames;
-                    allRows = cell(rowsPerCase * numel(faultCases), ...
-                        numel(baseColumnNames) + 1);
+                caseResult = RCPlotter.allocationComparisonData(params, layoutSet, faultCases{caseIndex});
+                if numel(faultCases) > 1
+                    if isempty(faultCases{caseIndex})
+                        condition = '标况';
+                    else
+                        condition = ['故障', app.faultSetText(faultCases{caseIndex})];
+                    end
+                    % Keep the requested 4/7-column contract in all-fault mode.
+                    % A full-width section row identifies each 12-row case block.
+                    heading = repmat({''}, 1, numel(caseResult.ColumnNames));
+                    heading{1} = condition;
+                    caseResult.Data = [heading; caseResult.Data];
+                    caseResult.FaultRows = [false; caseResult.FaultRows(:)];
                 end
-                rowCount = size(caseResult.Data, 1);
-                firstRow = (caseIndex - 1) * rowsPerCase + 1;
-                lastRow = firstRow + rowCount - 1;
-                conditionText = ['故障', app.faultSetText(faultCases{caseIndex})];
-                allRows(firstRow:lastRow, :) = [ ...
-                    repmat({conditionText}, rowCount, 1), caseResult.Data];
+                if isempty(strategy)
+                    strategy = caseResult;
+                else
+                    strategy.Data = [strategy.Data; caseResult.Data]; %#ok<AGROW>
+                    strategy.FaultRows = [strategy.FaultRows; caseResult.FaultRows]; %#ok<AGROW>
+                end
             end
-            strategy = struct('Data', {allRows}, 'ColumnNames', ...
-                {{'故障工况', baseColumnNames{:}}});
         end
 
         function applyAllocationControlColors(app)
-            if isempty(app.AllocationStrategyTable) || ...
-                    ~isvalid(app.AllocationStrategyTable)
-                return;
+            removeStyle(app.AllocationStrategyTable);
+            data = app.AllocationStrategyTable.Data;
+            if isempty(data), return; end
+            controlTypes = string(data(:, 1));
+            attitudeRows = find(startsWith(controlTypes, "姿态控制"));
+            if ~isempty(attitudeRows)
+                addStyle(app.AllocationStrategyTable, ...
+                    uistyle('BackgroundColor', [0.90 0.91 0.92]), 'row', attitudeRows);
             end
-            try
-                removeStyle(app.AllocationStrategyTable);
-                tableData = app.AllocationStrategyTable.Data;
-                if isempty(tableData)
-                    return;
-                end
-                columnNames = string(app.AllocationStrategyTable.ColumnName);
-                controlColumn = find(columnNames == "控制类型", 1, 'first');
-                if isempty(controlColumn)
-                    return;
-                end
-                if istable(tableData)
-                    controlTypes = string(tableData{:, controlColumn});
-                else
-                    controlTypes = string(tableData(:, controlColumn));
-                end
-                orbitRows = find(controlTypes == "轨道控制");
-                attitudeRows = find(controlTypes == "姿态控制");
-                if ~isempty(orbitRows)
-                    orbitStyle = uistyle('BackgroundColor', [1 1 1]);
-                    addStyle(app.AllocationStrategyTable, orbitStyle, ...
-                        'row', orbitRows);
-                end
-                if ~isempty(attitudeRows)
-                    attitudeStyle = uistyle( ...
-                        'BackgroundColor', [0.90 0.91 0.92]);
-                    addStyle(app.AllocationStrategyTable, attitudeStyle, ...
-                        'row', attitudeRows);
-                end
-            catch
-                % 表格着色失败时仍保留完整的调用策略数据。
+            faultRows = find(app.AllocationFaultRows);
+            if ~isempty(faultRows)
+                addStyle(app.AllocationStrategyTable, ...
+                    uistyle('BackgroundColor', [1 0.83 0.83], ...
+                    'FontColor', [0.78 0.04 0.04]), 'row', faultRows);
             end
         end
 
-        function plotSimulationResult(app, stateLogs, stateLabels, ...
-                faultLogs, faultLabels)
-            commonOptions = struct('ShowLegend', true, 'ShowFaultTime', true);
-            RCPlotter.plotResponseComponents(app.SimulationAxes, ...
-                stateLogs, stateLabels, 'pos', commonOptions);
-            RCPlotter.plotResponseComponents(app.SimulationAttitudeAxes, ...
-                stateLogs, stateLabels, 'att', commonOptions);
-            RCPlotter.plotErrorNorm(app.SimulationPositionErrorAxes, ...
-                stateLogs, stateLabels, 'pos', commonOptions);
-            RCPlotter.plotErrorNorm(app.SimulationAttitudeErrorAxes, ...
-                stateLogs, stateLabels, 'att', commonOptions);
-
-            firstOptions = struct('ShowLegend', true, 'ShowFaultTime', true);
-            compactOptions = struct('ShowLegend', false, 'ShowFaultTime', true);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultPosXAxes, ...
-                faultLogs, faultLabels, 'pos', 1, firstOptions);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultPosYAxes, ...
-                faultLogs, faultLabels, 'pos', 2, compactOptions);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultPosZAxes, ...
-                faultLogs, faultLabels, 'pos', 3, compactOptions);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultAttXAxes, ...
-                faultLogs, faultLabels, 'att', 1, firstOptions);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultAttYAxes, ...
-                faultLogs, faultLabels, 'att', 2, compactOptions);
-            RCPlotter.plotFaultCaseComponent(app.SimulationFaultAttZAxes, ...
-                faultLogs, faultLabels, 'att', 3, compactOptions);
-
-            if numel(faultLogs) >= 2
-                nominalLog = faultLogs{1};
-                comparisonLog = faultLogs{2};
-                comparisonLabels = {faultLabels{1}, faultLabels{2}};
-            elseif ~isempty(faultLogs)
-                nominalLog = faultLogs{1};
-                comparisonLog = faultLogs{1};
-                comparisonLabels = {faultLabels{1}, faultLabels{1}};
-            else
-                nominalLog = stateLogs{1};
-                comparisonLog = stateLogs{1};
-                comparisonLabels = {stateLabels{1}, stateLabels{1}};
+        function resetSimulationComparisonViews(app)
+            groups = {app.SimulationPositionCaseTabGroup, app.SimulationCommandCaseTabGroup, ...
+                app.SimulationTrajectoryCaseTabGroup, app.SimulationPulseCaseTabGroup, ...
+                app.SimulationScheduleCaseTabGroup};
+            for index = 1:numel(groups)
+                group = groups{index};
+                group.SelectionChangedFcn = [];
+                tabs = group.Children;
+                for tabIndex = 1:numel(tabs)
+                    if strcmp(tabs(tabIndex).Tag, 'RCComparisonRuntime')
+                        delete(tabs(tabIndex));
+                    else
+                        tabs(tabIndex).Title = '标况（原布局）';
+                    end
+                end
+                axesList = findall(group, 'Type', 'axes');
+                for axisIndex = 1:numel(axesList), cla(axesList(axisIndex), 'reset'); end
             end
+            app.SimulationCaseViews = struct('Tab', {}, 'Grid', {}, 'Axes', {}, 'Rendered', {});
+        end
 
-            app.SimulationNominalCommandTab.Title = comparisonLabels{1};
-            app.SimulationFaultCommandTab.Title = comparisonLabels{2};
-            nominalWrenchAxes = [app.SimulationForceXAxes, ...
-                app.SimulationForceYAxes, app.SimulationForceZAxes, ...
-                app.SimulationTorqueXAxes, app.SimulationTorqueYAxes, ...
-                app.SimulationTorqueZAxes];
-            nominalWrenchOptions = struct('ShowFaultTime', false, ...
-                'LineColor', [0.10, 0.42, 0.76]);
-            RCPlotter.plotBodyWrenchHistory(nominalWrenchAxes, nominalLog, ...
-                comparisonLabels{1}, nominalWrenchOptions);
-            faultWrenchAxes = [app.SimulationFaultForceXAxes, ...
-                app.SimulationFaultForceYAxes, ...
-                app.SimulationFaultForceZAxes, ...
-                app.SimulationFaultTorqueXAxes, ...
-                app.SimulationFaultTorqueYAxes, ...
-                app.SimulationFaultTorqueZAxes];
-            faultWrenchOptions = struct('ShowFaultTime', true, ...
-                'LineColor', [0.90, 0.42, 0.16]);
-            RCPlotter.plotBodyWrenchHistory(faultWrenchAxes, comparisonLog, ...
-                comparisonLabels{2}, faultWrenchOptions);
-
-            trajectoryOptions = struct('BodyHalfSize', ...
-                app.currentBodyHalfSize(), 'SnapshotCount', 9, ...
-                'AutoScaleBody', true);
-            app.SimulationNominalTrajectoryTab.Title = comparisonLabels{1};
-            app.SimulationFaultTrajectoryTab.Title = comparisonLabels{2};
-            nominalTrajectoryAxes = [ ...
-                app.SimulationNominalTrajectory3DAxes, ...
-                app.SimulationNominalTrajectoryXYAxes, ...
-                app.SimulationNominalTrajectoryXZAxes, ...
-                app.SimulationNominalTrajectoryYZAxes];
-            RCPlotter.plotTrajectoryViews(nominalTrajectoryAxes, ...
-                nominalLog, comparisonLabels{1}, trajectoryOptions);
-            faultTrajectoryAxes = [ ...
-                app.SimulationFaultTrajectory3DAxes, ...
-                app.SimulationFaultTrajectoryXYAxes, ...
-                app.SimulationFaultTrajectoryXZAxes, ...
-                app.SimulationFaultTrajectoryYZAxes];
-            RCPlotter.plotTrajectoryViews(faultTrajectoryAxes, ...
-                comparisonLog, comparisonLabels{2}, trajectoryOptions);
-
-            if ~isempty(stateLogs)
-                pulseLog = stateLogs{1};
-                pulseAxes = app.prepareThrusterPulseAxes( ...
-                    size(pulseLog.Pulse_Widths, 1));
-                showPulseFaultTime = isfield(pulseLog, 'faulty_thrusters') && ...
-                    ~isempty(pulseLog.faulty_thrusters);
-                pulseOptions = struct('ShowFaultTime', showPulseFaultTime, ...
-                    'UseControlHistory', true, ...
-                    'LayoutName', stateLabels{1});
-                RCPlotter.plotThrusterPulseWidths( ...
-                    pulseAxes, pulseLog, pulseOptions);
-                app.SimulationScheduleStartTimeField.Value = ...
-                    RCPlotter.selectFullPeriodScheduleStart(pulseLog);
-                scheduleOptions = struct('ShowFaultTime', true, ...
-                    'ControlPeriod', pulseLog.Control_Period, ...
-                    'StartTime', app.SimulationScheduleStartTimeField.Value, ...
-                    'CycleCount', app.SimulationScheduleCycleCountField.Value, ...
-                    'Title', [stateLabels{1}, '｜推力器调用时序']);
-                RCPlotter.plotThrusterSchedule( ...
-                    app.SimulationScheduleAxes, pulseLog, scheduleOptions);
+        function plotSimulationResult(app, logs, labels, varargin)
+            % 兼容旧版调用签名 (stateLogs,stateLabels,faultLogs,faultLabels)。
+            % 新版直接传入按布局/工况展开的 logs 与 labels。
+            if numel(varargin) >= 2 && iscell(varargin{1}) && iscell(varargin{2})
+                logs = varargin{1};
+                labels = varargin{2};
             end
+            groups = {app.SimulationPositionCaseTabGroup, ...
+                app.SimulationCommandCaseTabGroup, app.SimulationTrajectoryCaseTabGroup, ...
+                app.SimulationPulseCaseTabGroup, app.SimulationScheduleCaseTabGroup};
+            baseTabs = {app.SimulationNominalPositionTab, app.SimulationNominalCommandTab, ...
+                app.SimulationNominalTrajectoryTab, app.SimulationNominalPulseTab, ...
+                app.SimulationNominalScheduleTab};
+            baseGrids = {app.SimulationPositionGrid, app.SimulationNominalCommandGrid, ...
+                app.SimulationNominalTrajectoryGrid, app.SimulationPulseGrid, ...
+                app.SimulationNominalScheduleGrid};
+            baseAxes = {[app.SimulationAxes, app.SimulationAttitudeAxes, ...
+                app.SimulationPositionErrorAxes, app.SimulationAttitudeErrorAxes], ...
+                [app.SimulationForceXAxes, app.SimulationForceYAxes, app.SimulationForceZAxes, ...
+                app.SimulationTorqueXAxes, app.SimulationTorqueYAxes, app.SimulationTorqueZAxes], ...
+                [app.SimulationNominalTrajectory3DAxes, app.SimulationNominalTrajectoryXYAxes, ...
+                app.SimulationNominalTrajectoryXZAxes, app.SimulationNominalTrajectoryYZAxes], ...
+                app.SimulationPulsePlaceholderAxes, app.SimulationScheduleAxes};
+            emptyView = struct('Tab', [], 'Grid', [], 'Axes', [], 'Rendered', false);
+            app.SimulationCaseViews = repmat(emptyView, 5, numel(logs));
+            for viewIndex = 1:5
+                group = groups{viewIndex};
+                group.SelectionChangedFcn = [];
+                tabs = group.Children;
+                for tabIndex = 1:numel(tabs)
+                    if ~isequal(tabs(tabIndex), baseTabs{viewIndex}), delete(tabs(tabIndex)); end
+                end
+                for caseIndex = 1:numel(logs)
+                    if caseIndex == 1
+                        caseTab = baseTabs{viewIndex};
+                        grid = baseGrids{viewIndex};
+                        axesList = baseAxes{viewIndex};
+                        for ax = axesList
+                            cla(ax, 'reset');
+                        end
+                    else
+                        caseTab = uitab(group, 'Tag', 'RCComparisonRuntime');
+                        grid = [];
+                        axesList = [];
+                    end
+                    caseTab.Title = labels{caseIndex};
+                    caseTab.UserData = caseIndex;
+                    app.SimulationCaseViews(viewIndex, caseIndex) = ...
+                        struct('Tab', caseTab, 'Grid', grid, 'Axes', axesList, 'Rendered', false);
+                end
+                group.SelectedTab = baseTabs{viewIndex};
+                group.SelectionChangedFcn = @(~, event) ...
+                    app.renderSimulationCase(viewIndex, event.NewValue.UserData);
+            end
+            % UI tab order is the reverse of the Children array.
+            app.SimulationViewTabGroup.Children = [ ...
+                app.SimulationActualVerificationTab; app.SimulationScheduleTab; ...
+                app.SimulationPulseTab; app.SimulationTrajectoryTab; ...
+                app.SimulationCommandTab; app.SimulationPositionTab];
+            app.SimulationScheduleStartTimeField.Value = ...
+                RCPlotter.selectFullPeriodScheduleStart(logs{1});
+            for viewIndex = 1:5
+                app.renderSimulationCase(viewIndex, 1);
+            end
+        end
+
+        function renderSimulationCase(app, viewIndex, caseIndex)
+            if isempty(app.SimulationCaseViews) || isempty(app.SimulationLog), return; end
+            caseView = app.SimulationCaseViews(viewIndex, caseIndex);
+            if caseView.Rendered, return; end
+            logData = app.SimulationLog.ComparisonLogs{caseIndex};
+            counts = [4, 6, 4, size(logData.Pulse_Widths, 1), 1];
+            columns = [2, 3, 2, min(3, counts(4)), 1];
+            if isempty(caseView.Grid) || ~isvalid(caseView.Grid)
+                caseView.Grid = uigridlayout(caseView.Tab);
+                caseView.Grid.Padding = [8 8 8 8];
+            end
+            grid = caseView.Grid;
+            grid.ColumnWidth = repmat({'1x'}, 1, columns(viewIndex));
+            rowCount = ceil(counts(viewIndex) / columns(viewIndex));
+            grid.RowHeight = repmat({'1x'}, 1, rowCount);
+            if viewIndex == 4
+                grid.Scrollable = 'on';
+                grid.RowHeight = repmat({210}, 1, rowCount);
+                if caseIndex == 1
+                    caseView.Axes = app.prepareThrusterPulseAxes(counts(4));
+                end
+            end
+            if isempty(caseView.Axes)
+                axesList = gobjects(1, counts(viewIndex));
+                for axisIndex = 1:numel(axesList)
+                    axesList(axisIndex) = uiaxes(grid);
+                    axesList(axisIndex).Layout.Row = ceil(axisIndex / columns(viewIndex));
+                    axesList(axisIndex).Layout.Column = mod(axisIndex - 1, columns(viewIndex)) + 1;
+                end
+                caseView.Axes = axesList;
+            end
+            axesList = caseView.Axes;
+            showFault = isfield(logData, 'faulty_thrusters') && ~isempty(logData.faulty_thrusters);
+            options = struct('ShowLegend', true, 'ShowFaultTime', showFault, 'HideCasePrefix', true);
+            switch viewIndex
+                case 1
+                    RCPlotter.plotResponseComponents(axesList(1), logData, {''}, 'pos', options);
+                    RCPlotter.plotResponseComponents(axesList(2), logData, {''}, 'att', options);
+                    RCPlotter.plotErrorNorm(axesList(3), logData, {''}, 'pos', options);
+                    RCPlotter.plotErrorNorm(axesList(4), logData, {''}, 'att', options);
+                case 2
+                    RCPlotter.plotBodyWrenchHistory(axesList, logData, '', options);
+                case 3
+                    options.BodyHalfSize = app.currentBodyHalfSize();
+                    if isfield(app.SimulationLog, 'CaseBodyHalfSizes')
+                        options.BodyHalfSize = app.SimulationLog.CaseBodyHalfSizes{caseIndex};
+                    end
+                    options.SnapshotCount = 9;
+                    options.AutoScaleBody = true;
+                    RCPlotter.plotTrajectoryViews(axesList, logData, '', options);
+                case 4
+                    options.UseControlHistory = true;
+                    options.LayoutName = '';
+                    RCPlotter.plotThrusterPulseWidths(axesList, logData, options);
+                case 5
+                    options.ControlPeriod = logData.Control_Period;
+                    options.StartTime = app.SimulationScheduleStartTimeField.Value;
+                    options.CycleCount = app.SimulationScheduleCycleCountField.Value;
+                    options.Title = '推力器调用时序';
+                    RCPlotter.plotThrusterSchedule(axesList, logData, options);
+            end
+            caseView.Rendered = true;
+            app.SimulationCaseViews(viewIndex, caseIndex) = caseView;
         end
 
         function createActualInvocationVerificationTab(app)
@@ -1891,7 +1995,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             end
             app.SimulationActualVerificationTab = ...
                 uitab(app.SimulationViewTabGroup);
-            app.SimulationActualVerificationTab.Title = '实际调用效果验证';
+            app.SimulationActualVerificationTab.Title = '实际干扰对比';
             app.SimulationActualVerificationGrid = uigridlayout( ...
                 app.SimulationActualVerificationTab);
             app.SimulationActualVerificationGrid.ColumnWidth = {'1x'};
@@ -1906,12 +2010,16 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SimulationActualVerificationSummaryLabel.Layout.Column = 1;
             app.SimulationActualVerificationTable = uitable( ...
                 app.SimulationActualVerificationGrid);
-            app.SimulationActualVerificationTable.ColumnWidth = {90, 150, ...
+            app.SimulationActualVerificationTable.ColumnWidth = {180, 150, ...
                 155, 145, 130, 170};
             app.SimulationActualVerificationTable.RowName = {};
             app.SimulationActualVerificationTable.Layout.Row = 2;
             app.SimulationActualVerificationTable.Layout.Column = 1;
             app.updateActualInvocationVerification([]);
+            app.SimulationViewTabGroup.Children = [ ...
+                app.SimulationActualVerificationTab; app.SimulationScheduleTab; ...
+                app.SimulationPulseTab; app.SimulationTrajectoryTab; ...
+                app.SimulationCommandTab; app.SimulationPositionTab];
         end
 
         function updateActualInvocationVerification(app, verification)
@@ -1951,7 +2059,12 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
                 requested = logData.Requested_Wrench_History(:, 1:cycleCount);
                 actual = logData.Actual_Wrench_History(:, 1:cycleCount);
-                rowScale = max(abs(matrixConf), [], 2);
+                if iscell(matrixConf)
+                    caseMatrix = matrixConf{caseIndex};
+                else
+                    caseMatrix = matrixConf;
+                end
+                rowScale = max(abs(caseMatrix), [], 2);
                 rowScale(rowScale < 1e-12) = 1;
                 requestedMagnitude = sqrt(sum( ...
                     bsxfun(@rdivide, requested, rowScale).^2, 1));
@@ -1986,9 +2099,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     attitudeCrossForceText = '联合优化';
                 else
                     controlPeriod = max(logData.Control_Period, eps);
-                    orbitWrench = matrixConf * ...
+                    orbitWrench = caseMatrix * ...
                         (logData.Pulse_Orbit_History(:, 1:cycleCount) / controlPeriod);
-                    attitudeWrench = matrixConf * ...
+                    attitudeWrench = caseMatrix * ...
                         (logData.Pulse_Att_History(:, 1:cycleCount) / controlPeriod);
                     orbitCrossTorque = sqrt(sum(orbitWrench(4:6, :).^2, 1));
                     attitudeCrossForce = sqrt(sum(attitudeWrench(1:3, :).^2, 1));
@@ -2019,33 +2132,23 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             verification.ColumnNames = {'工况', '标况平均相对控制残差', ...
                 '故障后平均相对控制残差', '轨控最大干扰力矩', ...
                 '姿控最大干扰力', '脉宽超控制周期次数'};
-            verification.Summary = '实际调用效果验证';
+            verification.Summary = '实际干扰对比';
         end
 
         function refreshSimulationSchedulePlot(app)
-            if isempty(app.SimulationLog) || ...
-                    ~isstruct(app.SimulationLog) || ...
-                    ~isfield(app.SimulationLog, 'StateLog')
-                return;
+            if isempty(app.SimulationLog) || isempty(app.SimulationCaseViews), return; end
+            app.SimulationScheduleCycleCountField.Value = ...
+                max(1, round(app.SimulationScheduleCycleCountField.Value));
+            for caseIndex = 1:size(app.SimulationCaseViews, 2)
+                app.SimulationCaseViews(5, caseIndex).Rendered = false;
             end
-            pulseLog = app.SimulationLog.StateLog;
-            if ~isstruct(pulseLog) || ...
-                    ~isfield(pulseLog, 'Pulse_Schedule_History') || ...
-                    isempty(pulseLog.Pulse_Schedule_History)
-                return;
+            selected = app.SimulationScheduleCaseTabGroup.SelectedTab;
+            for caseIndex = 1:size(app.SimulationCaseViews, 2)
+                if isequal(app.SimulationCaseViews(5, caseIndex).Tab, selected)
+                    app.renderSimulationCase(5, caseIndex);
+                    break;
+                end
             end
-
-            cycleCount = max(1, round( ...
-                app.SimulationScheduleCycleCountField.Value));
-            app.SimulationScheduleCycleCountField.Value = cycleCount;
-            scheduleOptions = struct('ShowFaultTime', true, ...
-                'ControlPeriod', pulseLog.Control_Period, ...
-                'StartTime', app.SimulationScheduleStartTimeField.Value, ...
-                'CycleCount', cycleCount, ...
-                'Title', [app.SimulationLog.SelectedLayoutName, ...
-                    '｜推力器调用时序']);
-            RCPlotter.plotThrusterSchedule( ...
-                app.SimulationScheduleAxes, pulseLog, scheduleOptions);
         end
 
         function logData = runClosedloopCase(app, params, B, simCfg, faultSet)
@@ -2062,20 +2165,39 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             labels = {'标况'};
             for index = 1:numel(configuredFaultCases)
                 faultSet = configuredFaultCases{index};
+                if isempty(faultSet) || ~isempty(app.findFaultSetRow(faultSets, faultSet))
+                    continue;
+                end
                 faultSets{end + 1} = faultSet; %#ok<AGROW>
                 labels{end + 1} = ['故障', app.faultSetText(faultSet)]; %#ok<AGROW>
             end
         end
 
         function faultNumbers = selectedSummaryFaultNumbers(app, maximumFaults)
-            faultNumbers = min(app.requestedFaultCount(), maximumFaults);
+            faultCount = app.requestedFaultCount(maximumFaults);
+            rawFaults = app.parseVector(app.FmaxField_6.Value, []);
+            if faultCount == 0
+                faultNumbers = 0;
+            elseif isscalar(rawFaults) && rawFaults == 0
+                faultNumbers = [0, 1];
+            else
+                faultNumbers = faultCount;
+            end
         end
 
         function faultLevel = getFaultLevel(app)
             faultLevel = app.requestedFaultCount();
         end
 
-        function faultyIndices = selectedMetricsFaultSet(app, maximumIndex)
+        function [faultyIndices, faultCases] = selectedMetricsFaultSet(app, maximumIndex)
+            expectedCount = app.requestedFaultCount(maximumIndex);
+            rawFaults = app.parseVector(app.FmaxField_6.Value, []);
+            if expectedCount == 0 || (isscalar(rawFaults) && rawFaults == 0)
+                params = struct('Num', maximumIndex);
+                faultCases = app.getFaultCases(params, app.FmaxField_6.Value, expectedCount);
+                faultyIndices = [];
+                return;
+            end
             faultyIndices = app.parseIndexList(app.FmaxField_6.Value);
             if isempty(faultyIndices)
                 error('请输入评价图使用的故障推力器编号，例如1或[1 3]。');
@@ -2084,12 +2206,12 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 error('故障编号不能大于当前布局的推力器总数 %d。', ...
                     maximumIndex);
             end
-            expectedCount = app.requestedFaultCount(maximumIndex);
             if numel(faultyIndices) ~= expectedCount
                 error('%d台故障需要输入%d个故障编号，当前输入了%d个。', ...
                     expectedCount, expectedCount, ...
                     numel(faultyIndices));
             end
+            faultCases = {faultyIndices};
         end
 
         function mode = mapAllocationMode(~, displayMode)
@@ -2111,15 +2233,25 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
         function AllocationModeDropDownValueChanged(app, event)
             app.syncAllocationStrategyControl();
+            app.ReconfigJudgmentResult = [];
+            app.EvaluationResult = [];
+            app.EvaluationTable.Data = {};
+            app.JudgmentSummaryTable.Data = {};
+            app.SingleFaultTable.Data = {};
+%             app.PolicyDetailTable.Data = {};
+%             app.PolicyInfoLabel.Text = '调用策略已改变，请重新评价。';
+            app.resetMetricsComparisonTabs();
+            app.SingleFaultInfoLabel.Text = '调用策略已改变，请重新运行判断和评价。';
+            app.setStatus('调用策略已改变：旧评价已清除，请重新计算。');
         end
 
         function value = faultCountControlValue(app)
-            value = sprintf('%d', max(1, round(app.FmaxField_5.Value)));
+            value = sprintf('%d', max(0, round(app.FmaxField_5.Value)));
         end
 
         function setFaultCountControlValue(app, value)
             count = app.toScalar(value, 1);
-            app.FmaxField_5.Value = max(1, round(count));
+            app.FmaxField_5.Value = max(0, round(count));
         end
 
         function faultCount = requestedFaultCount(app, maximumFaults)
@@ -2136,8 +2268,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     faultCount = str2double(rawValue);
             end
             if ~isscalar(faultCount) || ~isfinite(faultCount) || ...
-                    faultCount < 1 || floor(faultCount) ~= faultCount
-                error('故障数量应为大于等于1的整数。');
+                    faultCount < 0 || floor(faultCount) ~= faultCount
+                error('故障数量应为大于等于0的整数。');
             end
             if nargin >= 2 && ~isempty(maximumFaults) && ...
                     faultCount > maximumFaults
@@ -2147,7 +2279,15 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         end
 
         function text = faultConditionText(app)
-            text = sprintf('%d台故障', app.requestedFaultCount());
+            faultCount = app.requestedFaultCount();
+            rawFaults = app.parseVector(app.FmaxField_6.Value, []);
+            if faultCount == 0
+                text = '标况';
+            elseif isscalar(rawFaults) && rawFaults == 0
+                text = '标况及全部单台故障';
+            else
+                text = sprintf('%d台故障', faultCount);
+            end
         end
 
         function indices = parseIndexList(app, value)
@@ -2236,13 +2376,21 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.OptimizationMaxGenerations = max(1, round(maxGenerations));
             app.SearchRunning = true;
             app.setSearchControlsEnabled(false);
+            if strcmp(app.DropDown1.Value,'115拓扑自动布局搜索')
+                app.ProgressLabel.Text='正在读取拓扑队列；已有记录会自动接续…';
+                app.setStatus('自适应搜索｜单任务120至300秒｜先搜索几何候选，再求解组选');
+                drawnow;
+                return;
+            end
             if strcmp(app.DropDown1.Value,'完整组选必要条件')
                 app.ProgressLabel.Text = '正在读取并复核搜索记录…';
                 app.setStatus('正在寻找完整组选必要条件｜结果和未完成分支将自动保存');
                 drawnow;
                 return;
             end
-            app.SearchProgressFill.Visible = 'off';
+            if isprop(app, 'SearchProgressFill') && ~isempty(app.SearchProgressFill) && isvalid(app.SearchProgressFill)
+                app.SearchProgressFill.Visible = 'off';
+            end
             app.Label2.Text = '几何阶段显示本轮时间预算；必要条件通过仍不等于物理布局可行。';
             if isprop(app, 'ProgressGauge')
                 app.ProgressGauge.Value = 0;
@@ -2257,6 +2405,19 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 app.ProgressStartTic = tic;
             end
             elapsedSeconds = toc(app.ProgressStartTic);
+            if isfield(info,'SupportTotal')
+                fraction=info.SupportSeen/max(1,info.SupportTotal);
+                app.SearchProgressFill.Position=[0,0,max(eps,fraction),1];
+                app.SearchProgressFill.Visible='on';
+                app.ProgressLabel.Text=sprintf('已访问 %d/%d 拓扑｜累计 %d 次轮转｜当前 %s｜最高 %d/156',info.SupportSeen,info.SupportTotal,info.SupportVisits,info.SupportCurrent,info.Coverage);
+                if isfield(info,'SearchMetrics')
+                    m=info.SearchMetrics;
+                    app.ProgressLabel.Text=sprintf('旧轮转%d｜新直接几何%d次｜计算%d次｜节点%d｜候选检查%d｜最高%d/156',m.legacy_visits,m.direct_calls,m.direct_evaluations,m.nodes_since_upgrade,m.candidate_checks,info.Coverage);
+                end
+                app.setStatus(sprintf('自适应搜索｜当前 %s｜本轮 %.0f / %.0f 秒｜已访问不等于已排除',info.SupportCurrent,elapsedSeconds,app.GenerationField_3.Value));
+                drawnow limitrate nocallbacks;
+                return;
+            end
             if strcmp(app.DropDown1.Value,'完整组选必要条件')
                 if isfield(info,'BranchProgress')
                     app.showBranchProgress(info.BranchProgress);
@@ -2390,15 +2551,32 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 'EditField1_2','EditField1_3','EditField1_4','EditField1_5','FmaxField_4','FmaxField_2', ...
                 'NumericEditField1_2','NumericEditField2_4','NumericEditField2_5','NumericEditField2_6', ...
                 'GenerationField_3','PopulationField'};
-            for j=1:numel(controls), app.(controls{j}).Enable=value; end
+            for j=1:numel(controls)
+                if isprop(app, controls{j}) && ~isempty(app.(controls{j})) && isvalid(app.(controls{j}))
+                    app.(controls{j}).Enable=value;
+                end
+            end
+        end
+
+        function recoverInterruptedSearch(app)
+            if ~isvalid(app) || ~app.SearchRunning, return; end
+            app.SearchRunning=false;app.ProgressStartTic=[];
+            app.setSearchControlsEnabled(true);
+            if strcmp(app.DropDown1.Value,'完整组选必要条件')
+                app.restoreLatestDiagnostic();
+            else
+                app.setStatus('搜索已中断｜可从已经保存的记录继续');
+            end
         end
 
         function showBranchProgress(app, p)
             fraction = max(0,min(1,p.certified_percent/100));
-            app.SearchProgressFill.Position = [0,0,max(eps,fraction),1];
-            app.SearchProgressFill.Visible = matlab.lang.OnOffSwitchState(fraction>0);
-            app.ProgressLabel.Text = sprintf('已认证排除 %.6g%%｜关闭 %d 分支｜有效冲突 %d 条｜累计求解 %d 次', ...
-                p.certified_percent,p.closed_branches,p.conflicts,p.solver_calls);
+            if isprop(app, 'SearchProgressFill') && ~isempty(app.SearchProgressFill) && isvalid(app.SearchProgressFill)
+                app.SearchProgressFill.Position = [0,0,max(eps,fraction),1];
+                app.SearchProgressFill.Visible = matlab.lang.OnOffSwitchState(fraction>0);
+            end
+            app.ProgressLabel.Text = sprintf('已认证排除 %.6g%%｜关闭 %d｜待搜索 %d｜待复核 %d｜冲突 %d｜累计求解 %d 次', ...
+                p.certified_percent,p.closed_branches,p.pending_branches,p.review_branches,p.conflicts,p.solver_calls);
             app.Label2.Text = '进度条 = 已认证排除的组选组合比例；超时不计完成，可能长期接近0%，不代表剩余时间。';
         end
 
@@ -2445,13 +2623,37 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         function refreshSearchState(app)
             if app.SearchRunning, return; end
             app.StartOptimizationButton_3.Enable='on';
+            app.GenerationField_3.Enable='on';
+            if strcmp(app.DropDown1.Value,'115拓扑自动布局搜索')
+                app.StartOptimizationButton_3.Text='开始／继续拓扑搜索';
+                app.PopulationField.Enable='off';
+                app.SearchProgressFill.Visible='off';
+                app.Label2.Text='已有任务优先；每次120至300秒，含直接几何搜索；已访问不代表已排除。';
+                app.ProgressLabel.Text='直接搜索解析筛选后的拓扑，无需先手动完成完整组选必要条件。';
+                if isstruct(app.OptimResult) && isfield(app.OptimResult,'feasible') && app.OptimResult.feasible && strcmp(app.GeometryScopeKey,app.searchScopeKey())
+                    app.StartOptimizationButton_3.Text='已验证完整可行布局';
+                    app.StartOptimizationButton_3.Enable='off';
+                end
+                return;
+            end
+            if strcmp(app.DropDown1.Value,'安装拓扑解析筛选')
+                app.StartOptimizationButton_3.Text='筛选安装拓扑';
+                app.PopulationField.Enable='off';
+                app.GenerationField_3.Enable='off';
+                app.SearchProgressFill.Visible='off';
+                app.Label2.Text='严格零／非零，禁止安装点重合，允许2/4/6台；只排除有解析证明的模式。';
+                app.ProgressLabel.Text='有限规则扫描；不进行布局优化，也不沿用旧729自由模式进度。';
+                return;
+            end
             diagnostic=strcmp(app.DropDown1.Value,'完整组选必要条件');
             app.PopulationField.Enable=matlab.lang.OnOffSwitchState(~diagnostic);
             same=~isempty(app.DiagnosticRecord) && strcmp(app.searchScopeKey(),app.DiagnosticScopeKey);
-            if same && isfield(app.DiagnosticRecord,'branch_progress')
+            if same && app.DiagnosticTrusted && isfield(app.DiagnosticRecord,'branch_progress')
                 app.showBranchProgress(app.DiagnosticRecord.branch_progress);
             else
+                if isprop(app, 'SearchProgressFill') && ~isempty(app.SearchProgressFill) && isvalid(app.SearchProgressFill)
                 app.SearchProgressFill.Visible='off';
+                end
                 app.ProgressLabel.Text='已认证排除 0%｜尚无当前边界的分支统计';
                 app.Label2.Text='必要条件与安装几何分两步检查；时限耗尽会保存记录，再次点击可以续跑。';
             end
@@ -2500,8 +2702,11 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     app.StartOptimizationButton_3.Enable='off';
                     app.setStatus('请先完成并复核当前约束的“完整组选必要条件”阶段');
                 end
-                app.SearchProgressFill.Visible='off';
+                if isprop(app, 'SearchProgressFill') && ~isempty(app.SearchProgressFill) && isvalid(app.SearchProgressFill)
+                    app.SearchProgressFill.Visible='off';
+                end
                 app.Label2.Text='安装几何阶段还需满足单位方向、位置、间距、夹角和全部156项；通过后才会生成布局。';
+                app.ProgressLabel.Text='安装几何阶段｜等待运行';
             end
         end
 
@@ -2697,6 +2902,10 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         end
 
         % Button pushed function: Button1
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 '6. 在“可重构评价”页计算 Jc、Jo、Jt、Jf 和综合指标；\n', ...
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                 '6. 在“可重构评价”页对比策略能力、硬件上限、参考指令通过率与实际干扰；\n', ...
         function HelpButtonPushed(app, event)
             message = sprintf(['使用说明：\n', ...
                 '1. 在“输入条件”页设置参数；\n', ...
@@ -2704,7 +2913,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 '3. 在“优化设计”页运行调用可重构优先的布局优化，并在右侧查看当前布局、三视图和布局参数；\n', ...
                 '4. 可用右上角下拉框切换布局，导入布局后会自动加入方案列表；\n', ...
                 '5. 在“输入条件”页设置故障台数、编号、时刻和复用策略；调用策略页直接生成当前配置的方案；\n', ...
-                '6. 在“可重构评价”页计算 Jc、Jo、Jt、Jf 和综合指标；\n', ...
+                '6. 在“可重构评价”页对比连续分配下的实际/理论控制能力，实际干扰结合闭环仿真分析；\n', ...
                 '7. 判断、调用和仿真页右上角可返回条件设置或布局选择，并可直接运行当前模块。']);
             uialert(app.UIFigure, message, 'RC-Designer 使用说明');
         end
@@ -2719,6 +2928,28 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             if ~isempty(app.CurrentB) && ~isempty(app.CurrentR)
                 app.drawLayout();
                 app.setStatus('安装边界已更新｜布局外形已刷新');
+            end
+            app.refreshSearchState();
+        end
+
+        % Value changed function: search settings and stage
+        function SearchSettingsChanged(app, event)
+            try
+                app.refreshSearchState();
+            catch ME
+                app.setStatus(['请检查搜索范围：',ME.message]);
+            end
+        end
+
+        % Button pushed function: LoadSearchRecordButton
+        function LoadSearchRecordButtonPushed(app, event)
+            [file,path]=uigetfile({'*.json','必要条件搜索记录 (*.json)'},'载入搜索记录',app.ProjectRoot);
+            if isequal(file,0), return; end
+            try
+                app.acceptDiagnosticRecord(fullfile(path,file),false);
+                app.updateReport("已选择搜索记录："+string(app.DiagnosticResumeFile)+"；续跑前会重新复核证据。");
+            catch ME
+                app.showError('搜索记录读取失败',ME);
             end
         end
 
@@ -2811,6 +3042,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
         % Button pushed function: StartOptimizationButton_3
         function StartOptimizationButtonPushed(app, event)
+            if app.SearchRunning, return; end
             try
                 params = app.readParamsFromUI();
                 if params.Num ~= 12
@@ -2819,34 +3051,70 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 if app.FmaxField_4.Value ~= 2
                     error('当前对称布局算法使用 +X/-X 两个安装面，“安装面X”请设为2。');
                 end
-                optCfg = struct();
-                optCfg.optimization_target = app.DropDown1.Value;
-                optCfg.start_count = round(app.PopulationField.Value);
-                optCfg.max_time = app.GenerationField_3.Value;
-                % 本阶段只判断非零可控性，不再施加0.1的任务能力门槛。
-                optCfg.min_axis_capacity = 1e-5;
+                optCfg = app.readSearchSettings();
+                if strcmp(app.DropDown1.Value,'安装拓扑解析筛选')
+                    optCfg.solver='structural'; optCfg.max_group_size=6;
+                    app.SearchRunning=true;
+                    app.setSearchControlsEnabled(false);
+                    runCleanup=onCleanup(@()app.recoverInterruptedSearch()); %#ok<NASGU>
+                    app.setStatus('正在枚举严格零／非零模式并核对解析排除条件…');
+                    drawnow;
+                    result=Optim_Algorithm(params,optCfg);
+                    app.SearchRunning=false;
+                    app.setSearchControlsEnabled(true);
+                    app.refreshSearchState();
+                    app.SearchProgressFill.Position=[0,0,1,1];
+                    app.SearchProgressFill.Visible='on';
+                    app.ProgressLabel.Text=sprintf('本版解析规则扫描完成｜剩余 %d 种代表模式，%d 种带编号模式',result.representative_remaining,result.labelled_remaining);
+                    app.setStatus(result.message);
+                    app.updateReport(string(result.message)+"｜模式与证明清单："+string(result.report_file));
+                    return;
+                end
+                scopeKey = app.searchScopeKey();
+                diagnostic = strcmp(app.DropDown1.Value,'完整组选必要条件');
                 app.MinimumAxisCapacityField.Value = optCfg.min_axis_capacity;
-                if isstruct(app.OptimResult) && isfield(app.OptimResult,'constraints')
+                if strcmp(app.DropDown1.Value,'115拓扑自动布局搜索')
+                    optCfg.solver='supports'; optCfg.max_group_size=6;
+                    optCfg.support_slice_seconds=120;
+                    optCfg.support_max_slice_seconds=300;
+                elseif diagnostic
+                    optCfg.solver='diagnostic';
+                    optCfg.diagnostic_compare=false;
+                    optCfg.diagnostic_persistent=true;
+                    optCfg.diagnostic_branch_time=min(30,optCfg.max_time/3);
+                    optCfg.diagnostic_latest_path=fullfile(app.ProjectRoot,'Optim_diagnosis_latest.json');
+                    if ~isempty(app.DiagnosticResumeFile), optCfg.resume_file=app.DiagnosticResumeFile; end
+                elseif ~app.DiagnosticTrusted || ~strcmp(scopeKey,app.DiagnosticScopeKey) || ...
+                        ~strcmp(app.DiagnosticRecord.status,'necessary_conditions_sat') || ...
+                        ~isfield(app.DiagnosticRecord,'geometry_checkpoint_file')
+                    error('请先在当前约束下完成完整组选必要条件的搜索和精确复核。');
+                elseif isstruct(app.OptimResult) && isfield(app.OptimResult,'constraints') && ...
+                        strcmp(scopeKey,app.GeometryScopeKey)
                     optCfg.seed = mod(app.OptimResult.constraints.seed+1,2^32);
                     if isfield(app.OptimResult,'output_file') && isfile(app.OptimResult.output_file)
                         optCfg.resume_file = app.OptimResult.output_file;
                     end
+                else
+                    optCfg.resume_file=app.DiagnosticRecord.geometry_checkpoint_file;
                 end
                 app.beginOptimizationProgress(optCfg.start_count);
-                optCfg.y_max = app.NumericEditField1_2.Value;
-                optCfg.z_max = app.NumericEditField2_4.Value;
-                optCfg.position_a_range = app.parseMathRange(app.EditField1_2.Value, '位置参数 a 范围');
-                optCfg.position_b_range = app.parseMathRange(app.EditField1_3.Value, '位置参数 b 范围');
-                optCfg.alpha_range = app.parseMathRange(app.EditField1_4.Value, '方位角 α 范围');
-                optCfg.beta_range = app.parseMathRange(app.EditField1_5.Value, '俯仰角 β 范围');
-                optCfg.min_install_distance = app.NumericEditField2_5.Value;
-                optCfg.min_install_angle_deg = app.NumericEditField2_6.Value;
-                optCfg.save_result = true;
-                optCfg.output_dir = app.ProjectRoot;
+                runCleanup = onCleanup(@()app.recoverInterruptedSearch()); %#ok<NASGU>
                 optCfg.progress_callback = @(info) ...
                     app.updateOptimizationProgress(info);
                 evalc('result = Optim_Algorithm(params, optCfg);');
+                if diagnostic
+                    app.finishOptimizationProgress(false);
+                    app.updateReport(string(result.message)+"｜诊断报告："+string(result.diagnostic_file));
+                    if isfield(result.solver_evidence,'diagnostic_report_file')
+                        app.acceptDiagnosticRecord(result.solver_evidence.diagnostic_report_file,true);
+                    else
+                        app.restoreLatestDiagnostic();
+                        app.setStatus(result.message);
+                    end
+                    return;
+                end
                 app.OptimResult = result;
+                app.GeometryScopeKey = scopeKey;
                 if ~result.feasible
                     reportLine = string(result.message);
                     if strlength(result.output_file) > 0
@@ -2859,6 +3127,18 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     app.finishOptimizationProgress(false);
                     app.ProgressLabel.Text = sprintf('搜索结束｜耗时 %.1f s',result.elapsed_time);
                     app.setStatus(sprintf('未生成可行新布局，当前布局保持不变｜状态：%s｜最高覆盖%d/156',result.status,result.best_coverage));
+                    if strcmp(optCfg.solver,'supports')
+                        app.StartOptimizationButton_3.Text='继续拓扑搜索';
+                        app.setStatus(result.message);
+                        if isfield(result.solver_evidence,'support_total')
+                            e=result.solver_evidence;
+                            app.ProgressLabel.Text=sprintf('已保存｜已访问 %d/%d 拓扑｜累计 %d 次轮转｜点击继续；不代表无解',e.support_seen,e.support_total,e.support_visits);
+                            if isfield(e,'search_metrics')
+                                m=e.search_metrics;
+                                app.ProgressLabel.Text=sprintf('已保存｜新直接几何%d次｜计算%d次｜节点%d｜候选检查%d｜最高%d/156',m.direct_calls,m.direct_evaluations,m.nodes_since_upgrade,m.candidate_checks,result.best_coverage);
+                            end
+                        end
+                    end
                     return;
                 end
                 params.Num = size(result.B_opt, 2);
@@ -2878,8 +3158,15 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                 app.updateReport(reportLine);
                 app.finishOptimizationProgress(true);
                 app.setStatus('首个可行布局已生成｜156项及调用器复核通过，未进行能力最大化');
+                if strcmp(optCfg.solver,'supports')
+                    app.StartOptimizationButton_3.Text='已验证完整可行布局';
+                    app.StartOptimizationButton_3.Enable='off';
+                end
             catch ME
                 app.finishOptimizationProgress(false);
+                if exist('diagnostic','var') && diagnostic
+                    app.restoreLatestDiagnostic();
+                end
                 % 输入校验等尚未进入优化器的异常，也保存完整堆栈以便后续定位。
                 try
                     errorFile = fullfile(app.ProjectRoot,['Optim_error_',char(datetime('now','Format','yyyyMMdd_HHmmss_SSS')),'.txt']);
@@ -2936,60 +3223,187 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
         end
 
         % Button pushed function: MetricsEvaluateButton
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                     'Jt', NaN, 'Jf', NaN, 'Score', NaN), 0, 1);
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                         layoutSet(layoutIndex).B, params, faultLevel);
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                 app.SingleFaultInfoLabel.Text = singleFault.WeightText;
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%                     "个布局的控制能力、可诊断性、归一化指标和综合评价。");
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                     '策略能力为已验证端点；未证实不代表无解，12向通过不等于闭环成功。干扰须结合通过率阅读。'], ...
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%                     "个布局的策略能力、硬件对照、参考指令及实际时序干扰。");
+% 原说明保留：'实际/理论能力按连续分配计算；时序验证列另计脉宽和调度。图中各组选取并集，不填补方向间空隙。'
+% 原策略明细显示实现保留：
+%                 app.PolicyDetailTable.ColumnWidth = [{130,90,120},repmat({105},1,numel(policyTable.ColumnNames)-3)];
+%                 app.PolicyInfoLabel.Text = sprintf(['%s｜参考单轴幅值：%.3g N / %.3g N·m；含36条姿轨组合指令。', ...
+%                     '实际/理论能力按连续分配计算；多轴输出叠加且单台总占空比≤1。时序验证另计脉宽和调度。'], ...
+%                     app.AllocationModeDropDown_2.Value,0.2*params.F_max,0.4*params.F_max);
         function MetricsEvaluateButtonPushed(app, event)
             try
                 app.setBusy('正在计算可重构设计指标...');
                 params = app.readParamsFromUI();
                 layoutSet = app.buildAllCompatibleLayoutSet(size(app.CurrentB, 2));
                 params.Num = size(layoutSet(1).B, 2);
-                faultyIndices = app.selectedMetricsFaultSet(params.Num);
-                faultLevel = numel(faultyIndices);
+                [~, faultCases] = app.selectedMetricsFaultSet(params.Num);
+                faultLevels = cellfun(@numel, faultCases);
+                faultLevel = max(faultLevels);
                 summaries = repmat(struct('Name', '', 'Jc', NaN, ...
                     'JcForce', NaN, 'JcTorque', NaN, 'Jo', NaN, ...
-                    'Jt', NaN, 'Jf', NaN, 'Score', NaN), 0, 1);
+                    'Jt', NaN, 'Jf', NaN, 'Score', NaN, 'PolicyEvaluation',struct()), 0, 1);
                 for layoutIndex = 1:numel(layoutSet)
                     item = app.evaluateLayoutSummary(layoutSet(layoutIndex).name, ...
-                        layoutSet(layoutIndex).B, params, faultLevel);
+                        layoutSet(layoutIndex).B, params, faultLevel, faultCases);
                     summaries(end + 1, 1) = item; %#ok<AGROW>
                 end
                 app.EvaluationResult = summaries;
 
-                comparison = RCPlotter.metricComparisonData( ...
-                    params, layoutSet, faultLevel);
-                metricAxes = [app.MetricsJcAxes, app.MetricsJoAxes, ...
-                    app.MetricsJtAxes, app.MetricsJfAxes];
-                for metricIndex = 1:4
-                    RCPlotter.plotMetricBars( ...
-                        metricAxes(metricIndex), comparison, metricIndex);
+                % 同一故障台数只评价一次，各子页筛选自己的确切故障编号。
+                comparisonLevels = unique(faultLevels);
+                comparisons = cell(size(comparisonLevels));
+                for levelIndex = 1:numel(comparisonLevels)
+                    comparisons{levelIndex} = RCPlotter.metricComparisonData( ...
+                        params, layoutSet, comparisonLevels(levelIndex));
                 end
 
-                RCPlotter.plotControlEnvelopeComparison( ...
-                    app.MetricsForceAxes, app.MetricsTorqueAxes, ...
-                    params, layoutSet, faultyIndices);
+                app.resetMetricsComparisonTabs();
+                parentTabs = {app.MetricsChartsTab, ...
+                    app.MetricsControlTab, app.MetricsAnglesTab};
+                baseGrids = {app.MetricsChartsGrid, ...
+                    app.MetricsControlGrid, app.MetricsAnglesGrid};
+                caseGroups = cell(1, numel(parentTabs));
+                for groupIndex = 1:numel(parentTabs)
+                    host = uigridlayout(parentTabs{groupIndex}, [1, 1]);
+                    host.Padding = [0, 0, 0, 0];
+                    host.Tag = 'RCMetricsComparisonHost';
+                    caseGroups{groupIndex} = uitabgroup(host);
+                    caseGroups{groupIndex}.Tag = 'RCComparisonRuntime';
+                end
+                baseAngleAxes = app.prepareDiagnosticAxes(numel(layoutSet));
 
-                angleAxes = app.prepareDiagnosticAxes(numel(layoutSet));
-                for layoutIndex = 1:numel(layoutSet)
-                    options = struct('Title', sprintf('%s｜故障%s：6维向量夹角', ...
-                        layoutSet(layoutIndex).name, ...
-                        app.faultSetText(faultyIndices)));
-                    RCPlotter.plotDirectionAngleMatrix( ...
-                        angleAxes(layoutIndex), layoutSet(layoutIndex).B, ...
-                        faultyIndices, options);
+                for caseIndex = 1:numel(faultCases)
+                    faultyIndices = faultCases{caseIndex};
+                    if isempty(faultyIndices)
+                        conditionText = '标况';
+                    else
+                        conditionText = ['故障', app.faultSetText(faultyIndices)];
+                    end
+                    app.StatusLabel.Text = sprintf('正在绘制可重构评价｜%s｜%d/%d', ...
+                        conditionText, caseIndex, numel(faultCases));
+                    caseGrids = cell(1, numel(caseGroups));
+                    for groupIndex = 1:numel(caseGroups)
+                        caseTab = uitab(caseGroups{groupIndex}, 'Title', conditionText);
+                        if caseIndex == 1
+                            caseGrids{groupIndex} = baseGrids{groupIndex};
+                            caseGrids{groupIndex}.Parent = caseTab;
+                        else
+                            caseGrids{groupIndex} = uigridlayout(caseTab);
+                        end
+                    end
+                    if caseIndex == 1
+                        metricAxes = [app.MetricsJcAxes, app.MetricsJoAxes, ...
+                            app.MetricsJtAxes, app.MetricsJfAxes];
+                        controlAxes = [app.MetricsForceAxes, app.MetricsTorqueAxes];
+                        angleAxes = baseAngleAxes;
+                    else
+                        caseGrids{1}.RowHeight = {'1x', '1x'};
+                        caseGrids{1}.ColumnWidth = {'1x', '1x'};
+                        metricAxes = gobjects(1, 4);
+                        for metricIndex = 1:4
+                            metricAxes(metricIndex) = uiaxes(caseGrids{1});
+                            metricAxes(metricIndex).Layout.Row = ceil(metricIndex / 2);
+                            metricAxes(metricIndex).Layout.Column = mod(metricIndex - 1, 2) + 1;
+                        end
+                        caseGrids{2}.RowHeight = {'1x'};
+                        caseGrids{2}.ColumnWidth = {'1x', '1x'};
+                        controlAxes = gobjects(1, 2);
+                        for axesIndex = 1:2
+                            controlAxes(axesIndex) = uiaxes(caseGrids{2});
+                            controlAxes(axesIndex).Layout.Row = 1;
+                            controlAxes(axesIndex).Layout.Column = axesIndex;
+                        end
+                        columnCount = min(3, numel(layoutSet));
+                        rowCount = ceil(numel(layoutSet) / columnCount);
+                        caseGrids{3}.ColumnWidth = repmat({'1x'}, 1, columnCount);
+                        caseGrids{3}.RowHeight = repmat({'1x'}, 1, rowCount);
+                        angleAxes = gobjects(1, numel(layoutSet));
+                        for layoutIndex = 1:numel(layoutSet)
+                            angleAxes(layoutIndex) = uiaxes(caseGrids{3});
+                            angleAxes(layoutIndex).Layout.Row = ceil(layoutIndex / columnCount);
+                            angleAxes(layoutIndex).Layout.Column = mod(layoutIndex - 1, columnCount) + 1;
+                        end
+                    end
+                    levelIndex = find(comparisonLevels == numel(faultyIndices), 1);
+                    comparison = comparisons{levelIndex};
+                    selectedRow = app.findFaultSetRow( ...
+                        comparison.Evaluations{1}.FaultSets, faultyIndices);
+                    comparison.MetricValues = comparison.MetricValues(selectedRow, :, :);
+                    comparison.FaultLabels = comparison.FaultLabels(selectedRow);
+                    for metricIndex = 1:4
+                        RCPlotter.plotMetricBars( ...
+                            metricAxes(metricIndex), comparison, metricIndex);
+                    end
+                    RCPlotter.plotControlEnvelopeComparison( ...
+                        controlAxes(1), controlAxes(2), params, layoutSet, faultyIndices);
+                    for layoutIndex = 1:numel(layoutSet)
+                        options = struct('Title', sprintf('%s｜%s：6维向量夹角', ...
+                            layoutSet(layoutIndex).name, conditionText));
+                        RCPlotter.plotDirectionAngleMatrix( ...
+                            angleAxes(layoutIndex), layoutSet(layoutIndex).B, ...
+                            faultyIndices, options);
+                    end
+                    drawnow limitrate nocallbacks;
                 end
 
-                singleFault = RCPlotter.singleFaultEvaluationData(params, layoutSet);
+                singleFault = RCPlotter.singleFaultEvaluationData(params, layoutSet, faultCases);
                 app.SingleFaultTable.ColumnName = singleFault.ColumnNames;
                 app.SingleFaultTable.Data = singleFault.Data;
-                app.SingleFaultInfoLabel.Text = singleFault.WeightText;
+                app.SingleFaultTable.ColumnWidth = 'auto';
+                app.SingleFaultInfoLabel.Text = [singleFault.WeightText, ...
+                    '。按当前策略计算；参考指令未全通过时不参与综合评分。平均分只含通过工况，综合评分不代替闭环仿真。'];
+                for layoutIndex=1:numel(layoutSet)
+                    app.EvaluationResult(layoutIndex).Score=mean(singleFault.Evaluations{layoutIndex}.Score,'omitnan');
+                end
+                % 姿轨干扰页已撤下：不再运行该页的额外测试指令或导出该表。
+%                 policyTable = RCPlotter.policyComparisonData(params, layoutSet, faultCases);
+%                 app.PolicyDetailTable.ColumnName = policyTable.ColumnNames;
+%                 app.PolicyDetailTable.Data = policyTable.Data;
+%                 app.PolicyDetailTable.ColumnWidth = {90,60,120,100,120,185,185,145,160,160,180};
+%                 app.PolicyInfoLabel.Text = sprintf(['三策略同条件：各26条纯力(%.3g N)/纯力矩(%.3g Nm)，含单/双/三轴联动。', ...
+%                     '逐时段比较反向连续总能力，取最不利比值；未扣除当前任务占用，不代表即时可抵消。', ...
+%                     '指令或时序未通过时标记待复核，低干扰不等于控制有效。'], ...
+%                     0.2*params.F_max,0.4*params.F_max);
+%                 for layoutIndex=1:numel(layoutSet)
+%                     app.EvaluationResult(layoutIndex).Interference=policyTable.Evaluations(layoutIndex,:);
+%                 end
                 app.MetricsViewTabGroup.SelectedTab = app.MetricsSingleFaultTab;
-                faultText = app.faultSetText(faultyIndices);
-                app.updateReport("可重构设计指标计算完成：故障" + ...
+                faultText = app.faultConditionText();
+                app.updateReport("可重构设计指标计算完成：" + ...
                     string(faultText) + "，已对比" + string(numel(layoutSet)) + ...
-                    "个布局的控制能力、可诊断性、归一化指标和综合评价。");
-                app.setStatus(sprintf('可重构设计指标计算完成｜故障%s｜%d个布局', ...
+                    "个布局的实际/理论控制能力、可诊断性和综合指标。");
+                app.setStatus(sprintf('可重构设计指标计算完成｜%s｜%d个布局', ...
                     faultText, numel(layoutSet)));
             catch ME
                 app.showError('设计指标计算失败', ME);
+            end
+        end
+
+        function resetMetricsComparisonTabs(app)
+            parentTabs = {app.MetricsChartsTab, ...
+                app.MetricsControlTab, app.MetricsAnglesTab};
+            baseGrids = {app.MetricsChartsGrid, ...
+                app.MetricsControlGrid, app.MetricsAnglesGrid};
+            for index = 1:numel(parentTabs)
+                % 保留 App Designer 的基础组件，只清除运行时工况子页。
+                baseGrids{index}.Parent = parentTabs{index};
+                baseGrids{index}.Visible = 'on';
+                runtimeHosts = findall(parentTabs{index}, ...
+                    'Tag', 'RCMetricsComparisonHost');
+                if ~isempty(runtimeHosts)
+                    delete(runtimeHosts);
+                end
             end
         end
 
@@ -3014,7 +3428,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
                     faultDescription = app.faultSetText(faultCases{1});
                 end
                 strategy = app.buildAllocationStrategyComparison( ...
-                    params, layout, faultCases);
+                    params, app.buildComparisonLayoutSet(layout), faultCases);
                 app.updateAllocationStrategyTable(strategy);
                 app.AllocationViewTabGroup.SelectedTab = ...
                     app.AllocationStrategyTab;
@@ -3037,78 +3451,58 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             try
                 app.setBusy('正在运行闭环仿真...');
                 params = app.readParamsFromUI();
-                params.alloc_mode = app.mapAllocationMode( ...
-                    app.AllocationModeDropDown_2.Value);
+                params.alloc_mode = app.mapAllocationMode(app.AllocationModeDropDown_2.Value);
                 params.allocation_strategy = 'primary_backup';
                 selectedLayout = app.selectedSimulationLayout();
-                params.Num = size(selectedLayout.B, 2);
+                layoutSet = app.buildComparisonLayoutSet(selectedLayout);
                 simCfg = app.readSimulationConfig();
-                faultValue = simCfg.true_faults;
-                explicitFaultCount = app.requestedFaultCount(params.Num);
-                configuredFaultCases = app.getFaultCases( ...
-                    params, faultValue, explicitFaultCount);
-
-                [faultSets, faultLabels] = app.simulationFaultCases( ...
-                    params, configuredFaultCases);
-                faultLogs = cell(1, numel(faultSets));
-                for caseIndex = 1:numel(faultSets)
-                    app.setBusy(sprintf('正在仿真对比工况 %d/%d...', ...
-                        caseIndex, numel(faultSets)));
-                    faultLogs{caseIndex} = app.runClosedloopCase( ...
-                        params, selectedLayout.B, simCfg, faultSets{caseIndex});
+                logs = {};
+                labels = {};
+                allFaultSets = {};
+                matrices = {};
+                bodySizes = {};
+                layoutIndices = [];
+                caseSets = cell(1, numel(layoutSet));
+                for layoutIndex = 1:numel(layoutSet)
+                    layoutParams = params;
+                    layoutParams.Num = size(layoutSet(layoutIndex).B, 2);
+                    configured = app.getFaultCases(layoutParams);
+                    caseSets{layoutIndex} = app.simulationFaultCases(layoutParams, configured);
                 end
-
-                if numel(configuredFaultCases) ~= 1
-                    selectedFaults = [];
-                    stateLog = faultLogs{1};
-                    selectedCondition = '标况';
-                else
-                    selectedFaults = configuredFaultCases{1};
-                    stateLog = faultLogs{2};
-                    selectedCondition = ['故障', app.faultSetText(selectedFaults)];
+                totalCases = sum(cellfun(@numel, caseSets));
+                for layoutIndex = 1:numel(layoutSet)
+                    layout = layoutSet(layoutIndex);
+                    faultSets = caseSets{layoutIndex};
+                    for caseIndex = 1:numel(faultSets)
+                        label = app.comparisonCaseLabel(layout.name, faultSets{caseIndex});
+                        app.setBusy(sprintf('正在仿真 %d/%d｜%s', numel(logs) + 1, totalCases, label));
+                        logs{end + 1} = app.runClosedloopCase(params, layout.B, simCfg, faultSets{caseIndex}); %#ok<AGROW>
+                        labels{end + 1} = label; %#ok<AGROW>
+                        allFaultSets{end + 1} = faultSets{caseIndex}; %#ok<AGROW>
+                        matrices{end + 1} = params.F_max * layout.B; %#ok<AGROW>
+                        halfSize = app.currentBodyHalfSize();
+                        halfSize(1) = max(max(abs(layout.r(1, :))), 1e-6);
+                        bodySizes{end + 1} = halfSize; %#ok<AGROW>
+                        layoutIndices(end + 1) = layoutIndex; %#ok<AGROW>
+                    end
                 end
-                stateLogs = {stateLog};
-                stateLabels = {sprintf('%s·%s', ...
-                    selectedLayout.name, selectedCondition)};
-
                 app.SimulationLog = struct( ...
-                    'LayoutSet', selectedLayout, ...
-                    'SelectedLayoutName', selectedLayout.name, ...
-                    'SelectedFaults', selectedFaults, ...
-                    'FaultTime', simCfg.faulty_time, ...
+                    'LayoutSet', layoutSet, 'SelectedLayoutName', selectedLayout.name, ...
+                    'SelectedFaults', {allFaultSets}, 'FaultTime', simCfg.faulty_time, ...
                     'ReuseStrategy', app.AllocationModeDropDown_2.Value, ...
                     'AllocationStrategy', '最简主备分配', ...
-                    'Controller', struct('Kp_pos', simCfg.Kp_pos, ...
-                        'Kd_pos', simCfg.Kd_pos, 'Kp_att', simCfg.Kp_att, ...
-                        'Ki_att', simCfg.Ki_att, 'Kd_att', simCfg.Kd_att), ...
-                    'StateLog', stateLog, ...
-                    'ComparisonLogs', {stateLogs}, ...
-                    'ComparisonLabels', {stateLabels}, ...
-                    'FaultLayoutName', selectedLayout.name, ...
-                    'FaultSets', {faultSets}, 'FaultLogs', {faultLogs}, ...
-                    'FaultLabels', {faultLabels});
-                app.plotSimulationResult(stateLogs, stateLabels, ...
-                    faultLogs, faultLabels);
-                verification = app.buildActualInvocationVerification( ...
-                    params.F_max * selectedLayout.B, faultLogs, faultLabels);
+                    'Controller', struct('Kp_pos', simCfg.Kp_pos, 'Kd_pos', simCfg.Kd_pos, ...
+                        'Kp_att', simCfg.Kp_att, 'Ki_att', simCfg.Ki_att, 'Kd_att', simCfg.Kd_att), ...
+                    'StateLog', logs{1}, 'ComparisonLogs', {logs}, 'ComparisonLabels', {labels}, ...
+                    'CaseLayoutIndices', layoutIndices, 'CaseBodyHalfSizes', {bodySizes}, ...
+                    'FaultSets', {allFaultSets}, 'FaultLogs', {logs}, 'FaultLabels', {labels});
+                app.plotSimulationResult(logs, labels);
+                verification = app.buildActualInvocationVerification(matrices, logs, labels);
                 app.updateActualInvocationVerification(verification);
                 app.SimulationViewTabGroup.SelectedTab = app.SimulationPositionTab;
-                if numel(configuredFaultCases) ~= 1
-                    comparisonText = sprintf('标况和%s的全部%d种工况', ...
-                        app.faultConditionText(), numel(configuredFaultCases));
-                else
-                    comparisonText = ['标况和', selectedCondition];
-                end
-                app.updateReport(sprintf(['闭环仿真完成：布局=%s，指定工况=%s，', ...
-                    '故障时刻=%.3g s，复用策略=%s；', ...
-                    '控制器参数=[位置Kp %.3g，位置Kd %.3g，姿态Kp %.3g，', ...
-                    '姿态Ki %.3g，姿态Kd %.3g]；故障对比包含%s。'], ...
-                    selectedLayout.name, selectedCondition, ...
-                    simCfg.faulty_time, app.AllocationModeDropDown_2.Value, ...
-                    simCfg.Kp_pos, simCfg.Kd_pos, simCfg.Kp_att, ...
-                    simCfg.Ki_att, simCfg.Kd_att, comparisonText));
-                app.setStatus(sprintf('闭环仿真完成｜%s｜%s', ...
-                    selectedLayout.name, app.AllocationModeDropDown_2.Value));
+                app.updateReport(sprintf('闭环仿真完成：%d个布局，%d个工况；故障时刻=%.3g s，复用策略=%s。', ...
+                    numel(layoutSet), numel(logs), simCfg.faulty_time, app.AllocationModeDropDown_2.Value));
+                app.setStatus(sprintf('闭环仿真完成｜%d个布局｜%d个工况', numel(layoutSet), numel(logs)));
             catch ME
                 app.showError('闭环仿真失败', ME);
             end
@@ -3129,6 +3523,18 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
     methods (Access = private)
 
         % Create UIFigure and components
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             app.MetricsControlTab.Title = '控制能力';
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             app.EvaluationTable.ColumnName = {'故障编号'; '力裕度JcF'; '力矩裕度JcT'; '六维裕度Jc'; '判断结果'};
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             app.Label8.Text = '可重构性判断';
+% 原实现保留（口径或界面已调整；冲突部分停用）：
+%             app.Label21.Text = '评价指标｜综合评价';
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%             app.EvaluationTable.ColumnName = {'故障编号'; '策略力/N'; '策略力矩/Nm'; '归一化最弱轴'; '硬件纯力/N'; '硬件纯矩/Nm'; '策略方向/12'; '等脉宽方向/12'; '参考通过/%'; '判断结果'};
+% 旧口径保留：连续分配视图不再使用时序样本凸包。
+%             app.Label21.Text = '策略能力｜硬件对照｜实际干扰';
         function createComponents(app)
 
             % Create UIFigure and hide until all components are created
@@ -3140,7 +3546,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             % Create RootGrid
             app.RootGrid = uigridlayout(app.UIFigure);
             app.RootGrid.ColumnWidth = {'1x'};
-            app.RootGrid.RowHeight = {72, '1x', 38};
+            app.RootGrid.RowHeight = {72, '1x', 82};
             app.RootGrid.RowSpacing = 0;
             app.RootGrid.Padding = [0 0 0 0];
 
@@ -3153,31 +3559,45 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create GridLayout2
             app.GridLayout2 = uigridlayout(app.Panel1);
-            app.GridLayout2.ColumnWidth = {'1x', 220, 245, 180};
-            app.GridLayout2.RowHeight = {'1x'};
-            app.GridLayout2.Padding = [18 2 12 2];
+            app.GridLayout2.ColumnWidth = {'1x', 250};
+            app.GridLayout2.RowHeight = {24, 18, 20};
+            app.GridLayout2.RowSpacing = 3;
+            app.GridLayout2.Padding = [18 5 18 5];
 
             % Create Label2
             app.Label2 = uilabel(app.GridLayout2);
-            app.Label2.HorizontalAlignment = 'right';
+            app.Label2.HorizontalAlignment = 'left';
             app.Label2.FontColor = [0.38 0.46 0.53];
-            app.Label2.Layout.Row = 1;
-            app.Label2.Layout.Column = 4;
-            app.Label2.Text = '原型版本 0.1｜MATLAB R2023b';
+            app.Label2.Layout.Row = 3;
+            app.Label2.Layout.Column = [1 2];
+            app.Label2.Text = '搜索记录自动保存；超时不代表无解。';
 
             % Create StatusLabel
             app.StatusLabel = uilabel(app.GridLayout2);
             app.StatusLabel.Layout.Row = 1;
-            app.StatusLabel.Layout.Column = 1;
+            app.StatusLabel.Layout.Column = [1 2];
             app.StatusLabel.Text = '就绪｜已载入默认参数';
 
             % Create ProgressLabel
             app.ProgressLabel = uilabel(app.GridLayout2);
-            app.ProgressLabel.HorizontalAlignment = 'center';
+            app.ProgressLabel.HorizontalAlignment = 'left';
             app.ProgressLabel.FontColor = [0.25 0.36 0.45];
-            app.ProgressLabel.Layout.Row = 1;
-            app.ProgressLabel.Layout.Column = 3;
+            app.ProgressLabel.Layout.Row = 2;
+            app.ProgressLabel.Layout.Column = 1;
             app.ProgressLabel.Text = '等待运行｜0%｜耗时 00:00';
+
+            app.SearchProgressTrack = uipanel(app.GridLayout2);
+            app.SearchProgressTrack.Layout.Row = 2;
+            app.SearchProgressTrack.Layout.Column = 2;
+            app.SearchProgressTrack.BorderType = 'none';
+            app.SearchProgressTrack.BackgroundColor = [0.78 0.83 0.87];
+            app.SearchProgressTrack.AutoResizeChildren = 'off';
+            app.SearchProgressFill = uipanel(app.SearchProgressTrack);
+            app.SearchProgressFill.Units = 'normalized';
+            app.SearchProgressFill.Position = [0 0 eps 1];
+            app.SearchProgressFill.BorderType = 'none';
+            app.SearchProgressFill.BackgroundColor = [0.12 0.52 0.43];
+            app.SearchProgressFill.Visible = 'off';
 
             % Create BodyGrid
             app.BodyGrid = uigridlayout(app.RootGrid);
@@ -3229,7 +3649,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create SimulationScheduleTab
             app.SimulationScheduleTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationScheduleTab.Title = '调用时序';
+            app.SimulationScheduleTab.Title = '推力器调用时序对比';
 
             % Create SimulationScheduleGrid
             app.SimulationScheduleGrid = uigridlayout(app.SimulationScheduleTab);
@@ -3238,8 +3658,13 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SimulationScheduleGrid.Padding = [8 8 8 8];
 
             % Create SimulationScheduleAxes
-            app.SimulationScheduleAxes = uiaxes(app.SimulationScheduleGrid);
-            app.SimulationScheduleAxes.Layout.Row = 2;
+            app.SimulationScheduleCaseTabGroup = uitabgroup(app.SimulationScheduleGrid);
+            app.SimulationScheduleCaseTabGroup.Layout.Row = 2;
+            app.SimulationNominalScheduleTab = uitab(app.SimulationScheduleCaseTabGroup);
+            app.SimulationNominalScheduleTab.Title = '标况（原布局）';
+            app.SimulationNominalScheduleGrid = uigridlayout(app.SimulationNominalScheduleTab, [1 1]);
+            app.SimulationScheduleAxes = uiaxes(app.SimulationNominalScheduleGrid);
+            app.SimulationScheduleAxes.Layout.Row = 1;
             app.SimulationScheduleAxes.Layout.Column = 1;
 
             % Create SimulationScheduleControlGrid
@@ -3285,10 +3710,15 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create SimulationPulseTab
             app.SimulationPulseTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationPulseTab.Title = '各推力器脉宽';
+            app.SimulationPulseTab.Title = '推力器实际脉宽对比';
 
             % Create SimulationPulseGrid
-            app.SimulationPulseGrid = uigridlayout(app.SimulationPulseTab);
+            app.SimulationPulseHostGrid = uigridlayout(app.SimulationPulseTab, [1 1]);
+            app.SimulationPulseHostGrid.Padding = [0 0 0 0];
+            app.SimulationPulseCaseTabGroup = uitabgroup(app.SimulationPulseHostGrid);
+            app.SimulationNominalPulseTab = uitab(app.SimulationPulseCaseTabGroup);
+            app.SimulationNominalPulseTab.Title = '标况（原布局）';
+            app.SimulationPulseGrid = uigridlayout(app.SimulationNominalPulseTab);
             app.SimulationPulseGrid.ColumnWidth = {'1x'};
             app.SimulationPulseGrid.RowHeight = {'1x'};
             app.SimulationPulseGrid.Padding = [8 8 8 8];
@@ -3302,7 +3732,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create SimulationTrajectoryTab
             app.SimulationTrajectoryTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationTrajectoryTab.Title = '轨迹姿态视图';
+            app.SimulationTrajectoryTab.Title = '位置姿态视图对比';
 
             % Create SimulationTrajectoryGrid
             app.SimulationTrajectoryGrid = uigridlayout(app.SimulationTrajectoryTab);
@@ -3315,37 +3745,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SimulationTrajectoryCaseTabGroup.Layout.Row = 1;
             app.SimulationTrajectoryCaseTabGroup.Layout.Column = 1;
 
-            % Create SimulationFaultTrajectoryTab
-            app.SimulationFaultTrajectoryTab = uitab(app.SimulationTrajectoryCaseTabGroup);
-            app.SimulationFaultTrajectoryTab.Title = '单推力器故障';
-
-            % Create SimulationFaultTrajectoryGrid
-            app.SimulationFaultTrajectoryGrid = uigridlayout(app.SimulationFaultTrajectoryTab);
-            app.SimulationFaultTrajectoryGrid.Padding = [8 8 8 8];
-
-            % Create SimulationFaultTrajectory3DAxes
-            app.SimulationFaultTrajectory3DAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
-            app.SimulationFaultTrajectory3DAxes.Layout.Row = 1;
-            app.SimulationFaultTrajectory3DAxes.Layout.Column = 1;
-
-            % Create SimulationFaultTrajectoryXYAxes
-            app.SimulationFaultTrajectoryXYAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
-            app.SimulationFaultTrajectoryXYAxes.Layout.Row = 1;
-            app.SimulationFaultTrajectoryXYAxes.Layout.Column = 2;
-
-            % Create SimulationFaultTrajectoryXZAxes
-            app.SimulationFaultTrajectoryXZAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
-            app.SimulationFaultTrajectoryXZAxes.Layout.Row = 2;
-            app.SimulationFaultTrajectoryXZAxes.Layout.Column = 1;
-
-            % Create SimulationFaultTrajectoryYZAxes
-            app.SimulationFaultTrajectoryYZAxes = uiaxes(app.SimulationFaultTrajectoryGrid);
-            app.SimulationFaultTrajectoryYZAxes.Layout.Row = 2;
-            app.SimulationFaultTrajectoryYZAxes.Layout.Column = 2;
-
             % Create SimulationNominalTrajectoryTab
             app.SimulationNominalTrajectoryTab = uitab(app.SimulationTrajectoryCaseTabGroup);
-            app.SimulationNominalTrajectoryTab.Title = '标况';
+            app.SimulationNominalTrajectoryTab.Title = '标况（原布局）';
 
             % Create SimulationNominalTrajectoryGrid
             app.SimulationNominalTrajectoryGrid = uigridlayout(app.SimulationNominalTrajectoryTab);
@@ -3373,7 +3775,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create SimulationCommandTab
             app.SimulationCommandTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationCommandTab.Title = '六维推力器实际输出';
+            app.SimulationCommandTab.Title = '推力器实际输出对比';
 
             % Create SimulationCommandGrid
             app.SimulationCommandGrid = uigridlayout(app.SimulationCommandTab);
@@ -3386,48 +3788,9 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SimulationCommandCaseTabGroup.Layout.Row = 1;
             app.SimulationCommandCaseTabGroup.Layout.Column = 1;
 
-            % Create SimulationFaultCommandTab
-            app.SimulationFaultCommandTab = uitab(app.SimulationCommandCaseTabGroup);
-            app.SimulationFaultCommandTab.Title = '单推力器故障';
-
-            % Create SimulationFaultCommandGrid
-            app.SimulationFaultCommandGrid = uigridlayout(app.SimulationFaultCommandTab);
-            app.SimulationFaultCommandGrid.ColumnWidth = {'1x', '1x', '1x'};
-            app.SimulationFaultCommandGrid.Padding = [8 8 8 8];
-
-            % Create SimulationFaultForceXAxes
-            app.SimulationFaultForceXAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultForceXAxes.Layout.Row = 1;
-            app.SimulationFaultForceXAxes.Layout.Column = 1;
-
-            % Create SimulationFaultForceYAxes
-            app.SimulationFaultForceYAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultForceYAxes.Layout.Row = 1;
-            app.SimulationFaultForceYAxes.Layout.Column = 2;
-
-            % Create SimulationFaultForceZAxes
-            app.SimulationFaultForceZAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultForceZAxes.Layout.Row = 1;
-            app.SimulationFaultForceZAxes.Layout.Column = 3;
-
-            % Create SimulationFaultTorqueXAxes
-            app.SimulationFaultTorqueXAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultTorqueXAxes.Layout.Row = 2;
-            app.SimulationFaultTorqueXAxes.Layout.Column = 1;
-
-            % Create SimulationFaultTorqueYAxes
-            app.SimulationFaultTorqueYAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultTorqueYAxes.Layout.Row = 2;
-            app.SimulationFaultTorqueYAxes.Layout.Column = 2;
-
-            % Create SimulationFaultTorqueZAxes
-            app.SimulationFaultTorqueZAxes = uiaxes(app.SimulationFaultCommandGrid);
-            app.SimulationFaultTorqueZAxes.Layout.Row = 2;
-            app.SimulationFaultTorqueZAxes.Layout.Column = 3;
-
             % Create SimulationNominalCommandTab
             app.SimulationNominalCommandTab = uitab(app.SimulationCommandCaseTabGroup);
-            app.SimulationNominalCommandTab.Title = '标况';
+            app.SimulationNominalCommandTab.Title = '标况（原布局）';
 
             % Create SimulationNominalCommandGrid
             app.SimulationNominalCommandGrid = uigridlayout(app.SimulationNominalCommandTab);
@@ -3464,51 +3827,17 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SimulationTorqueZAxes.Layout.Row = 2;
             app.SimulationTorqueZAxes.Layout.Column = 3;
 
-            % Create SimulationFaultCompareTab
-            app.SimulationFaultCompareTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationFaultCompareTab.Title = '故障工况对比';
-
-            % Create SimulationFaultGrid
-            app.SimulationFaultGrid = uigridlayout(app.SimulationFaultCompareTab);
-            app.SimulationFaultGrid.ColumnWidth = {'1x', '1x', '1x'};
-            app.SimulationFaultGrid.Padding = [8 8 8 8];
-
-            % Create SimulationFaultPosXAxes
-            app.SimulationFaultPosXAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosXAxes.Layout.Row = 1;
-            app.SimulationFaultPosXAxes.Layout.Column = 1;
-
-            % Create SimulationFaultPosYAxes
-            app.SimulationFaultPosYAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosYAxes.Layout.Row = 1;
-            app.SimulationFaultPosYAxes.Layout.Column = 2;
-
-            % Create SimulationFaultPosZAxes
-            app.SimulationFaultPosZAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultPosZAxes.Layout.Row = 1;
-            app.SimulationFaultPosZAxes.Layout.Column = 3;
-
-            % Create SimulationFaultAttXAxes
-            app.SimulationFaultAttXAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttXAxes.Layout.Row = 2;
-            app.SimulationFaultAttXAxes.Layout.Column = 1;
-
-            % Create SimulationFaultAttYAxes
-            app.SimulationFaultAttYAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttYAxes.Layout.Row = 2;
-            app.SimulationFaultAttYAxes.Layout.Column = 2;
-
-            % Create SimulationFaultAttZAxes
-            app.SimulationFaultAttZAxes = uiaxes(app.SimulationFaultGrid);
-            app.SimulationFaultAttZAxes.Layout.Row = 2;
-            app.SimulationFaultAttZAxes.Layout.Column = 3;
-
             % Create SimulationPositionTab
             app.SimulationPositionTab = uitab(app.SimulationViewTabGroup);
-            app.SimulationPositionTab.Title = '状态响应';
+            app.SimulationPositionTab.Title = '状态响应对比';
 
             % Create SimulationPositionGrid
-            app.SimulationPositionGrid = uigridlayout(app.SimulationPositionTab);
+            app.SimulationPositionHostGrid = uigridlayout(app.SimulationPositionTab, [1 1]);
+            app.SimulationPositionHostGrid.Padding = [0 0 0 0];
+            app.SimulationPositionCaseTabGroup = uitabgroup(app.SimulationPositionHostGrid);
+            app.SimulationNominalPositionTab = uitab(app.SimulationPositionCaseTabGroup);
+            app.SimulationNominalPositionTab.Title = '标况（原布局）';
+            app.SimulationPositionGrid = uigridlayout(app.SimulationNominalPositionTab);
             app.SimulationPositionGrid.Padding = [8 8 8 8];
 
             % Create SimulationAxes
@@ -3584,7 +3913,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create AllocationStrategyTable
             app.AllocationStrategyTable = uitable(app.AllocationStrategyGrid);
-            app.AllocationStrategyTable.ColumnName = {'控制类型'; '轴向'; '标况主份'; '主份配对'; '故障下调用'; '故障关停/状态'};
+            app.AllocationStrategyTable.ColumnName = {'控制类型'; '标况下调用（原布局）'; '故障下调用（原布局）'; '调用状态（原布局）'};
             app.AllocationStrategyTable.RowName = {};
             app.AllocationStrategyTable.Layout.Row = 1;
             app.AllocationStrategyTable.Layout.Column = 1;
@@ -3653,6 +3982,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SingleFaultInfoLabel.Layout.Row = 1;
             app.SingleFaultInfoLabel.Layout.Column = 1;
             app.SingleFaultInfoLabel.Text = '';
+            app.SingleFaultInfoLabel.WordWrap = 'on';
 
             % Create SingleFaultTable
             app.SingleFaultTable = uitable(app.MetricsSingleFaultGrid);
@@ -3660,6 +3990,20 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.SingleFaultTable.RowName = {};
             app.SingleFaultTable.Layout.Row = 2;
             app.SingleFaultTable.Layout.Column = 1;
+
+            % 策略明细单独展示，保留原综合评价表及全部图页。
+            % 姿轨干扰组件停用，原实现保留供后续闭环仿真使用。
+%             app.MetricsPolicyTab = uitab(app.MetricsViewTabGroup);
+%             % 原页名保留：策略能力与干扰。
+%             app.MetricsPolicyTab.Title = '姿轨干扰';
+%             app.MetricsPolicyGrid = uigridlayout(app.MetricsPolicyTab,[2,1]);
+%             % 原行高：app.MetricsPolicyGrid.RowHeight = {60,'1x'};
+%             app.MetricsPolicyGrid.RowHeight = {76,'1x'};
+%             app.PolicyInfoLabel = uilabel(app.MetricsPolicyGrid,'WordWrap','on');
+%             app.PolicyInfoLabel.Layout.Row = 1;
+%             app.PolicyDetailTable = uitable(app.MetricsPolicyGrid,'RowName',{});
+%             app.PolicyDetailTable.Layout.Row = 2;
+%
 
             % Create MetricsChartsTab
             app.MetricsChartsTab = uitab(app.MetricsViewTabGroup);
@@ -3718,7 +4062,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create MetricsControlTab
             app.MetricsControlTab = uitab(app.MetricsViewTabGroup);
-            app.MetricsControlTab.Title = '控制能力';
+            app.MetricsControlTab.Title = '控制能力包络';
 
             % Create MetricsControlGrid
             app.MetricsControlGrid = uigridlayout(app.MetricsControlTab);
@@ -3789,7 +4133,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create EvaluationTable
             app.EvaluationTable = uitable(app.JudgmentDetailGrid);
-            app.EvaluationTable.ColumnName = {'故障编号'; '力裕度JcF'; '力矩裕度JcT'; '六维裕度Jc'; '判断结果'};
+%             app.EvaluationTable.ColumnName = {'故障编号'; '时序验证力/N'; '时序验证力矩/Nm'; '归一化最弱轴'; '理论单轴力/N'; '理论单轴力矩/Nm'; '时序验证方向/12'; '等脉宽方向/12'; '参考通过/%'; '判断结果'};
+            app.EvaluationTable.ColumnName = {'故障编号'; '实际纯轴力/N'; '实际纯轴力矩/Nm'; '归一化最弱轴'; '理论纯轴力/N'; '理论纯轴力矩/Nm'; '连续方向/12'; '原点六维内点判断'};
             app.EvaluationTable.RowName = {};
             app.EvaluationTable.Layout.Row = 1;
             app.EvaluationTable.Layout.Column = 1;
@@ -3801,7 +4146,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.Label8.FontColor = [0.1 0.27 0.42];
             app.Label8.Layout.Row = 1;
             app.Label8.Layout.Column = 1;
-            app.Label8.Text = '可重构性判断';
+            app.Label8.Text = '当前策略的12方向与参考指令验证';
 
             % Create StartOptimizationButton_2
             app.StartOptimizationButton_2 = uibutton(app.GridLayout8, 'push');
@@ -3923,16 +4268,16 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create DropDown1
             app.DropDown1 = uidropdown(app.GridLayout21_3);
-            app.DropDown1.Items = {'首个可行布局'};
+            app.DropDown1.Items = {'115拓扑自动布局搜索','安装拓扑解析筛选','完整组选必要条件','安装几何与布局'};
             app.DropDown1.Layout.Row = 4;
             app.DropDown1.Layout.Column = 1;
-            app.DropDown1.Value = '首个可行布局';
+            app.DropDown1.Value = '115拓扑自动布局搜索';
 
             % Create Label37
             app.Label37 = uilabel(app.GridLayout21_3);
             app.Label37.Layout.Row = 3;
             app.Label37.Layout.Column = 1;
-            app.Label37.Text = '搜索目标';
+            app.Label37.Text = '搜索阶段';
 
             % Create MinimumAxisCapacityLabel
             app.MinimumAxisCapacityLabel = uilabel(app.GridLayout21_3);
@@ -3961,7 +4306,8 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.Label36_3 = uilabel(app.GridLayout21_3);
             app.Label36_3.Layout.Row = 1;
             app.Label36_3.Layout.Column = 2;
-            app.Label36_3.Text = '搜索时限 / s';
+            app.Label36_3.Text = '本轮搜索时限 / s';
+            app.GenerationField_3.Tooltip = '每次点击的时间预算；保持不变即可分轮续跑，增加时限可减少启动开销。';
 
             % Create PopulationField
             app.PopulationField = uieditfield(app.GridLayout21_3, 'numeric');
@@ -3975,7 +4321,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.Label35_3 = uilabel(app.GridLayout21_3);
             app.Label35_3.Layout.Row = 1;
             app.Label35_3.Layout.Column = 1;
-            app.Label35_3.Text = '初值数量';
+            app.Label35_3.Text = '几何阶段初值数量';
 
             % Create ThrusterPanel_2
             app.ThrusterPanel_2 = uipanel(app.GridLayout7);
@@ -4202,18 +4548,24 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
 
             % Create ParameterFileGrid_3
             app.ParameterFileGrid_3 = uigridlayout(app.GridLayout7);
-            app.ParameterFileGrid_3.ColumnWidth = {'1x', 104};
+            app.ParameterFileGrid_3.ColumnWidth = {'1x', 132, 146};
             app.ParameterFileGrid_3.RowHeight = {55};
             app.ParameterFileGrid_3.Padding = [0 6 0 0];
             app.ParameterFileGrid_3.Layout.Row = 4;
             app.ParameterFileGrid_3.Layout.Column = 1;
 
+            app.LoadSearchRecordButton = uibutton(app.ParameterFileGrid_3,'push');
+            app.LoadSearchRecordButton.Layout.Row = 1;
+            app.LoadSearchRecordButton.Layout.Column = 2;
+            app.LoadSearchRecordButton.Text = '载入搜索记录';
+            app.LoadSearchRecordButton.Tooltip = '通常自动接续上次记录；也可手动选择 diagnosis.json。';
+
             % Create StartOptimizationButton_3
             app.StartOptimizationButton_3 = uibutton(app.ParameterFileGrid_3, 'push');
             app.StartOptimizationButton_3.ButtonPushedFcn = createCallbackFcn(app, @StartOptimizationButtonPushed, true);
             app.StartOptimizationButton_3.Layout.Row = 1;
-            app.StartOptimizationButton_3.Layout.Column = 2;
-            app.StartOptimizationButton_3.Text = '优化布局';
+            app.StartOptimizationButton_3.Layout.Column = 3;
+            app.StartOptimizationButton_3.Text = '查找必要条件';
 
             % Create ParameterTab
             app.ParameterTab = uitab(app.TabGroup);
@@ -4799,7 +5151,7 @@ classdef RCDesignerPrototype < matlab.apps.AppBase
             app.Label21.FontColor = [0.2 0.27 0.33];
             app.Label21.Layout.Row = 2;
             app.Label21.Layout.Column = 1;
-            app.Label21.Text = '评价指标｜综合评价';
+            app.Label21.Text = '实际控制能力｜理论控制能力｜综合评价';
 
             % Create Label20
             app.Label20 = uilabel(app.GridLayout17);

@@ -1,0 +1,8 @@
+{
+  "before_status": "time_limit",
+  "before_method": false,
+  "after_status": "time_limit",
+  "after_method": false,
+  "longer_status": "time_limit",
+  "longer_method": true
+}

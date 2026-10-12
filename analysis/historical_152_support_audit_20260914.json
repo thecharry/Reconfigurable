@@ -1,0 +1,40 @@
+{
+  "x": [
+    0.2,
+    0,
+    0,
+    0.7853981633974483,
+    0.6,
+    -0.2,
+    1.5707963267948966,
+    0.7853981633974483,
+    0.6,
+    0.2,
+    4.71238898038469,
+    0.7853981633974483
+  ],
+  "support": "100111111111",
+  "coverage": 152,
+  "missing": [
+    {
+      "failed_thruster": 1,
+      "direction": "+Fy"
+    },
+    {
+      "failed_thruster": 2,
+      "direction": "-Fy"
+    },
+    {
+      "failed_thruster": 3,
+      "direction": "+Fy"
+    },
+    {
+      "failed_thruster": 4,
+      "direction": "-Fy"
+    }
+  ],
+  "minimum_install_distance": 0.4,
+  "inside_surviving_supports": true,
+  "feasible": false,
+  "independent_scalar_sum_check": true
+}

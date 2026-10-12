@@ -1,0 +1,8 @@
+{
+  "verified_demands": 156,
+  "arithmetic": "exact rational",
+  "independent_geometry": "r cross d, no production imports",
+  "unique_installation_points": 12,
+  "min_normalized_capacity": 0.4242640687119285,
+  "scope": "Independent pulses, cycle-integrated purity only; not original equal-pulse model"
+}

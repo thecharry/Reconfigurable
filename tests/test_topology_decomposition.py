@@ -135,13 +135,13 @@ class TopologyTests(unittest.TestCase):
             restored,_=prepare_state(dict(c,search_state=json.loads(path.read_text())['search_state']))
             self.assertEqual(restored['conflicts'],state['conflicts'])
 
-    def test_zero_capacity_backend_transport_fixture(self):
+    def test_zero_capacity_transport_cannot_accept_coincident_layout(self):
         # Explicitly NOT a valid design: MATLAB refuses this zero threshold.
         c=config(lower=[0,0,0,0]*3,upper=[0,0,0,0]*3,min_axis_capacity=0,max_time=3)
         masks=[6 if fault==0 else 5 for fault,label in CASES]
         work=dict(masks=masks,regions=[dict(lower=c['lower'],upper=c['upper'],depth=0)])
         r=solve_geometry(c,work)
-        self.assertTrue(r['has_solution'])
+        self.assertFalse(r['has_solution'])
         self.assertEqual(len(r['x']),12)
 
 

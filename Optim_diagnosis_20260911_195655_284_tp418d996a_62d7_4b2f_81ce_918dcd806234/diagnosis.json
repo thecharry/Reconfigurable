@@ -1,0 +1,1143 @@
+{
+  "method": "layered_rational_diagnosis_v1",
+  "status": "diagnostic_unknown",
+  "has_solution": false,
+  "x": [],
+  "groups": [],
+  "candidates": [],
+  "search_goal": "necessary_conditions_only",
+  "nodes": 0,
+  "solution_count": 0,
+  "layers": [
+    {
+      "layer": "force",
+      "status": "sat_verified",
+      "real_variables": 9,
+      "representative_requirements": 18,
+      "bounds": [
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ]
+        ]
+      ],
+      "runs": [],
+      "witness": {
+        "layer": "force",
+        "scope_signature": "e04b11e245a3890a12b9c790b54c35f80ae92c4d1af518e814da91a88ed5a0e6",
+        "coefficients": [
+          [
+            "4999/1000000000",
+            "0",
+            "-1/200000"
+          ],
+          [
+            "14997/1000000000",
+            "19997/2000000000",
+            "9999/2000000000"
+          ],
+          [
+            "2499/500000000",
+            "9999/1000000000",
+            "-9999/2000000000"
+          ]
+        ],
+        "masks": [
+          3370,
+          3276,
+          2820,
+          3426,
+          1440,
+          3612,
+          1066,
+          207,
+          516,
+          1800,
+          3372,
+          579,
+          1587,
+          204,
+          170,
+          1148,
+          1541,
+          1546
+        ]
+      },
+      "verification": {
+        "valid": true,
+        "arithmetic": "fractions",
+        "checked_requirements": 78,
+        "full_fault_groups": [
+          {
+            "fault": 0,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 0,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 0,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 0,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 0,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 0,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 1,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 1,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 1,
+            "label": 3,
+            "thrusters": [
+              3,
+              10
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 1,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 1,
+            "label": 5,
+            "thrusters": [
+              3,
+              4,
+              6,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 1,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 2,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 2,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 2,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 2,
+            "label": 4,
+            "thrusters": [
+              4,
+              9
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 2,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 2,
+            "label": 6,
+            "thrusters": [
+              3,
+              4,
+              5,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 3,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 3,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 3,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 3,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 3,
+            "label": 5,
+            "thrusters": [
+              1,
+              2,
+              8,
+              9
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 3,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 4,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 4,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 4,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 4,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 4,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 4,
+            "label": 6,
+            "thrusters": [
+              1,
+              2,
+              7,
+              10
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 5,
+            "label": 1,
+            "thrusters": [
+              1,
+              2,
+              9,
+              10
+            ],
+            "target": "9997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 5,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 5,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 5,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 5,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 5,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 6,
+            "label": 1,
+            "thrusters": [
+              1,
+              2,
+              9,
+              10
+            ],
+            "target": "9997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 6,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 6,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 6,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 6,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 6,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 7,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 7,
+            "label": 2,
+            "thrusters": [
+              2,
+              4,
+              8,
+              9
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 7,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 7,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 7,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 7,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 8,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 8,
+            "label": 2,
+            "thrusters": [
+              1,
+              3,
+              7,
+              10
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 8,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 8,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 8,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 8,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 9,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 9,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 9,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 9,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 9,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 9,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 10,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 10,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 10,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 10,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 10,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 10,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 11,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 11,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 11,
+            "label": 3,
+            "thrusters": [
+              1,
+              12
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 11,
+            "label": 4,
+            "thrusters": [
+              4,
+              9
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 11,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 11,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 12,
+            "label": 1,
+            "thrusters": [
+              5,
+              6
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 12,
+            "label": 2,
+            "thrusters": [
+              7,
+              8
+            ],
+            "target": "14997/500000000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 12,
+            "label": 3,
+            "thrusters": [
+              3,
+              10
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 12,
+            "label": 4,
+            "thrusters": [
+              2,
+              11
+            ],
+            "target": "9999/1000000000",
+            "max_off_axis": "1/1000000000"
+          },
+          {
+            "fault": 12,
+            "label": 5,
+            "thrusters": [
+              1,
+              3
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          },
+          {
+            "fault": 12,
+            "label": 6,
+            "thrusters": [
+              2,
+              4
+            ],
+            "target": "1/100000",
+            "max_off_axis": "0"
+          }
+        ],
+        "physical_layout_verified": false
+      },
+      "resumed_from": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_170548_925_tp330ad2bf_84d3_42f8_9fc5_cfc7c2835efc/diagnosis.json"
+    },
+    {
+      "layer": "wrench",
+      "status": "unknown",
+      "real_variables": 18,
+      "representative_requirements": 36,
+      "bounds": [
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3/5",
+            "3/5"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ],
+          [
+            "-13/10",
+            "13/10"
+          ]
+        ]
+      ],
+      "runs": [
+        {
+          "engine": "z3_persistent",
+          "status": "unknown",
+          "resume_note": "resumed_branch_queue",
+          "imported_conflicts": 1068,
+          "conflict_sources": {
+            "sources": [
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_133656_297_tpa12d0603_ae55_4379_b772_7200e66090b4/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_133727_119_tpd153e2ea_97a8_4b45_a67f_30f0861ae399/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_134107_004_tpc32b0e52_bf02_4df9_8f32_c75f2f53898c/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_135141_912_tp200997f3_d645_4c24_8e93_efd172d0bb9a/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_142300_009_tpa4f087da_a370_4faa_9145_64ed2413ee64/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_144757_366_tpb3695060_c1d0_4490_b2ce_4007d1b6efcd/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_161101_512_tp6622f911_0338_4ca9_aecc_55c8aadc6362/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_164413_346_tp780d1662_17fa_4af7_a548_89518d5861a3/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_170548_925_tp330ad2bf_84d3_42f8_9fc5_cfc7c2835efc/branch_queue.json",
+                "accepted": 1068
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260910_130827_598_tp65dbe22e_1a16_4313_af30_e6bae909c70d.conflicts.json",
+                "accepted": 1004
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_search_20260910_163643_862_tpc545d236_46da_4862_91be_f8e90711b03d.conflicts.json",
+                "accepted": 398
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/topology_120s_checkpoint_20260910.json",
+                "accepted": 137
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/topology_linear_smoke_checkpoint_20260910.json",
+                "accepted": 1
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/topology_resume_checkpoint_20260910.json",
+                "accepted": 137
+              },
+              {
+                "file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/analysis/topology_smoke_checkpoint_20260910.json",
+                "accepted": 1
+              }
+            ],
+            "rejected": 0
+          },
+          "independent_unsat_proof_verified": false,
+          "branch_progress": {
+            "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+            "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+            "reviewed_later_assignments": "0",
+            "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+            "certified_fraction": "345/847",
+            "certified_percent": 40.731995277449826,
+            "pending_branches": 502,
+            "review_branches": 0,
+            "closed_branches": 170,
+            "conflicts": 1068,
+            "solver_calls": 669,
+            "splits": 996
+          },
+          "branch_queue_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_195655_284_tp418d996a_62d7_4b2f_81ce_918dcd806234/branch_queue.json",
+          "elapsed_seconds": 7200.015092209
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "lower": [
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0"
+    ],
+    "upper": [
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000"
+    ],
+    "x_face": "2",
+    "pure_tolerance": "1/1000000000",
+    "min_axis_capacity": "1/100000",
+    "max_group_size": 6,
+    "min_install_distance": "0",
+    "min_install_angle_deg": "0"
+  },
+  "scope_signature": "e04b11e245a3890a12b9c790b54c35f80ae92c4d1af518e814da91a88ed5a0e6",
+  "physical_layout_verified": false,
+  "original_problem_infeasibility_verified": false,
+  "resume_note": "resumed_verified_layers",
+  "branch_queue_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_195655_284_tp418d996a_62d7_4b2f_81ce_918dcd806234/branch_queue.json",
+  "branch_progress": {
+    "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+    "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+    "reviewed_later_assignments": "0",
+    "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+    "certified_fraction": "345/847",
+    "certified_percent": 40.731995277449826,
+    "pending_branches": 502,
+    "review_branches": 0,
+    "closed_branches": 170,
+    "conflicts": 1068,
+    "solver_calls": 669,
+    "splits": 996
+  },
+  "solve_time": 7200.141531542001,
+  "diagnostic_report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_195655_284_tp418d996a_62d7_4b2f_81ce_918dcd806234/diagnosis.json"
+}

@@ -1,0 +1,4605 @@
+{
+  "read_time": "2026-09-16T14:19:36.967447+08:00",
+  "queue_mtime": "2026-09-16T14:18:56.774637+08:00",
+  "queue_sha256": "cd5e70be528e0cca2a4737c2700602e0521c61604a2803288bdc69125d7d18c9",
+  "version": "strict_support_rotation_v1",
+  "signature": "de5ec30395b82d2d7831c1979abe9b91b2ac0764542f60590e55fa760e753f19_strict_support_rotation_v1",
+  "visits": 613,
+  "best_coverage": 152,
+  "best_x": [
+    0.2,
+    0.0,
+    0.0,
+    0.7853981633974483,
+    0.6,
+    0.2,
+    4.71238898038469,
+    0.7853981633974483,
+    0.6,
+    -0.2,
+    1.5707963267948966,
+    0.7853981633974483
+  ],
+  "found_x": [],
+  "found_support": [],
+  "rejected_points": [],
+  "policy_version": 2,
+  "metrics": {
+    "legacy_visits": 480,
+    "nodes_since_upgrade": 3047679,
+    "direct_calls": 134,
+    "direct_evaluations": 3091722,
+    "candidate_checks": 9978,
+    "geometry_calls_since_upgrade": 0,
+    "new_conflicts_since_upgrade": 52306
+  },
+  "phase": "group_master_or_geometry",
+  "active_job": [
+    "010110001111",
+    "0:1"
+  ],
+  "entry_count": 115,
+  "job_summary": [
+    {
+      "support": "100111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 0.49980000016257226,
+        "candidate_checks": 26,
+        "best_coverage": 152,
+        "evaluations": 26642,
+        "starts": 108
+      }
+    },
+    {
+      "support": "100111111111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 0.4998000002354909,
+        "candidate_checks": 22,
+        "best_coverage": 152,
+        "evaluations": 21343,
+        "starts": 82
+      }
+    },
+    {
+      "support": "100111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100111111111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001010111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 6,
+        "best_coverage": 66,
+        "evaluations": 26855,
+        "starts": 3830
+      }
+    },
+    {
+      "support": "010001010111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.94835882054633,
+        "candidate_checks": 14,
+        "best_coverage": 62,
+        "evaluations": 24459,
+        "starts": 3476
+      }
+    },
+    {
+      "support": "010001010111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001010111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001010111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27197,
+        "starts": 3883
+      }
+    },
+    {
+      "support": "010001011011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 6,
+        "best_coverage": 66,
+        "evaluations": 23069,
+        "starts": 3291
+      }
+    },
+    {
+      "support": "010001011011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111000",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27152,
+        "starts": 3873
+      }
+    },
+    {
+      "support": "010101111000",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 14241,
+        "starts": 2034
+      }
+    },
+    {
+      "support": "010101111000",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111000",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111000",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110001011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 13,
+        "best_coverage": 66,
+        "evaluations": 26875,
+        "starts": 3821
+      }
+    },
+    {
+      "support": "010110001011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 18.0,
+        "candidate_checks": 6,
+        "best_coverage": 80,
+        "evaluations": 20816,
+        "starts": 2969
+      }
+    },
+    {
+      "support": "010110001011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110001011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 27630,
+        "starts": 3452
+      }
+    },
+    {
+      "support": "010001011111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 19095,
+        "starts": 2386
+      }
+    },
+    {
+      "support": "010001011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001011111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001110111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27551,
+        "starts": 3438
+      }
+    },
+    {
+      "support": "010001110111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.948358820909984,
+        "candidate_checks": 15,
+        "best_coverage": 62,
+        "evaluations": 19922,
+        "starts": 2478
+      }
+    },
+    {
+      "support": "010001110111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001110111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001110111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 27833,
+        "starts": 3478
+      }
+    },
+    {
+      "support": "010001111011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.803817157185158,
+        "candidate_checks": 18,
+        "best_coverage": 62,
+        "evaluations": 12709,
+        "starts": 1580
+      }
+    },
+    {
+      "support": "010001111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 4,
+        "best_coverage": 66,
+        "evaluations": 27502,
+        "starts": 3434
+      }
+    },
+    {
+      "support": "010001111101",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 20335,
+        "starts": 2541
+      }
+    },
+    {
+      "support": "010001111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111101",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 27769,
+        "starts": 3471
+      }
+    },
+    {
+      "support": "010010111011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 13704,
+        "starts": 1712
+      }
+    },
+    {
+      "support": "010010111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 27558,
+        "starts": 3445
+      }
+    },
+    {
+      "support": "010010111101",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27166,
+        "starts": 3396
+      }
+    },
+    {
+      "support": "010010111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111101",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101010111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 2.3031047944973837,
+        "candidate_checks": 273,
+        "best_coverage": 36,
+        "evaluations": 25662,
+        "starts": 83
+      }
+    },
+    {
+      "support": "010101010111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.709689951244783,
+        "candidate_checks": 219,
+        "best_coverage": 75,
+        "evaluations": 25511,
+        "starts": 75
+      }
+    },
+    {
+      "support": "010101010111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101010111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101010111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 5.921016233371853,
+        "candidate_checks": 336,
+        "best_coverage": 75,
+        "evaluations": 25228,
+        "starts": 72
+      }
+    },
+    {
+      "support": "010101011011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 9.860222610658566,
+        "candidate_checks": 421,
+        "best_coverage": 80,
+        "evaluations": 23553,
+        "starts": 82
+      }
+    },
+    {
+      "support": "010101011011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101100111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 18.0,
+        "candidate_checks": 6,
+        "best_coverage": 80,
+        "evaluations": 27519,
+        "starts": 3430
+      }
+    },
+    {
+      "support": "010101100111",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.80381715716952,
+        "candidate_checks": 22,
+        "best_coverage": 62,
+        "evaluations": 26187,
+        "starts": 3260
+      }
+    },
+    {
+      "support": "010101100111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101100111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101100111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 26038,
+        "starts": 3254
+      }
+    },
+    {
+      "support": "010101101011",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 26060,
+        "starts": 3255
+      }
+    },
+    {
+      "support": "010101101011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111001",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 5.1222512690930255,
+        "candidate_checks": 110,
+        "best_coverage": 84,
+        "evaluations": 17935,
+        "starts": 105
+      }
+    },
+    {
+      "support": "010101111001",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.88387131202256,
+        "candidate_checks": 138,
+        "best_coverage": 88,
+        "evaluations": 25238,
+        "starts": 134
+      }
+    },
+    {
+      "support": "010101111001",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111001",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111001",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111010",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24145,
+        "starts": 3018
+      }
+    },
+    {
+      "support": "010101111010",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 26553,
+        "starts": 3317
+      }
+    },
+    {
+      "support": "010101111010",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111010",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111010",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111100",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 27419,
+        "starts": 3427
+      }
+    },
+    {
+      "support": "010101111100",
+      "job": "0:1",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 15633,
+        "starts": 1954
+      }
+    },
+    {
+      "support": "010101111100",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111100",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111100",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110001111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 26127,
+        "starts": 3266
+      }
+    },
+    {
+      "support": "010110001111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 23127,
+        "starts": 2891
+      }
+    },
+    {
+      "support": "010110001111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110001111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110001111",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110011011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.764041324450176,
+        "candidate_checks": 142,
+        "best_coverage": 84,
+        "evaluations": 19489,
+        "starts": 80
+      }
+    },
+    {
+      "support": "010110011011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.466293330669867,
+        "candidate_checks": 79,
+        "best_coverage": 84,
+        "evaluations": 13919,
+        "starts": 57
+      }
+    },
+    {
+      "support": "010110011011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110011011",
+      "job": "1:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110101011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 25597,
+        "starts": 3197
+      }
+    },
+    {
+      "support": "010110101011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110101011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111100",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 26488,
+        "starts": 3309
+      }
+    },
+    {
+      "support": "010110111100",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111100",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111100",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111000",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25422,
+        "starts": 3174
+      }
+    },
+    {
+      "support": "011101111000",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111000",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111000",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 10,
+        "best_coverage": 66,
+        "evaluations": 25073,
+        "starts": 3124
+      }
+    },
+    {
+      "support": "011110001011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25435,
+        "starts": 3180
+      }
+    },
+    {
+      "support": "011110001101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100010111011",
+      "job": "0:0",
+      "visits": 4,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 26029,
+        "starts": 3247
+      }
+    },
+    {
+      "support": "100010111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100010111101",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 21435,
+        "starts": 2679
+      }
+    },
+    {
+      "support": "100010111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100010111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24594,
+        "starts": 2730
+      }
+    },
+    {
+      "support": "010001111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010001111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25404,
+        "starts": 2823
+      }
+    },
+    {
+      "support": "010010111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010010111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 22677,
+        "starts": 2520
+      }
+    },
+    {
+      "support": "010011011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.865138225842507,
+        "candidate_checks": 561,
+        "best_coverage": 22,
+        "evaluations": 23871,
+        "starts": 61
+      }
+    },
+    {
+      "support": "010101011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 26137,
+        "starts": 2901
+      }
+    },
+    {
+      "support": "010101101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101110111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.30900952498757,
+        "candidate_checks": 327,
+        "best_coverage": 35,
+        "evaluations": 23338,
+        "starts": 74
+      }
+    },
+    {
+      "support": "010101110111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101110111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101110111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.796798396657762,
+        "candidate_checks": 478,
+        "best_coverage": 75,
+        "evaluations": 21482,
+        "starts": 66
+      }
+    },
+    {
+      "support": "010101111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.709689949503518,
+        "candidate_checks": 258,
+        "best_coverage": 75,
+        "evaluations": 22444,
+        "starts": 61
+      }
+    },
+    {
+      "support": "010101111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 27314,
+        "starts": 3032
+      }
+    },
+    {
+      "support": "010101111110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 3.769681948805245,
+        "candidate_checks": 81,
+        "best_coverage": 96,
+        "evaluations": 26639,
+        "starts": 134
+      }
+    },
+    {
+      "support": "010110011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27472,
+        "starts": 3053
+      }
+    },
+    {
+      "support": "010110101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.753775910954545,
+        "candidate_checks": 145,
+        "best_coverage": 84,
+        "evaluations": 26271,
+        "starts": 83
+      }
+    },
+    {
+      "support": "010110111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 14.210391964291736,
+        "candidate_checks": 158,
+        "best_coverage": 22,
+        "evaluations": 23306,
+        "starts": 62
+      }
+    },
+    {
+      "support": "010110111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 21541,
+        "starts": 2394
+      }
+    },
+    {
+      "support": "010110111110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111001111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 21027,
+        "starts": 2337
+      }
+    },
+    {
+      "support": "010111001111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111001111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111001111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001110111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 21782,
+        "starts": 2413
+      }
+    },
+    {
+      "support": "011001110111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001110111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001110111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 27,
+        "best_coverage": 66,
+        "evaluations": 26538,
+        "starts": 2932
+      }
+    },
+    {
+      "support": "011001111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27469,
+        "starts": 3049
+      }
+    },
+    {
+      "support": "011001111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25087,
+        "starts": 2788
+      }
+    },
+    {
+      "support": "011010111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25114,
+        "starts": 2791
+      }
+    },
+    {
+      "support": "011010111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111001",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 5.921771173738176,
+        "candidate_checks": 267,
+        "best_coverage": 84,
+        "evaluations": 22453,
+        "starts": 132
+      }
+    },
+    {
+      "support": "011101111001",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111001",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111001",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111010",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 5,
+        "best_coverage": 66,
+        "evaluations": 24520,
+        "starts": 2719
+      }
+    },
+    {
+      "support": "011101111010",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111010",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111010",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111100",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 26.0,
+        "candidate_checks": 5,
+        "best_coverage": 44,
+        "evaluations": 24613,
+        "starts": 2729
+      }
+    },
+    {
+      "support": "011101111100",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111100",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111100",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 23264,
+        "starts": 2585
+      }
+    },
+    {
+      "support": "011110001111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110001111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 6.952498462264625,
+        "candidate_checks": 132,
+        "best_coverage": 84,
+        "evaluations": 23020,
+        "starts": 108
+      }
+    },
+    {
+      "support": "011110011011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.88387131202264,
+        "candidate_checks": 34,
+        "best_coverage": 84,
+        "evaluations": 23843,
+        "starts": 112
+      }
+    },
+    {
+      "support": "011110011101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 20925,
+        "starts": 2322
+      }
+    },
+    {
+      "support": "011110101011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 20287,
+        "starts": 2255
+      }
+    },
+    {
+      "support": "011110101101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111100",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 20204,
+        "starts": 2245
+      }
+    },
+    {
+      "support": "011110111100",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111100",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111100",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 20218,
+        "starts": 2247
+      }
+    },
+    {
+      "support": "011111001101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100010111111",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24535,
+        "starts": 2724
+      }
+    },
+    {
+      "support": "100010111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100010111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24429,
+        "starts": 2715
+      }
+    },
+    {
+      "support": "100011011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100110111011",
+      "job": "0:0",
+      "visits": 4,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.091278902603685,
+        "candidate_checks": 143,
+        "best_coverage": 84,
+        "evaluations": 23185,
+        "starts": 98
+      }
+    },
+    {
+      "support": "100110111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100110111101",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 9.000019215154099,
+        "candidate_checks": 127,
+        "best_coverage": 96,
+        "evaluations": 22161,
+        "starts": 83
+      }
+    },
+    {
+      "support": "100110111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100110111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101010111011",
+      "job": "0:0",
+      "visits": 4,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24527,
+        "starts": 2718
+      }
+    },
+    {
+      "support": "101010111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101010111101",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 25023,
+        "starts": 2777
+      }
+    },
+    {
+      "support": "101010111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101010111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111100",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 24747,
+        "starts": 2746
+      }
+    },
+    {
+      "support": "101110111100",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111100",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 22934,
+        "starts": 2549
+      }
+    },
+    {
+      "support": "101111001101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 27523,
+        "starts": 2753
+      }
+    },
+    {
+      "support": "010011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 5.774010021020118,
+        "candidate_checks": 458,
+        "best_coverage": 84,
+        "evaluations": 24207,
+        "starts": 63
+      }
+    },
+    {
+      "support": "010101111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010101111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 13.834792865485777,
+        "candidate_checks": 193,
+        "best_coverage": 75,
+        "evaluations": 23087,
+        "starts": 59
+      }
+    },
+    {
+      "support": "010110111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010110111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.194259916549655,
+        "candidate_checks": 346,
+        "best_coverage": 22,
+        "evaluations": 16820,
+        "starts": 44
+      }
+    },
+    {
+      "support": "010111011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 24225,
+        "starts": 2423
+      }
+    },
+    {
+      "support": "010111101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24559,
+        "starts": 2454
+      }
+    },
+    {
+      "support": "011001111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011001111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24565,
+        "starts": 2457
+      }
+    },
+    {
+      "support": "011010111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011010111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24545,
+        "starts": 2455
+      }
+    },
+    {
+      "support": "011011011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101110111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.694934408066173,
+        "candidate_checks": 168,
+        "best_coverage": 75,
+        "evaluations": 22808,
+        "starts": 73
+      }
+    },
+    {
+      "support": "011101110111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101110111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101110111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111011",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 6.0567714063382,
+        "candidate_checks": 183,
+        "best_coverage": 36,
+        "evaluations": 22657,
+        "starts": 71
+      }
+    },
+    {
+      "support": "011101111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111011",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.463280573741699,
+        "candidate_checks": 137,
+        "best_coverage": 31,
+        "evaluations": 23098,
+        "starts": 60
+      }
+    },
+    {
+      "support": "011101111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 24610,
+        "starts": 2456
+      }
+    },
+    {
+      "support": "011101111110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.003781938971052,
+        "candidate_checks": 79,
+        "best_coverage": 79,
+        "evaluations": 23503,
+        "starts": 125
+      }
+    },
+    {
+      "support": "011110011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24631,
+        "starts": 2464
+      }
+    },
+    {
+      "support": "011110101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111011",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.882996997938177,
+        "candidate_checks": 319,
+        "best_coverage": 79,
+        "evaluations": 21409,
+        "starts": 70
+      }
+    },
+    {
+      "support": "011110111011",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 6.88389722601101,
+        "candidate_checks": 229,
+        "best_coverage": 79,
+        "evaluations": 22444,
+        "starts": 53
+      }
+    },
+    {
+      "support": "011110111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 22982,
+        "starts": 2299
+      }
+    },
+    {
+      "support": "011110111110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 20820,
+        "starts": 2082
+      }
+    },
+    {
+      "support": "011111001111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111001111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 9.143309273036447,
+        "candidate_checks": 147,
+        "best_coverage": 75,
+        "evaluations": 19154,
+        "starts": 50
+      }
+    },
+    {
+      "support": "011111011101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 22071,
+        "starts": 2208
+      }
+    },
+    {
+      "support": "011111011110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24745,
+        "starts": 2475
+      }
+    },
+    {
+      "support": "100011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100110111111",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.764041334986658,
+        "candidate_checks": 140,
+        "best_coverage": 79,
+        "evaluations": 22986,
+        "starts": 80
+      }
+    },
+    {
+      "support": "100110111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100110111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100111011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 3.5537576001759055,
+        "candidate_checks": 56,
+        "best_coverage": 92,
+        "evaluations": 23935,
+        "starts": 105
+      }
+    },
+    {
+      "support": "100111011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100111011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "100111011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101010111111",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 2,
+        "best_coverage": 62,
+        "evaluations": 24655,
+        "starts": 2463
+      }
+    },
+    {
+      "support": "101010111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101010111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 22.0,
+        "candidate_checks": 1,
+        "best_coverage": 62,
+        "evaluations": 24602,
+        "starts": 2461
+      }
+    },
+    {
+      "support": "101011011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111011",
+      "job": "0:0",
+      "visits": 4,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.610611106117027,
+        "candidate_checks": 121,
+        "best_coverage": 79,
+        "evaluations": 19523,
+        "starts": 55
+      }
+    },
+    {
+      "support": "101110111011",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111101",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 13.937071923924687,
+        "candidate_checks": 264,
+        "best_coverage": 75,
+        "evaluations": 18570,
+        "starts": 45
+      }
+    },
+    {
+      "support": "101110111101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111110",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 24986,
+        "starts": 2497
+      }
+    },
+    {
+      "support": "101110111110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 26.0,
+        "candidate_checks": 13,
+        "best_coverage": 44,
+        "evaluations": 23978,
+        "starts": 2394
+      }
+    },
+    {
+      "support": "101111001111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111001111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011101",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 11.224146394880936,
+        "candidate_checks": 276,
+        "best_coverage": 35,
+        "evaluations": 19706,
+        "starts": 49
+      }
+    },
+    {
+      "support": "101111011101",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011101",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011101",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011110",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 2,
+        "best_coverage": 40,
+        "evaluations": 24405,
+        "starts": 2441
+      }
+    },
+    {
+      "support": "101111011110",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011110",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011110",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 23388,
+        "starts": 2339
+      }
+    },
+    {
+      "support": "110011011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 15.078768736967138,
+        "candidate_checks": 180,
+        "best_coverage": 22,
+        "evaluations": 24814,
+        "starts": 66
+      }
+    },
+    {
+      "support": "010111111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "010111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 11,
+        "best_coverage": 66,
+        "evaluations": 27142,
+        "starts": 2461
+      }
+    },
+    {
+      "support": "011011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.598269573268785,
+        "candidate_checks": 141,
+        "best_coverage": 84,
+        "evaluations": 25095,
+        "starts": 73
+      }
+    },
+    {
+      "support": "011101111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011101111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 7.883120960323393,
+        "candidate_checks": 189,
+        "best_coverage": 84,
+        "evaluations": 24258,
+        "starts": 69
+      }
+    },
+    {
+      "support": "011110111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011110111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 8.463292334569207,
+        "candidate_checks": 202,
+        "best_coverage": 40,
+        "evaluations": 25267,
+        "starts": 63
+      }
+    },
+    {
+      "support": "011111011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 26.222133333334227,
+        "candidate_checks": 9,
+        "best_coverage": 40,
+        "evaluations": 27012,
+        "starts": 2452
+      }
+    },
+    {
+      "support": "011111101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 21.0,
+        "candidate_checks": 11,
+        "best_coverage": 66,
+        "evaluations": 24487,
+        "starts": 2219
+      }
+    },
+    {
+      "support": "101011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111111",
+      "job": "0:0",
+      "visits": 3,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 10.9731001630349,
+        "candidate_checks": 178,
+        "best_coverage": 75,
+        "evaluations": 14287,
+        "starts": 32
+      }
+    },
+    {
+      "support": "101110111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101110111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 13.014482533753744,
+        "candidate_checks": 363,
+        "best_coverage": 44,
+        "evaluations": 17562,
+        "starts": 41
+      }
+    },
+    {
+      "support": "101111011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 13664,
+        "starts": 1237
+      }
+    },
+    {
+      "support": "101111101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 27.0,
+        "candidate_checks": 1,
+        "best_coverage": 40,
+        "evaluations": 16609,
+        "starts": 1507
+      }
+    },
+    {
+      "support": "110011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111011111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 10.154421450419413,
+        "candidate_checks": 277,
+        "best_coverage": 50,
+        "evaluations": 13104,
+        "starts": 27
+      }
+    },
+    {
+      "support": "110111011111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111011111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111011111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111101111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 26.222133333334227,
+        "candidate_checks": 8,
+        "best_coverage": 40,
+        "evaluations": 15575,
+        "starts": 1413
+      }
+    },
+    {
+      "support": "110111101111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111101111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111101111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.37564045189818,
+        "candidate_checks": 143,
+        "best_coverage": 75,
+        "evaluations": 13058,
+        "starts": 46
+      }
+    },
+    {
+      "support": "011111111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "011111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 12.4609676349451,
+        "candidate_checks": 100,
+        "best_coverage": 75,
+        "evaluations": 14224,
+        "starts": 42
+      }
+    },
+    {
+      "support": "101111111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "101111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 16.202419867938453,
+        "candidate_checks": 155,
+        "best_coverage": 22,
+        "evaluations": 16075,
+        "starts": 37
+      }
+    },
+    {
+      "support": "110111111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "110111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111011111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 26.0,
+        "candidate_checks": 7,
+        "best_coverage": 44,
+        "evaluations": 21183,
+        "starts": 1764
+      }
+    },
+    {
+      "support": "111011111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111011111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111011111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111111111111",
+      "job": "0:0",
+      "visits": 2,
+      "processed": 0,
+      "pending": 0,
+      "direct": {
+        "calls": 1,
+        "best_score": 20.892530296854588,
+        "candidate_checks": 223,
+        "best_coverage": 40,
+        "evaluations": 14388,
+        "starts": 29
+      }
+    },
+    {
+      "support": "111111111111",
+      "job": "0:1",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111111111111",
+      "job": "1:0",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    },
+    {
+      "support": "111111111111",
+      "job": "0:2",
+      "visits": 1,
+      "processed": 0,
+      "pending": 0,
+      "direct": {}
+    }
+  ]
+}

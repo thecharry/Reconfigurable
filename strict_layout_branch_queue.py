@@ -189,6 +189,28 @@ def branch_progress(state,domain):
         conflicts=len(state['conflicts']),solver_calls=state['calls'],splits=state['splits'])
 
 
+def screen_first_case(state,domain):
+    """Partition one requirement using exact capacity bounds before SMT.
+
+    This small tree has at most 2^11 leaves. Stop at homogeneous subtrees;
+    every closure carries a replayable bound certificate. Do not expand
+    all 36 cases into their astronomically large Cartesian product.
+    """
+    todo=[n for n in state['leaves'] if n['status']=='pending' and len(n['prefix'])<=11]
+    for node in todo:
+        prefix=node['prefix'];values=domain.candidates(CASE_ORDER[0],prefix)
+        good=domain.good[CASE_ORDER[0]].intersection(values)
+        if not good:
+            node.update(status='closed',certificate=dict(kind='target_upper_bound',case=CASE_ORDER[0]))
+        elif len(good)<len(values):
+            state['leaves'].remove(node)
+            for bit in '01':
+                if domain.candidates(CASE_ORDER[0],prefix+bit):
+                    child=dict(prefix=prefix+bit,status='pending',trials=0)
+                    state['leaves'].append(child);todo.append(child)
+            state['splits']+=1
+
+
 def add_conflict(solver,groups,proof):
     import z3
     solver.add(z3.Or([z3.Not(b) if mask>>i&1 else b for case,mask in proof['assignments']
@@ -226,6 +248,7 @@ def solve_persistent(config,seconds,artifact_dir=None):
     imported,source_info=import_conflicts(config)
     for p in imported: conflicts[conflict_key(p)]=p
     state['conflicts']=list(conflicts.values())
+    if config.get('diagnostic_initial_screen',True): screen_first_case(state,domain)
     output=dict(engine='z3_persistent',status='unknown',resume_note=note,imported_conflicts=len(imported),
         conflict_sources=source_info,independent_unsat_proof_verified=False)
     def persist():
@@ -299,6 +322,7 @@ def solve_persistent(config,seconds,artifact_dir=None):
 
 def verify_queue_file(path):
     state=json.loads(Path(path).read_text())
-    checked,domain,_,_=prepare_queue(state['scope'],state)
+    checked,domain,_,note=prepare_queue(state['scope'],state)
+    if note!='resumed_branch_queue': raise ValueError('Saved queue method or scope signature is inconsistent.')
     return dict(valid=True,progress=branch_progress(checked,domain),
         whole_domain_unsat=all(n['status']=='closed' for n in checked['leaves']))

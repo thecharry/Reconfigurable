@@ -198,8 +198,9 @@ def build_coefficients(config,relaxed=False,fixed_masks=None):
             for sx,st in ((1,1),(1,-1),(-1,1),(-1,-1)):
                 r.append([sx*a,st*y,st*z]);d.append([-sx*c,st*p,st*q])
         for i,j in itertools.combinations(range(12),2):
-            if config.get('min_install_distance',0)>0:
-                model.addCons(quicksum((r[i][k]-r[j][k])**2 for k in range(3))>=config['min_install_distance']**2)
+            separation=max(config.get('min_install_distance',0),config.get('strict_collision_distance',0))
+            if separation>0:
+                model.addCons(quicksum((r[i][k]-r[j][k])**2 for k in range(3))>=separation**2)
             if config.get('min_install_angle_deg',0)>0:
                 model.addCons(quicksum(d[i][k]*d[j][k] for k in range(3))<=math.cos(math.radians(config['min_install_angle_deg'])))
     groups=[]; pairs={}; eps=float(config.get('pure_tolerance',1e-9)); rho=float(config['min_axis_capacity'])
@@ -323,7 +324,10 @@ def evaluate_candidate(x,config,library=None):
         cost[(bits[fault]!=0)|~possible]=np.inf
         selected.append(masks[int(np.argmin(cost))])
     installed=np.all(np.isfinite(x)) and np.all(np.array(x)>=np.array(config['lower'])-eps) and np.all(np.array(x)<=np.array(config['upper'])+eps)
+    from strict_layout_structure import strict_installation_domain
+    installed &= strict_installation_domain(x, config, config.get('strict_support'))
     for i,j in itertools.combinations(range(12),2):
+        installed &= np.linalg.norm(r[i]-r[j])>=config.get('strict_collision_distance',0)
         installed &= np.linalg.norm(r[i]-r[j])+eps*float(config['x_face'])>=config.get('min_install_distance',0)
         if config.get('min_install_angle_deg',0)>0:
             installed &= np.dot(A[:3,i],A[:3,j])<=math.cos(math.radians(config['min_install_angle_deg']))+eps
@@ -364,6 +368,8 @@ def _as_list(value):
 def prepare_state(config):
     keys=('lower','upper','x_face','min_install_distance','min_install_angle_deg','min_axis_capacity')
     domain={k:config[k] for k in keys};domain.update(max_group_size=int(config.get('max_group_size',6)),pure_tolerance=float(config.get('pure_tolerance',1e-9)))
+    if 'strict_support' in config:
+        domain.update(strict_support=config['strict_support'],strict_collision_distance=config.get('strict_collision_distance',0))
     signature=hashlib.sha256(json.dumps(domain,sort_keys=True).encode()).hexdigest()
     state=copy.deepcopy(config.get('search_state') or {})
     note='resumed_topologies'

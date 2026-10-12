@@ -405,6 +405,12 @@ def solve_fair(config):
 
 def solve(config):
     """Return solver termination evidence and the incumbent, when one exists."""
+    if config.get('support_search',False):
+        from strict_layout_support_search import run
+        return run(config)
+    if config.get('structural_search',False) or config.get('pattern_search',False):
+        from strict_layout_structure import screen
+        return screen(config)
     if config.get('diagnostic_search',False):
         from strict_layout_diagnosis import diagnose
         return diagnose(config)

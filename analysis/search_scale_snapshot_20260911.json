@@ -1,0 +1,101 @@
+{
+  "captured_at": "2026-09-11T20:07:49.990009+08:00",
+  "report_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_195655_284_tp418d996a_62d7_4b2f_81ce_918dcd806234/diagnosis.json",
+  "queue_file": "/Users/charry/Desktop/科研项目/卫星项目/仿真程序/Reconfigurable/Optim_diagnosis_20260911_195655_284_tp418d996a_62d7_4b2f_81ce_918dcd806234/branch_queue.json",
+  "scope": {
+    "lower": [
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0",
+      "0",
+      "-3/5",
+      "0",
+      "0"
+    ],
+    "upper": [
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000",
+      "3/5",
+      "3/5",
+      "3141592653589793/500000000000000",
+      "7853981633974483/5000000000000000"
+    ],
+    "x_face": "2",
+    "pure_tolerance": "1/1000000000",
+    "min_axis_capacity": "1/100000",
+    "max_group_size": 6,
+    "min_install_distance": "0",
+    "min_install_angle_deg": "0"
+  },
+  "scope_signature": "e04b11e245a3890a12b9c790b54c35f80ae92c4d1af518e814da91a88ed5a0e6",
+  "status_at_capture": "diagnostic_unknown",
+  "progress": {
+    "total_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+    "verified_excluded_assignments": "1032139637414654481227310596435538591943992527347098580769635908206559794699696107113816190974157132237335",
+    "reviewed_later_assignments": "0",
+    "remaining_assignments": "1501837965165671158191622954813450356973577532545633297235818046144037730258688248611987617011672117052586",
+    "certified_fraction": "345/847",
+    "certified_percent": 40.731995277449826,
+    "pending_branches": 502,
+    "review_branches": 0,
+    "closed_branches": 170,
+    "conflicts": 1068,
+    "solver_calls": 450,
+    "splits": 777
+  },
+  "solver_seconds": 13270.876399961002,
+  "latest_128_outcomes": {
+    "unknown": 128
+  },
+  "pending_depths": {
+    "10": 501,
+    "11": 1
+  },
+  "closed_certificates": {
+    "target_upper_bound": 170
+  },
+  "queue_independently_verified": true,
+  "scope_note": "Live checkpoint snapshot; the current run may still be in progress.",
+  "derived_counts": {
+    "all_groups": 1485,
+    "healthy_groups": 847,
+    "representative_requirements": 36,
+    "original_physical_variables": 12,
+    "necessary_reals": 18,
+    "necessary_booleans": 396,
+    "base_smt_assertions": 468,
+    "raw_boolean_assignments": "161390617380431786853494948250188242145606612051826469551916209783790476376052574664352834580008614464743948248296718336",
+    "total_group_assignments": "2533977602580325639418933551248988948917570059892731878005453954350597524958384355725803807985829249289921",
+    "healthy_prefix_counts": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      127,
+      247,
+      466,
+      847,
+      847
+    ],
+    "full_healthy_prefix_tree_nodes": "7967352745701733097936599581941265489504416500371946566778377681527883470909340882069312209506271634883201",
+    "one_fixed_first_group_assignments": "2991709093955520235441479989668227802736210224194488639911988139729158825216510455402365770939585890543",
+    "fixed_topology_axis_lp_variables": 3,
+    "fixed_topology_axis_lp_inequalities": 72,
+    "fixed_topology_vertex_triplets": 357840,
+    "fixed_topology_vertex_inequality_checks_upper": 25764480
+  }
+}

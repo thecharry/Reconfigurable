@@ -1,0 +1,27 @@
+{
+  "Reconfig_eval.m": {
+    "original_lines_missing": [],
+    "original_line_count": 231,
+    "current_line_count": 511
+  },
+  "RCPlotter.m": {
+    "original_lines_missing": [],
+    "original_line_count": 2360,
+    "current_line_count": 2515
+  },
+  "Plot_results.m": {
+    "original_lines_missing": [],
+    "original_line_count": 1251,
+    "current_line_count": 1261
+  },
+  "Thruster_invocation.m": {
+    "original_lines_missing": [],
+    "original_line_count": 1096,
+    "current_line_count": 1102
+  },
+  "source/RCDesignerPrototype.m": {
+    "original_lines_missing": [],
+    "original_line_count": 5221,
+    "current_line_count": 5323
+  }
+}
